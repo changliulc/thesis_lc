@@ -1,0 +1,453 @@
+\chapter{基于稳定点的道路停车与占用检测方法}
+\label{chap:ch4_parking}
+
+\section{引言}
+\label{sec:ch4_intro}
+
+公路场景下的异常停车与占用事件会显著降低道路通行效率，并可能诱发追尾及二次事故等安全风险，因此需要在事件发生后尽可能早地检测并上报，为交通管理与应急处置提供依据。与停车场车位占用监测相比，道路场景车流密度波动更大、邻道干扰更频繁，异常停车往往需要在连续车流背景下被可靠地区分。
+
+第\ref{chap:ch2_event}章构建了基于单地磁三轴信号（采样率$50\,\mathrm{Hz}$）的车辆事件检测底座，通过一阶差分与状态机时序约束实现车辆扰动事件（到达与离开，对应\texttt{diff\_on}与\texttt{diff\_off}）的稳定检测，并输出事件片段及摘要字段，为后续高层语义识别提供统一输入接口。本章在端侧单传感器、低算力与低通信开销等约束下研究道路停车与占用检测问题，目标是在事件级输出的基础上进一步识别停车确认、占用维持与释放边界等高层语义状态。
+
+需要指出的是，停车与占用语义并不能由事件触发到事件结束直接刻画：当车辆停稳后，磁场变化趋缓，一阶差分回落至零附近，其形态与无车状态下的差分特征高度相似，导致仅依赖差分事件难以区分车辆通过与车辆在检测范围内停靠并形成占用。此外，在连续车流条件下，传感器附近可能长期处于扰动状态，使稳定窗难以出现；缓行或停走又会造成变化变慢的伪稳态现象。若仅采用单一稳定判据或宽松参考更新条件，容易发生参考误更新与误判。因此，停车确认与占用维持逻辑需要同时约束窗内波动与窗间水平差，并对参考更新与状态转移设置严格门控，以避免将缓慢变化误认为稳定。
+
+针对上述问题，本章提出一种基于地磁稳定点的停车与占用检测方法。该方法利用车辆停稳或无车通过时的稳定点动态表征局部磁场稳态，并以此构造动态参考以替代固定基线，从而提升对环境漂移与工况变化的适应性。在单车停靠场景下，通过比较停靠前后稳定点的漂移量实现停车确认；在占用持续场景下，通过漂移相似性度量区分占用维持与稳态变化两类情况，并将稳态变化解释为释放或占用车辆替换等情形；在连续车流导致稳定点不可得时，引入固定窗均值作为稳定点近似，并结合一致性计数器实现稳健确认。
+
+本章主要工作包括三方面：提出稳定点驱动的动态参考表示，实现停车与占用稳态水平的显式表征；构造稳定点漂移与相似性判据，并结合外层状态机实现占用维持与释放的可解释判定；针对连续车流稳定窗缺失，引入固定窗近似与一致性计数器，提高拥堵工况下的可用性与鲁棒性。
+
+本章结构安排如下：第\ref{sec:ch4_problem}节给出停车与占用检测的任务定义、状态口径与复杂工况；第\ref{sec:ch4_method}节介绍稳定点提取、动态参考构建、漂移与相似性判据及外层状态机约束；第\ref{sec:ch4_robust}节给出漂移抑制、伪稳态抑制与连续车流处理策略；第\ref{sec:ch4_exp}节通过多工况数据验证方法有效性并进行对比与消融；第\ref{sec:ch4_summary}节总结本章工作。
+
+\section{停车与占用问题定义与信号特性}
+\label{sec:ch4_problem}
+
+本章面向道路侧单节点三轴地磁传感器的停车与占用检测场景。传感器通常布设于应急车道侧，用于识别应急车道车辆停靠形成的占用持续态；同时，主车道车辆正常通行会在传感器敏感区域内引入邻道扰动，造成占用期内的短时干扰事件。图\ref{fig:ch4_scene_overview}给出典型场景与干扰来源示意。实验布设细节与坐标系定义在第\ref{subsec:ch4_data}节给出。
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.78\linewidth]{images/ch4_scene_overview.png}
+    \caption{道路侧停车与占用检测场景示意。传感器布设于应急车道侧，检测目标为应急车道车辆停靠形成的占用稳态；主车道车辆通行可能引入邻道扰动。}
+    \label{fig:ch4_scene_overview}
+\end{figure}
+
+\subsection{通过与停靠的信号差异：定性现象}
+\label{subsec:ch4_pass_vs_park}
+
+车辆进入传感器敏感区域时三轴磁场$B_x,B_y,B_z$会产生明显扰动。当车辆以正常速度通过时，扰动表现为短时峰谷结构并快速回归；当车辆减速并停稳后，磁场扰动逐渐收敛并形成持续的平台段，其稳态水平与车辆相对位置、车辆姿态以及车辆磁特性等因素相关。
+
+为直观展示车辆通过与车辆停车在稳态水平与一阶差分特征上的差异，图\ref{fig:ch4_pass_vs_park}给出两类事件的实测对比。图中上行为以事件片段起始处短时空闲段的三轴均值向量$\mathbf{B}_0$作为基线得到的三轴磁场扰动
+\begin{equation}
+\delta\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}_0,
+\end{equation}
+下行为相邻采样点的一阶差分幅值$\lVert\Delta_1\mathbf{B}(t)\rVert_2$，其中$\Delta_1\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}(t-\Delta t)$且$\Delta t=1/f_s$。可以看到，通过事件在扰动结束后$\delta\mathbf{B}(t)$迅速回到零附近；而停车事件在车辆停稳阶段形成持续的平台偏置。与此同时，$\lVert\Delta_1\mathbf{B}(t)\rVert_2$主要在到达与离开等状态切换阶段出现峰值，在停稳占用阶段回落至接近零的噪声水平。由此可见，仅依赖差分事件能够刻画扰动触发与结束，但难以表达占用持续态，这也是本章引入稳定窗判据与动态参考维护机制的动机。
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.92\linewidth]{images/ch4_pass_vs_park.png}
+    \caption{车辆通过事件与停车事件的实测对比。上：去基线后三轴磁场扰动$\delta B_x,\delta B_y,\delta B_z$；下：一阶差分幅值$\lVert\Delta_1\mathbf{B}\rVert_2$。停车事件在停稳占用阶段差分幅值回落至零附近，而三轴扰动维持平台偏置。}
+    \label{fig:ch4_pass_vs_park}
+\end{figure}
+
+\subsection{任务定义、状态口径与复杂工况}
+\label{subsec:ch4_definition}
+
+本章目标是在第\ref{chap:ch2_event}章事件检测输出之上形成可上报的停车与占用语义状态。定义停车开始时刻$t_{\mathrm{park,in}}$、停车结束时刻$t_{\mathrm{park,out}}$，停车持续时间为
+\begin{equation}
+    T_{\mathrm{park}} = t_{\mathrm{park,out}} - t_{\mathrm{park,in}}.
+    \label{eq:ch4_Tpark}
+\end{equation}
+
+给定业务阈值$T_{\mathrm{short}}$与$T_{\mathrm{occ}}$且$T_{\mathrm{occ}} > T_{\mathrm{short}}$，停车事件可按持续时长划分为短停与长停。需要强调的是，\texttt{occ\_flag}用于表达当前是否处于占用持续态，其置位发生在停车确认之后；短停与长停属于由持续时间阈值派生的业务判定，可在在线上报或离线统计中由$t_{\mathrm{park,in}}$与当前时刻或$t_{\mathrm{park,out}}$计算得到。
+
+从输入与输出关系看，本章以事件检测底座的输出作为统一接口。输入包括事件片段的触发与结束时刻$t_{\mathrm{in}}, t_{\mathrm{out}}$，分别对应\texttt{diff\_on}与\texttt{diff\_off}，以及事件片段邻域的预处理后三轴地磁序列$\widetilde{\mathbf{B}}(k)$。本章输出包括停车确认事件\texttt{park\_flag}、占用状态\texttt{occ\_flag}，以及$t_{\mathrm{park,in}},t_{\mathrm{park,out}},T_{\mathrm{park}}$等字段。为与事件底座语义口径一致，本文将$t_{\mathrm{park,in}}$与$t_{\mathrm{park,out}}$均对齐至对应扰动结束时刻，通常取相应事件的$t_{\mathrm{out}}$，并在第\ref{sec:ch4_exp}节对边界误差与确认时差进行量化评估。
+
+道路场景中影响停车与占用判定的关键因素主要包括：环境慢漂移与阶跃干扰导致参考维护困难；连续车流背景下稳定窗缺失导致确认时差增大甚至漏检；缓行或停走造成差分减小但均值缓慢漂移的伪稳态；邻道车辆弱扰动污染稳定统计。针对上述工况，后续方法设计需要同时约束窗内波动与窗间水平差，并对参考更新与状态转移设置严格门控。
+
+\begin{table}[t]
+    \centering
+    \caption{本章核心符号与参数说明}
+    \label{tab:ch4_keyparams}
+    \begin{tabular}{c p{0.28\linewidth} p{0.60\linewidth}}
+        \hline
+        符号 & 含义 & 说明 \\
+        \hline
+        $L$ & 稳定窗长度 & 滑动窗口长度（采样点数） \\
+        $s$ & 均值差步长 & 默认取$s=L$，比较相邻窗口均值差 \\
+        $R_{\mathrm{th}}$ & 波动阈值 & 约束窗内极差量$R(k)$ \\
+        $M_{\mathrm{th}}$ & 水平差阈值 & 约束窗间均值差量$M(k)$ \\
+        $N_{\mathrm{stable}}$ & 连续门控门限 & 判定稳定需连续满足式\eqref{eq:ch4_stable_cond}的窗口数 \\
+        $\alpha$ & 环境参考更新率 & \texttt{FREE}状态下环境参考$\mathbf{S}_{\mathrm{pre}}$的指数更新系数 \\
+        $\lambda_{\mathrm{occ}}$ & 占用参考更新率 & \texttt{OCCUPIED}状态下占用参考$\mathbf{S}_{\mathrm{post}}$的指数更新系数 \\
+        $D_{\mathrm{th}}$ & 停车漂移阈值 & 停车确认所需漂移幅值下限 \\
+        $D_{\mathrm{free}}$ & 回归阈值 & 释放判定需回归环境参考的程度 \\
+        $D_{\mathrm{upd}}$ & 更新门控阈值 & 限制环境参考单次更新幅度，抑制慢漂移背景下的误更新 \\
+        $\mathrm{dist}_{\mathrm{th}}$ & 相似性阈值 & 占用稳态相似性门控阈值，用于仍占用判定与候选释放触发；释放主要由$D_{\mathrm{free}}$判定 \\
+        $T_{\mathrm{seek}}$ & 寻稳超时 & 事件结束后搜索稳定点的最长等待时间 \\
+        $T_{\min}$ & 最小时长阈值 & 过滤持续时间小于$T_{\min}$的候选占用片段 \\
+        $T_{\mathrm{gap}}$ & 合并间隔阈值 & 合并间隔小于$T_{\mathrm{gap}}$的相邻占用片段 \\
+        $L_{\mathrm{fix}},c_{\mathrm{th}}$ & 退化分支参数 & 固定窗长度与一致性确认门限 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{全局参数配置（用于第\ref{sec:ch4_exp}节实验）}
+    \label{tab:ch4_global_params}
+    \begin{tabular}{cc|cc}
+        \hline
+        参数 & 数值 & 参数 & 数值 \\
+        \hline
+        采样率$f_s$ / Hz & 50 & 稳定窗长度$L$ / 点 & 25 \\
+        均值差步长$s$ / 点 & 25 & 连续门控门限$N_{\mathrm{stable}}$ / 个 & 5 \\
+        波动阈值$R_{\mathrm{th}}$ / nT & 5.44 & 水平差阈值$M_{\mathrm{th}}$ / nT & 3.50 \\
+        寻稳超时$T_{\mathrm{seek}}$ / s & 2.13 & 退化分支参数$L_{\mathrm{fix}}$ / 点 & 75 \\
+        一致性确认门限$c_{\mathrm{th}}$ / 次 & 3 & 停车漂移阈值$D_{\mathrm{th}}$ / nT & 36.0 \\
+        回归阈值$D_{\mathrm{free}}$ / nT & 27.12 & 相似性阈值$\mathrm{dist}_{\mathrm{th}}$ / nT & 4.5 \\
+        更新门控阈值$D_{\mathrm{upd}}$ / nT & 30.0 & 环境参考更新率$\alpha$ & 0.162 \\
+        占用参考更新率$\lambda_{\mathrm{occ}}$ & 0.225 & 最小时长阈值$T_{\min}$ / s & 4.0 \\
+        IoU阈值$\theta$ & 0.5 & 合并间隔阈值$T_{\mathrm{gap}}$ / s & 0.0 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\section{基于稳定点的动态参考停车与占用判定方法}
+\label{sec:ch4_method}
+
+本节给出停车与占用判定的核心算法。总体思路为：以事件片段为触发入口，在事件前后搜索稳定窗并提取稳定点，构建环境参考稳定点$\mathbf{S}_{\mathrm{pre}}$与占用参考稳定点$\mathbf{S}_{\mathrm{post}}$；通过稳定点漂移实现停车确认，通过相似性度量区分占用维持与稳态变化；当连续车流导致稳定窗不可得时，启用固定窗近似与一致性计数器退化分支以保持可用性。
+
+\subsection{算法整体流程（概念图）}
+\label{subsec:ch4_pipeline}
+
+图\ref{fig:ch4_pipeline}给出算法整体流程示意，覆盖事件触发、稳定点搜索、动态参考维护、漂移/相似性判据与外层状态机转移逻辑。
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.94\linewidth]{images/ch4_pipeline.png}
+    \caption{算法整体流程示意。}
+    \label{fig:ch4_pipeline}
+\end{figure}
+
+\subsection{稳定窗判定与稳定点提取}
+\label{subsec:ch4_stable}
+
+停车与占用语义的关键在于稳态水平而非瞬时差分。本文将稳定点定义为稳定窗均值向量，并采用窗内波动与窗间水平差联合约束，以抑制缓行或停走引起的伪稳态误判。
+
+设预处理后三轴地磁序列为
+\begin{equation}
+    \widetilde{\mathbf{B}}(k) = [\widetilde{B}_x(k),\widetilde{B}_y(k),\widetilde{B}_z(k)]^{\mathsf{T}},\qquad f_s=50\,\mathrm{Hz}.
+\end{equation}
+
+令稳定窗长度为$L$，以采样点$k$结束的滑动窗口记为$\mathcal{W}(k)=\{k-L+1,\ldots,k\}$。定义窗口均值向量
+\begin{equation}
+    \overline{\mathbf{B}}(k)=\frac{1}{L}\sum_{j\in\mathcal{W}(k)}\widetilde{\mathbf{B}}(j).
+\end{equation}
+
+为避免三轴量纲与噪声水平差异导致单轴主导，本文在空车初始段估计三轴噪声标准差$\boldsymbol{\sigma}=[\sigma_x,\sigma_y,\sigma_z]^{\mathsf{T}}$，并构造归一化权重向量
+\begin{equation}
+    \mathbf{w}=\frac{1}{\sigma_y\sigma_z+\sigma_x\sigma_z+\sigma_x\sigma_y}
+    [\sigma_y\sigma_z,\ \sigma_x\sigma_z,\ \sigma_x\sigma_y]^{\mathsf{T}}.
+\end{equation}
+
+定义窗内极差向量$\mathbf{r}(k)$与窗间均值差向量$\mathbf{m}(k)$：
+\begin{equation}
+    \mathbf{r}(k)=\begin{bmatrix}
+        \max\limits_{j\in\mathcal{W}(k)}\widetilde{B}_x(j)-\min\limits_{j\in\mathcal{W}(k)}\widetilde{B}_x(j)\\
+        \max\limits_{j\in\mathcal{W}(k)}\widetilde{B}_y(j)-\min\limits_{j\in\mathcal{W}(k)}\widetilde{B}_y(j)\\
+        \max\limits_{j\in\mathcal{W}(k)}\widetilde{B}_z(j)-\min\limits_{j\in\mathcal{W}(k)}\widetilde{B}_z(j)
+    \end{bmatrix},\qquad
+    \mathbf{m}(k)=\overline{\mathbf{B}}(k)-\overline{\mathbf{B}}(k-s),\; s\ge 1.
+\end{equation}
+
+将三轴量标量化得到窗内波动指标$R(k)$与窗间水平差指标$M(k)$：
+\begin{equation}
+    R(k)=\mathbf{w}^{\mathsf{T}}\mathbf{r}(k),\qquad M(k)=\mathbf{w}^{\mathsf{T}}\left|\mathbf{m}(k)\right|,
+\end{equation}
+其中$|\cdot|$为逐元素绝对值运算。
+
+稳定窗判据为
+\begin{equation}
+    R(k)\le R_{\mathrm{th}},\qquad M(k)\le M_{\mathrm{th}}.
+    \label{eq:ch4_stable_cond}
+\end{equation}
+
+当上述条件持续满足$N_{\mathrm{stable}}$个窗口后，将稳定点锁定为$\mathbf{S}(k^\star)=\overline{\mathbf{B}}(k^\star)$，其中$k^\star$为连续门控首次成立对应的窗口索引。图\ref{fig:ch4_stability_demo}展示$R(k)$与$M(k)$在典型数据上的变化及阈值位置，其中$t_{\mathrm{out}}$表示事件结束时刻，$t_{\mathrm{st}}$表示稳定门控成立并锁定稳定点的时刻，用于说明双判据对伪稳态的抑制作用。
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.92\linewidth]{images/ch4_stability_demo.png}
+    \caption{稳定窗双判据示意：窗内波动$R(k)$与窗间水平差$M(k)$共同约束稳态（示例来自A类数据片段）。}
+\label{fig:ch4_stability_demo}
+\end{figure}
+
+\subsection{动态参考构建与漂移及相似性判定}
+\label{subsec:ch4_ref}
+
+稳定点用于构建动态参考，以表达不同语义状态下的稳态水平。本文维护两类动态参考：环境动态参考$\mathbf{S}_{\mathrm{pre}}$在\texttt{FREE}状态下门控更新；占用动态参考$\mathbf{S}_{\mathrm{post}}$在停车确认时初始化，并在仍占用判定成立时以更新率$\lambda_{\mathrm{occ}}$进行平滑更新，从而抑制占用期内短时扰动对稳态水平估计的影响。
+
+\textbf{停车确认：}当事件结束后获得停车后稳定点$\mathbf{S}_{\mathrm{post}}$，定义漂移向量及其幅值
+\begin{equation}
+    \Delta\mathbf{B}=\mathbf{S}_{\mathrm{post}}-\mathbf{S}_{\mathrm{pre}},\qquad \Delta B=\lVert\Delta\mathbf{B}\rVert_2.
+\end{equation}
+当$\Delta B>D_{\mathrm{th}}$时确认停车成立，进入\texttt{OCCUPIED}状态。
+
+\textbf{占用维持与释放：}在\texttt{OCCUPIED}阶段，通行车辆或邻道车辆可能引发新的事件片段。事件结束后若获得新稳定点$\mathbf{S}_{\mathrm{new}}$，定义其相对环境参考的漂移向量$\Delta\mathbf{B}_{\mathrm{new}}=\mathbf{S}_{\mathrm{new}}-\mathbf{S}_{\mathrm{pre}}$。用相似性度量判断其与占用漂移$\Delta\mathbf{B}$的接近程度：
+\begin{equation}
+    \mathrm{dist}=\lVert\Delta\mathbf{B}_{\mathrm{new}}-\Delta\mathbf{B}\rVert_2.
+\end{equation}
+
+释放判定采用回归环境优先的组合规则：
+\begin{enumerate}
+    \item 若$\lVert\mathbf{S}_{\mathrm{new}}-\mathbf{S}_{\mathrm{pre}}\rVert_2 < D_{\mathrm{free}}$，判定已回归环境，释放成立；
+    \item 否则若$\mathrm{dist}<\mathrm{dist}_{\mathrm{th}}$，判定仍占用，并按
+    \begin{equation}
+        \mathbf{S}_{\mathrm{post}}^{+}=(1-\lambda_{\mathrm{occ}})\mathbf{S}_{\mathrm{post}}^{-}+\lambda_{\mathrm{occ}}\,\mathbf{S}_{\mathrm{new}}
+    \end{equation}
+    更新占用参考，同时将释放一致性计数器清零；
+    \item 否则累计释放一致性计数器，当连续满足非回归且不相似的证据达到$c_{\mathrm{th}}$次时确认释放；未达到门限前保持\texttt{OCCUPIED}并继续观测。
+\end{enumerate}
+
+\subsection{外层状态机与连续车流退化分支}
+\label{subsec:ch4_fsm}
+
+为将停车与占用语义显式化并与事件触发形成可复现的判决链条，本文在稳定点与判据之上构建外层有限状态机。实现上仅维护\texttt{FREE}与\texttt{OCCUPIED}两种主状态；停车确认与释放确认通过一致性计数器实现，可等效为\texttt{CANDIDATE\_PARK}与\texttt{CANDIDATE\_RELEASE}两类候选状态。结合寻稳超时$T_{\mathrm{seek}}$、阈值滞回以及一致性计数器，可抑制阈值附近抖动并降低短时扰动引起的误判。
+
+连续车流或强扰动背景下，事件结束后可能在$T_{\mathrm{seek}}$内无法获得稳定点。为避免确认时差过大或漏检，本文在寻稳超时后启用退化处理：以固定窗均值近似稳态，并以多次一致性证据替代单次稳定点证据。该退化分支同时用于停车确认与释放确认，相关参数由$L_{\mathrm{fix}}$与$c_{\mathrm{th}}$控制。
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.94\linewidth]{images/ch4_fsm_degrade.png}
+    \caption{外层状态机与连续车流退化处理流程示意。}
+    \label{fig:ch4_fsm_degrade}
+\end{figure}
+
+\section{鲁棒性设计与参数设置}
+\label{sec:ch4_robust}
+
+\subsection{环境漂移抑制与参考更新门控}
+\label{subsec:ch4_drift_gate}
+
+环境慢漂移会积累为系统偏差，阶跃型外源干扰可能导致参考误更新，进而引发占用误判或误释放。为此，本文对环境参考$\mathbf{S}_{\mathrm{pre}}$采用门控更新：仅当外层状态处于\texttt{FREE}且稳定判据持续满足时才允许更新。记稳定点候选为$\mathbf{S}(k)$，定义候选增量
+\begin{equation}
+    \mathbf{d}(k)=\mathbf{S}(k)-\mathbf{S}_{\mathrm{pre}}.
+\end{equation}
+当未启用更新门控时，环境参考采用指数滑动平均更新
+\begin{equation}
+    \mathbf{S}_{\mathrm{pre}}^{+}=(1-\alpha)\mathbf{S}_{\mathrm{pre}}^{-}+\alpha\,\mathbf{S}(k),\qquad 0<\alpha<1.
+\end{equation}
+当启用更新门控时，进一步引入更新门控阈值$D_{\mathrm{upd}}$，限制单次更新步长不超过$\alpha D_{\mathrm{upd}}$：
+\begin{equation}
+    \mathbf{S}_{\mathrm{pre}}^{+}=
+    \begin{cases}
+        (1-\alpha)\mathbf{S}_{\mathrm{pre}}^{-}+\alpha\,\mathbf{S}(k), & \lVert\mathbf{d}(k)\rVert_2\le D_{\mathrm{upd}},\\
+        \mathbf{S}_{\mathrm{pre}}^{-}+\alpha D_{\mathrm{upd}}\dfrac{\mathbf{d}(k)}{\lVert\mathbf{d}(k)\rVert_2}, & \lVert\mathbf{d}(k)\rVert_2> D_{\mathrm{upd}}.
+    \end{cases}
+\end{equation}
+其中$\alpha$控制慢漂移跟踪速度，$D_{\mathrm{upd}}$用于抑制阶跃干扰导致的参考误更新。占用参考$\mathbf{S}_{\mathrm{post}}$在停车确认后冻结，并在仍占用判定成立时以较小更新率$\lambda_{\mathrm{occ}}$进行平滑，以提升过车扰动下的鲁棒性。
+
+\subsection{伪稳态与误触发抑制：双判据与时序约束}
+\label{subsec:ch4_pseudo}
+
+连续车流、缓行或停走等工况下可能出现伪稳态：差分幅值减小，但窗口均值仍缓慢漂移。为避免将伪稳态误判为稳定状态并导致参考误更新或误确认，本文采用窗内波动$R(k)$与窗间水平差$M(k)$的联合约束（式\eqref{eq:ch4_stable_cond}），并使用连续门控体现最短持续时间约束。此外，在释放判定中使用$D_{\mathrm{free}}<D_{\mathrm{th}}$构成滞回，可降低阈值附近抖动引起的误释放风险。
+
+\subsection{连续车流工况：退化分支的触发与参数权衡}
+\label{subsec:ch4_degrade_param}
+
+连续车流下稳定窗不可得会直接导致$\mathbf{S}_{\mathrm{post}}$与$\mathbf{S}_{\mathrm{new}}$不可得，使停车确认与释放判定缺乏一次性稳定证据。本文在外层状态机中设置寻稳超时$T_{\mathrm{seek}}$，超时后触发固定窗近似与一致性计数器退化分支。该分支将判定由单次稳定证据转化为多次事件的一致性证据，从而在拥堵背景下维持可用性。
+
+参数权衡方面：$T_{\mathrm{seek}}$越大越容易获得稳定窗但确认时差增大；$L_{\mathrm{fix}}$越大平滑更强但滞后更大；$c_{\mathrm{th}}$越大越稳健但确认更慢。后续实验对其进行折中选择。
+
+\subsection{关键参数确定方法（概述）}
+\label{subsec:ch4_paramset}
+
+稳定窗相关阈值$R_{\mathrm{th}}$与$M_{\mathrm{th}}$采用数据驱动方式确定：首先在空车稳定段统计$R(k)$分布，将$R_{\mathrm{th}}$取高分位数以控制稳定窗误触发概率；其次在缓行与停走段统计$M(k)$分布，并结合真稳态段分布选择$M_{\mathrm{th}}$，以剔除慢变伪稳态。停车漂移阈值$D_{\mathrm{th}}$通过停车样本与通过样本的$\Delta B$分布确定，以验证集性能最优或稳定区间为目标选择阈值；回归阈值$D_{\mathrm{free}}$取接近空车噪声水平的高分位数，并保持$D_{\mathrm{free}}<D_{\mathrm{th}}$形成滞回；相似性阈值$\mathrm{dist}_{\mathrm{th}}$主要用于占用稳态保持判定，因此优先参考\texttt{OCCUPIED}段内扰动事件在仍占用条件下的$\mathrm{dist}$分布，并结合验证集整体与分组性能曲线选取。
+
+需要说明的是，表\ref{tab:ch4_global_params}所列参数为全局固定配置，后续实验对四类工况保持一致，不针对单一工况进行调参。
+
+\section{实验设置与结果分析}
+\label{sec:ch4_exp}
+
+本节通过多工况实测数据验证所提停车与占用检测方法的有效性与鲁棒性。实验目标包括：占用状态段检测精度（Precision、Recall与$F_1$）、入侵与释放边界误差、占用时长误差，以及关键模块在复杂工况下的消融贡献。
+
+\subsection{数据采集、标注流程与工况分组}
+\label{subsec:ch4_data}
+
+实验数据由道路侧单地磁三轴传感节点采集，采样率为$50\,\mathrm{Hz}$。传感节点安装于路肩或应急车道侧，传感器敏感面与路面齐平。节点中心与最近车道线的横向距离记为$d_y$，安装深度记为$d_z$。建立节点坐标系：$x$轴指向车辆行驶方向，$y$轴指向道路外侧，$z$轴竖直向上。图\ref{fig:ch4_scene_setup}给出了实验场景道路侧布设实景，用于说明道路侧停靠车辆与连续过车扰动的空间关系。
+
+为提高图面可读性，本文在可视化展示上采用如下约定：各节点传感器安装位置与姿态保持一致，坐标系定义一致，使得$x$轴与车道主方向对齐。现象对比图与典型波形图在不影响判定逻辑的前提下，按需展示三轴信号或其标量量化结果；必要时以单轴示例辅助说明，但算法实现与评价均基于三轴向量及其范数特征，因此可视化约定不会改变方法本身。
+
+真值由视频复核与人工标注获得。采集端为每个采样点记录时间戳，并将视频帧时间映射到采样点索引完成对齐。对每次停靠事件，标注占用区间$[t^{*}_{\mathrm{park,in}},t^{*}_{\mathrm{park,out}}]$：$t^{*}_{\mathrm{park,in}}$定义为车辆完成停稳并形成持续稳态偏置的起始时刻；$t^{*}_{\mathrm{park,out}}$定义为车辆驶离后信号回归到环境稳态附近的时刻。标注时以视频为主要依据，并结合波形平台段与回归段进行微调。
+
+为覆盖典型道路工况，本文根据停车事件发生时的交通流状态与环境背景将数据划分为四类：A类为正常车流下的单车停靠，停靠前后均可获得稳定窗；B类为占用状态持续且伴随过车扰动，扰动结束后能够回归至占用稳态；C类为连续车流或拥堵导致稳定窗稀缺，事件结束后在$T_{\mathrm{seek}}$内难以获得稳定点；D类为空闲基线存在慢漂移的背景场景，用于验证动态参考维护与更新门控在慢变环境下的鲁棒性。图\ref{fig:ch4_wave_abcd}给出四类工况的典型波形示例，各组样本数量统计见表\ref{tab:ch4_dataset}。
+
+本章实验样本均采用统一标注口径与评价流程，并统一纳入评测。
+
+\begin{figure}[t]
+    \centering
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ch4_wave_A.png}
+        \caption{A类：正常车流单车停靠}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ch4_wave_B.png}
+        \caption{B类：占用期过车扰动}
+    \end{subfigure}
+
+    \vspace{0.5em}
+
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ch4_wave_C.png}
+        \caption{C类：连续车流稳定窗缺失}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/ch4_wave_D.png}
+        \caption{D类：慢漂移背景}
+    \end{subfigure}
+    \caption{四类工况的典型三轴地磁波形示例。红色虚线为事件触发前的环境参考水平。A类具有清晰台阶并在停靠前后存在稳定窗；B类在占用平台内出现短时尖峰；C类在关键时段稳定窗缺失，需退化分支辅助判定；D类空闲基线缓慢漂移，需参考更新门控抑制误更新。}
+    \label{fig:ch4_wave_abcd}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/ch4_scene_photo.png}
+    \caption{实验场景道路侧布设实景。}
+    \label{fig:ch4_scene_setup}
+\end{figure}
+
+\begin{table}[t]
+    \centering
+    \caption{数据集与工况分组统计}
+    \label{tab:ch4_dataset}
+    \begin{tabular}{c r r r}
+        \hline
+        组别 & 数据段数 & 停车与占用事件数 & 通过事件数 \\
+        \hline
+        \input{tables/ch4_dataset_rows.tex}
+    \end{tabular}
+\end{table}
+
+需要说明的是，表中"通过事件数"由事件检测模块对车辆通过扰动进行统计，用于表征外界干扰强度，不参与停车与占用段的 IoU 评价与PRF 计算。
+
+\subsection{对比方法与评价指标}
+\label{subsec:ch4_metric}
+
+为验证所提方法在占用状态段检测环节的有效性与相对优势，本文选取两类代表性规则型方法作为对比基线。为保证对比公平，所有方法均复用第\ref{chap:ch2_event}章事件检测底座的输出作为统一输入接口，差异仅体现在占用确认、占用维持与释放判定策略。
+
+（1）基线一：自适应基线漂移阈值判决法（含连续计数门控）。该方法以环境参考的自适应更新为基础，在事件结束后搜索空闲稳态或占用稳态并更新参考基线；通过稳态漂移幅值与门限比较实现占用确认与释放判断，并引入连续计数门控抑制连续车流工况下的频繁误释放。
+
+（2）基线二：自适应差分阈值状态机法。该方法以差分特征为触发量，通过自适应阈值与滞回门控完成到达与离开检测，并结合最短持续时间与去抖规则输出占用状态段。
+
+为便于后文表述，本文将上述两种对比方法分别简称为"基线一"与"基线二"。
+
+以占用状态段为评价对象。设真值占用区间为$I^{*}=[t^{*}_{\mathrm{park,in}},t^{*}_{\mathrm{park,out}}]$，输出占用区间为$I=[t_{\mathrm{park,in}},t_{\mathrm{park,out}}]$，则区间交并比（IoU）定义为
+\begin{equation}
+    \mathrm{IoU}(I,I^{*})=\frac{|I\cap I^{*}|}{|I\cup I^{*}|},
+\end{equation}
+其中$|\cdot|$表示区间时长。若$\mathrm{IoU}(I,I^{*})\ge \theta$（本文取$\theta=0.5$），则该预测区间与真值区间匹配并计为TP；未匹配的预测区间计为FP，未被匹配的真值区间计为FN。由TP、FP与FN计算Precision、Recall与$F_1$，并报告误检率与漏检率。
+
+为避免一段真值区间被多段预测区间重复计数，本文采用基于 IoU 的贪心一对一匹配策略：对所有预测区间与真值区间组合计算 IoU 并按 IoU 从大到小排序，依次匹配，且每个预测区间与每个真值区间最多参与一次匹配；当候选 IoU 小于阈值 $\theta$ 时终止匹配。
+
+由于本文将$t_{\mathrm{park,in}}$与$t_{\mathrm{park,out}}$均对齐至相应扰动结束时刻（通常取对应事件的$t_{\mathrm{out}}$），因此对TP集合进一步统计边界误差与确认时差。边界误差衡量输出区间边界与真值边界的一致性，而确认时差反映从真值边界到状态确认输出的相对时间偏差；其中正值表示确认滞后，负值表示确认相对真值提前。
+\begin{equation}
+    \Delta t_{\mathrm{in}}=t_{\mathrm{park,in}}-t^{*}_{\mathrm{park,in}},\qquad
+    \Delta t_{\mathrm{out}}=t_{\mathrm{park,out}}-t^{*}_{\mathrm{park,out}},
+\end{equation}
+以及占用时长误差$\Delta T=(t_{\mathrm{park,out}}-t_{\mathrm{park,in}})-(t^{*}_{\mathrm{park,out}}-t^{*}_{\mathrm{park,in}})$。此外，为量化算法在稳定窗约束下的确认滞后，定义停车确认时刻$t^{c}_{\mathrm{in}}$与释放确认时刻$t^{c}_{\mathrm{out}}$（对应状态机进入/退出占用状态的时刻），并给出确认时差
+\begin{equation}
+    \tau_{\mathrm{in}}=t^{c}_{\mathrm{in}}-t^{*}_{\mathrm{park,in}},\qquad
+    \tau_{\mathrm{out}}=t^{c}_{\mathrm{out}}-t^{*}_{\mathrm{park,out}}.
+\end{equation}
+该量仅反映算法内部处理带来的确认时差，不包含通信与上报链路等系统时延。
+
+为便于工程部署，评测前对预测占用区间执行两项后处理：过滤持续时间小于$T_{\min}$的片段，并将间隔小于$T_{\mathrm{gap}}$的相邻片段合并，以抑制短暂干扰导致的占用断裂。
+
+\subsection{对比结果、可用性补充评价与消融分析}
+\label{subsec:ch4_results}
+
+图\ref{fig:ch4_wave_abcd}给出了四类工况的典型波形，用于直观说明过车扰动、连续车流与慢漂移等因素对稳定点提取与状态判决的影响。表\ref{tab:ch4_bycase}给出本文方法与基线一、基线二在各工况及全体数据上的占用状态段检测性能对比。为便于整体观察不同方法在各工况下的相对差异，图\ref{fig:ch4_baseline_cmp_f1}进一步给出$F_1$对比可视化。
+
+此外，考虑到稳定窗搜索与计数器会引入一定滞后，表\ref{tab:ch4_timing}补充报告TP样本上的边界误差与确认时差统计，用于衡量算法时效性与区间定位精度。针对C类稳定窗缺失的退化情形，图\ref{fig:ch4_C_seek_ratio}统计稳定点可得率与退化分支触发比例，以支撑退化策略的必要性。最后，表\ref{tab:ch4_ablation}给出关键模块的消融结果。
+
+\begin{table}[t]
+    \centering
+    \caption{不同方法在各工况上的占用状态段检测性能对比（IoU$\ge0.5$）}
+    \label{tab:ch4_bycase}
+    \begin{tabular}{c c c c c c}
+        \hline
+        方法 & A: P, R, $F_1$ & B: P, R, $F_1$ & C: P, R, $F_1$ & D: P, R, $F_1$ & ALL: P, R, $F_1$ \\
+        \hline
+        \input{tables/ch4_bycase_compare_rows.tex}
+    \end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.78\linewidth]{images/ch4_baseline_cmp_f1.png}
+    \caption{不同方法在各工况上的$F_1$对比（IoU$\ge0.5$）。}
+    \label{fig:ch4_baseline_cmp_f1}
+\end{figure}
+
+从表\ref{tab:ch4_bycase}可以看出，不同方法在四类工况下的性能差异具有一致的场景指向性：在 A 类正常单车停靠场景中，各方法均能获得较高的检测精度；当进入 B 类占用期过车扰动与 D 类慢漂移背景时，是否具备稳定参考维护与门控更新机制会显著影响误释放与重复占用等错误；而在 C 类连续车流场景中，稳定窗缺失使得基于稳态证据的判定更为困难，算法往往需要引入超时与退化策略以保持可用性。上述现象与本章对复杂工况成因的分析相一致，也为后续退化机制分析与消融实验提供了场景解释基础。
+
+\begin{table}[t]
+    \centering
+    \caption{边界误差与确认时差统计（全局参数，TP样本）}
+    \label{tab:ch4_timing}
+    \begin{tabular}{c r c c c c}
+        \hline
+        工况 & TP数 & $\mathrm{median}(|\Delta t_{\mathrm{in}}|)$ & $\mathrm{median}(|\Delta t_{\mathrm{out}}|)$ &
+        $\mathrm{median}(\tau_{\mathrm{in}})$ & $\mathrm{median}(\tau_{\mathrm{out}})$ \\
+        \hline
+        \input{tables/ch4_timing_global_rows.tex}
+    \end{tabular}
+\end{table}
+
+表\ref{tab:ch4_timing}给出了IoU$\ge0.5$的一对一匹配TP样本上的占用区间边界误差与确认时差统计结果。总体上，占用开始边界误差小于离开边界误差，这与车辆驶离后磁场回归过程通常更缓慢有关。另一方面，确认时差在 C 类场景中更大，主要由稳定点搜索等待时间 $T_{\mathrm{seek}}$ 以及退化分支的一致性计数器共同引入。
+
+
+
+
+
+
+进一步地，为量化连续车流背景下稳定点获取情况与退化分支触发频率，图\ref{fig:ch4_C_seek_ratio}统计了C类数据中稳定点可得率及退化分支使用率。
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.78\linewidth]{images/ch4_C_seek_ratio.png}
+    \caption{C类数据中稳定点可得率与退化分支使用率统计。}
+    \label{fig:ch4_C_seek_ratio}
+\end{figure}
+
+\begin{table}[t]
+    \centering
+    \caption{消融实验结果（GLOBAL参数，$F_1$）}
+    \label{tab:ch4_ablation}
+    \begin{tabular}{lcccccp{0.25\linewidth}}
+        \hline
+        变体 & $F_1$(All) & $F_1$(A) & $F_1$(B) & $F_1$(C) & $F_1$(D) & 主要退化现象 \\
+        \hline
+        \input{tables/ch4_ablation_global_rows.tex}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+表\ref{tab:ch4_ablation}的消融结果验证了各模块的必要性：
+\begin{itemize}
+    \item 去除均值差分判据 $M$ 后，伪稳态触发显著增多并导致误检上升；
+    \item 去除相似性门控 $\mathrm{dist}$ 后，占用态在过车扰动后更容易发生误释放或重复占用；
+    \item 去除退化分支后，连续车流下寻稳失败造成的漏检与确认时差明显增大；
+    \item 去除更新门控后，慢漂移背景下参考被误更新的风险增加，从而引发连锁误判。
+\end{itemize}
+
+\section{本章小结}
+\label{sec:ch4_summary}
+
+本章面向公路场景异常停车与占用检测需求，针对事件检测底座难以直接表达停车稳态与占用持续态的问题，提出了一种基于地磁信号稳定点的停车与占用检测方法。该方法以事件片段作为触发入口，将停车与占用语义由瞬时事件进一步抽象为可持续更新的状态量，从而为道路侧停车监管与异常事件上报提供了实现流程明确的检测框架。
+
+在方法设计方面，本章首先给出稳定窗判定与稳定点提取机制，将稳定点定义为稳定窗均值统计量，并通过窗内波动与窗间水平差的联合约束抑制缓行与停走引起的伪稳态误判。随后构建动态参考体系，分别维护环境动态参考稳定点$\mathbf{S}_{\mathrm{pre}}$与占用动态参考稳定点$\mathbf{S}_{\mathrm{post}}$。在此基础上，以稳定点漂移特征$\Delta\mathbf{B}$与相似性度量$\mathrm{dist}$作为停车确认及占用维持判定的核心依据，并在外层有限状态机中引入时序约束与超时机制，保证状态转移逻辑具有可解释性。针对连续车流导致稳定窗不可得的退化情形，本章进一步设计固定窗近似与一致性计数器策略，使算法在拥堵与高车流背景下仍具备可用性。
+
+在实验验证方面，本章在覆盖正常停靠、过车干扰、连续车流以及慢漂移背景等多类工况的数据上对方法进行评估，并从准确性与时效性两个维度考察检测性能。对比与消融实验表明：稳定窗双判据、相似性门控与连续车流退化分支对复杂工况下的鲁棒性具有关键贡献。
+

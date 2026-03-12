@@ -1,0 +1,5 @@
+group,num_files,num_parking_gt,num_vehicle_events,num_pass_est
+A,3,12,34,10
+B,8,31,107,45
+C,8,31,551,489
+D,9,34,94,26
