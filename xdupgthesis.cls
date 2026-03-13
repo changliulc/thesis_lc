@@ -2382,7 +2382,7 @@
       \dim_set:Nn \baselineskip { 20pt }
       \skip_vertical:n { 20pt }
       \__xdu_typeout_keywords:nNn
-        { \textbf { Keywords } ： } { \l__xdu_keywords_en_clist } { ,~ }
+        { \textbf { Keywords }:~ } { \l__xdu_keywords_en_clist } { ,~ }
     \group_end:
     \cleardoublepage
   }
