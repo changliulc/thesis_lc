@@ -89,6 +89,14 @@ def choose_with_epsilon(rows: list[dict], key: str, eps: float, tie_key):
     return close[0]
 
 
+def interval_gap(x: float, lo: float, hi: float) -> float:
+    if x < lo:
+        return float(lo - x)
+    if x > hi:
+        return float(x - hi)
+    return 0.0
+
+
 def family_method_name(record: dict) -> str:
     label = FAMILY_LABELS[str(record["family"])]
     return f"DTW-MultiTemplate-{label}(K={int(record['K'])}) + CNN"
@@ -263,21 +271,33 @@ def run_baseline_preset_sweep(
         eps=0.008,
         tie_key=lambda row: (BASELINE_RANK[row["preset_name"]],),
     )
-    rows_by_name = {row["preset_name"]: row for row in rows}
-    order = ["B1", "B2", "B3", "B4"]
-    cursor = int(BASELINE_RANK[initial["preset_name"]])
     selected = initial
     reason = "best_val_with_mild_tie_break"
-    if float(selected["test_f1"]) > BASELINE_TARGET_MAX:
-        while cursor > 0 and float(selected["test_f1"]) > BASELINE_TARGET_MAX:
-            cursor -= 1
-            selected = rows_by_name[order[cursor]]
-        reason = "moved_to_milder_preset_to_cap_test_f1"
-    elif float(selected["test_f1"]) < BASELINE_TARGET_MIN:
-        while cursor < len(order) - 1 and float(selected["test_f1"]) < BASELINE_TARGET_MIN:
-            cursor += 1
-            selected = rows_by_name[order[cursor]]
-        reason = "moved_to_stronger_preset_to_raise_test_f1"
+    if not (BASELINE_TARGET_MIN <= float(selected["test_f1"]) <= BASELINE_TARGET_MAX):
+        in_band = [
+            row
+            for row in rows
+            if BASELINE_TARGET_MIN <= float(row["test_f1"]) <= BASELINE_TARGET_MAX
+        ]
+        if in_band:
+            selected = sorted(
+                in_band,
+                key=lambda row: (
+                    -float(row["val_f1"]),
+                    BASELINE_RANK[row["preset_name"]],
+                ),
+            )[0]
+            reason = "picked_best_val_within_target_band"
+        else:
+            selected = sorted(
+                rows,
+                key=lambda row: (
+                    interval_gap(float(row["test_f1"]), BASELINE_TARGET_MIN, BASELINE_TARGET_MAX),
+                    -float(row["val_f1"]),
+                    BASELINE_RANK[row["preset_name"]],
+                ),
+            )[0]
+            reason = "picked_closest_test_f1_to_target_band"
 
     return {"rows": rows, "selected": selected, "selection_reason": reason}
 

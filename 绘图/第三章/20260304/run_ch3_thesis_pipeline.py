@@ -1206,6 +1206,51 @@ def ensure_plot_style():
 
     # 可选：彻底禁止 font_manager 的 “findfont” 刷屏（不影响绘图）
     logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
+def _confusion_like_cmap():
+    from matplotlib.colors import LinearSegmentedColormap
+
+    return LinearSegmentedColormap.from_list(
+        "confusion_like",
+        ["#f4d5ce", "#e6c7cf", "#8aa8cf", "#0072BD"],
+        N=256,
+    )
+
+
+def _plot_confusion_block(ax, values, cmap, vmin, vmax, mode="count", square=True):
+    arr = np.asarray(values, dtype=float)
+    ax.imshow(arr, cmap=cmap, vmin=vmin, vmax=vmax, aspect="equal" if square else "auto")
+    ax.set_xlim(-0.5, arr.shape[1] - 0.5)
+    ax.set_ylim(arr.shape[0] - 0.5, -0.5)
+    ax.tick_params(length=0)
+
+    for x in np.arange(-0.5, arr.shape[1], 1.0):
+        ax.plot([x, x], [-0.5, arr.shape[0] - 0.5], color="black", linewidth=0.8)
+    ax.plot([arr.shape[1] - 0.5, arr.shape[1] - 0.5], [-0.5, arr.shape[0] - 0.5], color="black", linewidth=0.8)
+    for y in np.arange(-0.5, arr.shape[0], 1.0):
+        ax.plot([-0.5, arr.shape[1] - 0.5], [y, y], color="black", linewidth=0.8)
+    ax.plot([-0.5, arr.shape[1] - 0.5], [arr.shape[0] - 0.5, arr.shape[0] - 0.5], color="black", linewidth=0.8)
+
+    thresh = vmin + 0.62 * (vmax - vmin) if vmax > vmin else vmin
+    for i in range(arr.shape[0]):
+        for j in range(arr.shape[1]):
+            val = arr[i, j]
+            if mode == "percent":
+                txt = f"{int(round(val))}%"
+            elif mode == "float":
+                txt = f"{val:.2f}"
+            else:
+                txt = str(int(round(val)))
+            ax.text(
+                j,
+                i,
+                txt,
+                ha="center",
+                va="center",
+                fontsize=15 if square else 12,
+                color="white" if val >= thresh else "black",
+            )
+
+
 def plot_confusion(y_true, y_pred, labels_cn, title, out_path_png, normalize=False):
     cm = confusion_matrix(y_true, y_pred, labels=list(range(len(labels_cn))))
     cm_disp = cm.astype(np.float32)
@@ -1220,31 +1265,53 @@ def plot_confusion(y_true, y_pred, labels_cn, title, out_path_png, normalize=Fal
         "title": title,
     })
 
-    fig, ax = plt.subplots(figsize=(5, 4))
-    im = ax.imshow(cm_disp, interpolation="nearest", cmap="viridis")
-    ax.set_title(title, fontsize=13)
-    ax.set_xticks(np.arange(len(labels_cn)))
-    ax.set_yticks(np.arange(len(labels_cn)))
-    ax.set_xticklabels(labels_cn)
-    ax.set_yticklabels(labels_cn)
-    ax.set_xlabel("Predicted")
-    ax.set_ylabel("True")
+    row_sum = cm.sum(axis=1)
+    col_sum = cm.sum(axis=0)
+    tp = np.diag(cm)
+    row_correct = np.where(row_sum > 0, np.round(100.0 * tp / row_sum), 0.0)
+    col_correct = np.where(col_sum > 0, np.round(100.0 * tp / col_sum), 0.0)
+    row_panel = np.column_stack([row_correct, 100.0 - row_correct])
+    col_panel = np.vstack([col_correct, 100.0 - col_correct])
 
-    fmt = ".2f" if normalize else "d"
-    thresh = cm_disp.max() / 2.0 if cm_disp.size > 0 else 0.0
-    for i in range(cm_disp.shape[0]):
-        for j in range(cm_disp.shape[1]):
-            val = cm_disp[i, j]
-            txt = format(val, fmt) if normalize else str(int(val))
-            ax.text(
-                j, i, txt,
-                ha="center", va="center",
-                color="white" if val > thresh else "black",
-                fontsize=11,
-            )
+    cmap = _confusion_like_cmap()
+    fig = plt.figure(figsize=(7.6, 6.2))
+    gs = fig.add_gridspec(
+        2,
+        2,
+        width_ratios=[3.0, 1.15],
+        height_ratios=[3.0, 1.05],
+        left=0.10,
+        right=0.95,
+        bottom=0.11,
+        top=0.90,
+        wspace=0.10,
+        hspace=0.10,
+    )
+    ax_main = fig.add_subplot(gs[0, 0])
+    ax_row = fig.add_subplot(gs[0, 1])
+    ax_col = fig.add_subplot(gs[1, 0])
 
-    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-    fig.tight_layout()
+    if normalize:
+        _plot_confusion_block(ax_main, cm_disp, cmap, 0.0, 1.0, mode="float", square=True)
+    else:
+        _plot_confusion_block(ax_main, cm, cmap, 0.0, float(cm.max()) if cm.size else 1.0, mode="count", square=True)
+    _plot_confusion_block(ax_row, row_panel, cmap, 0.0, 100.0, mode="percent", square=False)
+    _plot_confusion_block(ax_col, col_panel, cmap, 0.0, 100.0, mode="percent", square=False)
+
+    ax_main.set_xticks([])
+    ax_main.set_yticks(np.arange(len(labels_cn)))
+    ax_main.set_yticklabels(labels_cn, fontsize=14)
+    ax_main.set_ylabel("真实类", fontsize=15)
+
+    ax_row.set_xticks([])
+    ax_row.set_yticks([])
+
+    ax_col.set_xticks(np.arange(len(labels_cn)))
+    ax_col.set_xticklabels(labels_cn, fontsize=14)
+    ax_col.set_yticks([])
+    ax_col.set_xlabel("预测类", fontsize=15)
+
+    fig.suptitle(title, fontsize=18, y=0.97)
     fig.savefig(out_path_png, dpi=200, bbox_inches="tight")
     plt.close(fig)
 
