@@ -1,0 +1,241 @@
+clc;close all;clear;
+%数据读取
+file_path = 'D:\Document\lab_office\差分-车型分类\磁偶极子原始车辆数据\2024.6.11车辆数据.xls';
+sheet_index = 7; % 指定工作表
+range = 'A1:J662';
+magDipNum=1;%模型的磁偶极子数量
+y_begin=2.2;
+param_num = 6*magDipNum-2;%迭代求的向量theta里的参数个数
+data_left_num=readmatrix(file_path,'Sheet',sheet_index,'Range',range);
+arrive_status=2;
+leave_status=4;
+
+%下面计算车辆个数
+status_column = data_left_num(:,7);
+arrive_row = find(isnan(status_column))+1;
+leave_row = find(status_column==4);
+vehicle_num = length(leave_row);
+
+choose_vehicle_index=4;%每次需要选择第几个车
+data_choose = data_left_num(arrive_row(choose_vehicle_index)-1:leave_row(choose_vehicle_index),:);
+
+
+%考虑两个磁偶极子,且从三轴角度分别求解并对比
+arrive_point=arrive_row(choose_vehicle_index);%读取到达的行序号
+leave_point=leave_row(choose_vehicle_index);%读取离开的行序号
+data_x=smooth(data_left_num(arrive_point:leave_point,4));%只对车辆数据进行平滑滤波,N=10
+data_y=smooth(data_left_num(arrive_point:leave_point,5));%由于滤波的原因，车辆数据长度会减少（N-1）个,数据转变成行向量
+data_z=smooth(data_left_num(arrive_point:leave_point,6));
+data_x=data_x';data_y=data_y';data_z=data_z';
+
+data=[data_x(:,1),data_y(:,1),data_z(:,1)];%得到下面处理的数据data
+L=length(data_x);
+v=data_left_num(arrive_point-1,8)/3.6;
+u=4*pi*10^(-7);%H/m
+w=u*10^9/4/pi/13;
+T=0.02;%采样周期 0.01s
+
+
+% 上下界（根据需要调整）
+lower_bound = zeros(1,param_num);
+upper_bound = zeros(1,param_num);
+%尝试x、y、z轴的边界分开设置
+for i_temp=1:3*magDipNum
+    lower_bound(i_temp) = --;%原本是-500
+    upper_bound(i_temp) =  3000;%原本是500
+end
+% for i_temp=1:magDipNum
+%     lower_bound((i_temp-1)*3+1) = -5000;%原本是-500
+%     upper_bound((i_temp-1)*3+1) =  5000;%原本是500
+%     lower_bound((i_temp-1)*3+2) = -1500;%原本是-500
+%     upper_bound((i_temp-1)*3+2) =  1500;%原本是500
+%     lower_bound((i_temp-1)*3+3) = -1500;%原本是-500
+%     upper_bound((i_temp-1)*3+4) =  1500;%原本是500
+% end
+
+lower_bound(3*magDipNum+1) = -5.3;%原本是-1.3
+upper_bound(3*magDipNum+1) = 5.2;%原本是-0.2  %Z轴初始位置
+for i_temp=3*magDipNum+2:magDipNum * 6 - 2
+    if mod(i_temp-2,3)==0
+        lower_bound(i_temp) = -0.1;%原本是0.1
+        upper_bound(i_temp) = 5.9;%原本是5.9  % dx的范围
+    else
+        lower_bound(i_temp) = -2.31;%原本是-0.31
+        upper_bound(i_temp) =  2.31;%原本是0.31      %dy、dz的范围
+    end
+end
+
+%%
+% GlobalSearch算法
+% F=@(t)Optim_obj_fun(t(1),t(2),t(3),t(4),t(5),t(6),t(7),t(8),t(9),t(10),t(11));%y0未知
+F=@(t)cost_function(t,data_choose,y_begin);%y0已知
+
+%分别是6个磁偶极矩，z0,dx,dy,dz
+theta=[326.647707130416 -244.45636994559 -189.156101192445 -2.37209259097398];
+%小型车
+lb=lower_bound;%未知数的约束下界lb  约束上界ub
+ub=upper_bound;
+
+%中型货车
+% lb=[-1500*ones(1,6),-2.25,-3,3,0,0];
+% ub=[1500*ones(1,6),-0.75,0,3.5,0.3,0.5];
+options = optimset('Algorithm', 'SQP', ...
+                   'Display', 'iter', ...  % 显示每次迭代的信息
+                   'MaxIter', 1000, ...    % 最大迭代次数
+                   'MaxFunEvals', 100000, ... % 目标函数最大评估次数
+                   'TolFun', 1e-6, ...     % 目标函数容差
+                   'TolX', 1e-6);          % 解的容差
+                    
+problem=createOptimProblem('fmincon','objective',F,'x0',theta,'lb',lb,'ub',ub,'options',optimset);
+% gs=GlobalSearch; disp(gs)
+global iteration_count ; iteration_count=0;
+gs = GlobalSearch('NumTrialPoints', 1000, ... % 总试验点的数量
+                  'NumStageOnePoints', 200, ... % 第一阶段的试验点数量
+                  'StartPointsToRun', 'all', ... % 启动局部搜索的试验点
+                  'OutputFcn', @(optimValues, state) myOutputFcn(optimValues, state));
+[theta,f]=run(gs,problem);%theta为求解出的估计值
+
+th=theta;
+% %%
+% % 模拟退火算法
+% F = @(t) cost_function(t, data_choose, y_begin); % y0已知
+% 
+% % 分别是6个磁偶极矩，z0,dx,dy,dz
+% theta = [528.681340356105	634.518060124140	-1497.81638881467	-848.367013982473	-800.671021369028	1373.63863641212	0.0485181456102382	-0.0437576343556945	0.288309490047450	0.308801309008699];
+% 
+% % 小型车
+% lb = lower_bound; % 未知数的约束下界 lb 约束上界 ub
+% ub = upper_bound;
+% 
+% % 模拟退火算法选项
+% options = optimoptions('simulannealbnd', ...
+%                        'Display', 'iter', ...  % 显示每次迭代的信息
+%                        'MaxIterations', 50000, ...  % 最大迭代次数
+%                        'MaxFunctionEvaluations', 1000000, ... % 目标函数最大评估次数
+%                        'FunctionTolerance', 1e-6, ...  % 目标函数容差
+%                        'TolFun', 1e-6, ...    % 目标函数容差
+%                        'InitialTemperature', 10000, ... % 初始温度
+%                        'TemperatureFcn', @temperatureexp, ... % 温度函数
+%                        'ReannealInterval', 50000, ... % 重新退火间隔
+%                        'StallIterLimit', 100); % 停滞迭代次数限制
+% 
+% % 使用模拟退火算法进行优化
+% [theta, fval, exitflag, output] = simulannealbnd(F, theta, lb, ub, options);
+% 
+% % 输出优化结果
+% disp('Optimized Parameters:');
+% disp(theta);
+% disp('Function Value:');
+% disp(fval);
+% disp('Exit Flag:');
+% disp(exitflag);
+% disp('Output:');
+% disp(output);
+% 
+% % 更新后的估计值
+% th = theta;
+
+%%
+% th=[2994.01087440357	-235.214069226779	-1245.54838043352	2965.56668446691	2985.37154868872	700.534997573493	-5.29999965509388	-5.89963143946863	-2.30998475228689	-2.30997877914432];
+
+m=zeros(magDipNum,3);
+for i_temp=1:magDipNum
+    m(i_temp,:)=[th((i_temp-1)*3+1),th((i_temp-1)*3+2),th((i_temp-1)*3+3)];
+end
+[n,c]=size(m);
+x10=-v*T*L/2;
+y0=y_begin; %这里可能需要修改，原来是-1.8，这里应该和java代码里设置的初始值一样
+z0=th(magDipNum*3+1);%给定的y0从视频中观察得到
+dx=zeros(magDipNum-1);dy=zeros(magDipNum-1);dz=zeros(magDipNum-1);
+for i_temp=1:magDipNum-1
+    dx(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +1);
+    dy(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +2);
+    dz(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +3);
+end
+
+k=1:1:L;
+x1=x10+v*k*T;%第一个磁偶极子的x，其他磁偶极子的可由这个表示出来,这是一个向量,因为k是一个向量，不是一个值
+r_vector=zeros(magDipNum,L);
+r_vector(1,:)=sqrt(x1.^2+y0^2+z0^2);
+for i_temp=2:magDipNum
+    r_vector(i_temp,:)=sqrt((x1+dx(i_temp-1)).^2+(y0+dy(i_temp-1)).^2+(z0+dz(i_temp-1)).^2);
+end
+r_r=r_vector;
+%下面的r_x r_y r_z里面，只有r_x是矩阵，其它是向量
+r_x=zeros(magDipNum,L);r_y=zeros(magDipNum,1);r_z=zeros(magDipNum,1);
+r_x(1,:)=x1;r_y(1)=y0;r_z(1)=z0;
+for i_temp=2:magDipNum
+    r_x(i_temp,:)=r_x(1,:)+dx(i_temp-1);
+    r_y(i_temp)=r_y(1)+dy(i_temp-1);
+    r_z(i_temp)=r_z(1)+dz(i_temp-1);
+end
+%预测值的计算
+Bxpre=0;Bypre=0;Bzpre=0;
+for i=1:n
+    x=r_x(i,:);y=r_y(i);z=r_z(i);r=r_r(i,:);
+    Bx=w*((3*x.^2-r.^2)*m(i,1)+3*x*y*m(i,2)+3*x*z*m(i,3))./r.^5;
+    By=w*(3*x*y*m(i,1)+(3*y^2-r.^2)*m(i,2)+3*y*z*m(i,3))./r.^5;
+    Bz=w*(3*x*z*m(i,1)+3*y*z*m(i,2)+(3*z^2-r.^2)*m(i,3))./r.^5;
+    Bxpre=Bxpre+Bx';
+    Bypre=Bypre+By';
+    Bzpre=Bzpre+Bz';
+end
+
+%误差
+res=(data(:,1)-Bxpre).^2+(data(:,2)-Bypre).^2+(data(:,3)-Bzpre).^2;
+res=sum(res.^0.5)/L;
+
+%%
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bxpre,'b');hold on;
+plot(data(:,1),'k');hold on;
+legend('X轴理论','X轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bypre,'b');hold on;
+plot(data(:,2),'k');hold on;
+legend('Y轴理论','Y轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bzpre,'b');hold on;
+plot(data(:,3),'k');hold on;
+legend('Z轴理论','Z轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+
+
+%%
+% figure('Name','X轴原始波形');
+% subplot(1,1,1);
+% plot(data(:,1),'k');
+% legend('X轴原始波形');
+% ylabel('磁场强度','FontSize',15);
+% xlabel('时间(单位：10ms)','FontSize',15);
+% hold on;
+% 
+% figure('Name','Y轴原始波形');
+% subplot(1,1,1);
+% plot(data(:,2),'k');
+% legend('Y轴原始波形');
+% ylabel('磁场强度','FontSize',15);
+% xlabel('时间(单位：10ms)','FontSize',15);
+% hold on;
+% 
+% figure('Name','Z轴原始波形');
+% subplot(1,1,1);
+% plot(data(:,3),'k');
+% legend('Z轴原始波形');
+% ylabel('磁场强度','FontSize',15);
+% xlabel('时间(单位：10ms)','FontSize',15);
+% hold on;

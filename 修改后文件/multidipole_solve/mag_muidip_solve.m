@@ -1,0 +1,170 @@
+clc;close all;clear;
+%数据读取
+[data_left_num,~,data_left]=xlsread('data0526.xlsx',1,'A1:L187');
+arrive_status=2;
+leave_status=4;
+
+Res=zeros(500,1);
+index=0;
+%%先计算该表中有多少辆车
+col_status=7;%记录当前状态，用该列判断车辆的到达与离开
+data_status=data_left_num(:,col_status);%读取状态列数据,所有行的第col_status列
+data_length=length(data_status);%数据总行数
+arrive_mark=0;%检测到车辆到达，即遇到状态3时，arrive_mark置1；检测到车辆离开，即遇到状态4时，arrive_mark置0
+vehicle_num=0;%车辆数，检测到离开状态4，就+1
+for i=1:data_length
+    if data_status(i,1)==arrive_status && arrive_mark==0
+        arrive_mark=1;
+        continue;%往下走，跳出本if
+    end
+    if data_status(i,1)==leave_status && arrive_mark==1
+        arrive_mark=0;%还原mark
+        vehicle_num=vehicle_num+1;
+    end
+end
+
+%%提取车辆到达与离开的行号
+aorder_num_arrive_leave=zeros(vehicle_num,2);%存储每辆车的到达行与离开行
+amoment_arrive=cell(vehicle_num,1);%存储每辆车的到达时间
+order_count=1;
+arrive_mark=0;
+
+for i=1:data_length
+    if data_status(i,1)==arrive_status && arrive_mark==0
+        arrive_mark=1;
+        %arrive_point=i;
+        aorder_num_arrive_leave(order_count,1)=i;
+        amoment_arrive(order_count,1)=data_left(i,11);
+        continue;
+    end
+    if data_status(i,1)==leave_status && arrive_mark==1%&& isequal(data_left(i,col_infomation),cell_leave) 
+        arrive_mark=0;
+        %leave_point=i;
+        aorder_num_arrive_leave(order_count,2)=i;
+        order_count=order_count+1;
+    end
+end
+% % a=0;%a=0表示z轴 1表示y轴 2表示x轴
+% aorder_num_arrive_leave=[2,76;78,187];
+%考虑两个磁偶极子,且从三轴角度分别求解并对比
+i=1; %i表示数据表里的第几辆车，两个程序同时改
+arrive_point=aorder_num_arrive_leave(i,1);%读取到达的行序号
+leave_point=aorder_num_arrive_leave(i,2);%读取离开的行序号
+data_x=smooth(data_left_num(arrive_point:leave_point,4));%只对车辆数据进行平滑滤波,N=10
+data_y=smooth(data_left_num(arrive_point:leave_point,5));%由于滤波的原因，车辆数据长度会减少（N-1）个,数据转变成行向量
+data_z=smooth(data_left_num(arrive_point:leave_point,6));
+data_x=data_x';data_y=data_y';data_z=data_z';
+
+data=[data_x(:,1),data_y(:,1),data_z(:,1)];
+L=length(data_x);
+v=data_left_num(arrive_point-1,8)/3.6;
+u=4*pi*10^(-7);%H/m
+w=u*10^9/4/pi/13;
+T=0.01;%采样周期 0.01s
+
+% F=@(t)Optim_obj_fun(t(1),t(2),t(3),t(4),t(5),t(6),t(7),t(8),t(9),t(10),t(11));%y0未知
+F=@(t)Optim_obj_fun(t(1),t(2),t(3),t(4),t(5),t(6),t(7),t(8),t(9),t(10));%y0已知
+
+theta=[60,100,-50,60,100,-50,-0.8,2,0,0];%分别是6个磁偶极矩，z0,dx,dy,dz
+% theta=[118.43719243344984, 21.68187587624415, -288.79746311628776, 332.7842277489143, -27.3389692765106, -179.58404260239448, -1.0348731477366289, 1.9000000011194214, -0.30999999874084405, 0.30999997603237817];
+%小型车
+lb=[-500*ones(1,6),-1.3,1.9 ,-0.31,-0.31];%未知数的约束下界lb  约束上界ub
+ub=[500*ones(1,6),-0.2,3.1 , 0.31, 0.31];
+
+%中型货车
+% lb=[-1500*ones(1,6),-2.25,-3,3,0,0];
+% ub=[1500*ones(1,6),-0.75,0,3.5,0.3,0.5];
+problem=createOptimProblem('fmincon','objective',F,'x0',theta,'lb',lb,'ub',ub,'options',optimset('Algorithm','SQP','Disp','none'));
+gs=GlobalSearch;
+[theta,f]=run(gs,problem);%theta为求解出的估计值
+
+th=theta;
+m=[th(1:3);th(4:6);];%给定初始值 单位是Am² 需要迭代计算的值
+[n,c]=size(m);
+% x10=-v*T*L/2;y0=-1.8;z0=th(7);%给定的y0从视频中观察得到
+% m=[-59.35,250.18,8.95;-13.68,-0.54,-103.88];
+x10=-v*T*L/2;y0=-1.8;z0=th(7);
+dx=th(8);dy=th(9);dz=th(10);
+% dx=2.37;dy=0.11;dz=0.3;
+k=1:1:L;
+x1=x10+v*k*T;%第一个磁偶极子的x，其他磁偶极子的可由这个表示出来
+r1=sqrt(x1.^2+y0^2+z0^2);
+r2=sqrt((x1+dx).^2+(y0+dy).^2+(z0+dz).^2);
+r_r=[r1;r2];
+r_x=[x1;x1+dx];
+r_y=[y0,y0+dy];
+r_z=[z0,z0+dz];
+%预测值的计算
+Bxpre=0;Bypre=0;Bzpre=0;
+for i=1:n
+    x=r_x(i,:);y=r_y(1,i);z=r_z(1,i);r=r_r(i,:);
+    Bx=w*((3*x.^2-r.^2)*m(i,1)+3*x*y*m(i,2)+3*x*z*m(i,3))./r.^5;
+    By=w*(3*x*y*m(i,1)+(3*y^2-r.^2)*m(i,2)+3*y*z*m(i,3))./r.^5;
+    Bz=w*(3*x*z*m(i,1)+3*y*z*m(i,2)+(3*z^2-r.^2)*m(i,3))./r.^5;
+    Bxpre=Bxpre+Bx';
+    Bypre=Bypre+By';
+    Bzpre=Bzpre+Bz';
+end
+
+%误差
+res=(data(:,1)-Bxpre).^2+(data(:,2)-Bypre).^2+(data(:,3)-Bzpre).^2;
+res=sum(res.^0.5)/L/3;
+
+% figure('Name','磁偶极子近似波形');
+% subplot(1,1,1);
+% plot(Bxpre,'r');hold on;
+% plot(Bypre,'g');hold on;
+% plot(Bzpre,'b');hold on;
+% % legend('X-1','X-2');
+% % legend('Y-1','Y-2');
+% % legend('Z-1','Z-2');
+% 
+% % plot(B_pre_vec(:,2),'g');hold on;
+% % plot(B_pre_vec(:,3),'b');hold on;
+% ylabel('磁场强度','FontSize',15);
+% xlabel('时间(单位：10ms)','FontSize',15);
+% hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bxpre,'b');hold on;
+plot(data(:,1),'k');hold on;
+legend('X轴理论','X轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bypre,'b');hold on;
+plot(data(:,2),'k');hold on;
+legend('Y轴理论','Y轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bzpre,'b');hold on;
+plot(data(:,3),'k');hold on;
+legend('Z轴理论','Z轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','平均误差');
+subplot(1,1,1);
+plot(Res,'b','LineWidth',1.5);hold on;
+ylabel('平均误差','FontSize',15);
+xlabel('迭代次数','FontSize',15);
+hold on;
+% 
+% figure('Name','实际车辆波形');
+% subplot(1,1,1);
+% plot(data_x,'r');hold on;
+% plot(data_y,'g');hold on;
+% plot(data_z,'b');hold on;
+% legend('X轴','Y轴','Z轴');
+% ylabel('磁场强度','FontSize',15);
+% xlabel('时间(单位：10ms)','FontSize',15);
+% hold on;

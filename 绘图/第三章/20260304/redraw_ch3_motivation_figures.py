@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 import sys
 import types
@@ -118,20 +119,6 @@ def estimate_event_onset(signal: np.ndarray, frac: float = 0.08) -> int:
     return int(idx[0]) if idx.size else 0
 
 
-def pick_pair(y: np.ndarray, tlen: np.ndarray, target_class=1, short_len=92, long_len=176):
-    idx_cls = np.where(y == target_class)[0]
-    if idx_cls.size == 0:
-        raise RuntimeError(f"class {target_class} has no samples")
-    len_cls = tlen[idx_cls]
-    idx_short = idx_cls[len_cls == short_len]
-    idx_long = idx_cls[len_cls == long_len]
-    if idx_short.size and idx_long.size:
-        return int(idx_short[0]), int(idx_long[0])
-    i_short = int(idx_cls[np.argmin(np.abs(len_cls - short_len))])
-    i_long = int(idx_cls[np.argmin(np.abs(len_cls - long_len))])
-    return i_short, i_long
-
-
 def resample_linear(x: np.ndarray, out_len: int):
     x = np.asarray(x, dtype=np.float32).reshape(-1)
     if len(x) == out_len:
@@ -141,113 +128,224 @@ def resample_linear(x: np.ndarray, out_len: int):
     return np.interp(xq, xp, x).astype(np.float32)
 
 
-def pick_best_exact_length_pair(
+def safe_corr(a: np.ndarray, b: np.ndarray) -> float:
+    a = np.asarray(a, dtype=np.float32).reshape(-1)
+    b = np.asarray(b, dtype=np.float32).reshape(-1)
+    if a.size != b.size:
+        raise ValueError("safe_corr expects arrays with the same length")
+    if a.size < 2:
+        return 0.0
+    a_std = float(np.std(a))
+    b_std = float(np.std(b))
+    if a_std <= 1e-6 or b_std <= 1e-6:
+        return 0.0
+    corr = float(np.corrcoef(a, b)[0, 1])
+    if np.isnan(corr):
+        return 0.0
+    return corr
+
+
+def select_representative_from_pool(
     raw_list,
-    y: np.ndarray,
+    candidate_idx: list[int],
     tlen: np.ndarray,
     fs: float,
-    target_class: int = 1,
-    short_len: int = 92,
-    long_len: int = 176,
+    target_len: float,
+    ref_len: int = 160,
     n0: int = 10,
 ):
-    idx_cls = np.where(y == target_class)[0]
-    idx_short = idx_cls[tlen[idx_cls] == short_len]
-    idx_long = idx_cls[tlen[idx_cls] == long_len]
-    if idx_short.size == 0 or idx_long.size == 0:
-        return None
+    if not candidate_idx:
+        raise RuntimeError("candidate pool is empty")
 
-    best_pair = None
-    best_score = -1e18
-    for i in idx_short:
-        _, d_b_s, b_s, _ = extract_event(raw_list[int(i)], short_len, fs, n0)
-        z_s = d_b_s[:, 2]
-        b_s_r = resample_linear(b_s, long_len)
-        z_s_r = resample_linear(z_s, long_len)
-        for j in idx_long:
-            _, d_b_l, b_l, _ = extract_event(raw_list[int(j)], long_len, fs, n0)
-            z_l = d_b_l[:, 2]
-            corr_b = float(np.corrcoef(b_s_r, b_l)[0, 1])
-            corr_z = float(np.corrcoef(z_s_r, z_l)[0, 1])
-            amp_ratio = float((b_s.max() + 1e-6) / (b_l.max() + 1e-6))
-            score = 0.65 * corr_b + 0.35 * corr_z - 0.15 * abs(np.log(amp_ratio))
-            if score > best_score:
-                best_score = score
-                best_pair = (int(i), int(j))
-    return best_pair
-
-
-def pick_max_energy(raw_list, tlen: np.ndarray, candidate_idx: np.ndarray, fs: float, n0: int = 10):
-    best_idx = int(candidate_idx[0])
-    best_energy = -1.0
+    resampled = []
+    peaks = []
+    energies = []
     for idx in candidate_idx:
-        _, _, b_mag, _ = extract_event(raw_list[int(idx)], int(tlen[int(idx)]), fs, n0)
-        energy = float(np.sum(b_mag**2))
-        if energy > best_energy:
-            best_energy = energy
+        _, _, mag, _ = extract_event(raw_list[int(idx)], int(tlen[int(idx)]), fs, n0)
+        resampled.append(resample_linear(mag, ref_len))
+        peaks.append(float(np.max(np.abs(mag))))
+        energies.append(float(np.sum(mag**2)))
+
+    proto = np.median(np.vstack(resampled), axis=0)
+    log_peak = np.log1p(np.asarray(peaks, dtype=np.float32))
+    log_energy = np.log1p(np.asarray(energies, dtype=np.float32))
+    peak_scale = float(np.std(log_peak)) + 1e-6
+    energy_scale = float(np.std(log_energy)) + 1e-6
+
+    best_idx = int(candidate_idx[0])
+    best_score = -1e18
+    for idx, mag_r, peak_v, energy_v in zip(candidate_idx, resampled, peaks, energies):
+        corr = safe_corr(mag_r, proto)
+        length_penalty = abs(float(tlen[int(idx)]) - float(target_len))
+        score = (
+            0.72 * corr
+            + 0.18 * ((np.log1p(energy_v) - float(log_energy.mean())) / energy_scale)
+            + 0.10 * ((np.log1p(peak_v) - float(log_peak.mean())) / peak_scale)
+            - 0.010 * length_penalty
+        )
+        if score > best_score:
+            best_score = score
             best_idx = int(idx)
     return best_idx
 
 
-def pick_percentile_speed_pair(
+def pick_representative_samples(
     raw_list,
     y: np.ndarray,
     tlen: np.ndarray,
     fs: float,
     target_class: int = 1,
-    q: float = 0.15,
+    quantiles: tuple[float, ...] = (0.15, 0.35, 0.65, 0.85),
+    window_ratio: float = 0.08,
     n0: int = 10,
 ):
     idx_cls = np.where(y == target_class)[0]
-    len_cls = tlen[idx_cls]
-    order = np.argsort(len_cls)
+    if idx_cls.size == 0:
+        raise RuntimeError(f"class {target_class} has no samples")
+
+    order = np.argsort(tlen[idx_cls])
     idx_sorted = idx_cls[order]
     n_all = len(idx_sorted)
-    n_q = max(1, int(round(q * n_all)))
-    short_pool = idx_sorted[:n_q]
-    long_pool = idx_sorted[max(0, n_all - n_q) :]
-    idx_short = pick_max_energy(raw_list, tlen, short_pool, fs, n0)
-    idx_long = pick_max_energy(raw_list, tlen, long_pool, fs, n0)
-    return idx_short, idx_long
+    window = max(6, int(round(window_ratio * n_all)))
+    selected: list[int] = []
+    used: set[int] = set()
+
+    for q in quantiles:
+        center = int(round(q * (n_all - 1)))
+        lo = max(0, center - window)
+        hi = min(n_all, center + window + 1)
+        pool = [int(idx) for idx in idx_sorted[lo:hi] if int(idx) not in used]
+        if not pool:
+            pool = [int(idx_sorted[center])]
+        target_len = float(np.quantile(tlen[idx_cls], q))
+        idx_best = select_representative_from_pool(raw_list, pool, tlen, fs, target_len=target_len, n0=n0)
+        selected.append(int(idx_best))
+        used.add(int(idx_best))
+
+    selected = sorted(selected, key=lambda idx: int(tlen[idx]))
+    return selected
 
 
-def save_both(fig, filename: str):
+def pair_similarity_score(raw_list, tlen: np.ndarray, idx_a: int, idx_b: int, fs: float, n0: int = 10) -> float:
+    len_a = int(tlen[idx_a])
+    len_b = int(tlen[idx_b])
+    _, d_b_a, mag_a, _ = extract_event(raw_list[int(idx_a)], len_a, fs, n0)
+    _, d_b_b, mag_b, _ = extract_event(raw_list[int(idx_b)], len_b, fs, n0)
+
+    common_len = max(len_a, len_b)
+    mag_a_r = resample_linear(mag_a, common_len)
+    mag_b_r = resample_linear(mag_b, common_len)
+    z_a_r = resample_linear(d_b_a[:, 2], common_len)
+    z_b_r = resample_linear(d_b_b[:, 2], common_len)
+
+    corr_mag = safe_corr(mag_a_r, mag_b_r)
+    corr_z = safe_corr(z_a_r, z_b_r)
+    ratio = max(len_a, len_b) / max(1.0, min(len_a, len_b))
+    amp_ratio = (np.max(np.abs(mag_a)) + 1e-6) / (np.max(np.abs(mag_b)) + 1e-6)
+    return 0.58 * corr_mag + 0.27 * corr_z + 0.20 * np.log(ratio) - 0.08 * abs(np.log(amp_ratio))
+
+
+def pick_alignment_pair(
+    raw_list,
+    tlen: np.ndarray,
+    selected_idx: list[int],
+    fs: float,
+    ratio_target: float = 1.55,
+    ratio_max: float = 1.75,
+):
+    if len(selected_idx) < 2:
+        raise RuntimeError("at least two representative samples are required")
+
+    best_pair = None
+    best_score = -1e18
+    len_sorted = sorted(selected_idx, key=lambda idx: int(tlen[idx]))
+
+    for i in range(len(len_sorted)):
+        for j in range(i + 1, len(len_sorted)):
+            idx_a = int(len_sorted[i])
+            idx_b = int(len_sorted[j])
+            len_a = int(tlen[idx_a])
+            len_b = int(tlen[idx_b])
+            ratio = len_b / max(1.0, len_a)
+            if ratio < 1.35 or ratio > ratio_max:
+                continue
+            score = pair_similarity_score(raw_list, tlen, idx_a, idx_b, fs) - 0.12 * abs(np.log(ratio / ratio_target))
+            if score > best_score:
+                best_score = score
+                best_pair = (idx_a, idx_b)
+
+    if best_pair is not None:
+        return best_pair
+    return int(len_sorted[0]), int(len_sorted[-1])
+
+
+def resolve_output_name(filename: str, tag: str = "") -> str:
+    if not tag:
+        return filename
+    path = Path(filename)
+    return f"{path.stem}_{tag}{path.suffix}"
+
+
+def save_both(fig, filename: str, tag: str = ""):
+    out_name = resolve_output_name(filename, tag)
     for out_dir in [IMG_ROOT, REVISION_V9]:
         out_dir.mkdir(parents=True, exist_ok=True)
-        fig.savefig(out_dir / filename, dpi=240, bbox_inches="tight")
+        fig.savefig(out_dir / out_name, dpi=240, bbox_inches="tight")
 
 
-def plot_speed_stretch(raw_short: np.ndarray, len_short: int, raw_long: np.ndarray, len_long: int, fs: float):
-    _, _, mag_short, _ = extract_event(raw_short, len_short, fs)
-    _, _, mag_long, _ = extract_event(raw_long, len_long, fs)
+def plot_speed_stretch(raw_samples: list[np.ndarray], len_samples: list[int], fs: float, tag: str = ""):
+    channel_defs = [
+        (0, "#d62728", "x"),
+        (1, "#2ca02c", "y"),
+        (2, "#1f77b4", "z"),
+    ]
 
-    onset_short = estimate_event_onset(mag_short)
-    onset_long = estimate_event_onset(mag_long)
-    t_short = (np.arange(len(mag_short), dtype=np.float32) - onset_short) / fs
-    t_long = (np.arange(len(mag_long), dtype=np.float32) - onset_long) / fs
+    segments = []
+    gap = 18
+    cursor = 0
+    y_min = np.inf
+    y_max = -np.inf
+    peak_points = []
 
-    fig, ax = plt.subplots(figsize=(7.0, 3.4))
-    ax.plot(
-        t_short,
-        mag_short,
-        linewidth=1.9,
-        color="#1f77b4",
-        label=f"短时长样本（{len(mag_short)}点，{len(mag_short) / fs:.2f} s）",
-    )
-    ax.plot(
-        t_long,
-        mag_long,
-        linewidth=1.9,
-        color="#ff7f0e",
-        label=f"长时长样本（{len(mag_long)}点，{len(mag_long) / fs:.2f} s）",
-    )
-    ax.axvline(0.0, color="0.55", linestyle="--", linewidth=1.0)
-    ax.set_xlabel("相对时间 / s")
-    ax.set_ylabel(r"模值序列 $|b[n]|$ / nT")
-    ax.grid(True, linestyle="--", alpha=0.35)
-    ax.legend(frameon=True, edgecolor="black", fancybox=False, loc="upper right")
+    for raw, n in zip(raw_samples, len_samples):
+        _, d_b, _, _ = extract_event(raw, n, fs)
+        x = np.arange(n, dtype=np.float32) + cursor
+        segments.append((x, d_b, n))
+        y_min = min(y_min, float(np.min(d_b)))
+        y_max = max(y_max, float(np.max(d_b)))
+        peak_idx = int(np.argmax(np.max(d_b, axis=1)))
+        peak_points.append((float(x[peak_idx]), float(np.max(d_b[peak_idx, :]))))
+        cursor += n + gap
+
+    span = max(1.0, y_max - y_min)
+    fig, ax = plt.subplots(figsize=(7.2, 3.8))
+
+    for seg_idx, (x, d_b, n) in enumerate(segments):
+        for ch_idx, color, label in channel_defs:
+            ax.plot(x, d_b[:, ch_idx], linewidth=1.7, color=color, label=label if seg_idx == 0 else None)
+
+        center_x = 0.5 * float(x[0] + x[-1])
+        peak_x, peak_y = peak_points[seg_idx]
+        ax.annotate(
+            f"{n}点\n{n / fs:.2f} s",
+            xy=(peak_x, peak_y + 0.02 * span),
+            xytext=(center_x, y_max + 0.18 * span),
+            ha="center",
+            va="bottom",
+            fontsize=10,
+            fontweight="bold",
+            arrowprops=dict(arrowstyle="->", color="black", linewidth=0.8, shrinkA=0, shrinkB=2),
+        )
+
+    ax.axhline(0.0, color="0.6", linestyle="--", linewidth=0.9)
+    ax.set_xlabel("采样点")
+    ax.set_ylabel("幅值 / nT")
+    ax.set_xlim(-5, cursor - gap + 5)
+    ax.set_ylim(y_min - 0.10 * span, y_max + 0.34 * span)
+    ax.grid(True, linestyle="--", alpha=0.25)
+    ax.legend(frameon=True, edgecolor="black", fancybox=False, loc="lower right")
     fig.tight_layout()
-    save_both(fig, "fig_motivation_speed.png")
+    save_both(fig, "fig_motivation_speed.png", tag=tag)
     plt.close(fig)
 
 
@@ -259,6 +357,7 @@ def plot_dtw_alignment(
     fs: float,
     wR: float = 0.15,
     step: float = 0.05,
+    tag: str = "",
 ):
     _, d_b_a, mag_a, _ = extract_event(raw_a, len_a, fs)
     _, d_b_b, mag_b, _ = extract_event(raw_b, len_b, fs)
@@ -316,35 +415,67 @@ def plot_dtw_alignment(
     axes[1].legend(frameon=True, edgecolor="black", fancybox=False, loc="upper right")
 
     fig.tight_layout()
-    save_both(fig, "fig_motivation_dtw_align_z.png")
+    save_both(fig, "fig_motivation_dtw_align_z.png", tag=tag)
     plt.close(fig)
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Redraw Chapter 3 motivation figures.")
+    parser.add_argument("--tag", default="", help="optional suffix for preview outputs, e.g. alt")
+    parser.add_argument("--target-class", type=int, default=1, help="target vehicle class index")
+    parser.add_argument(
+        "--quantiles",
+        default="0.15,0.35,0.65,0.85",
+        help="comma-separated quantiles for representative samples",
+    )
+    parser.add_argument(
+        "--pair-ratio-target",
+        type=float,
+        default=1.55,
+        help="preferred length ratio for the DTW comparison pair",
+    )
+    parser.add_argument(
+        "--pair-ratio-max",
+        type=float,
+        default=1.75,
+        help="maximum allowed length ratio for the DTW comparison pair",
+    )
+    args = parser.parse_args()
+
     ensure_plot_style()
     raw_list, y, tlen = load_raw_y_tlen(DATA_MAT)
-    pair = pick_best_exact_length_pair(
+    quantiles = tuple(float(x.strip()) for x in args.quantiles.split(",") if x.strip())
+    fs = 50.0
+    selected_idx = pick_representative_samples(
         raw_list,
         y,
         tlen,
-        fs=50.0,
-        target_class=1,
-        short_len=92,
-        long_len=176,
+        fs=fs,
+        target_class=args.target_class,
+        quantiles=quantiles,
     )
-    if pair is None:
-        i_short, i_long = pick_percentile_speed_pair(raw_list, y, tlen, fs=50.0, target_class=1, q=0.15)
-    else:
-        i_short, i_long = pair
+    raw_samples = [raw_list[idx] for idx in selected_idx]
+    len_samples = [int(tlen[idx]) for idx in selected_idx]
+
+    i_short, i_long = pick_alignment_pair(
+        raw_list,
+        tlen,
+        selected_idx,
+        fs=fs,
+        ratio_target=args.pair_ratio_target,
+        ratio_max=args.pair_ratio_max,
+    )
     raw_short = raw_list[i_short]
     raw_long = raw_list[i_long]
     len_short = int(tlen[i_short])
     len_long = int(tlen[i_long])
-    fs = 50.0
-    plot_speed_stretch(raw_short, len_short, raw_long, len_long, fs)
-    plot_dtw_alignment(raw_short, len_short, raw_long, len_long, fs)
+
+    plot_speed_stretch(raw_samples, len_samples, fs, tag=args.tag)
+    plot_dtw_alignment(raw_short, len_short, raw_long, len_long, fs, tag=args.tag)
     print(
-        f"Rendered motivation figures with class-1 pair: short={len_short}, long={len_long}"
+        "Rendered motivation figures with "
+        f"class={args.target_class}, reps={len_samples}, align_pair=({len_short}, {len_long}), "
+        f"tag='{args.tag or 'default'}'"
     )
 
 

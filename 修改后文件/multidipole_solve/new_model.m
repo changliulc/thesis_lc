@@ -1,0 +1,154 @@
+%20240612这个文件是新的，用来把java程序计算得到的参数变成模型，与原始数据对比
+clc;close all;clear;
+%数据读取
+[data_left_num,~,data_left]=xlsread('D:\Document\lab_office\差分-车型分类\磁偶极子原始车辆数据\2024.6.11车辆数据.xls',4,'A1:J111');
+arrive_status=2;
+leave_status=4;
+
+%%先计算该表中有多少辆车
+col_status=7;%记录当前状态，用该列判断车辆的到达与离开
+data_status=data_left_num(:,col_status);%读取状态列数据,所有行的第col_status列
+data_length=length(data_status);%数据总行数
+arrive_mark=0;%检测到车辆到达，即遇到状态2时，arrive_mark置1；检测到车辆离开，即遇到状态4时，arrive_mark置0
+vehicle_num=0;%车辆数，检测到离开状态4，就+1
+
+%下面的循环就是为了计算输入的表中有几辆车
+for i=1:data_length
+    if data_status(i,1)==arrive_status && arrive_mark==0
+        arrive_mark=1;
+        continue;%往下走，跳出本if
+    end
+    if data_status(i,1)==leave_status && arrive_mark==1
+        arrive_mark=0;%还原mark
+        vehicle_num=vehicle_num+1;
+    end
+end
+
+%%提取车辆到达与离开的行号
+aorder_num_arrive_leave=zeros(vehicle_num,2);%存储每辆车的到达行与离开行
+order_count=1;%正在操作的车辆的order
+arrive_mark=0;
+
+for i=1:data_length
+    if data_status(i,1)==arrive_status && arrive_mark==0
+        arrive_mark=1;
+        %arrive_point=i;
+        aorder_num_arrive_leave(order_count,1)=i;
+        continue;
+    end
+    if data_status(i,1)==leave_status && arrive_mark==1%&& isequal(data_left(i,col_infomation),cell_leave) 
+        arrive_mark=0;
+        %leave_point=i;
+        aorder_num_arrive_leave(order_count,2)=i;
+        order_count=order_count+1;
+    end
+end
+
+
+%考虑磁偶极子,且从三轴角度分别求解并对比
+i=1; %i表示数据表里的第几辆车，两个程序同时改，如果表里面有多个车的话可以修改这个i来控制需要仿真的车
+arrive_point=aorder_num_arrive_leave(i,1);%读取到达的行序号
+leave_point=aorder_num_arrive_leave(i,2);%读取离开的行序号
+data_x=smooth(data_left_num(arrive_point:leave_point,4));%只对车辆数据进行平滑滤波,N=10
+data_y=smooth(data_left_num(arrive_point:leave_point,5));%由于滤波的原因，车辆数据长度会减少（N-1）个,数据转变成行向量
+data_z=smooth(data_left_num(arrive_point:leave_point,6));
+data_x=data_x';data_y=data_y';data_z=data_z';
+
+data=[data_x(:,1),data_y(:,1),data_z(:,1)];
+L=length(data_x);
+v=data_left_num(arrive_point-1,8)/3.6;
+u=4*pi*10^(-7);%H/m
+w=u*10^9/4/pi/13;
+T=0.02;%采样周期 0.02s
+
+%th是迭代求导的向量
+th = [
+51.3700298022856 -10.158820813366 -122.163747131115 68.4355181533833 -5.0049294918698 -102.957458974517 -0.214172915995498 2.60178176824833 0.31 -0.31
+];
+magDipNum=2;%模型的磁偶极子数量
+y_begin=2.2;
+
+
+param_num = 6*magDipNum-2;%迭代求的向量theta里的参数个数
+m=zeros(magDipNum,3);
+for i_temp=1:magDipNum
+    m(i_temp,:)=[th((i_temp-1)*3+1),th((i_temp-1)*3+2),th((i_temp-1)*3+3)];
+end
+[n,c]=size(m);
+x10=-v*T*L/2;
+y0=y_begin; %这里可能需要修改，原来是-1.8，这里应该和java代码里设置的初始值一样
+z0=th(magDipNum*3+1);%给定的y0从视频中观察得到
+dx=zeros(magDipNum-1);dy=zeros(magDipNum-1);dz=zeros(magDipNum-1);
+for i_temp=1:magDipNum-1
+    dx(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +1);
+    dy(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +2);
+    dz(i_temp)=th(magDipNum*3+1 + (i_temp-1)*3 +3);
+end
+
+k=1:1:L;
+x1=x10+v*k*T;%第一个磁偶极子的x，其他磁偶极子的可由这个表示出来,这是一个向量,因为k是一个向量，不是一个值
+r_vector=zeros(magDipNum,L);
+r_vector(1,:)=sqrt(x1.^2+y0^2+z0^2);
+for i_temp=2:magDipNum
+    r_vector(i_temp,:)=sqrt((x1+dx(i_temp-1)).^2+(y0+dy(i_temp-1)).^2+(z0+dz(i_temp-1)).^2);
+end
+r_r=r_vector;
+%下面的r_x r_y r_z里面，只有r_x是矩阵，其它是向量
+r_x=zeros(magDipNum,L);r_y=zeros(magDipNum,1);r_z=zeros(magDipNum,1);
+r_x(1,:)=x1;r_y(1)=y0;r_z(1)=z0;
+for i_temp=2:magDipNum
+    r_x(i_temp,:)=r_x(1,:)+dx(i_temp-1);
+    r_y(i_temp)=r_y(1)+dy(i_temp-1);
+    r_z(i_temp)=r_z(1)+dz(i_temp-1);
+end
+%预测值的计算
+Bxpre=0;Bypre=0;Bzpre=0;
+for i=1:n
+    x=r_x(i,:);y=r_y(i);z=r_z(i);r=r_r(i,:);
+    Bx=w*((3*x.^2-r.^2)*m(i,1)+3*x*y*m(i,2)+3*x*z*m(i,3))./r.^5;
+    By=w*(3*x*y*m(i,1)+(3*y^2-r.^2)*m(i,2)+3*y*z*m(i,3))./r.^5;
+    Bz=w*(3*x*z*m(i,1)+3*y*z*m(i,2)+(3*z^2-r.^2)*m(i,3))./r.^5;
+    Bxpre=Bxpre+Bx';
+    Bypre=Bypre+By';
+    Bzpre=Bzpre+Bz';
+end
+
+%误差
+res=(data(:,1)-Bxpre).^2+(data(:,2)-Bypre).^2+(data(:,3)-Bzpre).^2;
+res=sum(res.^0.5)/L;
+
+
+%%
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bxpre,'b');hold on;
+plot(data(:,1),'k');hold on;
+legend('X轴理论','X轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bypre,'b');hold on;
+plot(data(:,2),'k');hold on;
+legend('Y轴理论','Y轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+
+figure('Name','磁偶极子近似波形');
+subplot(1,1,1);
+plot(Bzpre,'b');hold on;
+plot(data(:,3),'k');hold on;
+legend('Z轴理论','Z轴实际');
+ylabel('磁场强度','FontSize',15);
+xlabel('时间(单位：10ms)','FontSize',15);
+hold on;
+%%
+%下面是可能有用的组合
+%小型车 2磁偶极子 0:01:11  y_begin=2.2
+% 13.048535106776118, -72.65226299818272, -51.45555324338668, -37.24820973218688, -45.99765489335637, -63.5793263159745, -0.8647749109854003, 2.7169110813677504, 0.2755064313032506, -0.2500704919680935
+% -3.0633552523365264, -42.99156406114026, -56.636007313515265, -20.245799187356447, -10.36887278095946, -56.045618538928416, -0.39174451206574795, 1.8427543302667682, 0.1480626942145563, -0.163902111123157
+% 8.464146727941525, -77.5386213663918, -71.86574570215119, -32.51412708535922, -21.493881651158524, -44.39372232558762, -0.8128430489323208, 2.2611097550593806, 0.29846545887181813, -0.25791745563398644
+% -4.0968521924417, -57.28742568809371, -60.803484209228635, -24.528268946974865, 2.8166450894507467, -59.9785475467195, -0.37611055543545124, 0.7954363729720204, 0.2325668537191655, -0.291281183955732

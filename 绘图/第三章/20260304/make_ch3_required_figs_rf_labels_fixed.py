@@ -425,7 +425,15 @@ def plot_length_boxplot(df_event: pd.DataFrame, out_no_ext: str, lang: str = "zh
     fig, ax = plt.subplots(figsize=(6.2, 4.2))
     names = class_names(lang)
     groups = [df_event.loc[df_event["class_id"] == i, "duration_s"].to_numpy() for i in range(3)]
-    ax.boxplot(groups, tick_labels=names, showfliers=False)
+    flierprops = dict(
+        marker="o",
+        markersize=2.0,
+        markerfacecolor="#666666",
+        markeredgecolor="#666666",
+        markeredgewidth=0.0,
+        alpha=0.30,
+    )
+    ax.boxplot(groups, tick_labels=names, showfliers=True, flierprops=flierprops)
     ax.grid(True, axis="y", linestyle="--", alpha=0.35)
     ax.set_ylabel("事件持续时间 / s" if lang == "zh" else "Event duration / s")
     ax.set_title("三类车辆事件持续时间分布箱线图" if lang == "zh" else "Boxplot of event duration distribution by vehicle class")
@@ -440,7 +448,15 @@ def plot_amp_boxplot(df_event: pd.DataFrame, out_no_ext: str, lang: str = "zh", 
     names = class_names(lang)
     metric_col = "mag_energy" if amp_metric == "energy" else "mag_peak"
     groups = [df_event.loc[df_event["class_id"] == i, metric_col].to_numpy() for i in range(3)]
-    ax.boxplot(groups, tick_labels=names, showfliers=False)
+    flierprops = dict(
+        marker="o",
+        markersize=1.5,
+        markerfacecolor="#666666",
+        markeredgecolor="#666666",
+        markeredgewidth=0.0,
+        alpha=0.18,
+    )
+    ax.boxplot(groups, tick_labels=names, showfliers=True, whis=2.5, flierprops=flierprops)
     ax.grid(True, axis="y", linestyle="--", alpha=0.35)
 
     if amp_metric == "energy":
