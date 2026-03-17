@@ -911,7 +911,7 @@ def main() -> None:
         seed=args.seed,
     )
     k_curve_df.to_csv(results_dir / "dtw_k_display_curve.csv", index=False, encoding="utf-8-sig")
-    TP.plot_k_ablation(k_curve_df[["K", "test_f1", "val_f1"]], str(images_dir / "ablation_K.png"))
+    TP.plot_k_ablation(k_curve_df[["K", "val_f1"]], str(images_dir / "ablation_K.png"))
 
     edge_df = pd.DataFrame(
         [
@@ -924,7 +924,7 @@ def main() -> None:
         [
             {"method": "端侧 Softmax（扩展搜索上限）", "test_acc": pct(edge_upper["edge"]["softmax"]["acc"]), "test_f1": pct(edge_upper["edge"]["softmax"]["macro_f1"])},
             {"method": "离线 CNN（线性定长）", "test_acc": pct(edge_upper["baseline"]["metrics"]["test_acc"]), "test_f1": pct(edge_upper["baseline"]["metrics"]["test_f1"])},
-            {"method": "DTW-MultiTemplate(K=2)+CNN（本文方法）", "test_acc": pct(final_dtw["test_acc"]), "test_f1": pct(final_dtw["test_f1"])},
+            {"method": "DTW-MultiTemplate($K_{\\mathrm{MT}}=2$)+CNN（本文方法）", "test_acc": pct(final_dtw["test_acc"]), "test_f1": pct(final_dtw["test_f1"])},
         ]
     )
     clsmin_df = pd.DataFrame(
@@ -935,8 +935,8 @@ def main() -> None:
     )
     rep_df = pd.DataFrame(
         [
-            {"method": "Replication Control（通道复制，K=2）", "test_acc": pct(replication["metrics"]["test_acc"]), "test_f1": pct(replication["metrics"]["test_f1"])},
-            {"method": "DTW-MultiTemplate（K=2）", "test_acc": pct(final_dtw["test_acc"]), "test_f1": pct(final_dtw["test_f1"])},
+            {"method": "Replication Control（通道复制，$K_{\\mathrm{MT}}=2$）", "test_acc": pct(replication["metrics"]["test_acc"]), "test_f1": pct(replication["metrics"]["test_f1"])},
+            {"method": "DTW-MultiTemplate（$K_{\\mathrm{MT}}=2$）", "test_acc": pct(final_dtw["test_acc"]), "test_f1": pct(final_dtw["test_f1"])},
         ]
     )
     k_rows_df = pd.DataFrame(

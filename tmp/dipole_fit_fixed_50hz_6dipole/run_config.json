@@ -1,0 +1,18 @@
+{
+  "data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u5355\u4e2a\u4e2d\u578b\u8f66\u6570\u636e_\u901f\u5ea655\u516c\u91cc\u6bcf\u5c0f\u65f6.xlsx",
+  "dipoles": [
+    6
+  ],
+  "sample_rate": 50.0,
+  "smooth_window": 5,
+  "de_maxiter": 180,
+  "de_popsize": 22,
+  "ls_max_nfev": 7000,
+  "restarts": 5,
+  "vehicle_length_prior": 5.5,
+  "vehicle_length_sigma": 0.9,
+  "x_gap_max": 3.8,
+  "yz_offset_bound": 1.4,
+  "ridge": 1e-05,
+  "seed": 2500
+}

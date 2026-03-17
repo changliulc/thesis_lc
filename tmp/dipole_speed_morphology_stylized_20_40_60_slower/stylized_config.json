@@ -1,0 +1,128 @@
+{
+  "data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u5355\u4e2a\u4e2d\u578b\u8f66\u6570\u636e_\u901f\u5ea655\u516c\u91cc\u6bcf\u5c0f\u65f6.xlsx",
+  "fit_results": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\dipole_fit_fixed_50hz_6dipole\\fit_results.json",
+  "literature_image": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\pdfs\\vehicle_sensor_fig7_tight_300.png",
+  "base_config": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\dipole_speed_morphology_litfit\\literature_fit_config.json",
+  "sample_rate_hz": 50.0,
+  "fit_speeds_kmh": [
+    20.0,
+    30.0,
+    40.0,
+    50.0
+  ],
+  "target_speeds_kmh": [
+    20.0,
+    40.0,
+    60.0
+  ],
+  "threshold_ratio": 0.1,
+  "margin_samples": 6,
+  "base_morphology_params": {
+    "tau_s": 0.01,
+    "y_shift_m": 0.12,
+    "z_shift_m": 0.12,
+    "phase_shift_samples": -0.25,
+    "gain_slope": 0.0,
+    "y_axis_gain_slope": -0.26,
+    "x_axis_gain_slope": -0.1,
+    "z_axis_gain_slope": -0.04,
+    "y_pos_gain_slope": -0.1,
+    "y_neg_gain_slope": 0.08
+  },
+  "stylization_diagnostics": {
+    "x": {
+      "coefficients": [
+        -0.20382435548950126,
+        0.02610977179208962,
+        -0.2770164637097723,
+        0.07845010318008519,
+        0.2271815419978706,
+        -0.3561836087127439
+      ],
+      "base_scale": 172.1290021567245,
+      "speed_mid": 35.0,
+      "speed_span": 30.0,
+      "centers": [
+        0.18,
+        0.32,
+        0.58
+      ],
+      "widths": [
+        0.05,
+        0.06,
+        0.12
+      ]
+    },
+    "y": {
+      "coefficients": [
+        0.6975581756455088,
+        0.4640228982124063,
+        -0.31355881285849246,
+        0.45453735883139273,
+        0.0028989641248653004,
+        -0.14581718329735577
+      ],
+      "base_scale": 71.43039317252533,
+      "speed_mid": 35.0,
+      "speed_span": 30.0,
+      "centers": [
+        0.14,
+        0.26,
+        0.44
+      ],
+      "widths": [
+        0.05,
+        0.05,
+        0.08
+      ]
+    },
+    "z": {
+      "coefficients": [
+        0.1672104408661724,
+        0.8831365191301315,
+        -0.26629334977075847,
+        -0.2380721402790431,
+        0.7686675969005585,
+        -0.13313069253651183
+      ],
+      "base_scale": 67.32838436014461,
+      "speed_mid": 35.0,
+      "speed_span": 30.0,
+      "centers": [
+        0.16,
+        0.34,
+        0.54
+      ],
+      "widths": [
+        0.05,
+        0.07,
+        0.1
+      ]
+    }
+  },
+  "postprocess_diagnostics": {
+    "axis_gain_drop": {
+      "x": 0.08,
+      "y": 0.24,
+      "z": 0.1
+    },
+    "local_shape_strength": 0.75,
+    "peak_abs_xyz": {
+      "20": [
+        234.67445063078594,
+        45.381555402666294,
+        66.42184472096652
+      ],
+      "40": [
+        193.44720751166682,
+        34.70315596338171,
+        46.06278185167197
+      ],
+      "60": [
+        160.53592776910682,
+        56.218647875974604,
+        54.61801320875667
+      ]
+    }
+  }
+}

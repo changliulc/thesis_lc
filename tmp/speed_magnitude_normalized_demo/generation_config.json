@@ -1,0 +1,46 @@
+{
+  "medium_data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u4e2d\u578b\u8f66\u6570\u636e.xlsx",
+  "speed_est": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u4f30\u8ba1\u901f\u5ea6.xlsx",
+  "segment_index": 1,
+  "segment_name": "\u4e2d\u578b\u8f661",
+  "segment_description": "\u6846\u5f0f\u8d27\u8f66\u3001\u6709\u8d27",
+  "reference_speed_kmh": 51.42852,
+  "sample_rate_hz": 50.0,
+  "tau_ms": 20.0,
+  "target_speeds_kmh": [
+    30.0,
+    50.0,
+    70.0
+  ],
+  "crop_threshold_ratio": 0.1,
+  "crop_margin_samples": 6,
+  "axis_deblur": [
+    {
+      "axis": "X",
+      "lambda_reg": 0.001,
+      "gcv": 1.3844655202750484,
+      "ref_rmse": 0.026278378995148895
+    },
+    {
+      "axis": "Y",
+      "lambda_reg": 0.001,
+      "gcv": 6.4078241336301165,
+      "ref_rmse": 0.05653440055875585
+    },
+    {
+      "axis": "Z",
+      "lambda_reg": 0.001,
+      "gcv": 0.6002320731168113,
+      "ref_rmse": 0.017302828323027673
+    }
+  ],
+  "latent_meta": {
+    "dt_s": 0.02,
+    "tau_s": 0.02,
+    "alpha_exact": 0.6321205588285577,
+    "pole_a": 0.36787944117144233,
+    "reference_speed_kmh": 51.42852,
+    "reference_spacing_m": 0.28571399999999997,
+    "reference_center_sample": 22.63859264176879
+  }
+}

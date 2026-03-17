@@ -1,0 +1,4 @@
+speed_kmh,full_samples,cropped_samples,duration_s,threshold_ratio,crop_start,crop_end,sample_spacing_m
+20,199,149,2.96000000,0.1000,17,165,0.11111111
+40,100,81,1.60000000,0.1000,6,86,0.22222222
+60,67,58,1.14000000,0.1000,2,59,0.33333333

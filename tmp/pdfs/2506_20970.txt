@@ -1,0 +1,2575 @@
+1
+
+Co-Design of Sensing, Communications, and
+Control for Low-Altitude Wireless Networks
+
+arXiv:2506.20970v1 [eess.SP] 26 Jun 2025
+
+Haijia Jin, Graduate Student Member, IEEE, Jun Wu, Graduate Student Member, IEEE, Weijie Yuan,
+Senior Member, IEEE, Fan Liu, Senior Member, IEEE,
+and Yuanhao Cui, Member, IEEE
+Abstract—The rapid advancement of Internet of Things (IoT) services and the evolution toward the sixth generation (6G) have
+positioned unmanned aerial vehicles (UAVs) as critical enablers of low-altitude wireless networks (LAWNs). This work investigates the
+co-design of integrated sensing, communication, and control (SC2 ) for multi-UAV cooperative systems with finite blocklength (FBL)
+transmission. In particular, the UAVs continuously monitor the state of the field robots and transmit their observations to the robot
+controller to ensure stable control while cooperating to localize an unknown sensing target (ST). To this end, a weighted optimization
+problem is first formulated by jointly considering the control and localization performance in terms of the linear quadratic regulator
+(LQR) cost and the determinant of the Fisher information matrix (FIM), respectively. The resultant problem, optimizing resource
+allocations, the UAVs’ deployment positions, and multi-user scheduling, is non-convex. To circumvent this challenge, we first derive a
+closed-form expression of the LQR cost with respect to other variables. Subsequently, the non-convex optimization problem is
+decomposed into a series of sub-problems by leveraging the alternating optimization (AO) approach, in which the difference of convex
+functions (DC) programming and projected gradient descent (PGD) method are employed to obtain an efficient near-optimal solution.
+Furthermore, the convergence and computational complexity of the proposed algorithm are thoroughly analyzed. Extensive simulation
+results are presented to validate the effectiveness of our proposed approach compared to the benchmark schemes and reveal the
+trade-off between control and sensing performance.
+Index Terms—Low-altitude wireless network (LAWN), unmanned aerial vehicle (UAV), finite blocklength (FBL), linear quadratic
+regulator (LQR), Fisher information matrix (FIM).
+
+✦
+
+1
+
+I NTRODUCTION
+
+With the prosperity of Internet of Things (IoT) networks and
+the evolution toward the sixth generation (6G), low-altitude
+wireless networks (LAWNs) have emerged as a critical enabler for future wireless communications [1]. Low-altitude
+unmanned aerial vehicles (UAVs) and electric vertical takeoff and landing (eVTOL) aircraft, as core components of
+LAWN, have attracted significant research interest, which
+are uniquely suited to address the connectivity challenges in
+dense urban environments, fluctuating network demands,
+and real-time communication requirements [2]. By operating closer to ground users (GUs), they provide enhanced
+line-of-sight (LoS) communication, reduced latency, and
+improved adaptability to dynamic environments [3]. Their
+mobility and rapid deployment capabilities further enable
+flexible network coverage, making LAWN a key technolThis work is supported in part by National Natural Science Foundation of
+China under Grant 62471208, in part by Guangdong Provincial Natural
+Science Foundation under Grant 2024A151510098, in part by Shenzhen
+Science and Technology Program under Grant JCYJ20240813094627037.
+(Corresponding author: Weijie Yuan)
+•
+H. Jin, J. Wu, W. Yuan, and Y. Cui are with the School
+of Automation and Intelligent Manufacturing, Southern University of Science and Technology, Shenzhen 518055, China
+(e-mail: jinhj2024@mail.sustech.edu.cn, wuj2021@mail.sustech.edu.cn,
+yuanwj@sustech.edu.cn, cuiyh@sustech.edu.cn).
+• F. Liu is with the National Mobile Communications Research Laboratory,
+Southeast University, Nanjing 210096, China (e-mail: f.liu@ieee.org).
+
+ogy for supporting large-scale IoT applications and nextgeneration wireless networks.
+Building on these strengths, low-altitude UAVs offer
+significant advantages in wireless communication by serving as airborne communication nodes [4]. Existing research
+has primarily concentrated on optimizing UAV deployment,
+resource management, and user association to achieve superior communication performance. For example, the deployment of multi-UAVs has been investigated in [5] for IoT
+networks by jointly optimizing the mobility of the UAVs,
+device-UAV association, and power control. Furthermore,
+Zhou et al. [6] and Cai et al. [7] proposed adaptive trajectory
+design strategies for moving UAVs to enhance communication efficiency and security. In addition to enabling wireless
+communication services, sensor-equipped UAVs have been
+extensively utilized for various sensing tasks, including
+target localization, tracking, and navigation [8]. For instance,
+target localization in single-UAV sensing networks has been
+analyzed by incorporating both angle-of-arrival (AOA) and
+position errors [9]. Moreover, Xu et al. [10] extended the path
+optimization for AOA-based target localization to multiUAV scenarios. Wu et al. [11] further proposed a visionbased framework to enable real-time aerial target localization and tracking within UAV sensing systems. However,
+the majority of existing studies consider communication
+and sensing as separate processes, resulting in inefficient
+resource utilization and restricted overall performance [12].
+To tackle this challenge, the concept of integrated sensing and communication (ISAC) has emerged as a distribu-
+
+2
+
+tive technology to LAWNs, allowing UAVs to seamlessly
+perform communication and sensing tasks using shared
+wireless resources [13]. Compared to dedicated sensing and
+communication systems, ISAC systems enhance spectral efficiency while simultaneously reducing hardware costs [14].
+To fully harness the potential of ISAC systems, numerous
+studies have delved into evaluating the performance of both
+sensing and communication (S&C). On the one hand, communication performance is typically measured by metrics
+such as communication rates, channel capacity, and bit error
+rate (BER) [6], [7]. On the other hand, sensing performance
+is often quantified using estimation error, characterized by
+the mean squared error (MSE), which is bounded by the
+Cramér–Rao bound (CRB) [15]. Specifically, the CRB-rate
+region has been introduced as a fundamental framework
+to characterize the trade-off between sensing and communication [16]. To jointly consider the S&C performance, beamforming design in ISAC systems has been studied, aiming to
+minimize the CRB for target localization while guaranteeing
+the Quality of Service (QoS) for communication [17]. Furthermore, recent research has investigated the application
+of ISAC in UAV systems, focusing on optimizing UAV
+positions and trajectories to achieve the S&C trade-off [18],
+[19]. For example, the trade-off between communication
+and sensing was analyzed through a weighted trajectory
+optimization for single-UAV systems, where the CRB was
+employed as the sensing performance metric [20]. Wu et
+al. [21] further proposed dynamic real-time trajectories for
+multi-UAV systems to enable adaptive communication and
+sensing capabilities.
+Beyond their role in integrating sensing and communication, UAVs capitalize on their inherent mobility and
+adaptability to play a pivotal role in advanced control
+applications, meeting critical challenges such as mastering
+six degrees of freedom (DoF), overcoming the algorithmic
+complexity of UAV swarm coordination, and ensuring ultrareliable low-latency communication (URLLC) for controlling high-mobility targets [22], [23]. For instance, the robustness and tracking performance of quadrotor stabilization
+was significantly improved through an innovative approach
+to adjust the weighting matrices in linear quadratic regulator (LQR) and LQR-proportional integral (PI) controllers
+[24]. In addition, various control strategies have been applied to address a wide range of challenges specific to rotorcraft or rotary-wing UAV systems [25]. Although significant
+progress has been achieved in control strategies, investigating wireless control systems remains equally essential,
+which must account for not only precise control strategies
+but also advanced communication capabilities to guarantee
+reliable performance. Nair et al. [26] explored the trade-off
+between communication and control, highlighting that the
+data throughput must exceed the intrinsic entropy rate to
+stabilize the noisy linear control system. Moreover, Kostina
+et al. [27] derived a lower bound on the communication
+rate corresponding to a target LQR cost, which serves as a
+quantitative measure of control system performance. Taking
+into account the relationship between the data throughput
+and the LQR cost, a control-oriented optimization problem
+was investigated in a sensing-communication-computingcontrol (SC3 ) integrated satellite-UAV system [28].
+In addition, the ultra-stringent latency and highly re-
+
+liable requirements of real-time control make it imperative to explore novel communication technologies. Shortpacket communication with the finite blocklength (FBL)
+transmission has shown significant potential in addressing the requirements of latency-sensitive services in IoT
+networks [29], [30]. The importance of FBL transmission
+stems from its ability to meet the stringent low-latency
+requirements of UAV-enabled systems, where operational
+periods are typically segmented into multiple short time
+slots to optimize UAV trajectory design [31]. Compared to
+infinite blocklength (IBL) transmission, where the achievable rate follows Shannon capacity, FBL transmission introduces a more complex rate function that depends on
+signal-to-interference-plus-noise ratio (SINR), block error
+rate (BLER), and blocklength [32]. This added complexity
+poses significant challenges for optimization, as the rate
+function in FBL scenarios is non-convex and highly sensitive to system parameters, making resource allocation more
+difficult than in IBL systems [33]. FBL transmission has been
+widely studied in UAV-enabled systems to support latencysensitive applications. In [34] and [35], the communication
+secrecy and covertness were investigated for a UAV-enabled
+wireless system with FBL transmission. Raut et al. [36]
+focused on a UAV-assisted nonlinear energy harvesting fullduplex network with both infinite and finite blocklength
+transmission, aiming to optimize reliability in IoT scenarios.
+However, existing works on UAV-enabled communication with FBL transmission, sensing, and control ignore the
+integration of these functionalities, especially in multi-UAV
+cooperative systems where co-design of sensing, communication, and control (SC2 ) becomes essential. As UAVs are
+required to simultaneously deliver downlink signals to GUs
+and perform sensing tasks like target localization, developing a co-design SC2 framework under FBL transmission remains a significant yet underexplored challenge. Motivated
+by this gap, this paper investigates a three-dimensional (3D)
+multi-UAV cooperative SC2 network under FBL transmission. Specifically, a 3D scenario is considered, where UAVs
+transmit the observation results to the field robots via ISAC
+signals while simultaneously performing sensing tasks by
+receiving reflected echoes from a sensing target (ST). For
+simplicity, it is assumed that reflections unrelated to the
+ST and the echo interference between UAVs are negligible,
+as the distance between multiple UAVs is relatively small
+compared to the distance between UAVs and the ST, leading
+to a minimal impact on the overall sensing performance. The
+main contributions of this work are summarized as follows.
+•
+
+•
+
+We consider the determinant of the Fisher information matrix (FIM) as the performance metric for the
+sensing system and derive the expression of the FIM
+for the 3D coordinates of the ST. In addition, the
+infinite horizon LQR cost is adopted as the control
+performance metric, and a relationship is established
+between the LQR cost and the communication rate
+under FBL transmission in a partially observed control system.
+By integrating these metrics, this work formulates a
+weighted optimization problem for the multi-UAV
+cooperative SC2 FBL network, aiming to minimize
+the LQR cost and maximize the determinant of the
+
+3
+
+Communication link for control
+Communication link for sensing
+
+UAV2
+
+UAV (Observer)
+
+UAVM
+
+Control strategy
+UAVm
+
+UAV1
+
+Observations
+System
+State
+
+Channel
+Channel
+Output
+ST
+
+Robot K
+
+Robot 1
+
+Controller
+
+Robot 2
+
+Control
+Strategy
+
+Actuator
+
+Robot
+
+Fig. 1. The considered multi-UAV cooperative SC2 network.
+FIM for the ST. This is accomplished by jointly optimizing UAV-robot association, power allocation, and
+UAV positions subject to constraints, including rateLQR cost bounds, power budgets, collision avoidance, and flight boundaries. Moreover, a weighting
+factor is introduced to balance the trade-off between
+control and sensing performance. By adjusting the
+weighting factor, UAV positions design and power
+allocation can dynamically prioritize between control
+and sensing performance.
+The optimization problem is inherently non-convex,
+rendering it unsolvable through direct methods. To
+address this challenge, we first derive the closedform of LQR cost with respect to UAV-robot association, power allocation, and UAV positions to
+reduce the dimensionality of the problem and then
+separate it into a series of sub-problems. Leveraging
+the alternative optimization (AO) method, we propose an effective algorithm to solve the formulated
+problem by jointly employing difference-of-convex
+(DC) programming and projected gradient descent
+(PGD) techniques. The convergence and computational complexity of the proposed algorithm are further analyzed to demonstrate its validity and effectiveness.
+Finally, simulation results show that the proposed
+algorithm can adaptively adjust UAV positions and
+power allocation strategies according to the rate-LQR
+cost bounds, power budget, and weighting factor.
+Furthermore, the proposed algorithm can achieve enhanced sensing and control performance compared
+to the benchmark schemes.
+
+trices, respectively. RM indicates the M -dimensional realT
+−1
+valued column vectors. (·) and (·) denote the transposition and inverse operation, respectively. k · k, tr (·), det (·),
+and E{·} are respectively the ℓ2 -norm, trace, determinant,
+and expectation of a matrix. N (a, b) is used to represent
+a Gaussian distribution of mean a and variance b. Diag (·)
+denotes a diagonal matrix, and IM is the M × M identity
+matrix. The function Q−1 (·) is the inverse of Gaussian Q
+R∞
+2
+function, i.e., Q(x) = √12π x exp(− t2 )dt.
+
+The rest of this article is structured as follows. Section
+2 introduces the multi-UAV cooperative SC2 network with
+FBL transmission. Section 3 formulates the joint optimization of the LQR cost, power allocation, UAV-robot association, and UAV positions problem, which is subsequently
+addressed in Section 4. Simulation results are provided in
+Section 5, followed by the conclusions in Section 6.
+Notations: Unless otherwise specified, bold lowercase
+and uppercase letters, e.g., a and A, denote vectors and ma-
+
+As for the control part, we model each robot as a linear control system and formulate the discrete-time system equation
+of the k -th control system as
+
+•
+
+•
+
+2
+
+S YSTEM M ODEL
+
+As depicted in Fig. 1, we focus on a multi-UAV cooperative
+SC2 network in which M single-antenna UAVs monitor
+K robots over the same frequency band channel while
+simultaneously localizing a single ST. The UAVs and robots
+are indexed by M = {1, 2, . . . , M } and K = {1, 2, . . . , K},
+respectively. Specifically, the UAVs send the observations
+to robots via ISAC signals, based on which the robots
+use these signals to generate optimal control strategies for
+their actuators, e.g., robotic arms. At the same time, the
+transmitted ISAC signals can also be radiated to the ST for
+sensing purposes.1 Without loss of generality, we consider a
+3D system, where the coordinates of the m-th UAV, m ∈ M,
+q
+q T
+is denoted as qm = [xqm , ym
+, zm
+] ∈ R3 . The locations
+of the k -th robot, k ∈ K, and the ST are represented by
+T
+T
+uk = [xuk , yku , zku ] ∈ R3 and s = [xs , y s , z s ] ∈ R3 ,
+respectively. Furthermore, it is assumed that the channels
+from UAVs to the robots are dominated by the LoS link, as
+commonly adopted in [20], [21], and [37].
+2.1 Control Model
+
+xk,n+1 = Ak xk,n + Bk zk,n + vk ,
+
+(1)
+
+1. To better investigate the trade-off between sensing and control performance, we assume that ST does not engage in direct communication
+with UAVs. Future research will extend this framework by considering
+the ST as an active communication participant, facilitating a closed-loop
+SC2 system.
+
+4
+
+where xk,n ∈ Rι denotes the system state, zk,n ∈ Rκ denotes the control action, vk ∈ Rι is the control system noise
+with zero mean and covariance matrix Σvk , and Ak ∈ Rι×ι
+and Bk ∈ Rι×κ are fixed state evolution matrix and input
+matrix, respectively, with ι and κ being the dimensions
+of the system state and control action input, respectively.
+At time instant n, the k -th robot controller receives the
+observation results and generates the optimal control action
+zk,n for the actuator based on the received data up to time
+n. Moreover, serving as observers, UAVs monitor the system
+state, such that we have the following observation equation
+
+yk,n = Ck xk,n + wk ,
+
+(2)
+
+where Ck ∈ Rζ×ι is a deterministic matrix with ζ representing the dimension of the observation results and
+wk ∈ Rζ denotes the observation noise with zero mean and
+covariance matrix Σw
+k . The LQR cost function is generally
+employed to access the control performance. In particular,
+we consider the infinite horizon LQR cost to evaluate control
+performance, which is given by [27]
+("
+#)
+N
+
+1 X T
+T
+bk , sup lim E
+,
+x Qk xk,n + zk,n Rk zk,n
+N →∞
+N n=1 k,n
+(3)
+where N represents the time horizon over which the expected cost is averaged, and Qk  0 and Rk  0 are weight
+matrices that balance the trade-off between the deviation
+of the system from the optimal desired state zero and the
+power consumption. The LQR cost function jointly takes
+into account system state convergence and control energy
+consumption. A lower bk indicates better system stability
+and less control energy consumption, leading to improved
+control performance.
+2.2 Communication Model
+After monitoring the state of the control system, UAVs
+transmit the observation results to the field robots via ISAC
+signals. Let us define the distance between the m-th UAV
+and the k -th robot as
+
+dm,k =k qm − uk k
+q
+.
+2
+2
+2
+q
+q
+= (xqm − xuk ) + (ym
+− yku ) + (zm
+− zku )
+
+(4)
+
+Considering the LoS channel, the free-space path loss model
+is applicable to the communication model [37]. Thus, the
+channel gain between the m-th UAV and the k -th robot can
+be written as
+α0
+hm,k =
+(5)
+2,
+(dm,k )
+2
+
+T Gc λ
+denotes the channel power at the
+where α0 = G(4π)
+2
+reference distance dm,k = 1 m with GT representing the
+UAV transmitting antenna gain, Gc the robot receiving antenna gain, and λ the wavelength. Furthermore, we assume
+that each UAV is only allowed to serve at most one robot,
+and each robot is served by exactly one UAV. For ease of
+exposition, we introduce a binary matrix Θ to characterize
+the associations from the UAVs to the robots. Specifically, the
+(m, k)-th entry of Θ, denoted by θm,k = {0, 1}, indicates the
+association status between the m-th UAV and the k -th robot,
+i.e., θm,k = 1 represents that the m-th UAV serves the k -th
+
+robot and vice versa not. Thus, if the k -th robot is served by
+the m-th UAV, the SINR at the k -th robot can be formulated
+as
+
+Γm,k =
+
+P
+
+pm hm,k
+,
+pi hi,k + σk2
+
+(6)
+
+i∈M,i6=m
+
+where pm denotes
+the power allocated to each UAV in
+P
+the network,
+i∈M,i6=m pi hi,k is the co-channel interference, and σk2 represents the noise power at the k -th robot.
+Thus, the achievable rate can be expressed as Rm,k =
+log (1 + Γm,k ). It is worth noting that the transmission
+delay is capable of significantly impacting the control performance. Consequently, we advocate exploiting the FBL
+transmission to fulfill the stringent delay requirements in
+this work. The communication rate for FBL transmission
+depends on the SINR, the BLER, and the blocklength, such
+that the data throughput between the m-th UAV and the
+k -th robot can be rewritten as [32]
+s
+Vm,k −1
+Rm,k = log (1 + Γm,k ) −
+Q (ǫ),
+(7)
+lm,k
+where lm,k denotes the blocklength of the transmitted signal, ǫ is the BLER, and Vm,k represents the channel dispersion, which is defined as
+
+Vm,k = 1 − (1 + Γm,k )−2 .
+
+(8)
+
+2.3 Sensing Model
+Let us denote the distance between the m-th UAV and the
+ST as
+
+dm =k qm − s k
+q
+,
+2
+2
+2
+q
+q
+− y s ) + (zm
+− z s)
+= (xqm − xs ) + (ym
+
+(9)
+
+c
+which can be measured by τm
+2 , where c is the speed of
+light and τm represents the round-trip delay of the ISAC
+signal arriving from the ST. Without loss of generality, we
+consider that the measurements are impacted by Gaussian
+noises, such that the measurement of dm is given by
+
+dˆm = dm + υm ,
+(10)
+
+2
+where υm ∼ N 0, σm is the additive white Gaussian noise
+2
+(AWGN) with zero mean and variance σm
+. In general, the
+2
+variance σm is inversely proportional to the signal-to-noise
+ratio (SNR) at the UAV, i.e., [38]
+Γm =
+
+pm Gp hm
+,
+σ02
+
+(11)
+
+where Gp is the signal processing gain at the UAV, and
+σ02 represents the noise power at the receiver. The two-way
+channel power gain between the UAV and the ST is given by
+Gr σrcs λ2
+hm , (dβ0)4 with β0 , GT (4π)
+representing the channel
+3
+m
+power at the reference distance dm = 1 m. Here, Gr denotes
+the ST receiving antenna gain, and σrcs is the Radar Cross2
+can be specified as
+Section (RCS). Consequently, σm
+2
+σm
+=
+
+ρσ02 (dm )4
+,
+pm Gp β0
+
+where ρ is a constant related to the system settings [20].
+
+(12)
+
+5
+
+3
+
+P ROBLEM F ORMULATION
+
+This work aims to minimize the sum LQR cost of the control
+system while maximizing the localization accuracy of the
+ST. Regarding control performance, (3) shows that the LQR
+cost is dictated by the system state xk,n and the control
+input zk,n , both of which are primarily determined by the
+control strategy derived from the observations received by
+the robots. However, extensive research has already focused
+on detailed control strategies. Therefore, this work shifts
+attention to how communication capabilities influence the
+LQR cost in such a wireless control scenario. According to
+[27], achieving a desired LQR cost bk requires the received
+data throughput at the k -th robot to satisfy the rate-LQR
+cost bound
+
+B
+
+X
+
+θm,k Rm,k ≥ Lk , ∀k ∈ K,
+
+As for localization
+accuracy of the ST, MSE, defined as
+
+E k s − ŝ k2 , is typically adopted as the metric. However,
+obtaining a closed-form expression for MSE and minimizing
+it is both challenging and computationally complex. Instead,
+we utilize the determinant of the FIM of s, which is denoted
+as det Φs , to assess the performance of the localization
+system [39]. To compute Φs , the FIM for the distances
+between the UAVs and the ST is derived first, which is
+T
+denoted as Φ (d) with d = [d1 , d2 , . . . , dM ] . Subsequently,
+by applying the chain rule, Φs is expressed as
+T
+
+Φs = J (d) Φ (d) [J (d)] ,
+
+(22)
+
+(13)
+
+m∈M
+
+where B represents the channel bandwidth, and Lk is
+defined as
+1 !
+ι (det Nk Mk ) ι
+ι
+, ∀k ∈ K, (14)
+Lk , gk + log 1 +
+2
+bk − (bk )min
+where gk , log | det Ak | denotes the intrinsic entropy
+rate, indicating the stability of the k -th robot control system.
+Meanwhile, (bk )min represents the minimum LQR cost attainable in the absence of communication constraints and is
+defined as
+
+
+(bk )min = tr (Σvk Sk ) + tr Σk Sk ATk Mk Ak .
+(15)
+
+The terms Sk , Nk , Mk , and Σk are solutions to some
+algebraic Riccati equations concerning the given control parameters, i.e., Ak , Bk , Rk , Qk , Σvk , and Σw
+k [27]. Specifically,
+Sk and Mk are solutions to the following algebraic Riccati
+equations, i.e.,
+
+Sk = Qk + ATk (Sk − Mk ) Ak ,
+
+−1
+Mk = Sk Bk Rk + BTk Sk Bk
+BTk Sk ,
+
+rate between the UAV and the robot, which corresponds
+to improved control performance.
+
+(16)
+(17)
+
+and Σk is derived using the Kalman filter and denoted as
+
+
+T
+Σk = Pk − Kk Ck Pk CTk + Σw
+(18)
+k Kk ,
+
+where Pk is the solution to the algebraic Riccati equation
+
+
+v
+T T
+Pk = Ak Pk ATk − Ak Kk Ck Pk CTk + Σw
+k Kk Ak + Σk ,
+(19)
+and Kk denotes the Kalman filter gain, defined as
+
+−1
+Kk = Pk CTk Ck Pk CTk + Σw
+.
+(20)
+k
+
+The partially observed steady-state covariance matrix Nk is
+given by
+Nk = Ak Σk ATk − Σk + Σvk .
+(21)
+
+These algebraic Riccati equations are solved iteratively using numerical methods, where the equations are updated
+starting from an initial estimate until convergence within
+a predefined tolerance is achieved. Moreover, note that the
+right-hand-side (RHS) of (14) decreases with respect to bk .
+Therefore, a smaller bk requires a higher communication
+
+where J (d) ∈ R3×M denotes the Jacobian matrix of
+d obtained at the true localization target position s =
+T
+[xs , y s , z s ] , which is given by
+
+J (d) =
+
+
+
+
+∂dT
+=
+
+∂s
+
+xq2 −xs
+d2
+y2q −y s
+d2
+z2q −z s
+d2
+
+xq1 −xs
+d1
+y1q −y s
+d1
+z1q −z s
+d1
+
+...
+...
+...
+
+xqM −xs
+d
+q M s
+−y
+yM
+d
+q M s
+zM −z
+dM
+
+
+
+
+ . (23)
+
+
+Moreover,
+for iconvenience, we define the vector d̂ =
+h
+T
+dˆ1 , dˆ2 , . . . , dˆM
+to represent the measured distances be-
+
+tween the
+ ST and
+ all UAVs. Based on (10), we conclude that
+d̂ ∼ N d, Λ2 , where Λ2 is a diagonal matrix constructed
+ 2 M
+from the elements σm
+, which is denoted as
+m=1
+4
+
+4
+
+ρσ02
+Λ =
+diag
+Gp β0
+
+4
+
+(dM )
+(d1 ) (d2 )
+,
+,...,
+p1
+p2
+pM
+
+2
+
+!
+
+.
+
+(24)
+
+According to [40], Φ (d) is given by
+
+
+
+∂d T h 2 i−1 ∂d
+Λ
+∂dϑ
+∂d
+h i
+h i ̺
+
+2
+h
+h
+i
+i
+∂
+Λ2
+∂
+Λ
+−1
+1
+ , ϑ, ̺ ∈ M.
+Λ2
++ tr  Λ2
+2
+∂dϑ
+∂d̺
+
+[Φ (d)]ϑ,̺ =
+
+
+
+(25)
+
+By substituting J (d) and Φ (d) into (22), Φs is written as
+
+
+Φ11
+Φs =  Φ12
+Φ13
+
+Φ12
+Φ22
+Φ23
+
+
+Φ13
+Φ23  ,
+Φ33
+
+(26)
+
+where Φ11 , Φ22 , Φ33 , Φ12 , Φ13 , and Φ23 are given by (27)–
+(32), as shown at the top of the next page.
+Consequently, the joint optimization of the LQR cost,
+power allocation, UAV-robot association, and UAV positions
+
+6
+
+Φ11 =
+
+X
+
+m∈M
+
+Φ22 =
+
+X
+
+m∈M
+
+Φ33 =
+
+X
+
+m∈M
+
+Φ12 =
+
+X
+
+m∈M
+
+Φ13 =
+
+X
+
+m∈M
+
+Φ23 =
+
+X
+
+m∈M
+
+pm Gp β0 (xqm − xs )2
++
+6
+ρσ02
+(dm )
+
+b,Θ,p,{qm }
+
+s.t.
+
+,
+
+(28)
+
+q
+q
+8 (zm
+− z s )2
+pm Gp β0 (zm
+− z s )2
++
+6
+4
+ρσ02
+(dm )
+(dm )
+
+!
+
+,
+
+(29)
+!
+
+,
+
+(30)
+
+!
+q
+q
+− z s ) 8 (xqm − xs ) (zm
+− zs)
+pm Gp β0 (xqm − xs ) (zm
+,
++
+6
+4
+ρσ02
+(dm )
+(dm )
+!
+q
+q
+q
+q
+pm Gp β0 (ym
+− y s ) (zm
+− z s ) 8 (ym
+− y s ) (zm
+− z s)
+.
++
+6
+4
+ρσ02
+(dm )
+(dm )
+
+pm ≥ 0, ∀m ∈ M,
+X
+θm,k ≤ 1, ∀m ∈ M,
+0≤
+
+(31)
+
+(32)
+
+lenge, we propose an efficient iterative algorithm to solve
+problem (33), which will be detailed in the next section.
+(33a)
+(33b)
+(33c)
+(33d)
+
+k∈K
+
+(33e)
+
+m∈M
+
+θm,k ∈ {0, 1} , ∀m ∈ M, k ∈ K,
+(33f)
+2
+2
+k qm − qr k ≥ dmin , ∀m, r ∈ M, m 6= r,
+(33g)
+qm ∈ D, ∀m ∈ M,
+(33h)
+X
+θm,k Rm,k ≥ Lk , ∀k ∈ K,
+(33i)
+B
+m∈M
+
+T
+
+(27)
+
+!
+
+m∈M
+
+θm,k = 1, ∀k ∈ K,
+
+,
+
+q
+q
+pm Gp β0 (xqm − xs ) (ym
+− y s ) 8 (xqm − xs ) (ym
+− ys )
++
+6
+4
+ρσ02
+(dm )
+(dm )
+
+η X
+(1 − η)
+bk −
+det Φs
+c
+Ψ k∈K
+Ψs
+X
+pm ≤ Pmax ,
+
+X
+
+4
+
+(dm )
+
+q
+q
+pm Gp β0 (ym
+− y s )2
+8 (ym
+− y s )2
++
+6
+4
+ρσ02
+(dm )
+(dm )
+
+is formulated as follows
+
+min
+
+!
+8 (xqm − xs )2
+
+where b = [b1 , . . . , bK ] represents the LQR cost vector
+of the control system. In problem (33), η ∈ [0, 1] is a
+weighting factor, with a larger value of η indicating a higher
+priority assigned to control performance compared to localization accuracy. To ensure a fair comparison between
+the control and sensing performance, we normalize these
+c
+s
+two performance increments
+P via Ψ and Ψ , which represent the upper bound of k∈K bk and det Φs , respectively.
+Moreover, (33b) denotes the power budget constraint, where
+Pmax is the maximum transmission power of the network.
+Constraints (33d)-(33f) ensure that the association between
+UAVs and robots adheres to the criteria specified in Section
+2.1. Furthermore, (33g) and (33h) correspond to the collision
+avoidance and flight boundary constraints for UAVs, where
+dmin denotes the minimum allowable distance between any
+two UAVs and D is the permissible flight area for each UAV,
+respectively.
+The formulated problem (33) is non-convex and involves
+mixed binary and continuous variables, making it difficult
+to achieve a globally optimal solution. To tackle this chal-
+
+4
+
+P ROPOSED S OLUTIONS
+
+In this section, an AO-based algorithm is proposed to derive
+a sub-optimal solution to problem (33). Specifically, we
+employ a two-step method to initially optimize the LQR cost
+b with respect to Θ, P, and {qm }. Then, problem (33) can be
+transformed into an equivalent form to optimize the UAVrobot association, power allocation, and UAV positions,
+which is further decomposed into three sub-problems and
+solved using the AO method.
+To start with, the following Proposition gives the closedform of the optimal LQR cost b, denoted as b⋆ , with respect
+to Θ, P, and {qm }.
+Proposition 1. Given arbitrary Θ, P, and {qm }, the closedform expression of the optimal LQR cost to problem (33) is given
+by
+1
+
+b⋆k = bk (Θ, p, {qm }) =
+
+ι (det Nk Mk ) ι
++(bk )min , ∀k ∈ K,
+2fk (Θ,p,{qm }) − 1
+(34)
+
+with
+
+2
+fk (p, Θ, {qm }) =
+ι
+
+B
+
+X
+
+m∈M
+
+!
+
+θm,k Rm,k − gk , ∀k ∈ K.
+(35)
+
+Proof. Note that only constraint (33i) imposes restrictions on
+b in problem (33). Hence, given arbitrary Θ, P, and {qm },
+optimizing b reduces to solving the following problem
+η X
+bk
+(36a)
+min
+b
+Ψc k∈K
+X
+θm,k Rm,k ≥ Lk , ∀k ∈ K.
+(36b)
+s.t. B
+m∈M
+
+It is observed that the RHS of (36b) is a monotonically
+decreasing function of bk . Thus, the feasible solution of bk is
+
+7
+
+P
+
+k∈K bk ,
+
+Proposition 2. Function bk (Θ) is convex with respect to Θ
+under the assuredly stable scenario.
+
+Using Proposition 1, we derive the closed-form expression of the optimal LQR cost to problem (33) with respect
+to Θ, P, and {qm }. Therefore, plugging (34) into (33), the
+optimization problem is reformulated as
+
+Proof. The first order derivation of function bk (Θ) is given
+by
+2fk (Θ) fk′ (Θ)
+b′k (Θ) = −Ωk ln 2
+(41)
+2 ,
+2fk (Θ) − 1
+P
+where fk′ (Θ) = 2ι B m∈M Rm,k > 0. Subsequently, the
+second order derivation of function bk (Θ) is calculated as
+
+achieved by taking equality in (36b) to minimize
+which is equivalent to (34), completing the proof. 2
+
+η X
+(1 − η)
+det Φs
+bk (Θ, p, {qm }) −
+Θ,p,{qm } Ψc
+Ψs
+k∈K
+X
+pm ≤ Pmax ,
+s.t.
+min
+
+(37a)
+(37b)
+
+m∈M
+
+pm ≥ 0, ∀m ∈ M,
+X
+θm,k ≤ 1, ∀m ∈ M,
+0≤
+
+(37c)
+(37d)
+
+k∈K
+
+X
+
+θm,k = 1, ∀k ∈ K,
+
+(37e)
+
+m∈M
+
+θm,k ∈ {0, 1} , ∀m ∈ M, k ∈ K,
+(37f)
+2
+2
+k qm − qr k ≥ dmin , ∀m, r ∈ M, m 6= r, (37g)
+qm ∈ D, ∀m ∈ M.
+(37h)
+Although problem (37) is easier to handle, it is still challenging to solve due to its complex objective function and
+the coupling of mixed binary and continuous variables. We
+then decouple problem (37) into three sub-problems, i.e.,
+UAV-robot association, power allocation, and UAV position
+design.
+
+Proposition 2 indicates the convexity of the objective
+function of problem (38). However, it is still challenging to
+tackle directly due to the constraint (38d). By converting
+θm,k into an equivalent continuous form, problem (38) is
+equivalently transformed into
+η X
+min
+bk (Θ)
+(43a)
+Θ
+Ψc k∈K
+
+s.t. 0 ≤ θm,k ≤ 1, ∀m ∈ M, k ∈ K,
+X X
+
+2
+θm,k − θm,k
+≤ 0,
+
+(38a)
+(38b)
+
+k∈K
+
+θm,k = 1, ∀k ∈ K,
+
+(38c)
+
+m∈M
+
+θm,k ∈ {0, 1} , ∀m ∈ M, k ∈ K,
+
+(38d)
+
+η X
+(1 − η)
+det Φs .
+bk (Θ) −
+c
+Ψ k∈K
+Ψs
+
+(39)
+
+where
+
+ϕ (Θ) =
+
+To solve the UAV-robot association problem, the
+concave-convex property of the function bk (Θ) is analyzed
+first. For convenience, the expression is rewritten as
+
+bk (Θ) =
+
+Ωk
++ (bk )min ,
+f
+(Θ)
+k
+2
+−1
+
+(43b)
+
+(43c)
+
+m∈Mk∈K
+
+In this subsection, we focus on optimizing the UAV-robot
+association with the given power allocation and UAV positions. The corresponding optimization problem is formulated as
+
+X
+
+2fk (Θ) + 1
+3 . (42)
+2fk (Θ) − 1
+
+It follows that b′′k (Θ) >P0 holds as long as 2fk (Θ) > 1,
+which is equivalent to B m∈M θm,k Rm,k ≫ gk . This condition is always satisfied under the assuredly stable scheme.
+Therefore, the function bk (Θ) is convex under the assuredly
+stable scenario, completing the proof.
+
+4.1 UAV-Robot Association
+
+min ϕ (Θ)
+Θ
+X
+θm,k ≤ 1, ∀m ∈ M,
+s.t. 0 ≤
+
+2
+
+2
+
+b′′k (Θ) = 2Ωk (ln 2) [fk′ (Θ)] fk (Θ)
+
+(40)
+
+1
+
+with Ωk = ι (det Nk Mk ) ι .
+
+(38b), (38c),
+
+where constraints (43b) and (43c) ensure that the value
+of θm,k is restricted to either 0 or 1, which is equivalent
+to constraint (38d). Although (43c) remains non-convex, it
+has been expressed as the difference of two convex functions, making it solvable via DC programming [41]. To
+approximate P
+(43c), we
+the first-order Taylor series
+Pemploy
+2
+expansion of m∈M k∈K θm,k
+as
+
+
+
+X X (t ) 
+X X (t ) 2
+(t1 )
+1
+1
+θm,k
+θm,k − θm,k
+≤ 0,
++2
+θm,k
+m∈Mk∈K
+
+m∈Mk∈K
+
+(44)
+where t1 denotes the t1 -th iteration of the DC programming.
+Since the left-hand-side (LHS) of (44) cannot be smaller than
+0, finding a solution directly is challenging. To circumvent
+this difficulty, we then incorporate (44) into the objective
+function using the penalty technique, further transforming
+problem (43) into
+X X
+η X
+θm,k + φ (Θ) ,
+(45a)
+bk (Θ) + µ
+min
+c
+Θ
+Ψ k∈K
+m∈Mk∈K
+
+s.t. (38b), (38c), (43b),
+
+(45b)
+
+where
+
+φ (Θ) = µ
+2. In this work, we consider an assuredly stable scenario, where
+the data throughput
+is substantially larger than the intrinsic entropy
+P
+rate, i.e., B m∈M θm,k Rm,k ≫ gk , ∀k ∈ K, to guarantee a positive
+denominator in (34) [28]. This implies that the control system operates
+well away from the instability threshold, allowing the focus to shift
+towards optimizing control performance rather than ensuring system
+stability.
+
+(43d)
+
+
+
+X X  (t ) 2
+(t1 )
+(t1 )
+1
+,
+θm,k − θm,k
++ 2θm,k
+θm,k
+
+m∈Mk∈K
+
+(46)
+and µ is a non-negative parameter used to penalize the
+objective function.
+The detailed steps of the penalty-DC algorithm are
+outlined in Algorithm 1. First, the feasible starting point
+
+8
+
+Algorithm 1 Penalty-DC Optimization Algorithm for UAVRobot Association
+1: Initialize t1 ← 0, Θ(t1 ) , µ(t1 ) , ω (t1 ) , maximum number
+of iterations t1,max , tolerance ε, and initial
+penalty parameter µmax .
+2: repeat
+3:
+t1 ← t1 + 1 .
+4:
+Solve problem (45) tonobtain Θ(t1 ) ando ω (t1 ) .
+5:
+Update µ(t1 ) ← min Aµ(t1 −1) , µmax .
+(t1 )
+
+(t1 −1)
+
+−ω
+|< ε or t1 > t1,max .
+6: until | ω ω(t
+1 −1)
+⋆
+(t1 )
+7: Output Θ ← Θ .
+
+Θ(t1 ) , the initial penalty parameter µ(t1 ) , and ω (t1 ) , which
+represents the value of the objective function of problem
+(45), are initialized. Next, problem (45) is solved via convex
+optimization tools, such as CVX [42]. Moreover, it is worth
+noting that the penalty parameter µ can be initialized with
+a small value and increased gradually by multiplying it
+with a positive constant
+ A until problem (45) converges.
+(t1 )
+(t1 −1)
+i.e., | ω
+−ω
+/ω (t1 −1) |< ε, with ε denoting the
+maximum permissible error.
+4.2 Power Allocation
+
+min ϕ (p)
+p
+X
+pm ≤ Pmax ,
+s.t.
+
+(47b)
+
+pm ≥ 0, ∀m ∈ M,
+
+(47c)
+
+η X
+(1 − η)
+bk (p) −
+det Φs (p) .
+Ψc k∈K
+Ψs
+
+(48)
+
+(47a)
+
+m∈M
+
+where
+
+p
+
+In this section, we focus on optimizing the UAV positions
+based on the optimized UAV-robot association and power
+allocation. The corresponding optimization problem is formulated as
+
+min
+
+ϕ ({qm })
+
+(50a)
+
+s.t.
+
+k qm − qr k2 ≥ d2min , ∀m, r ∈ M, m 6= r,
+qm ∈ D, ∀m ∈ M,
+
+(50b)
+
+{qm }
+
+(50c)
+
+k p′ − ρ△ − p k
+
+s.t. (47b), (47c).
+
+η X
+(1 − η)
+bk ({qm }) −
+det Φs ({qm }) .
+c
+Ψ k∈K
+Ψs
+(51)
+Problem (50) is difficult to solve due to the non-convex objective function and constraint (50b). Therefore, the successive convex approximation (SCA) methodology is employed
+to approximate the non-convex terms via first-order Taylor
+series expansion [44]. Since constraint (50b) is convex with
+respect to both qm and qr , it is lower bounded by [45]
+ϕ ({qm }) =
+
+
+T
+(t2 )
+k qm − qr k2 ≥2 qm
+− qr(t2 ) (qm − qr )
+(t2 )
+− k qm
+− qr(t2 ) k2 , ∀m 6= r,
+
+Note that problem (47) is a linearly constrained optimization
+problem with a non-convex objective function. Thus, it can
+be optimally solved through the PGD method [43]. The
+pseudocode of the PGD-based algorithm is given in Algorithm 2. In Algorithm 2, the process begins with initializing
+a feasible starting point, assuming equal power allocation
+among all UAVs, along with an initial step size ρ and
+a convergence tolerance ε. At each iteration, the search
+direction is determined by computing the gradient of ϕ (p)
+with respect to p. Then, p is updated through a projection
+onto the feasible set P , i.e., ΨP (p′ − ρ△) : RM → P , which
+is obtained by solving the following convex problem
+
+min
+
+4.3 UAV Positions Optimization and Overall Algorithm
+
+with
+
+In this section, we optimize the power allocation under fixed
+UAV positions and the updated UAV-robot association. The
+corresponding power allocation problem is given by
+
+ϕ (p) =
+
+Algorithm 2 PGD-Based Algorithm for Power Allocation
+i
+h
+max
+max
+, . . . , PM
+,
+1: Initialize A starting feasible point p ← PM
+initial step size ρ, and tolerance ε.
+2: repeat
+3:
+Save the previous direction vector p′ ← p.
+4:
+Determine a search direction △ , ∇ϕp .
+ρ
+.
+5:
+Choose a step size ρ ← k∇ϕ
+pk
+′
+6:
+Update and p ← ΨP (p − ρ△).
+7: until k p − p′ k< ε
+8: Output p⋆ ← p.
+
+(49a)
+
+(t )
+
+(52)
+
+(t )
+
+with qm2 and qr 2 denoting the approximation of the mth and j -th UAV’s position at iteration t2 . Next, we address
+the non-convex objective function. It is worth noting that
+q
+the function det Φ (s) involves the 3D coordinates xqm , ym
+,
+q
+and zm , which are coupled with each other, thereby complicating the optimization of UAV positions significantly. To
+simplify the optimization, we reformulate (27)–(32) with
+q
+respect to qm instead of the individual coordinates xqm , ym
+,
+q
+and zm
+. The reformulated expressions are presented in (53),
+T
+as shown at the top of the next page, with ξ 1 = [1, 0, 0] ,
+T
+T
+ξ 2 = [0, 1, 0] , and ξ3 = [0, 0, 1] , respectively. Subsequently, ϕ ({qm }) is approximated as (54) at the given feasi(t )
+ble point qm2 using the first-order Taylor series expansion.
+
+(49b)
+
+Furthermore, the step size ρ is gradually reduced by multi1
+′
+plying it with 1+
+ρ̂ , until k p − p k< ε, where ρ̂ is a small
+positive constant.
+
+ψ=ϕ
+
+n
+
+(t2 )
+qm
+
+o
+
++
+
+M
+X
+
+m=1
+
+i 
+
+h
+(t )
+(t ) T
+(t2 )
+qm − qm
+.
+∇ϕqm q1 2 , ..., qM2
+(54)
+
+9
+
+Φij =
+
+
+
+ Pm Gp β0
+ρσ02
+m∈M
+X
+
+
+
+
+
+ξTi [qm − s] ξTj [qm − s]
+6
+
+(dm )
+
+Algorithm 3 AO-Based Algorithm for Solving Original
+Problem (33)
+o
+n
+(t)
+1: Initialize t ← 0, p(t) , qm , δ (t) , tolerance ε, and
+maximum number of iterations tmax ,
+2: repeat
+3:
+t ← t + 1.
+4:
+Solve problem
+Algorithm 1 with given
+o
+n (38) using
+(t−1)
+to obtain Θ(t) .
+p(t−1) and qm
+
+5:
+
+6:
+
+Solve
+problem
+(47) using Algorithm 2, Θ(t) , and
+o
+n
+(t−1)
+to obtain p(t) .
+qm
+(t)
+(t)
+Solve problem
+o (50) using SCA, Θ , and p to
+n
+(t)
+obtain qm .
+(t)
+
+(t−1)
+
+7: until | δ δ−δ
+(t−1)
+
+|< ε or t > tmax .
+o
+n
+(t)
+8: Output Θ ← Θ , p⋆ ← p(t) , and {q⋆m } ← qm .
+⋆
+
+(t)
+
+As a result, the problem (50) is approximate to solving a set
+of convex optimization problems
+
+min
+
+ψ
+
+s.t.
+
+
+T
+(t2 )
+2 qm
+− qr(t2 ) (qm − qr )
+
+{qm }
+
+(55a)
+
+(t2 )
+− k qm
+− qr(t2 ) k2 ≥ d2min , ∀m, r ∈ M, m 6= r,
+(55b)
+(50c),
+(55c)
+
+which can be solved using standard convex optimization
+tools such as CVX [42].
+Finally, an AO-based algorithm is proposed to alternately optimize the UAV-robot association, power allocation, and UAV positions. The detailed steps are summarized
+(t)
+in Algorithm
+o 3. In Algorithm 3, we first initialize the p
+n
+(t)
+and qm that satisfy constraints (37b), (37c), (37g), and
+(37h), the maximum number of iterations tmax , and the
+value of the objective function δ (t) of problem (37). Next,
+problems (38), (47), and (50) are solved alternately with
+other optimized variables until convergence. Since the optimal solutions of problems (38), (47), and (50) only provide a
+near-optimal solution to problem (37), analyzing the convergence of the AO-based algorithm is essential. For simplicity,
+we define δ (p, Θ, {qm }), δ1 (p, Θ, {qm }), δ2 (p, Θ, {qm }),
+and δ3 (p, Θ, {qm }) as the objective function of problems
+(37), (38), (47), and (50), respectively. In the fourth step
+(t)
+of Algorithm
+n 3, theo optimal Θ is obtained by the given
+(t−1)
+(t−1)
+. Thus, we have
+p
+and qm
+
+
+
+
+8 ξ Ti [qm − s] ξ Tj [qm − s]
+ , i, j = 1, 2, 3.
++
+4
+(dm )
+
+(53)
+
+o
+n
+(t−1)
+and the updated Θ(t) ,
+Next, in the fifth step, given qm
+it holds that
+
+n
+o
+
+n
+o
+(t−1)
+(t−1)
+δ1 p(t−1) , Θ(t) , qm
+≥ δ2 p(t) , Θ(t) , qm
+.
+(57)
+n
+o
+(t)
+Similarly, following the sixth step, we obtain the qm with
+optimized Θ(t) and p(t) , which implies
+
+n
+o
+
+n
+o
+(t−1)
+δ2 p(t) , Θ(t) , qm
+≥ δ3 p(t) , Θ(t) , q(t)
+m
+
+n
+o
+= δ p(t) , Θ(t) , q(t)
+,
+m
+
+(58)
+
+Consequently, it follows that
+
+n
+o
+
+n
+o
+(t−1)
+δ p(t−1) , Θ(t−1) , qm
+≥ δ p(t) , Θ(t) , q(t)
+,
+m
+(59)
+which indicates that the objective value of problem (37)
+decreases with each iteration. Furthermore, considering the
+objective function of (37) is lower bounded by a finite value
+due to the minimum LQR cost (bk )min and the upper bound
+Ψs on sensing accuracy, the convergence of the proposed
+AO-based algorithm is guaranteed.
+Next, we analyze the computational complexity of Algorithm 3. The computational complexity of the algorithm
+1 for UAV-robot association primarily arises from problem
+(45) at each iteration, which is solved via the standard
+interior-point method. Given the iteration
+ number T1 , the
+3.5
+complexity of Algorithm 1 is C1 = O T1 (M K)
+[44].
+The computational complexity of algorithm 2 lies in the gradient calculation of ϕ (p) with respect to p at each iteration,
+resulting in the computational
+complexity
+of Algorithm 2
+
+
+being C2 = O log 1/ε2 KM 2 [43]. The UAV positions
+are optimized using the standard interior-point method
+and SCAapproach, whose computational complexity is
+C3 = O T3 (3M )3.5 with T3 representing the iteration
+number of SCA. Consequently, the total computational complexity of Algorithm 3 is Ctot = O (T (C1 + C2 + C3 )), with
+T denoting the required iteration numbers.
+
+5
+
+S IMULATION R ESULTS
+
+In this section, we present the simulation results derived
+from the proposed algorithm, which simultaneously optimizes control and sensing performance in a multi-UAV
+cooperative network with FBL transmission. In the simulation, we assume that 4 UAVs fly in a permissible flight
+area D, defined as a rectangular region with dimensions
+q
+100 × 100 m2 and a fixed height zm
+= 100 m, ∀m ∈ M. The
+minimum collision avoidance distance is set to dmin = 25 m.
+
+n
+o
+
+n
+o Furthermore, we set α0 = −49 dB and β0 = −50 dB,
+(t−1)
+(t−1)
+(t−1)
+(t−1)
+(t−1)
+(t−1)
+respectively, and the noise power at the receiver is set to
+δ p
+,Θ
+, qm
+= δ1 p
+,Θ
+, qm
+σk2 = σ02 = −110 dBm, ∀k ∈ K. The bandwidth of the
+
+n
+o
+(t)
+(t−1)
+(t−1)
+≥ δ1 p
+, Θ , qm
+. shared frequency channel is set as B = 500 kHz, while
+(56) other parameters are set as Gp = 0.1 × B and ρ = 200 [20],
+
+10
+29
+
+LQR cost
+Determinant of FIM
+
+9.5
+
+28
+
+8.5
+
+26
+
+8
+25
+7.5
+24
+7
+23
+
+Determinant of FIM
+
+9
+
+27
+
+LQR cost
+
+10
+
+6.5
+
+22
+
+6
+
+21
+1
+
+2
+
+3
+
+4
+
+5
+6
+Iteration index
+
+7
+
+8
+
+9
+
+5.5
+10
+
+Fig. 2. Convergence of the proposed algorithm, with η =
+0.5, Pmax = −1 dBW, Σw
+k = 0.001 × Iζ , and lm,k = 1024 bit.
+
+[21]. Regarding control parameters, the intrinsic entropy
+rate gk is randomly selected from gk ∈ [0, 50] , ∀k ∈ K. The
+dimensions of the system state and observation result are
+both set to 25, i.e., ι = ζ = 25. The covariance matrix of the
+system noise is defined as Σvk = 0.001×Iι . The control input
+matrix and observation matrix are both identity matrices,
+and the weight matrices of LQR cost are set as Qk = Iι
+and Rk = 0 [28]. Moreover, the normalization parameters,
+Ψc and Ψs , are set to 30 and 12, respectively. Throughout
+the simulations, control performance, sensing performance,
+and UAV positions are analyzed under variations in the
+power budget, observation noise variance, blocklength of
+the command signals, and weighting factor.
+Before evaluating the system performance, we introduce several benchmark schemes for comparison. (a) Equal
+power allocation: This scheme distributes the available
+power budget Pmax evenly among all M UAVs, without
+considering the specific control or sensing requirements of
+individual UAVs. (b) Random UAV positioning: In this
+scheme, UAV deployment positions are randomly generated while ensuring compliance with collision avoidance
+constraints and flight boundaries. (c) Water-filling method:
+This approach dynamically allocates power to UAVs based
+on their channel conditions, prioritizing UAVs with stronger
+communication links while maintaining an adaptive power
+distribution strategy [46]. (d) Sensing-only scheme: This
+scheme focuses solely on optimizing sensing performance
+without considering control objectives.
+The convergence of the proposed algorithm is first analyzed. As illustrated in Fig. 2, both the LQR cost and the
+determinant of the FIM exhibit rapid monotonic changes,
+achieving optimal solutions within only a few iterations.
+This result indicates the convergence of the overall algorithm.
+Fig. 3 illustrates the impact of the weighting factor η
+on UAV positions and their association with robots. When
+η = 0.1 (Fig. 3(a)), UAVs are primarily positioned around
+the ST, focusing on sensing tasks, as indicated by the strong
+presence of sensing communication links. As η increases to
+0.5 (Fig. 3(b)), UAVs gradually shift their positions toward
+the robots, balancing sensing and control tasks. When η
+
+further increases to 0.9 (Fig. 3(c)), UAVs are predominantly
+positioned near the robots, prioritizing control over sensing.
+However, UAVs dedicated to sensing remain close to the
+ST regardless of η , demonstrating that their role remains
+independent of the weighting factor. This shift in UAV positions highlights the trade-off between sensing and control
+performance, with UAVs adapting their locations based on
+the relative importance of these objectives.
+Next, we explore the impact of observation and communication capabilities on control system performance. Fig. 4
+depicts the contours of the LQR cost with varying power
+2
+budget Pmax and observation noise variances σw
+(Σw
+k =
+2
+2
+2
+σw,k × Iζ and σw,k = σw , ∀k ∈ K). As seen from the picture, the LQR cost increases with higher observation noise
+variance, suggesting that control performance deteriorates
+with reduced observation capability. This degradation can
+be mitigated by enhancing communication capabilities, as
+the LQR cost decreases with an increasing power budget
+Pmax . Moreover, when the power budget becomes sufficiently large, the LQR cost decreases slowly and converges
+to the lower bound (bk )min , which can be further reduced
+by enhancing the observation capability. This result highlights the nonlinear interplay between control performance
+and communication capability, emphasizing that enhancing
+communication alone cannot fully counteract the adverse
+effects of diminished observation capability.
+Based on Fig. 5, the proposed algorithm demonstrates
+significant advantages over the other methods in terms of
+minimizing the LQR cost, which directly indicates better
+control performance. Compared to the equal power allocation and random UAV positioning schemes, our proposed
+approach achieves consistently lower LQR costs across all
+power constraint levels. Specifically, while the equal power
+allocation method shows a nearly constant and higher LQR
+cost due to the lack of optimization of power allocation,
+and the random UAV positioning method exhibits marginal
+improvements, the proposed algorithm effectively leverages
+power optimization and UAV positioning to significantly
+reduce the LQR cost. Additionally, compared to the waterfilling method, which also performs better than the baseline
+schemes, the proposed method achieves superior results,
+particularly under stricter power constraints. This highlights the efficiency and robustness of the proposed method
+for optimizing both power allocation and UAV positioning
+for enhanced control performance.
+Next, to examine the impact of FBL transmission on
+control performance, Fig. 6 illustrates the relationship between the LQR cost and the blocklength of the transmitted
+signals under various power budgets, i.e., Pmax = −3 dBW,
+Pmax = −2 dBW, Pmax = −1 dBW, and Pmax = −0 dBW.
+Note that a longer blocklength leads to higher data throughput, which, in turn, enhances communication capabilities
+and improves the control performance. Thus, we observe
+that the LQR cost decreases as the blocklength increases.
+Similar to Fig. 4, one can find that the LQR cost remains
+constrained by a lower bound, even when the blocklength
+becomes sufficiently large. This limitation arises because,
+although a larger blocklength enhances communication capability, the resulting improvement in control performance
+is fundamentally limited and eventually converges toward
+a scenario resembling infinite blocklength transmission.
+
+100
+
+100
+
+80
+
+80
+
+80
+
+60
+
+60
+
+60
+
+40
+
+40
+
+UAV for sensing
+UAV for sensing and control
+ST
+GUs
+communication links for control
+communication links for sensing
+
+20
+
+Y (m)
+
+100
+
+Y (m)
+
+Y (m)
+
+11
+
+20
+
+0
+
+40
+
+UAV for sensing
+UAV for sensing and control
+ST
+GUs
+communication links for control
+communication links for sensing
+
+20
+
+0
+0
+
+20
+
+40
+
+60
+
+80
+
+100
+
+UAV for sensing
+UAV for sensing and control
+ST
+GUs
+communication links for control
+communication links for sensing
+
+0
+0
+
+20
+
+40
+
+X (m)
+
+60
+
+80
+
+100
+
+0
+
+20
+
+40
+
+X (m)
+
+(a)
+
+60
+
+80
+
+100
+
+X (m)
+
+(b)
+
+(c)
+
+Fig. 3. UAV positions and UAV-robot association with different weighting factors with Pmax = −1 dBW, Σw
+k = 0.001 × Iζ ,
+and lm,k = 1024 bit. (a) η = 0.1. (b) η = 0.5. (c) η = 0.9.
+32
+
+21
+
+20
+
+.8
+
+6
+
+28
+
+LQR cost
+
+.9
+20
+
+21.2
+
+21.1
+
+26
+
+19
+
+24
+
+18.8
+
+20.9
+
+5
+20.9
+
+20.7
+21.1
+
+4
+
+30
+
+21.2
+
+20.8
+
+7
+
+21
+
+Observing noise variance
+
+8
+
+21.3
+
+21
+
+10
+
+9
+
+-3
+
+20.7
+
+20
+
+20.6
+
+8
+1
+-2
+
+22
+
+18.6
+1000
+
+.7
+
+20
+
+3
+
+20.6
+
+20.
+
+2
+
+20.8
+
+.6
+
+20
+
+-1.5
+
+-1
+Power constraint (dBW)
+
+20.5
+
+-0.5
+
+20.5
+
+0
+
+18
+256
+
+512
+
+768
+Blocklength (bit)
+
+1100
+
+1024
+
+1200
+
+1280
+
+Fig. 6. LQR cost versus the blocklength of the ISAC signals
+with η = 0.5 and Σw
+k = 0.001 × Iζ .
+
+Fig. 4. LQR cost with different power constraints and observation noise variances with η = 0.5 and lm,k = 1024 bit.
+
+25
+Equal power allocation
+Random UAV positioning
+Water filling
+Proposed method
+
+24
+
+LQR cost
+
+23
+
+22
+
+21
+
+20
+
+19
+-2
+
+-1.5
+
+-1
+Power constraint (dBW)
+
+-0.5
+
+0
+
+Fig. 5. LQR cost versus power constraint under different
+schemes with η = 0.5 and Σw
+k = 0.001 × Iζ .
+
+Fig. 7 depicts the sensing performance versus power
+constraint. Rather than using the determinant of the FIM, we
+employ the sum CRB of xs , y s , and z s as the estimation metric, as it directly provides a lower bound for the root mean
+squared error (RMSE), making it a more intuitive measure
+of localization accuracy. The CRB is obtained by computing
+the trace of the inverse of the FIM, following standard
+estimation theory [40]. The RMSE of the ST estimation is
+evaluated through a Monte Carlo simulation with 100 trials.
+In addition, to highlight the advantages of our joint optimization algorithm, we compare the proposed algorithm
+with the sensing-only scheme, where the power budget is
+set to half of that used in the co-design scheme to ensure
+fairness. As expected, it is evident that the joint optimization
+scheme outperforms the sensing-only scheme in terms of
+sensing performance. Moreover, as shown in Fig. 7, both
+CRB and RMSE decrease with an increase in power budget,
+which is because the rise in power contributes to better
+SNR of the echoes received by the UAV, enabling a greater
+localization performance for the ST. However, despite the
+improvement in sensing performance with an increasing
+power budget, the CRB and RMSE decrease slowly when
+the power budget becomes large. This occurs because once
+
+12
+30
+
+0.7
+RMSE-sensing only
+CRB-sensing only
+RMSE-proposed method
+CRB-proposed method
+
+0.6
+
+28
+
+26
+0.4
+
+LQR cost
+
+Estimation error (m)
+
+0.5
+
+0.3
+
+24
+
+22
+0.2
+
+20
+
+0.1
+
+0
+-2
+
+-1.5
+
+-1
+Power constraint (W)
+
+-0.5
+
+18
+0.1
+
+0
+
+0.3
+
+0.5
+Weighting factor
+
+0.7
+
+0.9
+
+0.7
+
+0.9
+
+(a)
+
+Fig. 7. Sensing performance versus power constraint with
+η = 0.5, Σw
+k = 0.001 × Iζ , and lm,k = 1024 bit.
+
+4.5
+4
+
+6
+
+C ONCLUSION
+
+This work explored the co-design of integrated sensing,
+communication, and control in a multi-UAV cooperative
+system with FBL transmission. The LQR cost, power allocation, UAV-robot association, and UAV positions were jointly
+optimized to maximize sensing and control performance
+while considering rate-LQR cost bounds, power budget, collision avoidance, and flight boundary constraints. To tackle
+the problem, we first derived a closed-form expression of the
+optimal LQR cost concerning other variables. The problem
+was then decomposed into three sub-problems, which were
+solved alternately using the AO method. Specifically, the
+UAV-robot association was optimized via DC programming,
+with the convexity of the objective function analyzed. Next,
+the PGD method was employed to optimize power allocation. Subsequently, UAV positions were designed based
+on the updated LQR cost, power allocation, and UAVrobot association. Finally, an efficient AO-based algorithm
+was proposed, and its convergence properties and computational complexity were thoroughly analyzed. Simulation
+
+3.5
+3
+CRB (m)
+
+SNR reaches a sufficiently high level, the marginal impact of
+additional power increases diminishes, leading to a slower
+reduction in CRB and RMSE.
+To better understand the trade-off between sensing and
+control performance, Fig. 8 examines how the weighting
+factor η quantitatively affects the performance metrics, i.e.,
+the LQR cost for control and the CRB for sensing. It can
+be observed that there exists a clear trade-off between the
+LQR cost and the CRB. Specifically, as η increases, the
+LQR cost gradually decreases, indicating improved control
+performance, while the CRB increases notably, reflecting a
+degradation in sensing accuracy. Moreover, Fig. 8 reveals
+that the CRB is more sensitive to changes in η , particularly at
+larger η values, compared to the LQR cost, highlighting the
+asymmetry in their responses to the weighting factor. This
+demonstrates that the trade-off between control and sensing
+performance can be adjusted, but the degree of influence
+differs for the two metrics.
+
+2.5
+2
+1.5
+1
+0.5
+0
+0.1
+
+0.3
+
+0.5
+Weighting factor
+
+(b)
+
+Fig. 8. The trade-off between control and sensing versus
+weighting factor η with Σw
+k = 0.001 × Iζ and lm,k =
+1024 bit. (a) LQR cost versus weighting factor η . (b) CRB
+versus weighting factor η .
+results were presented to demonstrate the effectiveness of
+the proposed optimization algorithm.
+
+R EFERENCES
+[1]
+
+[2]
+[3]
+
+[4]
+
+[5]
+
+N. H. Motlagh, T. Taleb, and O. Arouk, “Low-altitude
+unmanned aerial vehicles-based internet of things services:
+Comprehensive survey and future perspectives,” IEEE Internet
+Things J., vol. 3, pp. 899–922, Dec. 2016. [Online]. Available:
+https://api.semanticscholar.org/CorpusID:17791330
+N. H. Motlagh, M. Bagaa, and T. Taleb, “UAV-based IoT platform:
+A crowd surveillance use case,” IEEE Commun. Mag., vol. 55, no. 2,
+pp. 128–134, Feb. 2017.
+B. Galkin, J. Kibilda, and L. A. DaSilva, “Coverage analysis for
+low-altitude UAV networks in urban environments,” in GLOBECOM 2017-2017 IEEE Global Communications Conference. IEEE,
+2017, pp. 1–6.
+J. Mu, R. Zhang, Y. Cui, N. Gao, and X. Jing, “UAV meets
+integrated sensing and communication: Challenges and future
+directions,” IEEE Commun. Mag., vol. 61, no. 5, pp. 62–67, May
+2023.
+M. Mozaffari, W. Saad, M. Bennis, and M. Debbah, “Mobile
+unmanned aerial vehicles (UAVs) for energy-efficient internet of
+things communications,” IEEE Trans. Wireless Commun., vol. 16,
+no. 11, pp. 7574–7589, Nov. 2017.
+
+13
+
+X. Zhou, Q. Wu, S. Yan, F. Shu, and J. Li, “UAV-enabled secure
+manned aerial vehicles: A review,” IEEE Access, vol. 8, pp. 195 142–
+communications: Joint trajectory and transmit power optimiza195 169, Oct. 2020.
+tion,” IEEE Trans. Veh. Technol., vol. 68, no. 4, pp. 4069–4073, Apr.
+[26] G. N. Nair, F. Fagnani, S. Zampieri, and R. J. Evans, “Feedback
+2019.
+control under data rate constraints: An overview,” Proc. IEEE,
+vol. 95, no. 1, pp. 108–137, Jan. 2007.
+[7] Y. Cai, Z. Wei, R. Li, D. W. K. Ng, and J. Yuan, “Joint trajectory
+and resource allocation design for energy-efficient secure UAV [27] V. Kostina and B. Hassibi, “Rate-cost tradeoffs in control,” IEEE
+Trans. Autom. Control, vol. 64, no. 11, pp. 4525–4540, Nov. 2019.
+communication systems,” IEEE Trans. Commun., vol. 68, no. 7, pp.
+[28] C. Lei, W. Feng, J. Wang, S. Jin, and N. Ge, “Control-oriented
+4536–4553, Jul. 2020.
+power allocation for integrated satellite-UAV networks,” IEEE
+[8] F. Dong, F. Liu, Y. Cui, S. Lu, and Y. Li, “Sensing as a service in 6G
+Wireless Commun. Lett., vol. 12, no. 5, pp. 883–887, May 2023.
+perceptive mobile networks: Architecture, advances, and the road
+[29] G. Durisi, T. Koch, and P. Popovski, “Toward massive, ultrareliahead,” IEEE Network, vol. 38, no. 2, pp. 87–96, Mar. 2024.
+able, and low-latency wireless communication with short pack[9] L. He, P. Gong, X. Zhang, and Z. Wang, “The bearing-only target
+ets,” Proc. IEEE, vol. 104, no. 9, pp. 1711–1726, Sep. 2016.
+localization via the single UAV: Asymptotically unbiased closed[30] J. Zhu, H. Jin, Y. He, F. Fang, W. Huang, and Z. Zhang, “Joint
+form solution and path planning,” IEEE Access, vol. 7, pp. 153 592–
+optimization of user scheduling, rate allocation, and beamforming
+153 604, Oct. 2019.
+for RSMA finite blocklength transmission,” IEEE Internet Things J.,
+[10] S. Xu, K. Dogançay, and H. Hmam, “Distributed path optimization
+vol. 11, no. 17, pp. 27 904–27 915, Sep. 2024.
+of multiple UAVs for AOA target localization,” in 2016 IEEE
+International Conference on Acoustics, Speech and Signal Processing [31] X. Zhou, Q. Wu, S. Yan, F. Shu, and J. Li, “UAV-enabled secure
+communications: Joint trajectory and transmit power optimiza(ICASSP), 2016, pp. 3141–3145.
+tion,” IEEE Trans. Veh. Technol., vol. 68, no. 4, pp. 4069–4073, Apr.
+[11] Y. Wu, Y. Sui, and G. Wang, “Vision-based real-time aerial object
+2019.
+localization and tracking for UAV sensing system,” IEEE Access,
+[32] Y. Polyanskiy, H. V. Poor, and S. Verdu, “Channel coding rate in the
+vol. 5, pp. 23 969–23 978, Oct. 2017.
+finite blocklength regime,” IEEE Trans. Inf. Theory, vol. 56, no. 5,
+[12] J. Wang, N. Varshney, C. Gentile, S. Blandino, J. Chuang, and
+pp. 2307–2359, May 2010.
+N. Golmie, “Integrated sensing and communication: Enabling [33] S. He, Z. An, J. Zhu, J. Zhang, Y. Huang, and Y. Zhang, “Beamformtechniques, applications, tools and data sets, standardization, and
+ing design for multiuser uRLLC with finite blocklength transmisfuture directions,” IEEE Internet Things J., vol. 9, no. 23, pp. 23 416–
+sion,” IEEE Trans. Wireless Commun., vol. 20, no. 12, pp. 8096–8109,
+23 440, Dec. 2022.
+Dec. 2021.
+[13] Y. Cui, F. Liu, X. Jing, and J. Mu, “Integrating sensing and
+[34] Y. Wang, X. Zhou, Z. Zhuang, L. Sun, Y. Qian, J. Lu, and F. Shu,
+communications for ubiquitous IoT: Applications, trends, and
+“UAV-enabled secure communication with finite blocklength,”
+challenges,” IEEE Network, vol. 35, no. 5, pp. 158–167, Nov. 2021.
+IEEE Trans. Veh. Technol., vol. 69, no. 12, pp. 16 309–16 313, Dec.
+[14] Y. Gong, X. Li, F. Meng, L. Liu, M. Guizani, and Z. Xu, “Toward
+2020.
+green RF chain design for integrated sensing and communications:
+[35] P. Liu, Z. Li, J. Si, N. Al-Dhahir, and Y. Gao, “Joint informationTechnologies and future directions,” IEEE Commun. Mag., vol. 62,
+theoretic secrecy and covertness for UAV-assisted wireless transno. 9, pp. 36–42, Sep. 2024.
+mission with finite blocklength,” IEEE Trans. Veh. Technol., vol. 72,
+[15] F. Dong, F. Liu, Y. Cui, W. Wang, K. Han, and Z. Wang, “Sensing
+no. 8, pp. 10 187–10 199, Aug. 2023.
+as a service in 6G perceptive networks: A unified framework for
+[36] P. Raut, K. Singh, C.-P. Li, M.-S. Alouini, and W.-J. Huang, “NonISAC resource allocation,” IEEE Trans. Wireless Commun., vol. 22,
+linear EH-based UAV-assisted FD IoT networks: Infinite and finite
+no. 5, pp. 3522–3536, May 2023.
+blocklength analysis,” IEEE Internet Things J., vol. 8, no. 24, pp.
+17 655–17 668, Dec. 2021.
+[16] Y. Xiong, F. Liu, Y. Cui, W. Yuan, and T. X. Han, “Flowing the infor[37] Y. Zeng, J. Xu, and R. Zhang, “Energy minimization for wireless
+mation from shannon to fisher: Towards the fundamental tradeoff
+communication with rotary-wing UAV,” IEEE Trans. Wireless Comin ISAC,” in GLOBECOM 2022-2022 IEEE Global Communications
+mun., vol. 18, no. 4, pp. 2329–2345, Apr. 2019.
+Conference. IEEE, 2022, pp. 5601–5606.
+[38] F. Liu, W. Yuan, C. Masouros, and J. Yuan, “Radar-assisted predic[17] F. Liu, Y.-F. Liu, A. Li, C. Masouros, and Y. C. Eldar, “Cramértive beamforming for vehicular links: Communication served by
+rao bound optimization for joint radar-communication beamformsensing,” IEEE Trans. Wireless Commun., vol. 19, no. 11, pp. 7704–
+ing,” IEEE Trans. Signal Process., vol. 70, pp. 240–253, Dec. 2021.
+7719, Nov. 2020.
+[18] X. Wang, Z. Fei, J. A. Zhang, J. Huang, and J. Yuan, “Constrained
+[39] D. Ucinski, Optimal Measurement Methods for Distributed Parameter
+utility maximization in dual-functional radar-communication
+System Identification. Berlin, Germany: Springer, Aug. 2004.
+multi-UAV networks,” IEEE Trans. Commun., vol. 69, no. 4, pp.
+[40] S. M. Kay, “Fundamentals of statistical signal processing: Estima2660–2672, Apr. 2021.
+tion theory,” 1993.
+[19] K. Meng, Q. Wu, S. Ma, W. Chen, and T. Q. S. Quek, “UAV
+[41] R. Horst and N. V. Thoai, “DC programming: Overview,” J.
+trajectory and beamforming optimization for integrated periodic
+Optimiz. Theory App., vol. 103, no. 1, pp. 1–43, Oct. 1999. [Online].
+sensing and communication,” IEEE Wireless Commun. Lett., vol. 11,
+Available: https://doi.org/10.1023/A:1021765131316
+no. 6, pp. 1211–1215, Jun. 2022.
+[20] X. Jing, F. Liu, C. Masouros, and Y. Zeng, “ISAC from the sky: UAV [42] M. Grant, S. Boyd, and Y. Y. CVX, “Matlab software for disciplined
+convex programming, version 1.21,” CVX Research, 2011.
+trajectory design for joint communication and target localization,”
+[43] P. H. Calamai and J. J. Moré, “Projected gradient
+IEEE Trans. Wireless Commun., vol. 23, no. 10, pp. 12 857–12 872,
+methods for linearly constrained problems,” Math. Program.,
+Oct. 2024.
+vol. 39, pp. 93–116, Sep. 1987. [Online]. Available:
+[21] J. Wu, W. Yuan, and L. Bai, “On the interplay between sensing and
+https://doi.org/10.1007/BF02592073
+communications for UAV trajectory design,” IEEE Internet Things
+[44] Y. Huang, W. Mei, J. Xu, L. Qiu, and R. Zhang, “Cognitive UAV
+J., vol. 10, no. 23, pp. 20 383–20 395, Dec. 2023.
+communication via joint maneuver and power control,” IEEE
+[22] Y. Cui, W. Yuan, Z. Zhang, J. Mu, and X. Li, “On the physical
+Trans. Commun., vol. 67, no. 11, pp. 7872–7888, Jul. 2019.
+layer of digital twin: An integrated sensing and communications
+[45] S. Gong, C. Xing, Y. Jing, S. Wang, J. Wang, S. Chen, and L. Hanzo,
+perspective,” IEEE J. Sel. Areas Commun., vol. 41, no. 11, pp. 3474–
+“A unified MIMO optimization framework relying on the KKT
+3490, Nov. 2023.
+conditions,” IEEE Trans. Commun., vol. 69, no. 11, pp. 7251–7268,
+[23] Y. Cui, J. Nie, X. Cao, T. Yu, J. Zou, J. Mu, and X. Jing, “SensingAug. 2021.
+assisted high reliable communication: A transformer-based beam- [46] P. He, L. Zhao, S. Zhou, and Z. Niu, “Water-filling: A geometric
+forming approach,” IEEE J. Sel. Top. Signal Process., vol. 18, no. 5,
+approach and its application to solve generalized radio resource
+pp. 782–795, Jul. 2024.
+allocation problems,” IEEE Trans. Wireless Commun., vol. 12, no. 7,
+[24] A. Sir Elkhatem and S. Naci Engin, “Robust LQR
+pp. 3637–3647, Jul. 2013.
+and
+LQR-PI
+control
+strategies
+based
+on
+adaptive
+weighting matrix selection for a UAV position and
+attitude tracking control,” Alexandria Engineering Journal,
+vol. 61, no. 8, pp. 6275–6292, Aug. 2022. [Online]. Available:
+https://www.sciencedirect.com/science/article/pii/S1110016821007900
+[25] S. I. Abdelmaksoud, M. Mailah, and A. M. Abdallah, “Control
+strategies and novel techniques for autonomous rotorcraft un[6]
+
+

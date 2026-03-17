@@ -1,0 +1,49 @@
+{
+  "data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u5355\u4e2a\u4e2d\u578b\u8f66\u6570\u636e_\u901f\u5ea655\u516c\u91cc\u6bcf\u5c0f\u65f6.xlsx",
+  "fit_results": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\dipole_fit_fixed_50hz_6dipole\\fit_results.json",
+  "literature_image": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\pdfs\\vehicle_sensor_fig7_tight_300.png",
+  "sample_rate_hz": 50.0,
+  "target_speeds_kmh": [
+    20.0,
+    30.0,
+    40.0,
+    50.0
+  ],
+  "threshold_ratio": 0.1,
+  "margin_samples": 6,
+  "selected_model": {
+    "dipoles": 6,
+    "raw_vector_rmse": 14.259704457492608,
+    "bic": 1487.326443605372
+  },
+  "morphology_params": {
+    "tau_s": 0.01,
+    "y_shift_m": 0.12,
+    "z_shift_m": 0.12,
+    "phase_shift_samples": -0.25,
+    "gain_slope": 0.0,
+    "y_axis_gain_slope": -0.26,
+    "x_axis_gain_slope": -0.1,
+    "z_axis_gain_slope": -0.04,
+    "y_pos_gain_slope": -0.1,
+    "y_neg_gain_slope": 0.08
+  },
+  "diagnostics": {
+    "shape_mse_mean": 0.14927444879909815,
+    "shape_mse_x": 0.1457232489815377,
+    "shape_mse_y": 0.12822192717915226,
+    "shape_mse_z": 0.17387817023660443,
+    "avg_adjacent_corr": 0.914872445227183,
+    "max_peak_ratio": 1.2828314969378658,
+    "lengths_ok": 1.0,
+    "y_lengths_ok": 1.0,
+    "y_peak_ratio": 1.812451604756001,
+    "y_pos_lengths_ok": 1.0,
+    "x_pos_lengths_ok": 1.0,
+    "x_neg_lengths_ok": 1.0,
+    "z_pos_lengths_ok": 1.0,
+    "x_pos_ratio": 1.1085874633562924,
+    "x_neg_ratio": 1.261797356685064,
+    "z_pos_ratio": 1.2828314969378658
+  }
+}

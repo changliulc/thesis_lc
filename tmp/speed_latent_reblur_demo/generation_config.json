@@ -1,0 +1,39 @@
+{
+  "data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u5355\u4e2a\u4e2d\u578b\u8f66\u6570\u636e_\u901f\u5ea655\u516c\u91cc\u6bcf\u5c0f\u65f6.xlsx",
+  "sample_rate_hz": 50.0,
+  "dt_s": 0.02,
+  "tau_s": 0.02,
+  "alpha_exact": 0.6321205588285577,
+  "pole_a": 0.36787944117144233,
+  "reference_speed_kmh": 55.0,
+  "reference_spacing_m": 0.3055555555555555,
+  "reference_center_sample": 41.54005950983049,
+  "target_speeds_kmh": [
+    20.0,
+    30.0,
+    40.0,
+    50.0
+  ],
+  "crop_threshold_ratio": 0.1,
+  "crop_margin_samples": 6,
+  "axis_deblur": [
+    {
+      "axis": "X",
+      "lambda_reg": 0.001,
+      "gcv": 1.141704923557333,
+      "ref_rmse": 0.024239957962077563
+    },
+    {
+      "axis": "Y",
+      "lambda_reg": 0.001,
+      "gcv": 4.449720355077712,
+      "ref_rmse": 0.04785433489444318
+    },
+    {
+      "axis": "Z",
+      "lambda_reg": 0.001,
+      "gcv": 1.08310870326836,
+      "ref_rmse": 0.02360972606542152
+    }
+  ]
+}

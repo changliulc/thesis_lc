@@ -1,0 +1,45 @@
+{
+  "data": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\\u4fee\u6539\u540e\u6587\u4ef6\\\u5355\u4e2a\u4e2d\u578b\u8f66\u6570\u636e_\u901f\u5ea655\u516c\u91cc\u6bcf\u5c0f\u65f6.xlsx",
+  "fit_results": "D:\\xidian_Master\\\u7814\u7a76\u751f\u8bba\u6587\\\u6bd5\u4e1a\u8bba\u6587\\xduts-main\\tmp\\dipole_fit_fixed_50hz_6dipole\\fit_results.json",
+  "sample_rate_hz": 50.0,
+  "reference_speed_kmh": 55.0,
+  "reference_samples": 100,
+  "target_speeds_kmh": [
+    20.0,
+    40.0,
+    60.0
+  ],
+  "threshold_ratio": 0.1,
+  "margin_samples": 6,
+  "selected_model": {
+    "dipoles": 6,
+    "raw_vector_rmse": 14.259704457492608,
+    "bic": 1487.326443605372
+  },
+  "morphology_params": {
+    "tau_s": 0.008,
+    "y_shift_m": 0.05,
+    "z_shift_m": 0.04,
+    "phase_shift_samples": -0.12,
+    "gain_slope": 0.0,
+    "y_axis_gain_slope": -0.1,
+    "x_axis_gain_slope": -0.04,
+    "z_axis_gain_slope": -0.02,
+    "y_pos_gain_slope": -0.05,
+    "y_neg_gain_slope": 0.03
+  },
+  "diagnostics": {
+    "avg_adjacent_corr": 0.874041015128984,
+    "max_peak_ratio": 1.129316085703685,
+    "lengths_ok": 1.0,
+    "y_lengths_ok": 1.0,
+    "y_peak_ratio": 1.4163531010259252,
+    "y_pos_lengths_ok": 1.0,
+    "x_pos_lengths_ok": 1.0,
+    "x_neg_lengths_ok": 1.0,
+    "z_pos_lengths_ok": 1.0,
+    "x_pos_ratio": 1.0568455741606528,
+    "x_neg_ratio": 1.129316085703685,
+    "z_pos_ratio": 1.109818080179072
+  }
+}

@@ -1382,17 +1382,18 @@ def plot_motivation_dtw_align_z(x_lin_4L, x_warp_L4, tpl_4L, out_path_png):
 
 def plot_k_ablation(df_k, out_path_png):
     out_path_mat = out_path_png.replace(".png", "_data.mat")
-    scipy.io.savemat(out_path_mat, {
+    mat_payload = {
         "K": df_k["K"].values,
-        "test_f1": df_k["test_f1"].values,
         "val_f1": df_k["val_f1"].values,
-    })
+    }
+    if "test_f1" in df_k.columns:
+        mat_payload["test_f1"] = df_k["test_f1"].values
+    scipy.io.savemat(out_path_mat, mat_payload)
 
     fig, ax = plt.subplots(figsize=(5.2, 3.6))
-    ax.plot(df_k["K"], df_k["test_f1"], marker="o", label="Test Macro-F1")
-    ax.plot(df_k["K"], df_k["val_f1"], marker="s", label="Val Macro-F1")
+    ax.plot(df_k["K"], df_k["val_f1"], marker="s", color="#1f77b4", linewidth=2.0, label="Val Macro-F1")
     ax.set_xlabel("模板数 K_MT（每类）")
-    ax.set_ylabel("Macro-F1")
+    ax.set_ylabel("验证集 Macro-F1")
     ax.set_title("DTW 多模板数量消融")
     ax.set_xticks(df_k["K"])
     ax.set_ylim(0.0, 1.0)
