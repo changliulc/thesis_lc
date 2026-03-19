@@ -418,20 +418,127 @@ def class_names(lang: str) -> List[str]:
     return ["小型车", "中型车", "大型车"] if lang == "zh" else ["Small", "Medium", "Large"]
 
 
+def take_evenly_spaced(values: np.ndarray, keep: int) -> np.ndarray:
+    values = np.asarray(values, dtype=float)
+    if keep <= 0 or values.size == 0:
+        return np.asarray([], dtype=float)
+    if values.size <= keep:
+        return values
+    idx = np.linspace(0, values.size - 1, num=keep)
+    idx = np.unique(np.round(idx).astype(int))
+    return values[idx]
+
+
+def whisker_bounds(values: np.ndarray, whis: float) -> tuple[float, float]:
+    arr = np.sort(np.asarray(values, dtype=float))
+    arr = arr[np.isfinite(arr)]
+    if arr.size == 0:
+        return (np.nan, np.nan)
+    q1, q3 = np.percentile(arr, [25, 75])
+    iqr = q3 - q1
+    low_bound = q1 - whis * iqr
+    high_bound = q3 + whis * iqr
+    inside = arr[(arr >= low_bound) & (arr <= high_bound)]
+    if inside.size == 0:
+        return (arr[0], arr[-1])
+    return (inside[0], inside[-1])
+
+
+def representative_outliers(
+    values: np.ndarray,
+    whis: float,
+    max_points: int,
+    high_cap: float | None = None,
+) -> np.ndarray:
+    arr = np.sort(np.asarray(values, dtype=float))
+    arr = arr[np.isfinite(arr)]
+    if arr.size == 0 or max_points <= 0:
+        return np.asarray([], dtype=float)
+    q1, q3 = np.percentile(arr, [25, 75])
+    iqr = q3 - q1
+    low_bound = q1 - whis * iqr
+    high_bound = q3 + whis * iqr
+    low_out = arr[arr < low_bound]
+    high_out = arr[arr > high_bound]
+    if high_cap is not None and np.isfinite(high_cap):
+        high_out = high_out[high_out <= high_cap]
+    total = low_out.size + high_out.size
+    if total <= max_points:
+        return np.concatenate([low_out, high_out])
+    if low_out.size == 0:
+        return take_evenly_spaced(high_out, max_points)
+    if high_out.size == 0:
+        return take_evenly_spaced(low_out, max_points)
+    low_keep = max(1, int(round(max_points * low_out.size / total)))
+    high_keep = max_points - low_keep
+    if high_keep == 0:
+        high_keep = 1
+        low_keep = max_points - 1
+    low_keep = min(low_keep, low_out.size)
+    high_keep = min(high_keep, high_out.size)
+    remain = max_points - low_keep - high_keep
+    if remain > 0:
+        low_room = low_out.size - low_keep
+        high_room = high_out.size - high_keep
+        if high_room >= low_room:
+            extra = min(remain, high_room)
+            high_keep += extra
+            remain -= extra
+        if remain > 0:
+            low_keep += min(remain, low_room)
+    return np.concatenate(
+        [
+            take_evenly_spaced(low_out, low_keep),
+            take_evenly_spaced(high_out, high_keep),
+        ]
+    )
+
+
+def centered_jitter(count: int, jitter: float) -> np.ndarray:
+    return np.zeros(max(count, 1), dtype=float)
+
+
+def overlay_representative_outliers(
+    ax,
+    groups: Sequence[np.ndarray],
+    whis: float,
+    max_points: int,
+    jitter: float,
+    size: float,
+    alpha: float,
+    high_caps: Sequence[float | None] | None = None,
+    color: str = "#666666",
+) -> None:
+    # Keep a few representative outliers so the boxplot remains readable.
+    for pos, values in enumerate(groups, start=1):
+        high_cap = None if high_caps is None else high_caps[pos - 1]
+        picked = representative_outliers(
+            np.asarray(values, dtype=float),
+            whis=whis,
+            max_points=max_points,
+            high_cap=high_cap,
+        )
+        if picked.size == 0:
+            continue
+        xpos = pos + centered_jitter(picked.size, jitter)
+        ax.scatter(xpos, picked, s=size, c=color, alpha=alpha, linewidths=0, zorder=3)
+
+
 def plot_length_boxplot(df_event: pd.DataFrame, out_no_ext: str, lang: str = "zh") -> None:
     plt = ensure_plot_style(lang)
     fig, ax = plt.subplots(figsize=(6.2, 4.2))
     names = class_names(lang)
     groups = [df_event.loc[df_event["class_id"] == i, "duration_s"].to_numpy() for i in range(3)]
-    flierprops = dict(
-        marker="o",
-        markersize=2.0,
-        markerfacecolor="#666666",
-        markeredgecolor="#666666",
-        markeredgewidth=0.0,
-        alpha=0.30,
+    ax.boxplot(groups, tick_labels=names, showfliers=False)
+    overlay_representative_outliers(
+        ax,
+        groups,
+        whis=1.5,
+        max_points=8,
+        jitter=0.035,
+        size=12,
+        alpha=0.26,
     )
-    ax.boxplot(groups, tick_labels=names, showfliers=True, flierprops=flierprops)
     ax.grid(True, axis="y", linestyle="--", alpha=0.35)
     ax.set_ylabel("事件长度 / s" if lang == "zh" else "Event length / s")
     ax.set_title("三类事件长度分布" if lang == "zh" else "Event-length distribution by class")
@@ -446,15 +553,19 @@ def plot_amp_boxplot(df_event: pd.DataFrame, out_no_ext: str, lang: str = "zh", 
     names = class_names(lang)
     metric_col = "mag_energy" if amp_metric == "energy" else "mag_peak"
     groups = [df_event.loc[df_event["class_id"] == i, metric_col].to_numpy() for i in range(3)]
-    flierprops = dict(
-        marker="o",
-        markersize=1.5,
-        markerfacecolor="#666666",
-        markeredgecolor="#666666",
-        markeredgewidth=0.0,
+    group_whiskers = [whisker_bounds(g, whis=2.5) for g in groups]
+    high_caps = [group_whiskers[1][1], group_whiskers[2][1], None]
+    ax.boxplot(groups, tick_labels=names, showfliers=False, whis=2.5)
+    overlay_representative_outliers(
+        ax,
+        groups,
+        whis=2.5,
+        max_points=8,
+        jitter=0.040,
+        size=10,
         alpha=0.18,
+        high_caps=high_caps,
     )
-    ax.boxplot(groups, tick_labels=names, showfliers=True, whis=2.5, flierprops=flierprops)
     ax.grid(True, axis="y", linestyle="--", alpha=0.35)
 
     if amp_metric == "energy":

@@ -1,0 +1,1035 @@
+[
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\2024.4.16数据采集\\4.16数据采集.xlsx",
+    "file_rows": 33965,
+    "file_samples": 33965,
+    "sheets": [
+      {
+        "sheet": "磁场旋转方向",
+        "n": 16746,
+        "duration_s": 334.0390000000002,
+        "x_start_end": 3.0,
+        "y_start_end": -8.0,
+        "z_start_end": 6.0,
+        "x_range": 14.0,
+        "y_range": 21.0,
+        "z_range": 20.0
+      },
+      {
+        "sheet": "停车检测",
+        "n": 17219,
+        "duration_s": 341.75100000000003,
+        "x_start_end": 2.0,
+        "y_start_end": 0.0,
+        "z_start_end": 3.0,
+        "x_range": 314.0,
+        "y_range": 95.0,
+        "z_range": 67.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240320二环南路西段\\20240320二环南路西段采集数据.xlsx",
+    "file_rows": 167238,
+    "file_samples": 167238,
+    "sheets": [
+      {
+        "sheet": "第一段",
+        "n": 54861,
+        "duration_s": 1094.4880000000005,
+        "x_start_end": 1.0,
+        "y_start_end": 2.0,
+        "z_start_end": 7.0,
+        "x_range": 18.0,
+        "y_range": 11.0,
+        "z_range": 29.0
+      },
+      {
+        "sheet": "第二段",
+        "n": 29477,
+        "duration_s": 588.469,
+        "x_start_end": -28.0,
+        "y_start_end": -27.0,
+        "z_start_end": 0.0,
+        "x_range": 52.0,
+        "y_range": 46.0,
+        "z_range": 35.0
+      },
+      {
+        "sheet": "第三段",
+        "n": 43268,
+        "duration_s": 862.5569999999999,
+        "x_start_end": 2.0,
+        "y_start_end": 0.0,
+        "z_start_end": 21.0,
+        "x_range": 6.0,
+        "y_range": 5.0,
+        "z_range": 26.0
+      },
+      {
+        "sheet": "第四段",
+        "n": 39632,
+        "duration_s": 790.1000000000001,
+        "x_start_end": 8.0,
+        "y_start_end": -5.0,
+        "z_start_end": 18.0,
+        "x_range": 11.0,
+        "y_range": 9.0,
+        "z_range": 20.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240511南三环\\2024.5.11南三环数据采集.xlsx",
+    "file_rows": 242580,
+    "file_samples": 242579,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 50229,
+        "duration_s": 1002.383,
+        "x_start_end": 7.0,
+        "y_start_end": 2.0,
+        "z_start_end": -7.0,
+        "x_range": 10.0,
+        "y_range": 6.0,
+        "z_range": 17.0
+      },
+      {
+        "sheet": "Sheet2",
+        "n": 57647,
+        "duration_s": 1150.092,
+        "x_start_end": 6.0,
+        "y_start_end": 8.0,
+        "z_start_end": 2.0,
+        "x_range": 14.0,
+        "y_range": 16.0,
+        "z_range": 16.0
+      },
+      {
+        "sheet": "Sheet3",
+        "n": 38796,
+        "duration_s": 773.9849999999983,
+        "x_start_end": 1.0,
+        "y_start_end": 14.0,
+        "z_start_end": -1.0,
+        "x_range": 16.0,
+        "y_range": 14.0,
+        "z_range": 22.0
+      },
+      {
+        "sheet": "Sheet4",
+        "n": 37656,
+        "duration_s": -2842.16,
+        "x_start_end": -2.0,
+        "y_start_end": -4.0,
+        "z_start_end": 14.0,
+        "x_range": 11.0,
+        "y_range": 6.0,
+        "z_range": 17.0
+      },
+      {
+        "sheet": "Sheet5",
+        "n": 58251,
+        "duration_s": 1162.5589999999972,
+        "x_start_end": 3.0,
+        "y_start_end": 0.0,
+        "z_start_end": 0.0,
+        "x_range": 7.0,
+        "y_range": 11.0,
+        "z_range": 20.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240522南三环\\2024.5.22南三环数据采集.xlsx",
+    "file_rows": 295902,
+    "file_samples": 295902,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 52275,
+        "duration_s": 909.6440000000001,
+        "x_start_end": 72.0,
+        "y_start_end": 180.0,
+        "z_start_end": -11.0,
+        "x_range": 92.0,
+        "y_range": 191.0,
+        "z_range": 44.0
+      },
+      {
+        "sheet": "Sheet2",
+        "n": 55078,
+        "duration_s": 1099.473,
+        "x_start_end": 4.0,
+        "y_start_end": -8.0,
+        "z_start_end": 11.0,
+        "x_range": 10.0,
+        "y_range": 37.0,
+        "z_range": 35.0
+      },
+      {
+        "sheet": "Sheet3",
+        "n": 62454,
+        "duration_s": 1246.7040000000002,
+        "x_start_end": 1.0,
+        "y_start_end": 4.0,
+        "z_start_end": -2.0,
+        "x_range": 10.0,
+        "y_range": 7.0,
+        "z_range": 20.0
+      },
+      {
+        "sheet": "Sheet4",
+        "n": 51778,
+        "duration_s": -2557.93,
+        "x_start_end": -15.0,
+        "y_start_end": 23.0,
+        "z_start_end": -30.0,
+        "x_range": 17.0,
+        "y_range": 24.0,
+        "z_range": 30.0
+      },
+      {
+        "sheet": "Sheet5",
+        "n": 74317,
+        "duration_s": 1483.3079999999998,
+        "x_start_end": 0.0,
+        "y_start_end": 14.0,
+        "z_start_end": -13.0,
+        "x_range": 10.0,
+        "y_range": 20.0,
+        "z_range": 24.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240727车型分类数据采集\\20240727数据采集.xlsx",
+    "file_rows": 224075,
+    "file_samples": 223040,
+    "sheets": [
+      {
+        "sheet": "白沙路保存车型",
+        "n": 54815,
+        "duration_s": 1173.8600000000024,
+        "x_start_end": 2.0,
+        "y_start_end": -1.0,
+        "z_start_end": 8.0,
+        "x_range": 6.0,
+        "y_range": 7.0,
+        "z_range": 17.0
+      },
+      {
+        "sheet": "南二环保存车型",
+        "n": 56705,
+        "duration_s": 1144.4319999999973,
+        "x_start_end": 76.0,
+        "y_start_end": -247.0,
+        "z_start_end": 75.0,
+        "x_range": 78.0,
+        "y_range": 386.0,
+        "z_range": 93.0
+      },
+      {
+        "sheet": "白沙路",
+        "n": 54815,
+        "duration_s": 1173.8600000000024,
+        "x_start_end": 2.0,
+        "y_start_end": -1.0,
+        "z_start_end": 8.0,
+        "x_range": 6.0,
+        "y_range": 7.0,
+        "z_range": 17.0
+      },
+      {
+        "sheet": "南二环",
+        "n": 56705,
+        "duration_s": 1144.4319999999973,
+        "x_start_end": 76.0,
+        "y_start_end": -247.0,
+        "z_start_end": 75.0,
+        "x_range": 78.0,
+        "y_range": 386.0,
+        "z_range": 93.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240730白沙路数据采集\\20240730白沙路车型分类数据采集 - 副本.xlsx",
+    "file_rows": 102333,
+    "file_samples": 102333,
+    "sheets": [
+      {
+        "sheet": "白沙路",
+        "n": 102333,
+        "duration_s": 2050.8230000000017,
+        "x_start_end": 7.0,
+        "y_start_end": -9.0,
+        "z_start_end": 7.0,
+        "x_range": 14.0,
+        "y_range": 9.0,
+        "z_range": 11.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240730白沙路数据采集\\20240730白沙路车型分类数据采集.xlsx",
+    "file_rows": 205182,
+    "file_samples": 204666,
+    "sheets": [
+      {
+        "sheet": "白沙路",
+        "n": 102333,
+        "duration_s": 2050.8230000000017,
+        "x_start_end": 7.0,
+        "y_start_end": -9.0,
+        "z_start_end": 7.0,
+        "x_range": 14.0,
+        "y_range": 9.0,
+        "z_range": 11.0
+      },
+      {
+        "sheet": "保存车型",
+        "n": 102333,
+        "duration_s": 2050.8230000000017,
+        "x_start_end": 7.0,
+        "y_start_end": -9.0,
+        "z_start_end": 7.0,
+        "x_range": 14.0,
+        "y_range": 9.0,
+        "z_range": 11.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240731采集数据\\20240731南三环数据采集.xlsx",
+    "file_rows": 368101,
+    "file_samples": 366424,
+    "sheets": [
+      {
+        "sheet": "第一段保留车型数据",
+        "n": 68298,
+        "duration_s": 1372.1259999999954,
+        "x_start_end": -3.0,
+        "y_start_end": -5.0,
+        "z_start_end": 3.0,
+        "x_range": 3.0,
+        "y_range": 7.0,
+        "z_range": 6.0
+      },
+      {
+        "sheet": "第二段保留车型数据",
+        "n": 70909,
+        "duration_s": 1426.5390000000039,
+        "x_start_end": -4.0,
+        "y_start_end": -16.0,
+        "z_start_end": 11.0,
+        "x_range": 5.0,
+        "y_range": 17.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "第三段保留车型数据",
+        "n": 44005,
+        "duration_s": 886.9230000000002,
+        "x_start_end": 2.0,
+        "y_start_end": 7.0,
+        "z_start_end": 2.0,
+        "x_range": 3.0,
+        "y_range": 8.0,
+        "z_range": 8.0
+      },
+      {
+        "sheet": "第一段纯数据",
+        "n": 68298,
+        "duration_s": 1372.1259999999954,
+        "x_start_end": -3.0,
+        "y_start_end": -5.0,
+        "z_start_end": 3.0,
+        "x_range": 3.0,
+        "y_range": 7.0,
+        "z_range": 6.0
+      },
+      {
+        "sheet": "第二段纯数据",
+        "n": 70909,
+        "duration_s": 1426.5390000000039,
+        "x_start_end": -4.0,
+        "y_start_end": -16.0,
+        "z_start_end": 11.0,
+        "x_range": 5.0,
+        "y_range": 17.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "第三段纯数据",
+        "n": 44005,
+        "duration_s": 886.9230000000002,
+        "x_start_end": 2.0,
+        "y_start_end": 7.0,
+        "z_start_end": 2.0,
+        "x_range": 3.0,
+        "y_range": 8.0,
+        "z_range": 8.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20240731采集数据\\副本20240731南三环数据采集.xlsx",
+    "file_rows": 368934,
+    "file_samples": 366424,
+    "sheets": [
+      {
+        "sheet": "第一段保留车型数据",
+        "n": 68298,
+        "duration_s": 1372.1259999999954,
+        "x_start_end": -3.0,
+        "y_start_end": -5.0,
+        "z_start_end": 3.0,
+        "x_range": 3.0,
+        "y_range": 7.0,
+        "z_range": 6.0
+      },
+      {
+        "sheet": "第二段保留车型数据",
+        "n": 70909,
+        "duration_s": 1426.5390000000039,
+        "x_start_end": -4.0,
+        "y_start_end": -16.0,
+        "z_start_end": 11.0,
+        "x_range": 5.0,
+        "y_range": 17.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "第三段保留车型数据",
+        "n": 44005,
+        "duration_s": 886.9230000000002,
+        "x_start_end": 2.0,
+        "y_start_end": 7.0,
+        "z_start_end": 2.0,
+        "x_range": 3.0,
+        "y_range": 8.0,
+        "z_range": 8.0
+      },
+      {
+        "sheet": "第一段删除方向",
+        "n": 68298,
+        "duration_s": 1372.1259999999954,
+        "x_start_end": -3.0,
+        "y_start_end": -5.0,
+        "z_start_end": 3.0,
+        "x_range": 3.0,
+        "y_range": 7.0,
+        "z_range": 6.0
+      },
+      {
+        "sheet": "第二段删除方向",
+        "n": 70909,
+        "duration_s": 1426.5390000000039,
+        "x_start_end": -4.0,
+        "y_start_end": -16.0,
+        "z_start_end": 11.0,
+        "x_range": 5.0,
+        "y_range": 17.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "第三段删除方向",
+        "n": 44005,
+        "duration_s": 886.9230000000002,
+        "x_start_end": 2.0,
+        "y_start_end": 7.0,
+        "z_start_end": 2.0,
+        "x_range": 3.0,
+        "y_range": 8.0,
+        "z_range": 8.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241118白沙路\\20241118白沙路原始数据.xlsx",
+    "file_rows": 298750,
+    "file_samples": 298254,
+    "sheets": [
+      {
+        "sheet": "带有信息",
+        "n": 149127,
+        "duration_s": 2982.6840000000375,
+        "x_start_end": -2.0,
+        "y_start_end": 34.0,
+        "z_start_end": -52.0,
+        "x_range": 6.0,
+        "y_range": 34.0,
+        "z_range": 53.0
+      },
+      {
+        "sheet": "纯数据",
+        "n": 149127,
+        "duration_s": 2982.6840000000375,
+        "x_start_end": -2.0,
+        "y_start_end": 34.0,
+        "z_start_end": -52.0,
+        "x_range": 6.0,
+        "y_range": 34.0,
+        "z_range": 53.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241120南三环\\20241120南三环原始数据.xlsx",
+    "file_rows": 555412,
+    "file_samples": 553022,
+    "sheets": [
+      {
+        "sheet": "带信息",
+        "n": 276511,
+        "duration_s": 5563.784,
+        "x_start_end": 1.0,
+        "y_start_end": 15.0,
+        "z_start_end": -18.0,
+        "x_range": 3.0,
+        "y_range": 15.0,
+        "z_range": 18.0
+      },
+      {
+        "sheet": "纯数据",
+        "n": 276511,
+        "duration_s": 5563.784,
+        "x_start_end": 1.0,
+        "y_start_end": 15.0,
+        "z_start_end": -18.0,
+        "x_range": 3.0,
+        "y_range": 15.0,
+        "z_range": 18.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241126白沙路\\1126白沙路201钢材数据采集.xlsx",
+    "file_rows": 171199,
+    "file_samples": 169861,
+    "sheets": [
+      {
+        "sheet": "三分之一深度",
+        "n": 120153,
+        "duration_s": 2413.8499999999985,
+        "x_start_end": -71.0,
+        "y_start_end": 80.0,
+        "z_start_end": -13.0,
+        "x_range": 91.0,
+        "y_range": 80.0,
+        "z_range": 17.0
+      },
+      {
+        "sheet": "最低深度",
+        "n": 49708,
+        "duration_s": 1001.9400000000023,
+        "x_start_end": 3.0,
+        "y_start_end": 12.0,
+        "z_start_end": 1.0,
+        "x_range": 27.0,
+        "y_range": 20.0,
+        "z_range": 25.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241127白沙路\\20241127白沙路原始数据-铁盆.xlsx",
+    "file_rows": 236337,
+    "file_samples": 235126,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 117563,
+        "duration_s": 2353.898000000001,
+        "x_start_end": 38.0,
+        "y_start_end": -182.0,
+        "z_start_end": 1625.0,
+        "x_range": 1011.0,
+        "y_range": 559.0,
+        "z_range": 1656.0
+      },
+      {
+        "sheet": "带信息",
+        "n": 117563,
+        "duration_s": 2353.898000000001,
+        "x_start_end": 38.0,
+        "y_start_end": -182.0,
+        "z_start_end": 1625.0,
+        "x_range": 1011.0,
+        "y_range": 559.0,
+        "z_range": 1656.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241128白沙路\\20241128白沙路测试数据.xlsx",
+    "file_rows": 140097,
+    "file_samples": 138974,
+    "sheets": [
+      {
+        "sheet": "201钢材",
+        "n": 70535,
+        "duration_s": 1419.5399999999972,
+        "x_start_end": 12.0,
+        "y_start_end": 12.0,
+        "z_start_end": -16.0,
+        "x_range": 17.0,
+        "y_range": 13.0,
+        "z_range": 27.0
+      },
+      {
+        "sheet": "铁质容器",
+        "n": 68439,
+        "duration_s": 1376.4309999999969,
+        "x_start_end": 12.0,
+        "y_start_end": -18.0,
+        "z_start_end": -8.0,
+        "x_range": 12.0,
+        "y_range": 18.0,
+        "z_range": 12.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241129白沙路\\2024白沙路数据采集.xlsx",
+    "file_rows": 1169,
+    "file_samples": 0,
+    "sheets": [
+      {
+        "sheet": "铁",
+        "n": 0
+      },
+      {
+        "sheet": "201钢材",
+        "n": 0
+      },
+      {
+        "sheet": "塑料",
+        "n": 0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241203白沙路\\20241203白沙路平台数据包.xlsx",
+    "file_rows": 1179,
+    "file_samples": 1,
+    "sheets": [
+      {
+        "sheet": "part1-201倒扣-4407",
+        "n": 0
+      },
+      {
+        "sheet": "part1-铁盆倒扣-af17b",
+        "n": 0
+      },
+      {
+        "sheet": "part2-全包裹-201在上-4407",
+        "n": 0
+      },
+      {
+        "sheet": "part2-正常-af17b",
+        "n": 0
+      },
+      {
+        "sheet": "part3-全包裹-铁盆在上-4407",
+        "n": 0
+      },
+      {
+        "sheet": "part3-正常-af17b",
+        "n": 0
+      },
+      {
+        "sheet": "part4-铁盆下面-4407",
+        "n": 0
+      },
+      {
+        "sheet": "part4-正常-af17b",
+        "n": 0
+      },
+      {
+        "sheet": "平台各个part数量",
+        "n": 1,
+        "duration_s": 0.0,
+        "x_start_end": 0.0,
+        "y_start_end": 0.0,
+        "z_start_end": 0.0,
+        "x_range": 0.0,
+        "y_range": 0.0,
+        "z_range": 0.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241205白沙路\\20241205白沙路原始数据.xlsx",
+    "file_rows": 256958,
+    "file_samples": 256332,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 67017,
+        "duration_s": 1341.4029999999984,
+        "x_start_end": 254.0,
+        "y_start_end": -154.0,
+        "z_start_end": 215.0,
+        "x_range": 254.0,
+        "y_range": 154.0,
+        "z_range": 215.0
+      },
+      {
+        "sheet": "Sheet2",
+        "n": 61149,
+        "duration_s": 1408591.956,
+        "x_start_end": 11.0,
+        "y_start_end": 4.0,
+        "z_start_end": -8.0,
+        "x_range": 12.0,
+        "y_range": 6.0,
+        "z_range": 11.0
+      },
+      {
+        "sheet": "1.5m原始数据-不含信息",
+        "n": 61149,
+        "duration_s": 1408591.956,
+        "x_start_end": 11.0,
+        "y_start_end": 4.0,
+        "z_start_end": -8.0,
+        "x_range": 12.0,
+        "y_range": 6.0,
+        "z_range": 11.0
+      },
+      {
+        "sheet": "1.2m原始数据-不含信息",
+        "n": 67017,
+        "duration_s": 1341.4029999999984,
+        "x_start_end": 254.0,
+        "y_start_end": -154.0,
+        "z_start_end": 215.0,
+        "x_range": 254.0,
+        "y_range": 154.0,
+        "z_range": 215.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241213白沙路\\20241213白沙路平台数据包.xlsx",
+    "file_rows": 934,
+    "file_samples": 0,
+    "sheets": [
+      {
+        "sheet": "4407-part1",
+        "n": 0
+      },
+      {
+        "sheet": "af17b-part1",
+        "n": 0
+      },
+      {
+        "sheet": "4407-part2",
+        "n": 0
+      },
+      {
+        "sheet": "af17b-part2",
+        "n": 0
+      },
+      {
+        "sheet": "4407-part3",
+        "n": 0
+      },
+      {
+        "sheet": "af17b-part3",
+        "n": 0
+      },
+      {
+        "sheet": "4407-part4",
+        "n": 0
+      },
+      {
+        "sheet": "af17b-part4",
+        "n": 0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241213白沙路\\20241213白沙路护栏灯测试原始数据.xlsx",
+    "file_rows": 314173,
+    "file_samples": 312969,
+    "sheets": [
+      {
+        "sheet": "补测1m贴地面",
+        "n": 67626,
+        "duration_s": 1354.190999999999,
+        "x_start_end": 22.0,
+        "y_start_end": 14.0,
+        "z_start_end": 0.0,
+        "x_range": 22.0,
+        "y_range": 14.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "0.75m贴地面",
+        "n": 49195,
+        "duration_s": 986.6319999999978,
+        "x_start_end": 7.0,
+        "y_start_end": 2.0,
+        "z_start_end": 3.0,
+        "x_range": 11.0,
+        "y_range": 7.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "高度1m",
+        "n": 46093,
+        "duration_s": 924.2450000000026,
+        "x_start_end": 6.0,
+        "y_start_end": 30.0,
+        "z_start_end": -17.0,
+        "x_range": 16.0,
+        "y_range": 34.0,
+        "z_range": 23.0
+      },
+      {
+        "sheet": "高度1.5m",
+        "n": 54767,
+        "duration_s": 1095.4320000000007,
+        "x_start_end": -58.0,
+        "y_start_end": 3.0,
+        "z_start_end": -10.0,
+        "x_range": 59.0,
+        "y_range": 23.0,
+        "z_range": 21.0
+      },
+      {
+        "sheet": "纯数据-0.75m贴地面",
+        "n": 49195,
+        "duration_s": 986.6319999999978,
+        "x_start_end": 7.0,
+        "y_start_end": 2.0,
+        "z_start_end": 3.0,
+        "x_range": 11.0,
+        "y_range": 7.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "纯数据-0.75高度1m",
+        "n": 46093,
+        "duration_s": 924.2450000000026,
+        "x_start_end": 6.0,
+        "y_start_end": 30.0,
+        "z_start_end": -17.0,
+        "x_range": 16.0,
+        "y_range": 34.0,
+        "z_range": 23.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20241227白沙路护栏灯测试\\20241227白沙路护栏灯测试原始数据.xlsx",
+    "file_rows": 1362941,
+    "file_samples": 377282,
+    "sheets": [
+      {
+        "sheet": "50cm",
+        "n": 63592,
+        "duration_s": 1273.0,
+        "x_start_end": 8.0,
+        "y_start_end": 11.0,
+        "z_start_end": -5.0,
+        "x_range": 19.0,
+        "y_range": 13.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "纯数据50cm",
+        "n": 63592,
+        "duration_s": 1273.0,
+        "x_start_end": 8.0,
+        "y_start_end": 11.0,
+        "z_start_end": -5.0,
+        "x_range": 19.0,
+        "y_range": 13.0,
+        "z_range": 12.0
+      },
+      {
+        "sheet": "75cm",
+        "n": 61912,
+        "duration_s": 1240.3109999999942,
+        "x_start_end": 43.0,
+        "y_start_end": 15.0,
+        "z_start_end": 4.0,
+        "x_range": 49.0,
+        "y_range": 16.0,
+        "z_range": 10.0
+      },
+      {
+        "sheet": "纯数据75cm",
+        "n": 61912,
+        "duration_s": 1240.3109999999942,
+        "x_start_end": 43.0,
+        "y_start_end": 15.0,
+        "z_start_end": 4.0,
+        "x_range": 49.0,
+        "y_range": 16.0,
+        "z_range": 10.0
+      },
+      {
+        "sheet": "125cm",
+        "n": 63137,
+        "duration_s": 1265.5090000000055,
+        "x_start_end": 17.0,
+        "y_start_end": 22.0,
+        "z_start_end": -5.0,
+        "x_range": 28.0,
+        "y_range": 26.0,
+        "z_range": 15.0
+      },
+      {
+        "sheet": "纯数据125cm",
+        "n": 63137,
+        "duration_s": 1265.5090000000055,
+        "x_start_end": 17.0,
+        "y_start_end": 22.0,
+        "z_start_end": -5.0,
+        "x_range": 28.0,
+        "y_range": 26.0,
+        "z_range": 15.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20250115护栏灯测试\\20250115白沙路原始数据.xlsx",
+    "file_rows": 405550,
+    "file_samples": 403624,
+    "sheets": [
+      {
+        "sheet": "75cm",
+        "n": 59288,
+        "duration_s": 1187.7669999999998,
+        "x_start_end": 37.0,
+        "y_start_end": 25.0,
+        "z_start_end": -6.0,
+        "x_range": 43.0,
+        "y_range": 35.0,
+        "z_range": 21.0
+      },
+      {
+        "sheet": "75cm纯数据",
+        "n": 59288,
+        "duration_s": 1187.7669999999998,
+        "x_start_end": 37.0,
+        "y_start_end": 25.0,
+        "z_start_end": -6.0,
+        "x_range": 43.0,
+        "y_range": 35.0,
+        "z_range": 21.0
+      },
+      {
+        "sheet": "100cm",
+        "n": 67529,
+        "duration_s": 1356.2560000000012,
+        "x_start_end": 15.0,
+        "y_start_end": 19.0,
+        "z_start_end": -4.0,
+        "x_range": 21.0,
+        "y_range": 23.0,
+        "z_range": 15.0
+      },
+      {
+        "sheet": "100cm纯数据",
+        "n": 67529,
+        "duration_s": 1356.2560000000012,
+        "x_start_end": 15.0,
+        "y_start_end": 19.0,
+        "z_start_end": -4.0,
+        "x_range": 21.0,
+        "y_range": 23.0,
+        "z_range": 15.0
+      },
+      {
+        "sheet": "125cm",
+        "n": 73384,
+        "duration_s": 1473.1370000000024,
+        "x_start_end": -6.0,
+        "y_start_end": -30.0,
+        "z_start_end": -31.0,
+        "x_range": 17.0,
+        "y_range": 38.0,
+        "z_range": 39.0
+      },
+      {
+        "sheet": "150cm",
+        "n": 76606,
+        "duration_s": 1538.0479999999952,
+        "x_start_end": -34.0,
+        "y_start_end": 34.0,
+        "z_start_end": -15.0,
+        "x_range": 35.0,
+        "y_range": 34.0,
+        "z_range": 19.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20250327南三环补充连续经过\\20250327南三环原始数据.xlsx",
+    "file_rows": 149142,
+    "file_samples": 149142,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 149142,
+        "duration_s": 2995.686,
+        "x_start_end": -2.0,
+        "y_start_end": 10.0,
+        "z_start_end": -4.0,
+        "x_range": 12.0,
+        "y_range": 18.0,
+        "z_range": 8.0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\20250417南二环数据\\20250417原始数据.xlsx",
+    "file_rows": 184309,
+    "file_samples": 184309,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 109463,
+        "duration_s": 2212.826,
+        "x_start_end": -32.0,
+        "y_start_end": 5.0,
+        "z_start_end": -1.0,
+        "x_range": 35.0,
+        "y_range": 14.0,
+        "z_range": 20.0
+      },
+      {
+        "sheet": "Sheet2",
+        "n": 74846,
+        "duration_s": 1512.060000000005,
+        "x_start_end": 2.0,
+        "y_start_end": 3.0,
+        "z_start_end": 23.0,
+        "x_range": 26.0,
+        "y_range": 17.0,
+        "z_range": 36.0
+      },
+      {
+        "sheet": "Sheet3",
+        "n": 0
+      }
+    ]
+  },
+  {
+    "path": "G:\\地磁组\\lab_office\\路段统计\\拼接的数据\\merge_data.xlsx",
+    "file_rows": 17219,
+    "file_samples": 0,
+    "sheets": [
+      {
+        "sheet": "Sheet1",
+        "n": 0
+      }
+    ]
+  }
+]

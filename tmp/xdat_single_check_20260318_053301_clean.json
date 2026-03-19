@@ -1,0 +1,21 @@
+{
+  "file": "E:\\2026-03-18 053301.XDat",
+  "samples": 359235,
+  "fs_assumed_hz": 50.0,
+  "duration_s_by_samples": 7184.68,
+  "duration_min_by_samples": 119.74466666666667,
+  "timestamp_reset_count": 9683,
+  "dt_median_positive_raw_s": 0.01999999999998181,
+  "x_med_start": -434.0,
+  "x_med_end": -441.0,
+  "x_med_delta_end_start": -7.0,
+  "y_med_start": -3108.0,
+  "y_med_end": -3114.0,
+  "y_med_delta_end_start": -6.0,
+  "z_med_start": 545.0,
+  "z_med_end": 557.0,
+  "z_med_delta_end_start": 12.0,
+  "x_segmed_range": 14.0,
+  "y_segmed_range": 10.0,
+  "z_segmed_range": 27.0
+}
