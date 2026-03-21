@@ -6,14 +6,14 @@ $\mathbf{r}$ & 传感器与等效磁偶极子之间的距离矢量 \\
 $r$ & 距离矢量 $\mathbf{r}$ 的模 \\
 $\hat{\mathbf{r}}$ & 距离矢量 $\mathbf{r}$ 的单位矢量 \\
 $\mathbf{m}$ & 等效磁偶极子的磁矩向量 \\
-$\mu_0$ & 真空磁导率 \\
+$\mu_{0}$ & 真空磁导率 \\
 $\mathbf{B}_{\mathrm{dip}}(\mathbf{r})$ & 磁偶极子在位置 $\mathbf{r}$ 处产生的理论磁场 \\
 $\mathbf{B}_{\mathrm{bg}}(k)$ & 背景磁场分量 \\
 $\mathbf{B}_{\mathrm{veh}}(k)$ & 车辆扰动分量 \\
-$\boldsymbol{\varepsilon}(k)$ & 测量噪声及外界干扰向量 \\
+$\mathbf{e}(k)$ & 测量噪声及外界干扰向量 \\
 $f_s$ & 地磁传感器采样频率 \\
-$k_{\mathrm{in}}$ & 事件起始边界索引 \\
-$k_{\mathrm{out}}$ & 事件结束边界索引 \\
+$k_{in}$ & 事件起始边界索引 \\
+$k_{out}$ & 事件结束边界索引 \\
 $N_{\mathrm{evt}}$ & 事件持续点数 \\
 $T_{\mathrm{evt}}$ & 事件持续时间 \\
 $N_{\mathrm{bg}}$ & 背景统计窗口长度 \\
@@ -24,15 +24,14 @@ $\hat{\mu}_{l,0}$ & 第 $l$ 轴无车背景差分均值的估计值 \\
 $\hat{\sigma}_{l,0}$ & 第 $l$ 轴无车背景差分标准差的估计值 \\
 $p_{0,l}(k)$ & 第 $l$ 轴背景一致性得分 \\
 $p_{1,l}(k)$ & 第 $l$ 轴扰动得分 \\
-$P_{\mathrm{env}}(k)$ & 融合无车概率 \\
-$P_{\mathrm{car}}(k)$ & 融合有车概率 \\
+$P_{car}(k)$ & 融合有车概率 \\
 $\rho_0,\,\rho_1$ & 三轴概率融合的相关性修正系数 \\
-$\theta_{\mathrm{arr}}$ & 到达检测概率阈值 \\
-$\theta_{\mathrm{lea}}$ & 离开检测概率阈值 \\
-$N_{\mathrm{arr}}$ & 到达连续计数阈值 \\
-$N_{\mathrm{lea}}$ & 离开连续计数阈值 \\
-$n_{\mathrm{arr}}(k)$ & 到达条件连续计数变量 \\
-$n_{\mathrm{lea}}(k)$ & 离开条件连续计数变量 \\
+$\theta_{arr}$ & 到达检测概率阈值 \\
+$\theta_{lea}$ & 离开检测概率阈值 \\
+$N_{arr}$ & 到达连续计数阈值 \\
+$N_{lea}$ & 离开检测连续计数阈值 \\
+$n_{arr}(k)$ & 到达条件连续计数变量 \\
+$n_{lea}(k)$ & 离开条件连续计数变量 \\
 $T_d$ & 防断裂延时点数 \\
 $\mathbf{B}_0$ & 事件片段的基线估计向量 \\
 $N_{\mathrm{pre}}$ & 到达前基线估计窗口长度 \\
@@ -66,7 +65,6 @@ $N_{\mathrm{stable}}$ & 连续稳定窗门控门限 \\
 $\mathbf{S}_{\mathrm{pre}}$ & 环境参考稳定点 \\
 $\mathbf{S}_{\mathrm{post}}$ & 占用参考稳定点 \\
 $\mathbf{S}_{\mathrm{new}}$ & 新稳定点 \\
-$\mathbf{S}_{\mathrm{fix}}$ & 退化分支近似稳态向量 \\
 $\Delta\mathbf{S}$ & 占用参考相对环境参考的漂移向量 \\
 $\Delta S$ & 漂移向量 $\Delta\mathbf{S}$ 的幅值 \\
 $\mathrm{dist}$ & 新稳定点漂移与当前占用漂移之间的相似性距离 \\
@@ -76,7 +74,6 @@ $\mathrm{dist}_{\mathrm{th}}$ & 占用维持相似性阈值 \\
 $\alpha$ & 环境参考更新率 \\
 $D_{\mathrm{upd}}$ & 更新门控阈值 \\
 $\lambda_{\mathrm{occ}}$ & 占用参考更新率 \\
-$\mathcal{Z}$ & 外层状态机状态 \\
 $c_{\mathrm{th}}$ & 一致性确认门限 \\
 $T_{\mathrm{seek}}$ & 寻稳超时时长 \\
 $L_{\mathrm{fix}}$ & 退化分支固定窗长度 \\

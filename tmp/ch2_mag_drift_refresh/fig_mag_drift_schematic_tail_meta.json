@@ -1,0 +1,11 @@
+{
+  "type": "schematic_tail",
+  "start_hour_in_full_view": 11.127777777777778,
+  "duration_hours": 2.5,
+  "span_nT": {
+    "Bx": 31.538289754979473,
+    "By": 35.456160573178295,
+    "Bz": 57.8472751468654
+  },
+  "note": "Cropped from Z-peak region, 2.5 h shown, labels fixed in UTF-8."
+}

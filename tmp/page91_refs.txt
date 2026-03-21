@@ -1,0 +1,41 @@
+                                               参考文献
+
+
+
+
+                                          参考文献
+
+ [1] 百度地图. 2024 年度中国城市交通报告[R/OL]. 2024. https://huiyan.baidu.com/reports/landing?i
+    d=180.
+ [2] WANG F, LIN Y, IOANNOU P A, et al. Transportation 5.0: The DAO to Safe, Secure, and Sus-
+    tainable Intelligent Transportation Systems[J/OL]. IEEE Transactions on Intelligent Transportation
+    Systems, 2023, 24(10): 10262-10278. DOI: 10.1109/TITS.2023.3305380.
+ [3] 工业和信息化部等五部门. 关于开展智能网联汽车“车路云一体化”应用试点工作的通知
+    [EB/OL]. 2024. https://wap.miit.gov.cn/jgsj/zbys/wjfb/art/2024/art_140d86b63e494628ae039dd23
+    a3cc539.html.
+ [4] BERNAS M, PŁACZEK B, KORSKI W, et al. A Survey and Comparison of Low-Cost Sensing
+    Technologies for Road Traﬀic Monitoring[J/OL]. Sensors, 2018, 18(10): 3243. DOI: 10.3390/s1810
+    3243.
+ [5] HAOUI A, KAVALER R, VARAIYA P. Wireless Magnetic Sensors for Traﬀic Surveillance[J/OL].
+    Transportation Research Part C: Emerging Technologies, 2008, 16(3): 294-306. DOI: 10.1016/j.trc
+    .2007.10.004.
+ [6] TAGHVAEEYAN S, RAJAMANI R. Portable Roadside Sensors for Vehicle Counting, Classifi-
+    cation, and Speed Measurement[J/OL]. IEEE Transactions on Intelligent Transportation Systems,
+    2014, 15(1): 73-83. DOI: 10.1109/TITS.2013.2273876.
+ [7] FENG Y, MAO G, CHENG B, et al. MagMonitor: Vehicle Speed Estimation and Vehicle Classifica-
+    tion Through A Magnetic Sensor[J/OL]. IEEE Transactions on Intelligent Transportation Systems,
+    2022, 23(2): 1311-1322. DOI: 10.1109/TITS.2020.3024652.
+ [8] SARCEVIC P, PLETL S, ODRY A. Real-Time Vehicle Classification System Using a Single Mag-
+    netometer[J/OL]. Sensors, 2022, 22(23): 9299. DOI: 10.3390/s22239299.
+ [9] Faheem, MAHMUD S A, KHAN G M, et al. A Survey of Intelligent Car Parking System[J/OL].
+    Journal of Applied Research and Technology, 2013, 11(5): 714-726. DOI: 10.1016/S1665-6423(13
+    )71580-3.
+[10] PAIDI V, FLEYEH H, HÅKANSSON J, et al. Smart Parking Sensors, Technologies and Appli-
+    cations for Open Parking Lots: A Review[J/OL]. IET Intelligent Transport Systems, 2018, 12(8):
+    735-741. DOI: 10.1049/iet-its.2017.0406.
+[11] DING J, CHEUNG S Y, TAN C W, et al. Signal Processing of Sensor Node Data for Vehicle De-
+    tection[C/OL]//Proceedings of the 7th International IEEE Conference on Intelligent Transportation
+    Systems. 2004: 70-75. DOI: 10.1109/ITSC.2004.1398874.
+
+                                                 67
+

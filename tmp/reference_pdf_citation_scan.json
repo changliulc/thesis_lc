@@ -1,0 +1,818 @@
+{
+  "cited_count": 44,
+  "pdf_count": 57,
+  "matched_count": 42,
+  "missing_count": 2,
+  "missing": [
+    {
+      "key": "R01",
+      "title": "国家综合立体交通网规划纲要",
+      "doi": "",
+      "matched_pdf": null,
+      "reason": "",
+      "candidates": []
+    },
+    {
+      "key": "ch3_mps_ga8022019",
+      "title": "GA-802-2019. 道路交通管理机动车类型",
+      "doi": "",
+      "matched_pdf": null,
+      "reason": "",
+      "candidates": []
+    }
+  ],
+  "matched": [
+    {
+      "key": "R02",
+      "title": "2023年度中国主要城市交通分析报告",
+      "doi": "",
+      "matched_pdf": "R02.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "R02.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "wang2023transportation5",
+      "title": "Transportation 5.0: The DAO to Safe, Secure, and Sustainable Intelligent Transportation Systems",
+      "doi": "10.1109/TITS.2023.3305380",
+      "matched_pdf": "Transportation_5.0_The_DAO_to_Safe_Secure_and_Sustainable_Intelligent_Transportation_Systems.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Transportation_5.0_The_DAO_to_Safe_Secure_and_Sustainable_Intelligent_Transportation_Systems.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch2_bernas2018lowcost",
+      "title": "A Survey and Comparison of Low-Cost Sensing Technologies for Road Traffic Monitoring",
+      "doi": "10.3390/s18103243",
+      "matched_pdf": "ch2_bernas2018lowcost.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "ch2_bernas2018lowcost.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R09",
+      "title": "Wireless Magnetic Sensors for Traffic Surveillance",
+      "doi": "10.1016/j.trc.2007.10.004",
+      "matched_pdf": "TRC_361.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "TRC_361.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "taghvaeeyan2014portable",
+      "title": "Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement",
+      "doi": "10.1109/TITS.2013.2273876",
+      "matched_pdf": "67.Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "67.Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "feng2022magmonitor",
+      "title": "MagMonitor: Vehicle Speed Estimation and Vehicle Classification Through A Magnetic Sensor",
+      "doi": "10.1109/TITS.2020.3024652",
+      "matched_pdf": "Feng20MagMonitor.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Feng20MagMonitor.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_sarcevic2022singlemag",
+      "title": "Real-Time Vehicle Classification System Using a Single Magnetometer",
+      "doi": "10.3390/s22239299",
+      "matched_pdf": "ch3_sarcevic2022singlemag.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "ch3_sarcevic2022singlemag.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R49",
+      "title": "A Survey of Intelligent Car Parking System",
+      "doi": "10.1016/S1665-6423(13)71580-3",
+      "matched_pdf": "R49.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "R49.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R52",
+      "title": "Smart Parking Sensors, Technologies and Applications for Open Parking Lots: A Review",
+      "doi": "10.1049/iet-its.2017.0406",
+      "matched_pdf": "IET Intelligent Trans Sys - 2018 - Paidi - Smart parking sensors  technologies and applications for open parking lots  a.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "IET Intelligent Trans Sys - 2018 - Paidi - Smart parking sensors  technologies and applications for open parking lots  a.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch2_ding2004signal",
+      "title": "Signal Processing of Sensor Node Data for Vehicle Detection",
+      "doi": "10.1109/ITSC.2004.1398874",
+      "matched_pdf": "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "ch2_bernas2018lowcost.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "Collaborative_Sensing-Based_Parking_Tracking_System_With_Wireless_Magnetic_Sensor_Network.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "EasiTia_A_Pervasive_Traffic_Information_Acquisition_System_Based_on_Wireless_Sensor_Networks.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "ITSC2004v2.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "main.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R13",
+      "title": "A Novel Vehicle Detection Method Based on the Fusion of Radio Received Signal Strength and Geomagnetism",
+      "doi": "10.3390/s19010058",
+      "matched_pdf": "R13.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "R13.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R17",
+      "title": "Traffic Measurement and Vehicle Classification with a Single Magnetic Sensor",
+      "doi": "10.1177/0361198105191700119",
+      "matched_pdf": "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "IDAACS2009.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "qt2gv111tv_noSplash_61cec0bba34c2deb4c712bc6b39849c3.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R21",
+      "title": "Automatic Vehicle Classification Using Wireless Magnetic Sensor",
+      "doi": "10.1109/IDAACS.2009.5342949",
+      "matched_pdf": "IDAACS2009.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "ch3_xu2018imbalanced.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "IDAACS2009.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "Vehicle_Classification_Based_on_Feature_Selection_With_Anisotropic_Magnetoresistive_Sensor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "Vehicle_Detection_and_Classification_for_Low-Speed_Congested_Traffic_With_Anisotropic_Magnetoresistive_Sensor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "VehicleClassificationwithSingleMulti-functionalMagneticSensorandOptimalMNS-basedCART-f.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R22",
+      "title": "Vehicle Detection and Classification by Measuring and Processing Magnetic Signal",
+      "doi": "10.1016/j.measurement.2010.09.044",
+      "matched_pdf": "main.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "main.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R18",
+      "title": "Intelligent Vehicle Counting and Classification Sensor for Real-Time Traffic Surveillance",
+      "doi": "10.1109/TITS.2017.2741507",
+      "matched_pdf": "1-s2.0-S1389128622003668-main.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "1-s2.0-S1389128622003668-main.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "ch3_li2020singlemag.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "ch3_sarcevic2022singlemag.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "Feng20MagMonitor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "FinalVersion.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "He23Geomagnetic.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R19",
+      "title": "Road Vehicle Detection and Classification Using Magnetic Field Measurement",
+      "doi": "10.1109/ACCESS.2019.2908006",
+      "matched_pdf": "R19.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "R19.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R20",
+      "title": "Vehicle Detection and Classification for Low-Speed Congested Traffic With Anisotropic Magnetoresistive Sensor",
+      "doi": "10.1109/JSEN.2014.2359014",
+      "matched_pdf": "Vehicle_Detection_and_Classification_for_Low-Speed_Congested_Traffic_With_Anisotropic_Magnetoresistive_Sensor.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Vehicle_Detection_and_Classification_for_Low-Speed_Congested_Traffic_With_Anisotropic_Magnetoresistive_Sensor.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R23",
+      "title": "Vehicle Classification with Single Multi-Functional Magnetic Sensor and Optimal MNS-Based CART",
+      "doi": "10.1016/j.measurement.2014.04.028",
+      "matched_pdf": "VehicleClassificationwithSingleMulti-functionalMagneticSensorandOptimalMNS-basedCART-f.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "VehicleClassificationwithSingleMulti-functionalMagneticSensorandOptimalMNS-basedCART-f.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_zhang2019featureselection",
+      "title": "Vehicle Classification Based on Feature Selection With Anisotropic Magnetoresistive Sensor",
+      "doi": "10.1109/JSEN.2019.2928828",
+      "matched_pdf": "Vehicle_Classification_Based_on_Feature_Selection_With_Anisotropic_Magnetoresistive_Sensor.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Vehicle_Classification_Based_on_Feature_Selection_With_Anisotropic_Magnetoresistive_Sensor.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_li2020singlemag",
+      "title": "Vehicle Classification and Speed Estimation Based on a Single Magnetic Sensor",
+      "doi": "10.1109/ACCESS.2020.3008483",
+      "matched_pdf": "ch3_li2020singlemag.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "ch3_li2020singlemag.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R26",
+      "title": "Deep Learning Approaches for Vehicle Type Classification with a Single 3-D Magnetic Sensor Node",
+      "doi": "10.1016/j.comnet.2022.109326",
+      "matched_pdf": "1-s2.0-S1389128622003668-main.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "1-s2.0-S1389128622003668-main.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_lin2017surveyparking",
+      "title": "A Survey of Smart Parking Solutions",
+      "doi": "10.1109/TITS.2017.2685143",
+      "matched_pdf": "smart-parking-survey.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "smart-parking-survey.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_gu2013streetparking",
+      "title": "A Street Parking System Using Wireless Sensor Networks",
+      "doi": "10.1155/2013/107975",
+      "matched_pdf": "zhang-et-al-2013-a-street-parking-system-using-wireless-sensor-networks.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "zhang-et-al-2013-a-street-parking-system-using-wireless-sensor-networks.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_zhang2015amr",
+      "title": "A Parking Occupancy Detection Algorithm Based on AMR Sensor",
+      "doi": "10.1109/JSEN.2014.2362122",
+      "matched_pdf": "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "A_Parking_Occupancy_Detection_Algorithm_Based_on_AMR_Sensor.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_zhang2020railway",
+      "title": "A Robust Parking Detection Algorithm Against Electric Railway Magnetic Field Interference",
+      "doi": "10.1109/TITS.2019.2923465",
+      "matched_pdf": "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R47",
+      "title": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making",
+      "doi": "10.1109/JSEN.2018.2871869",
+      "matched_pdf": "Parking_Detection_Method_Based_on_Finite-State_Machine_and_Collaborative_Decision-Making.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Parking_Detection_Method_Based_on_Finite-State_Machine_and_Collaborative_Decision-Making.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R45",
+      "title": "An Improved Roadside Parking Space Occupancy Detection Method Based on Magnetic Sensors and Wireless Signal Strength",
+      "doi": "10.3390/s19102348",
+      "matched_pdf": "R45.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "R45.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_zhang2020tracking",
+      "title": "Collaborative Sensing-Based Parking Tracking System with Wireless Magnetic Sensor Network",
+      "doi": "",
+      "matched_pdf": "Collaborative_Sensing-Based_Parking_Tracking_System_With_Wireless_Magnetic_Sensor_Network.pdf",
+      "reason": "title_in_metadata+title_in_fulltext+title_in_filename",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "Collaborative_Sensing-Based_Parking_Tracking_System_With_Wireless_Magnetic_Sensor_Network.pdf",
+              "where": [
+                "title_in_metadata",
+                "title_in_fulltext",
+                "title_in_filename"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "R43",
+      "title": "Geomagnetic Sensor Based Abnormal Parking Detection in Smart Roads",
+      "doi": "10.1109/GLOBECOM54140.2023.10437955",
+      "matched_pdf": "He23Geomagnetic.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "He23Geomagnetic.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "wang2018roadside",
+      "title": "Roadside Magnetic Sensor System for Vehicle Detection in Urban Environments",
+      "doi": "10.1109/TITS.2017.2723908",
+      "matched_pdf": "Roadside_Magnetic_Sensor_System_for_Vehicle_Detection_in_Urban_Environments.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Roadside_Magnetic_Sensor_System_for_Vehicle_Detection_in_Urban_Environments.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "marshall1978vehicle",
+      "title": "Vehicle Detection Using a Magnetic Field Sensor",
+      "doi": "10.1109/T-VT.1978.23725",
+      "matched_pdf": "Vehicle Detection Using A Magnetic Field Sensor.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Vehicle Detection Using A Magnetic Field Sensor.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "liu2017threeaxis",
+      "title": "Vehicle Detection Using Three-Axis AMR Sensors Deployed Along Travel Lane Markings",
+      "doi": "10.1049/iet-its.2017.0100",
+      "matched_pdf": "IET Intelligent Trans Sys - 2017 - Liu - Vehicle detection using three80%90axis AMR sensors deployed along travel lane markings.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "IET Intelligent Trans Sys - 2017 - Liu - Vehicle detection using three80%90axis AMR sensors deployed along travel lane markings.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch2_sifuentes2011wakeup",
+      "title": "Wireless Magnetic Sensor Node for Vehicle Detection With Optical Wake-Up",
+      "doi": "10.1109/JSEN.2010.2103937",
+      "matched_pdf": "Wireless_Magnetic_Sensor_Node_for_Vehicl.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Wireless_Magnetic_Sensor_Node_for_Vehicl.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch2_wang2011easitia",
+      "title": "EasiTia: A Pervasive Traffic Information Acquisition System Based on Wireless Sensor Networks",
+      "doi": "10.1109/TITS.2010.2096467",
+      "matched_pdf": "EasiTia_A_Pervasive_Traffic_Information_Acquisition_System_Based_on_Wireless_Sensor_Networks.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "EasiTia_A_Pervasive_Traffic_Information_Acquisition_System_Based_on_Wireless_Sensor_Networks.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "breiman2001randomforests",
+      "title": "Random Forests",
+      "doi": "10.1023/A:1010933404324",
+      "matched_pdf": "breiman2001randomforests.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "breiman2001randomforests.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_xu2017featuresets",
+      "title": "Vehicle Classification under Different Feature Sets with a Single Anisotropic Magnetoresistive Sensor",
+      "doi": "10.1587/transfun.E100.A.440",
+      "matched_pdf": "ch3_xu2018imbalanced.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "ch3_xu2018imbalanced.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_feng2019magspeed",
+      "title": "MagSpeed: A Novel Method of Vehicle Speed Estimation Through a Single Magnetic Sensor",
+      "doi": "10.1109/ITSC.2019.8917515",
+      "matched_pdf": "Feng20MagMonitor.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "Feng20MagMonitor.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "itsc2019-accepted-margined-Final.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_sakoe1978dtw",
+      "title": "Dynamic Programming Algorithm Optimization for Spoken Word Recognition",
+      "doi": "10.1109/TASSP.1978.1163055",
+      "matched_pdf": "Sakoe-Chiba-DTW.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Sakoe-Chiba-DTW.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch3_petitjean2011dba",
+      "title": "A Global Averaging Method for Dynamic Time Warping, with Applications to Clustering",
+      "doi": "10.1016/j.patcog.2010.09.013",
+      "matched_pdf": "Petitjean2011-PR.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Petitjean2011-PR.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "wei2017adaptable",
+      "title": "Adaptable Vehicle Detection and Speed Estimation for Changeable Urban Traffic With Anisotropic Magnetoresistive Sensors",
+      "doi": "10.1109/JSEN.2017.2654501",
+      "matched_pdf": "Adaptable_Vehicle_Detection_and_Speed_Estimation_for_Changeable_Urban_Traffic_With_Anisotropic_Magnetoresistive_Sensors.pdf",
+      "reason": "doi_in_pdf",
+      "candidates": [
+        {
+          "reason": "doi_in_pdf",
+          "pdfs": [
+            "Adaptable_Vehicle_Detection_and_Speed_Estimation_for_Changeable_Urban_Traffic_With_Anisotropic_Magnetoresistive_Sensors.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_bagula2015networks",
+      "title": "On the Design of Smart Parking Networks in the Smart Cities: An Optimal Sensor Placement Model",
+      "doi": "10.3390/s150715443",
+      "matched_pdf": "ch4_bagula2015networks.pdf",
+      "reason": "exact_key_filename",
+      "candidates": [
+        {
+          "reason": "exact_key_filename",
+          "pdfs": [
+            "ch4_bagula2015networks.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "ch4_huang2017easydeploy",
+      "title": "Toward an Easy Deployable Outdoor Parking System---Lessons from Long-Term Deployment",
+      "doi": "10.1109/PERCOM.2017.7917869",
+      "matched_pdf": "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf",
+      "reason": "title_in_fulltext",
+      "candidates": [
+        {
+          "reason": "title_match",
+          "pdfs": [
+            {
+              "name": "A_Robust_Parking_Detection_Algorithm_Against_Electric_Railway_Magnetic_Field_Interference.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            },
+            {
+              "name": "pro136.pdf",
+              "where": [
+                "title_in_fulltext"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

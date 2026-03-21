@@ -1,0 +1,16 @@
+{
+  "xdat_path": "D:\\xidian_Master\\研究生论文\\毕业论文\\实验数据\\2026-03-18 091512.XDat",
+  "interval_hours": [
+    0.0,
+    15.0
+  ],
+  "sample_sec": 5.0,
+  "smooth_sec": 10.0,
+  "duration_hours": 14.998611111111112,
+  "span_nT": {
+    "Bx": 27.666666666666686,
+    "By": 32.0,
+    "Bz": 89.33333333333337
+  },
+  "style": "single_line_hour_axis_like_senior"
+}

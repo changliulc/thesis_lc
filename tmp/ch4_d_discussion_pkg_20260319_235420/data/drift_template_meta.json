@@ -1,0 +1,56 @@
+{
+  "xdat_path": "D:\\xidian_Master\\研究生论文\\毕业论文\\实验数据\\2026-03-18 091512.XDat",
+  "sample_count": 4200613,
+  "duration_hour": 23.33673888888889,
+  "block_sec": 60,
+  "selected_segment_hours": [
+    11.383333333333333,
+    15.366666666666667
+  ],
+  "selected_segment_duration_hours": 3.9833333333333343,
+  "d_source": "D:\\download\\lunwen\\ch4_auto_picks_out\\data_extracted\\data\\zhenzhi\\20240726_停车检测_sheet1_clean.csv",
+  "d_event_mapping": {
+    "candidate_event_in_s": 102.56,
+    "candidate_event_out_s": 109.94,
+    "candidate_entry_end_s": 11.844999999999999,
+    "candidate_exit_start_s": 15.534999999999997,
+    "target_pre_h": 0.45,
+    "target_entry_s": 25.0,
+    "target_occ_h": 6.086111111111111,
+    "target_exit_s": 25.0,
+    "target_post_h": 0.45,
+    "occ_delta": {
+      "x": 346.5014609203798,
+      "y": 60.983199415631816,
+      "z": 123.28889700511309
+    }
+  },
+  "d_target_drift_end_minus_start": {
+    "x": 65.0,
+    "y": 65.0,
+    "z": 70.0
+  },
+  "parking_signature_delta": {
+    "x": 278.236225009553,
+    "y": -27.37114375696001,
+    "z": 53.06596139499993
+  },
+  "parking_signature_from_old_d": {
+    "main_interval_t0": 84.74,
+    "main_interval_t1": 94.02,
+    "tail_interval_t0": 90.3,
+    "tail_interval_t1": 94.02
+  },
+  "new_d_end_minus_start": {
+    "x": 65.02593199840521,
+    "y": 64.80189664853947,
+    "z": 69.84248570364116
+  },
+  "b_time_compress": {
+    "orig_duration_s": 49.84,
+    "new_duration_s": 35.74240000000087,
+    "activity_threshold": 21.598828344230622,
+    "first_occ_t_s": 8.319999999999993,
+    "last_occ_t_s": 36.73999999999998
+  }
+}

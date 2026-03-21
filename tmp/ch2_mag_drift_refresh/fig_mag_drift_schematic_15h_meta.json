@@ -1,0 +1,11 @@
+{
+  "type": "schematic",
+  "duration_hours": 15.0,
+  "dt_sec": 5.0,
+  "span_nT": {
+    "Bx": 19.39470987978075,
+    "By": 26.781189755383366,
+    "Bz": 62.365685439528534
+  },
+  "note": "Style mockup following senior's long-run drift figure; not measured data."
+}

@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数字交通管理系统</title>
+  <style>
+:root{
+  --bg:#0a0f1a;
+  --bg2:#0d1420;
+  --panel:#111b2b;
+  --panel2:rgba(15,25,40,.7);
+  --line:rgba(100,140,180,.15);
+  --line-strong:rgba(120,160,200,.25);
+  --text:#b8c8d8;
+  --sub:#7a8fa8;
+  --cyan:#4a9db8;
+  --cyan2:#6ab8c8;
+  --green:#5a9a7a;
+  --yellow:#b8a060;
+  --orange:#b88060;
+  --red:#b86058;
+  --purple:#7a6a9a;
+}
+
+    *{ box-sizing:border-box; }
+
+    html,body{
+      width:100%;
+      height:100%;
+      margin:0;
+      overflow:hidden;
+      background:#020811;
+      font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;
+      color:var(--text);
+    }
+
+    body{
+      background:
+        radial-gradient(1000px 520px at 20% 10%, rgba(18,77,175,.18), transparent 60%),
+        radial-gradient(900px 560px at 85% 12%, rgba(3,133,255,.12), transparent 58%),
+        linear-gradient(180deg, #041022 0%, #030814 100%);
+    }
+
+    .viewport{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+    }
+
+    .dashboard{
+      position:absolute;
+      left:0;
+      top:0;
+      width:1920px;
+      height:1080px;
+      transform-origin:top left;
+      overflow:hidden;
+      background:
+        radial-gradient(1300px 700px at 50% -10%, rgba(7,60,160,.15), transparent 60%),
+        linear-gradient(180deg, rgba(3,8,20,.98) 0%, rgba(2,7,18,.98) 100%);
+    }
+
+    .dashboard::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size:100% 4px, 4px 100%;
+      pointer-events:none;
+      opacity:.22;
+    }
+
+    .dashboard::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 58%, rgba(0,0,0,.16) 100%);
+      pointer-events:none;
+    }
+
+    .topbar{
+      height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      border-bottom:1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(2,15,34,.95) 0%, rgba(4,17,44,.92) 38%, rgba(2,15,34,.95) 100%);
+      position:relative;
+      z-index:3;
+    }
+
+    .topbar::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-1px;
+      height:1px;
+      background:linear-gradient(90deg, transparent, rgba(98,192,255,.45), transparent);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      min-width:360px;
+    }
+
+    .brand img{
+      width:52px;
+      height:52px;
+      object-fit:contain;
+      filter:drop-shadow(0 0 8px rgba(89,204,255,.25));
+      flex:none;
+    }
+
+    .brand-title{
+      font-size:34px;
+      line-height:1;
+      letter-spacing:2px;
+      color:#f1f7ff;
+      text-shadow:0 0 12px rgba(66,164,255,.14);
+      white-space:nowrap;
+    }
+
+    .header-center{
+      flex:1;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      pointer-events:none;
+    }
+
+    .header-center .scan-line{
+      position:absolute;
+      top:22px;
+      width:520px;
+      height:32px;
+      border-top:1px solid rgba(90,170,255,.28);
+      border-bottom:1px solid rgba(90,170,255,.12);
+      opacity:.55;
+    }
+
+    .header-center .scan-line::before,
+    .header-center .scan-line::after{
+      content:"";
+      position:absolute;
+      top:-1px;
+      width:34px;
+      height:34px;
+      border-top:2px solid rgba(96,200,255,.5);
+    }
+
+    .header-center .scan-line::before{
+      left:-10px;
+      border-left:2px solid rgba(96,200,255,.5);
+    }
+
+    .header-center .scan-line::after{
+      right:-10px;
+      border-right:2px solid rgba(96,200,255,.5);
+    }
+
+    .header-center .main-title{
+      font-size:18px;
+      letter-spacing:10px;
+      color:rgba(153,218,255,.85);
+      text-transform:uppercase;
+      transform:translateY(2px);
+    }
+
+    .top-info{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:540px;
+      justify-content:flex-end;
+    }
+
+    .info-box{
+      min-width:145px;
+      height:46px;
+      padding:0 16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(94,176,255,.24);
+      background:linear-gradient(180deg, rgba(7,26,59,.55), rgba(3,13,31,.4));
+      color:#d7eeff;
+      box-shadow:inset 0 0 18px rgba(29,98,201,.08);
+      font-size:16px;
+      letter-spacing:1px;
+    }
+
+    .info-box.small{ min-width:120px; }
+    .info-box.weather{ min-width:160px; gap:10px; }
+    .weather-dot{
+      width:14px;height:14px;border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, #ffe58a 0 35%, #f7c84a 36% 100%);
+      box-shadow:0 0 10px rgba(247,200,74,.4);
+      flex:none;
+    }
+
+    .page{
+      display:grid;
+      grid-template-columns:86px 1fr 430px;
+      height:calc(100% - 76px);
+      position:relative;
+      z-index:2;
+    }
+
+    .sidebar{
+      border-right:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(4,15,33,.92), rgba(3,12,28,.68));
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      padding-top:18px;
+      position:relative;
+    }
+
+    .side-btn{
+      width:50px;
+      height:50px;
+      border-radius:10px;
+      border:1px solid rgba(89,169,255,.2);
+      background:linear-gradient(180deg, rgba(9,27,55,.96), rgba(6,18,38,.84));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#c8e7ff;
+      font-size:20px;
+      box-shadow:
+        inset 0 0 18px rgba(26,118,255,.08),
+        0 0 10px rgba(5,25,65,.3);
+      position:relative;
+    }
+
+    .side-btn.active{
+      border-color:rgba(89,204,255,.52);
+      box-shadow:
+        inset 0 0 18px rgba(30,145,255,.16),
+        0 0 18px rgba(49,146,255,.12);
+    }
+
+    .side-btn::after{
+      content:"";
+      position:absolute;
+      inset:6px;
+      border-radius:8px;
+      border:1px solid rgba(128,208,255,.05);
+      pointer-events:none;
+    }
+
+    .side-spacer{
+      flex:1;
+    }
+
+    .side-bottom{
+      margin-bottom:18px;
+    }
+
+    .main{
+      padding:12px 12px 12px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-width:0;
+    }
+
+    .map-panel{ 
+      flex:1; 
+      min-height:0; 
+      border:1px solid rgba(80,150,255,.18); 
+      position:relative; 
+      overflow:hidden; 
+      background:#020916; 
+      box-shadow: inset 0 0 40px rgba(7,36,95,.10); 
+    } 
+ 
+    .map-bg{ 
+      position:absolute; 
+      inset:0; 
+      width:100%; 
+      height:100%; 
+      object-fit:fill; 
+      object-position:center center; 
+      z-index:1; 
+      user-select:none; 
+      pointer-events:none; 
+    } 
+ 
+    .map-mask{ 
+      position:absolute; 
+      inset:0; 
+      z-index:2; 
+      pointer-events:none; 
+      background: 
+        linear-gradient(180deg, rgba(2,8,18,.06), rgba(2,8,18,.02)), 
+        linear-gradient(90deg, rgba(2,8,18,.03), rgba(2,8,18,0) 12%, rgba(2,8,18,0) 88%, rgba(2,8,18,.03)); 
+    } 
+ 
+    .map-title{ 
+      position:absolute; 
+      top:22px; 
+      left:50%; 
+      transform:translateX(-50%); 
+      font-size:26px; 
+      color:#ffffff; 
+      font-weight:700; 
+      letter-spacing:1px; 
+      text-shadow:0 0 12px rgba(0,0,0,.6); 
+      z-index:4; 
+    } 
+
+    .zoom-box{ 
+      position:absolute; 
+      right:16px; 
+      top:60%; 
+      bottom:auto; 
+      transform:translateY(-50%); 
+      width:50px; 
+      border-radius:6px; 
+      overflow:hidden; 
+      z-index:6; 
+      border:1px solid rgba(255,255,255,.14); 
+      box-shadow:0 0 16px rgba(0,0,0,.18); 
+    } 
+ 
+    .zoom-btn{ 
+      width:50px; 
+      height:58px; 
+      background:linear-gradient(180deg, rgba(118,124,138,.90), rgba(88,94,109,.88)); 
+      color:#eef6ff; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      font-size:34px; 
+      line-height:1; 
+      border-bottom:1px solid rgba(255,255,255,.12); 
+      user-select:none; 
+    } 
+ 
+    .zoom-btn:last-child{ 
+      border-bottom:none; 
+    }
+
+    .bottom-row{
+      height:248px;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:12px;
+    }
+
+    .panel{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(4,14,31,.84), rgba(3,10,23,.84));
+      box-shadow:inset 0 0 22px rgba(25,102,222,.06);
+      padding:12px 14px;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 26%);
+      pointer-events:none;
+      opacity:.3;
+    }
+
+    .panel-title{
+      position:relative;
+      z-index:2;
+      font-size:16px;
+      color:#edf7ff;
+      letter-spacing:1px;
+      padding-left:12px;
+      margin-bottom:10px;
+    }
+
+    .panel-title::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:6px;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 10px rgba(89,204,255,.45);
+    }
+
+    .panel-title::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:-14px;
+      bottom:-8px;
+      height:1px;
+      background:linear-gradient(90deg, rgba(105,187,255,.36), transparent);
+    }
+
+    .event-table{
+      margin-top:14px;
+      font-size:13px;
+      color:#d4ebff;
+    }
+
+    .event-header,
+    .event-row{
+      display:grid;
+      grid-template-columns:48px 56px 1fr 114px;
+      align-items:center;
+      gap:8px;
+      padding:6px 2px;
+    }
+
+    .event-header{
+      color:#79bfe7;
+      border-bottom:1px solid rgba(96,170,255,.16);
+      margin-bottom:2px;
+    }
+
+    .event-row{
+      border-bottom:1px dashed rgba(90,160,255,.1);
+    }
+
+    .event-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      display:inline-block;
+      margin-right:6px;
+      vertical-align:middle;
+      box-shadow:0 0 8px currentColor;
+    }
+
+    .flow-wrap{
+      height:188px;
+      margin-top:8px;
+    }
+
+    .flow-legend{
+      position:absolute;
+      top:12px;
+      right:14px;
+      display:flex;
+      gap:14px;
+      font-size:12px;
+      color:#afd9ff;
+      z-index:3;
+    }
+
+    .legend-line{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .legend-line i{
+      display:inline-block;
+      width:18px;
+      height:2px;
+      background:currentColor;
+      box-shadow:0 0 8px currentColor;
+    }
+
+    .type-list{
+      margin-top:18px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .type-item{
+      display:grid;
+      grid-template-columns:64px 1fr 64px;
+      gap:10px;
+      align-items:center;
+    }
+
+    .type-icon{
+      width:58px;
+      height:38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--cyan2);
+      opacity:.96;
+      border:1px solid rgba(96,190,255,.22);
+      border-radius:10px;
+      background:rgba(7,24,48,.42);
+      font-size:26px;
+    }
+
+    .type-item:nth-child(2) .type-icon{ color:#67c8ff; }
+    .type-item:nth-child(3) .type-icon{ color:#8c79ff; }
+
+    .type-name{
+      font-size:14px;
+      color:#dceeff;
+      margin-bottom:6px;
+    }
+
+    .bar-track{
+      width:100%;
+      height:12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(90,100,120,.24), rgba(90,100,120,.32));
+      overflow:hidden;
+      position:relative;
+    }
+
+    .bar-fill{
+      height:100%;
+      border-radius:999px;
+      box-shadow:0 0 12px currentColor;
+    }
+
+    .type-value{
+      text-align:right;
+      font-size:14px;
+      color:#9fd2ff;
+    }
+
+    .vehicle-list{ 
+      margin-top:10px; 
+      display:flex; 
+      flex-direction:column; 
+      gap:6px; 
+      font-size:13px; 
+      color:#d8edff; 
+    } 
+
+    .vehicle-header, 
+    .vehicle-row{ 
+      display:grid; 
+      grid-template-columns:1fr 64px 150px; 
+      gap:8px; 
+      align-items:center; 
+    } 
+
+    .vehicle-header{ 
+      margin-top:8px; 
+      padding:0 0 6px; 
+      color:#86b7db; 
+      font-size:12px; 
+      border-bottom:1px solid rgba(95,168,255,.12); 
+    } 
+
+    .vehicle-row{ 
+      padding:4px 0 6px; 
+      border-bottom:1px dashed rgba(95,168,255,.10); 
+    }
+
+    .rightbar{
+      border-left:1px solid var(--line);
+      padding:12px 14px 12px 12px;
+      display:grid;
+      grid-template-rows:185px 178px 1fr;
+      gap:12px;
+      background:linear-gradient(180deg, rgba(4,14,30,.4), rgba(3,10,23,.18));
+    }
+
+    .card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(5,16,36,.84), rgba(3,10,22,.86));
+      box-shadow:inset 0 0 24px rgba(22,87,200,.06);
+      padding:12px 14px;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 22%);
+      opacity:.3;
+      pointer-events:none;
+    }
+
+    .card-title{
+      position:relative;
+      z-index:2;
+      font-size:16px;
+      color:#f0f7ff;
+      padding-left:12px;
+      margin-bottom:10px;
+    }
+
+    .card-title::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:6px;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--cyan);
+      box-shadow:0 0 10px rgba(89,204,255,.45);
+    }
+
+    .card-title::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:-14px;
+      bottom:-8px;
+      height:1px;
+      background:linear-gradient(90deg, rgba(105,187,255,.32), transparent);
+    }
+
+    .alert-box{
+      margin-top:14px;
+      border:1px solid rgba(255,116,102,.32);
+      background: 
+        linear-gradient(180deg, rgba(70,35,36,.34), rgba(22,16,24,.18)), 
+        linear-gradient(180deg, rgba(10,16,29,.70), rgba(8,12,24,.72)); 
+      box-shadow: 
+        inset 0 0 28px rgba(255,115,87,.04), 
+        0 0 14px rgba(255,114,98,.04); 
+      padding:10px 16px; 
+      height:150px; 
+      position:relative;
+    }
+
+    .alert-side{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#d9e6f7;
+      background:rgba(255,255,255,.04);
+      font-size:16px;
+    }
+    .alert-side.left{ left:10px; }
+    .alert-side.right{ right:10px; }
+
+    .alert-main{ 
+      text-align:center; 
+      padding-top:2px; 
+    } 
+ 
+    .alert-type{ 
+      font-size:54px; 
+      color:#ff7a62; 
+      line-height:1; 
+      letter-spacing:3px; 
+      text-shadow:0 0 16px rgba(255,120,98,.16); 
+      margin-bottom:8px; 
+    } 
+ 
+    .alert-meta{ 
+      display:flex; 
+      flex-direction:column; 
+      gap:2px; 
+      font-size:13px; 
+      color:#f1dfda; 
+      line-height:1.45; 
+    }
+
+    .speed-card-body{
+      padding-top:6px;
+    }
+
+    .speed-num{
+      font-size:68px;
+      line-height:1;
+      text-align:center;
+      color:var(--cyan);
+      text-shadow:0 0 16px rgba(89,204,255,.18);
+      font-weight:700;
+      letter-spacing:2px;
+    }
+
+    .speed-unit{
+      text-align:center;
+      font-size:22px;
+      color:#d8edff;
+      margin-top:-2px;
+    }
+
+    .road-speed-list{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+      font-size:12px;
+      color:#cae9ff;
+    }
+
+    .road-speed-item{
+      text-align:center;
+      line-height:1.55;
+    }
+
+    .road-speed-name{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      color:#a8d7ff;
+    }
+
+    .road-speed-value{
+      font-size:16px;
+      color:#61cfff;
+    }
+
+    .speed-axis{
+      margin-top:10px;
+      height:24px;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      color:#8cb7db;
+      font-size:11px;
+      padding:0 4px;
+    }
+
+    .speed-bar{
+      width:100%;
+      height:8px;
+      margin-top:8px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(40,84,130,.35), rgba(61,100,138,.35));
+      position:relative;
+      overflow:hidden;
+    }
+
+    .speed-bar .fill{
+      position:absolute;
+      left:0; top:0; bottom:0;
+      width:49%;
+      background:linear-gradient(90deg, #22a7ff 0%, #49d8ff 55%, #6ef6bb 100%);
+      box-shadow:0 0 14px rgba(89,204,255,.24);
+    }
+
+    .speed-bar .marker{
+      position:absolute;
+      top:-4px;
+      width:2px;
+      height:16px;
+      background:#eff8ff;
+      opacity:.6;
+    }
+
+    .event-stat-wrap{ 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      gap:20px; 
+      height:calc(100% - 36px); 
+      padding-top:8px; 
+    } 
+
+    .pie{ 
+      width:152px; 
+      height:152px; 
+      border-radius:50%; 
+      background: 
+        conic-gradient( 
+          #5a7a9a 0 7%, 
+          #9a6a5a 7% 8%, 
+          #7a6a8a 8% 19%, 
+          #5a8a6a 19% 100% 
+        ); 
+      box-shadow:0 0 24px rgba(60,90,120,.10); 
+      flex:none; 
+    } 
+
+    .pie::after{ 
+      content:none !important; 
+      display:none !important; 
+    }
+
+    .legend{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      font-size:14px;
+      color:#d7ecff;
+    }
+
+    .legend-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+
+    .legend-item i{
+      width:11px;
+      height:11px;
+      border-radius:50%;
+      display:inline-block;
+      box-shadow:0 0 8px currentColor;
+      background:currentColor;
+    }
+
+    .legend-item span:last-child{
+      color:#cfe7ff;
+    }
+
+    .footer-note{
+      position:absolute;
+      left:108px;
+      bottom:8px;
+      font-size:11px;
+      color:rgba(150,186,219,.55);
+      z-index:3;
+    }
+
+    .map-caption{
+      font-size:18px;
+      fill:#dff3ff;
+      opacity:.94;
+      font-weight:700;
+      letter-spacing:2px;
+    }
+
+    .province-line{
+      fill:none;
+      stroke:#345bd6;
+      stroke-opacity:.62;
+      stroke-width:2.1;
+    }
+
+    .province-line.light{
+      stroke:#477af2;
+      stroke-opacity:.78;
+    }
+
+    .outline{
+      fill:rgba(4,11,28,.3);
+      stroke:#4569f3;
+      stroke-opacity:.78;
+      stroke-width:3;
+    }
+
+    .coast{
+      fill:none;
+      stroke:#244ab5;
+      stroke-opacity:.42;
+      stroke-width:2;
+    }
+
+    .pulse{
+      animation:pulse 2.7s infinite ease-in-out;
+    }
+
+    .pulse.delay1{ animation-delay:.4s; }
+    .pulse.delay2{ animation-delay:.9s; }
+    .pulse.delay3{ animation-delay:1.2s; }
+
+    .twinkle{
+      animation:twinkle 3.2s infinite linear;
+    }
+
+    @keyframes pulse{
+      0%,100%{ transform:scale(1); opacity:.95; }
+      50%{ transform:scale(1.12); opacity:1; }
+    }
+
+    @keyframes twinkle{
+      0%,100%{ opacity:.92; }
+      50%{ opacity:.55; }
+    }
+
+    .muted{ color:var(--sub); }
+
+    .mono{
+      font-family:Consolas, Monaco, "Courier New", monospace;
+      letter-spacing:.4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="dashboard" id="dashboard">
+      <div class="topbar">
+        <div class="brand">
+          <img src="logo1.png" alt="logo">
+          <div class="brand-title">数字交通管理系统</div>
+        </div>
+
+        <div class="header-center">
+          <div class="scan-line"></div>
+          <div class="main-title">DIGITAL TRAFFIC VISUALIZATION</div>
+        </div>
+
+        <div class="top-info">
+          <div class="info-box mono" id="clockBox">22 : 33 : 39</div>
+          <div class="info-box small mono" id="dateBox">2025 . 03 . 10</div>
+          <div class="info-box weather">
+            <span class="weather-dot"></span>
+            <span>-3℃ ~ 11℃</span>
+          </div>
+          <div class="info-box small">admin ▾</div>
+        </div>
+      </div>
+
+      <div class="page">
+        <aside class="sidebar">
+          <div class="side-btn active">⌂</div>
+          <div class="side-btn">⌘</div>
+          <div class="side-btn">▣</div>
+          <div class="side-btn">◎</div>
+          <div class="side-btn">⌖</div>
+          <div class="side-btn">☰</div>
+          <div class="side-btn">◉</div>
+          <div class="side-btn">⌗</div>
+          <div class="side-spacer"></div>
+          <div class="side-btn side-bottom">›</div>
+        </aside>
+
+        <main class="main">
+          <section class="map-panel">
+            <img src="asia_bg.png" alt="地图背景" class="map-bg">
+            <div class="map-mask"></div>
+          </section>
+
+          <section class="bottom-row">
+            <div class="panel">
+              <div class="panel-title">事件实时监控</div>
+              <div class="event-table">
+                <div class="event-header">
+                  <div>序号</div>
+                  <div>类型</div>
+                  <div>路段</div>
+                  <div>时间</div>
+                </div>
+
+                <div class="event-row">
+                  <div>01</div>
+                  <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
+                  <div>京东主线</div>
+                  <div class="mono">22:32:50</div>
+                </div>
+                <div class="event-row">
+                  <div>02</div>
+                  <div><span class="event-dot" style="color:#5a8a6a"></span>缓行</div>
+                  <div>南向出口</div>
+                  <div class="mono">22:32:42</div>
+                </div>
+                <div class="event-row">
+                  <div>03</div>
+                  <div><span class="event-dot" style="color:#5a7a9a"></span>变道</div>
+                  <div>北环高架</div>
+                  <div class="mono">22:32:34</div>
+                </div>
+                <div class="event-row">
+                  <div>04</div>
+                  <div><span class="event-dot" style="color:#9a8a5a"></span>事故</div>
+                  <div>西三环辅路</div>
+                  <div class="mono">22:32:29</div>
+                </div>
+                <div class="event-row">
+                  <div>05</div>
+                  <div><span class="event-dot" style="color:#5a8a8a"></span>逆行</div>
+                  <div>东向匝道</div>
+                  <div class="mono">22:32:20</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-title">车流统计</div>
+              <div class="flow-legend">
+                <span class="legend-line" style="color:#5a8a9a;"><i></i>上行车道</span>
+                <span class="legend-line" style="color:#5a9a7a;"><i></i>下行车道</span>
+              </div>
+              <div class="flow-wrap">
+                <svg viewBox="0 0 430 180" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="fillBlue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#5a8a9a" stop-opacity=".32"/>
+                      <stop offset="100%" stop-color="#5a8a9a" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="fillGreen" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#5a9a7a" stop-opacity=".26"/>
+                      <stop offset="100%" stop-color="#5a9a7a" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- 网格 -->
+                  <g stroke="rgba(120,170,220,.12)" stroke-width="1">
+                    <line x1="38" y1="18" x2="412" y2="18"/>
+                    <line x1="38" y1="54" x2="412" y2="54"/>
+                    <line x1="38" y1="90" x2="412" y2="90"/>
+                    <line x1="38" y1="126" x2="412" y2="126"/>
+                    <line x1="38" y1="162" x2="412" y2="162"/>
+                    <line x1="38" y1="18" x2="38" y2="162"/>
+                    <line x1="96" y1="18" x2="96" y2="162"/>
+                    <line x1="154" y1="18" x2="154" y2="162"/>
+                    <line x1="212" y1="18" x2="212" y2="162"/>
+                    <line x1="270" y1="18" x2="270" y2="162"/>
+                    <line x1="328" y1="18" x2="328" y2="162"/>
+                    <line x1="386" y1="18" x2="386" y2="162"/>
+                  </g>
+
+                  <!-- 坐标 -->
+                  <g font-size="11" fill="#86b4d7">
+                    <text x="10" y="166">0</text>
+                    <text x="10" y="130">500</text>
+                    <text x="10" y="94">1000</text>
+                    <text x="10" y="58">1500</text>
+                    <text x="10" y="22">2000</text>
+
+                    <text x="36" y="176">0</text>
+                    <text x="90" y="176">4</text>
+                    <text x="148" y="176">8</text>
+                    <text x="204" y="176">12</text>
+                    <text x="262" y="176">16</text>
+                    <text x="320" y="176">20</text>
+                    <text x="376" y="176">23</text>
+                  </g>
+
+                  <!-- 面积 -->
+                  <path d="M38 155 L70 152 L102 149 L134 146 L166 144 L198 140 L230 146 L262 132 L294 110 L326 120 L358 136 L390 148 L390 162 L38 162 Z"
+                        fill="url(#fillBlue)"/>
+                  <path d="M38 150 L70 148 L102 147 L134 142 L166 132 L198 106 L230 138 L262 80 L294 112 L326 94 L358 138 L390 150 L390 162 L38 162 Z"
+                        fill="url(#fillGreen)"/>
+
+                  <!-- 折线 -->
+                  <polyline fill="none" stroke="#5a8a9a" stroke-width="3"
+                    points="38,155 70,152 102,149 134,146 166,144 198,140 230,146 262,132 294,110 326,120 358,136 390,148"/>
+                  <polyline fill="none" stroke="#5a9a7a" stroke-width="3"
+                    points="38,150 70,148 102,147 134,142 166,132 198,106 230,138 262,80 294,112 326,94 358,138 390,150"/>
+
+                  <!-- 节点 -->
+                  <g fill="#5a8a9a">
+                    <circle cx="38" cy="155" r="3.5"/><circle cx="70" cy="152" r="3.5"/><circle cx="102" cy="149" r="3.5"/>
+                    <circle cx="134" cy="146" r="3.5"/><circle cx="166" cy="144" r="3.5"/><circle cx="198" cy="140" r="3.5"/>
+                    <circle cx="230" cy="146" r="3.5"/><circle cx="262" cy="132" r="3.5"/><circle cx="294" cy="110" r="3.5"/>
+                    <circle cx="326" cy="120" r="3.5"/><circle cx="358" cy="136" r="3.5"/><circle cx="390" cy="148" r="3.5"/>
+                  </g>
+                  <g fill="#5a9a7a">
+                    <circle cx="38" cy="150" r="3.5"/><circle cx="70" cy="148" r="3.5"/><circle cx="102" cy="147" r="3.5"/>
+                    <circle cx="134" cy="142" r="3.5"/><circle cx="166" cy="132" r="3.5"/><circle cx="198" cy="106" r="3.5"/>
+                    <circle cx="230" cy="138" r="3.5"/><circle cx="262" cy="80" r="3.5"/><circle cx="294" cy="112" r="3.5"/>
+                    <circle cx="326" cy="94" r="3.5"/><circle cx="358" cy="138" r="3.5"/><circle cx="390" cy="150" r="3.5"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-title">车型统计</div>
+              <div class="type-list">
+                <div class="type-item">
+                  <div class="type-icon">🚗</div>
+                  <div>
+                    <div class="type-name">小型车</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:84%; color:#5a9a7a; background:linear-gradient(90deg,#4a7a6a,#6a9a8a);"></div></div>
+                  </div>
+                  <div class="type-value mono">21967</div>
+                </div>
+
+                <div class="type-item">
+                  <div class="type-icon">🚚</div>
+                  <div>
+                    <div class="type-name">中型车</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:34%; color:#5a8a9a; background:linear-gradient(90deg,#4a6a7a,#6a8a9a);"></div></div>
+                  </div>
+                  <div class="type-value mono">2574</div>
+                </div>
+
+                <div class="type-item">
+                  <div class="type-icon">🚛</div>
+                  <div>
+                    <div class="type-name">大型车</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:22%; color:#7a6a8a; background:linear-gradient(90deg,#5a4a6a,#8a7a9a);"></div></div>
+                  </div>
+                  <div class="type-value mono">1516</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <aside class="rightbar">
+          <section class="card">
+            <div class="card-title">车道级实时监控</div>
+            <div class="alert-box">
+              <div class="alert-side left">‹</div>
+              <div class="alert-side right">›</div>
+              <div class="alert-main">
+                <div class="alert-type">超速</div>
+                <div class="alert-meta">
+                  <div>广连飞来峡</div>
+                  <div>飞来峡主道，第3车道</div>
+                  <div>编号30</div>
+                  <div class="mono">时间：2025-03-10 22:32:47</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">平均车速</div>
+            <div class="speed-card-body">
+              <div class="speed-num">79</div>
+              <div class="speed-unit">km/h</div>
+
+              <div class="road-speed-list">
+                <div class="road-speed-item">
+                  <div class="road-speed-name">连云港十字路口</div>
+                  <div class="road-speed-value">82 km/h</div>
+                </div>
+                <div class="road-speed-item">
+                  <div class="road-speed-name">富士康工厂测试路段</div>
+                  <div class="road-speed-value">76 km/h</div>
+                </div>
+                <div class="road-speed-item">
+                  <div class="road-speed-name">深中通-鸦髻岭隧道</div>
+                  <div class="road-speed-value">80 km/h</div>
+                </div>
+              </div>
+
+              <div class="speed-bar">
+                <div class="fill"></div>
+                <span class="marker" style="left:24%;"></span>
+                <span class="marker" style="left:49%;"></span>
+                <span class="marker" style="left:77%;"></span>
+              </div>
+
+              <div class="speed-axis">
+                <span>0</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+                <span>125</span>
+                <span>150</span>
+                <span>175</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">事件统计</div>
+            <div class="event-stat-wrap">
+              <div class="pie"></div>
+              <div class="legend">
+                <div class="legend-item" style="color:#5a7a9a;"><i></i><span>变道</span></div>
+                <div class="legend-item" style="color:#9a6a5a;"><i></i><span>违停</span></div>
+                <div class="legend-item" style="color:#5a8a6a;"><i></i><span>通行</span></div>
+                <div class="legend-item" style="color:#9a8a5a;"><i></i><span>事故</span></div>
+                <div class="legend-item" style="color:#7a6a8a;"><i></i><span>超速</span></div>
+                <div class="legend-item" style="color:#5a8a8a;"><i></i><span>逆行/倒车</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-title">车辆实时监控</div>
+
+            <div class="vehicle-header">
+              <div>车辆类型</div>
+              <div>车道</div>
+              <div>时间</div>
+            </div>
+
+            <div class="vehicle-list">
+              <div class="vehicle-row">
+                <div>小型车</div>
+                <div>车道2</div>
+                <div class="mono">2025-03-10 22:32:05</div>
+              </div>
+              <div class="vehicle-row">
+                <div>中型车</div>
+                <div>车道3</div>
+                <div class="mono">2025-03-10 22:32:39</div>
+              </div>
+              <div class="vehicle-row">
+                <div>大型车</div>
+                <div>车道4</div>
+                <div class="mono">2025-03-10 22:32:20</div>
+              </div>
+              <div class="vehicle-row">
+                <div>小型车</div>
+                <div>车道4</div>
+                <div class="mono">2025-03-10 22:32:59</div>
+              </div>
+              <div class="vehicle-row">
+                <div>中型车</div>
+                <div>车道5</div>
+                <div class="mono">2025-03-10 22:33:03</div>
+              </div>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      <div class="footer-note">演示页面 · 采用固定展示数据 · 本页仅用于论文与系统界面说明截图</div>
+    </div>
+  </div>
+
+  <script>
+    const baseW = 1920;
+    const baseH = 1080;
+    const dashboard = document.getElementById("dashboard");
+
+    function fitDashboard() {
+      const scale = Math.min(window.innerWidth / baseW, window.innerHeight / baseH);
+      const offsetX = (window.innerWidth - baseW * scale) / 2;
+      const offsetY = (window.innerHeight - baseH * scale) / 2;
+      dashboard.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    }
+
+    function pad(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clockBox").textContent = "22 : 35 : 06";
+      document.getElementById("dateBox").textContent =
+        `2025 . ${pad(now.getMonth() + 1)} . ${pad(now.getDate())}`;
+    }
+
+    fitDashboard();
+    updateClock();
+    window.addEventListener("resize", fitDashboard);
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
