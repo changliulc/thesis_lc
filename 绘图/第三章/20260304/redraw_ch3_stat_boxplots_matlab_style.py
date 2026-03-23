@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 from typing import Iterable, Sequence
 
@@ -21,9 +22,14 @@ FORMAL_DURATION = IMAGES_DIR / "ch3_event_length_boxplot.png"
 FORMAL_ENERGY = IMAGES_DIR / "ch3_mag_energy_boxplot.png"
 PREVIEW_DURATION = PREVIEW_DIR / "ch3_event_length_boxplot_preview.png"
 PREVIEW_ENERGY = PREVIEW_DIR / "ch3_mag_energy_boxplot_preview.png"
+PREVIEW_DURATION_TOPTITLE = PREVIEW_DIR / "ch3_event_length_boxplot_toptitle_preview.png"
+PREVIEW_ENERGY_TOPTITLE = PREVIEW_DIR / "ch3_mag_energy_boxplot_toptitle_preview.png"
 
 CLASS_NAMES_ZH = ["小型车", "中型车", "大型车"]
 MATLAB_COLORS = ["#0072BD", "#D95319", "#EDB120"]
+LABEL_FS = 20
+TICK_FS = 17
+TITLE_FS = LABEL_FS
 
 
 def ensure_plot_style():
@@ -202,16 +208,20 @@ def overlay_representative_outliers(
         )
 
 
-def save_figure(fig, targets: Iterable[Path], dpi: int = 320):
+def save_figure(fig, targets: Iterable[Path], dpi: int = 320, tight: bool = True):
     for target in targets:
         target.parent.mkdir(parents=True, exist_ok=True)
-        fig.savefig(target, dpi=dpi, bbox_inches="tight", pad_inches=0.03)
+        save_kwargs = {"dpi": dpi, "pad_inches": 0.03}
+        if tight:
+            save_kwargs["bbox_inches"] = "tight"
+        fig.savefig(target, **save_kwargs)
 
 
 def draw_boxplot(
     ax,
     groups: Sequence[np.ndarray],
     ylabel: str,
+    title: str | None = None,
     yscale: str | None = None,
     whis: float = 1.5,
     high_caps: Sequence[float | None] | None = None,
@@ -246,24 +256,46 @@ def draw_boxplot(
     if yscale is not None:
         ax.set_yscale(yscale)
 
-    ax.set_ylabel(ylabel, fontsize=18)
+    ax.set_ylabel(ylabel, fontsize=LABEL_FS)
+    if title:
+        ax.text(
+            0.5,
+            1.025,
+            title,
+            transform=ax.transAxes,
+            ha="center",
+            va="bottom",
+            fontsize=TITLE_FS,
+        )
     ax.grid(True, axis="y", linestyle="--", linewidth=0.82, color="#C6C6C6", alpha=0.42)
     ax.set_axisbelow(True)
-    ax.tick_params(axis="both", labelsize=16, width=1.0, length=4)
+    ax.tick_params(axis="both", labelsize=TICK_FS, width=1.0, length=4)
     for spine in ax.spines.values():
         spine.set_linewidth(1.0)
 
 
-def plot_duration_boxplot(groups: Sequence[np.ndarray]):
+def plot_duration_boxplot(
+    groups: Sequence[np.ndarray],
+    targets: Sequence[Path],
+    title: str | None = None,
+):
     plt = ensure_plot_style()
     fig, ax = plt.subplots(figsize=(7.0, 5.0))
-    draw_boxplot(ax, groups, ylabel="事件持续时间 / s", whis=1.5)
-    fig.tight_layout(pad=0.55)
-    save_figure(fig, [FORMAL_DURATION, PREVIEW_DURATION])
+    draw_boxplot(ax, groups, ylabel="事件持续时间 / s", whis=1.5, title=title)
+    if title:
+        fig.subplots_adjust(left=0.16, right=0.985, bottom=0.15, top=0.90)
+        save_figure(fig, targets, tight=False)
+    else:
+        fig.tight_layout(pad=0.55)
+        save_figure(fig, targets)
     plt.close(fig)
 
 
-def plot_energy_boxplot(groups: Sequence[np.ndarray]):
+def plot_energy_boxplot(
+    groups: Sequence[np.ndarray],
+    targets: Sequence[Path],
+    title: str | None = None,
+):
     plt = ensure_plot_style()
     fig, ax = plt.subplots(figsize=(7.0, 5.0))
     whiskers = [whisker_bounds(group, whis=2.5) for group in groups]
@@ -275,17 +307,48 @@ def plot_energy_boxplot(groups: Sequence[np.ndarray]):
         yscale="log",
         whis=2.5,
         high_caps=high_caps,
+        title=title,
     )
-    fig.tight_layout(pad=0.55)
-    save_figure(fig, [FORMAL_ENERGY, PREVIEW_ENERGY])
+    if title:
+        fig.subplots_adjust(left=0.18, right=0.985, bottom=0.15, top=0.90)
+        save_figure(fig, targets, tight=False)
+    else:
+        fig.tight_layout(pad=0.55)
+        save_figure(fig, targets)
     plt.close(fig)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--preview-top-title-only",
+        action="store_true",
+        help="Only export preview images with subplot names rendered inside the image top area.",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     xyz_list, y = load_xyz_y_from_mat(DATA_MAT)
     duration_groups, energy_groups = compute_duration_and_energy(xyz_list, y)
-    plot_duration_boxplot(duration_groups)
-    plot_energy_boxplot(energy_groups)
+    if args.preview_top_title_only:
+        plot_duration_boxplot(
+            duration_groups,
+            [PREVIEW_DURATION_TOPTITLE],
+            title="三类车辆事件持续时间分布箱线图",
+        )
+        plot_energy_boxplot(
+            energy_groups,
+            [PREVIEW_ENERGY_TOPTITLE],
+            title="三类车辆模值能量分布箱线图",
+        )
+        print(f"[OK] Preview: {PREVIEW_DURATION_TOPTITLE}")
+        print(f"[OK] Preview: {PREVIEW_ENERGY_TOPTITLE}")
+        return
+
+    plot_duration_boxplot(duration_groups, [FORMAL_DURATION, PREVIEW_DURATION])
+    plot_energy_boxplot(energy_groups, [FORMAL_ENERGY, PREVIEW_ENERGY])
     print(f"[OK] Saved: {FORMAL_DURATION}")
     print(f"[OK] Saved: {FORMAL_ENERGY}")
     print(f"[OK] Preview: {PREVIEW_DURATION}")

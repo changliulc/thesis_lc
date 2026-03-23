@@ -672,7 +672,7 @@ def plot_dtw_alignment_matlab_style(
         label=f"样本B（{len_b}点，{len_b / fs:.2f} s）",
     )
     axes[0].axvline(0.0, color="0.60", linestyle="--", linewidth=1.0)
-    axes[0].set_title("对齐前：时间伸缩与局部错位", pad=8, fontweight="normal")
+    axes[0].set_title("对齐前（时间伸缩与局部错位）", pad=8, fontweight="normal")
     axes[0].set_xlabel("相对时间 / s")
     axes[0].set_ylabel(r"$\Delta B_z[n]$ / nT")
     axes[0].legend(
@@ -693,7 +693,7 @@ def plot_dtw_alignment_matlab_style(
         linestyle="--",
         label="对齐后的样本A",
     )
-    axes[1].set_title("DTW 对齐后：恢复局部结构对应", pad=8, fontweight="normal")
+    axes[1].set_title("DTW 对齐后（恢复局部结构对应）", pad=8, fontweight="normal")
     axes[1].set_xlabel("参考时间轴 / s")
     axes[1].set_ylabel(r"$\Delta B_z[n]$ / nT")
     axes[1].legend(

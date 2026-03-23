@@ -1,0 +1,9 @@
+{
+  "history_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第三章\\20260304\\ch3_cnn_training_history_extended.csv",
+  "best_epoch": 185,
+  "epochs": 200,
+  "train_loss_last": 0.1647610148355868,
+  "val_loss_last": 0.1781555094525621,
+  "val_acc_last_shifted": 0.8193772142395664,
+  "val_f1_last_shifted": 0.818470506157121
+}

@@ -1,0 +1,520 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>面向智慧交通的车型分类及停车占用检测方法研究</title>
+<meta name="Subject" content="西安电子科技大学硕士学位论文"/>
+<meta name="Author" content="XXX"/>
+<meta name="Creator" content="XeLaTeX with xdupgthesis class in XDUTS"/>
+<meta name="Producer" content="xdvipdfmx (20250205)"/>
+<meta name="CreationDate" content="2026-03-23T09:41:21+08"/>
+<meta name="ModDate" content="2026-03-23T14:43:47+08"/>
+</head>
+<body>
+<doc>
+  <page width="595.280000" height="841.890000">
+    <flow>
+      <block xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">
+        <line xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">
+          <word xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">西安电子科技大学硕士学位论文</word>
+        </line>
+      </block>
+      <block xMin="199.989000" yMin="88.601500" xMax="381.114000" yMax="99.889000">
+        <line xMin="199.989000" yMin="88.601500" xMax="381.114000" yMax="99.889000">
+          <word xMin="199.989000" yMin="88.601500" xMax="210.489000" yMax="99.101500">表</word>
+          <word xMin="213.114000" yMin="90.344500" xMax="226.239000" yMax="99.889000">3.6</word>
+          <word xMin="234.114000" yMin="88.601500" xMax="381.114000" yMax="99.101500">不同车型分类方案总体性能对比</word>
+        </line>
+      </block>
+      <block xMin="90.024000" yMin="111.495500" xMax="111.024000" yMax="121.995500">
+        <line xMin="90.024000" yMin="111.495500" xMax="111.024000" yMax="121.995500">
+          <word xMin="90.024000" yMin="111.495500" xMax="111.024000" yMax="121.995500">方法</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="354.131000" yMin="113.238500" xMax="394.356500" yMax="122.783000">
+        <line xMin="354.131000" yMin="113.238500" xMax="394.356500" yMax="122.783000">
+          <word xMin="354.131000" yMin="113.238500" xMax="394.356500" yMax="122.783000">Accuracy</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="418.238000" yMin="111.495500" xMax="493.331000" yMax="123.442917">
+        <line xMin="418.238000" yMin="111.495500" xMax="493.331000" yMax="123.442917">
+          <word xMin="418.238000" yMin="111.495500" xMax="449.738000" yMax="121.995500">宏平均</word>
+          <word xMin="452.363000" yMin="113.228000" xMax="459.114500" yMax="122.552000">F</word>
+          <word xMin="459.115000" yMin="117.250183" xMax="463.083092" yMax="123.442917">1</word>
+          <word xMin="463.584000" yMin="111.495500" xMax="493.331000" yMax="121.995500">（%）</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="359.368000" yMin="127.875500" xMax="389.114000" yMax="138.375500">
+        <line xMin="359.368000" yMin="127.875500" xMax="389.114000" yMax="138.375500">
+          <word xMin="359.368000" yMin="127.875500" xMax="389.114000" yMax="138.375500">（%）</word>
+        </line>
+      </block>
+      <block xMin="90.024000" yMin="144.653500" xMax="172.855000" yMax="155.941000">
+        <line xMin="90.024000" yMin="144.653500" xMax="172.855000" yMax="155.941000">
+          <word xMin="90.024000" yMin="144.653500" xMax="111.024000" yMax="155.153500">端侧</word>
+          <word xMin="113.649000" yMin="146.396500" xMax="149.233500" yMax="155.941000">Softmax</word>
+          <word xMin="151.855000" yMin="144.653500" xMax="172.855000" yMax="155.153500">回归</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="362.429000" yMin="146.396500" xMax="386.054000" yMax="155.941000">
+        <line xMin="362.429000" yMin="146.396500" xMax="386.054000" yMax="155.941000">
+          <word xMin="362.429000" yMin="146.396500" xMax="386.054000" yMax="155.941000">89.76</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="440.998000" yMin="146.396500" xMax="464.623000" yMax="155.941000">
+        <line xMin="440.998000" yMin="146.396500" xMax="464.623000" yMax="155.941000">
+          <word xMin="440.998000" yMin="146.396500" xMax="464.623000" yMax="155.941000">88.39</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="90.024000" yMin="161.033500" xMax="178.408000" yMax="172.321000">
+        <line xMin="90.024000" yMin="161.033500" xMax="178.408000" yMax="172.321000">
+          <word xMin="90.024000" yMin="161.033500" xMax="111.024000" yMax="171.533500">端侧</word>
+          <word xMin="113.649000" yMin="162.776500" xMax="178.408000" yMax="172.321000">SVM（对照）</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="362.429000" yMin="162.776500" xMax="386.054000" yMax="172.321000">
+        <line xMin="362.429000" yMin="162.776500" xMax="386.054000" yMax="172.321000">
+          <word xMin="362.429000" yMin="162.776500" xMax="386.054000" yMax="172.321000">86.34</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="440.998000" yMin="162.776500" xMax="464.623000" yMax="172.321000">
+        <line xMin="440.998000" yMin="162.776500" xMax="464.623000" yMax="172.321000">
+          <word xMin="440.998000" yMin="162.776500" xMax="464.623000" yMax="172.321000">84.33</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="90.024000" yMin="177.413500" xMax="169.646000" yMax="188.701000">
+        <line xMin="90.024000" yMin="177.413500" xMax="169.646000" yMax="188.701000">
+          <word xMin="90.024000" yMin="177.413500" xMax="111.024000" yMax="187.913500">端侧</word>
+          <word xMin="113.649000" yMin="179.156500" xMax="169.646000" yMax="188.701000">DT（对照）</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="362.429000" yMin="179.156500" xMax="386.054000" yMax="188.701000">
+        <line xMin="362.429000" yMin="179.156500" xMax="386.054000" yMax="188.701000">
+          <word xMin="362.429000" yMin="179.156500" xMax="386.054000" yMax="188.701000">87.32</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="440.998000" yMin="179.156500" xMax="464.623000" yMax="188.701000">
+        <line xMin="440.998000" yMin="179.156500" xMax="464.623000" yMax="188.701000">
+          <word xMin="440.998000" yMin="179.156500" xMax="464.623000" yMax="188.701000">86.85</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="90.024000" yMin="193.793500" xMax="198.818000" yMax="205.081000">
+        <line xMin="90.024000" yMin="193.793500" xMax="198.818000" yMax="205.081000">
+          <word xMin="90.024000" yMin="193.793500" xMax="111.024000" yMax="204.293500">离线</word>
+          <word xMin="113.649000" yMin="195.536500" xMax="198.818000" yMax="205.081000">CNN（线性定长）</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="362.429000" yMin="195.536500" xMax="386.054000" yMax="205.081000">
+        <line xMin="362.429000" yMin="195.536500" xMax="386.054000" yMax="205.081000">
+          <word xMin="362.429000" yMin="195.536500" xMax="386.054000" yMax="205.081000">90.73</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="440.998000" yMin="195.536500" xMax="464.623000" yMax="205.081000">
+        <line xMin="440.998000" yMin="195.536500" xMax="464.623000" yMax="205.081000">
+          <word xMin="440.998000" yMin="195.536500" xMax="464.623000" yMax="205.081000">89.97</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="90.024000" yMin="210.173500" xMax="305.077000" yMax="222.120917">
+        <line xMin="90.024000" yMin="210.173500" xMax="305.077000" yMax="222.120917">
+          <word xMin="90.024000" yMin="211.916500" xMax="113.932500" yMax="221.461000">DTW</word>
+          <word xMin="116.556000" yMin="210.173500" xMax="209.470500" yMax="220.673500">多模板增强方法（K</word>
+          <word xMin="209.474000" yMin="215.928183" xMax="222.319740" yMax="222.120917">MT</word>
+          <word xMin="225.743000" yMin="211.906000" xMax="233.901500" yMax="221.230000">=</word>
+          <word xMin="236.810000" yMin="211.906000" xMax="305.077000" yMax="221.230000">2，本文方法）</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="362.429000" yMin="211.916500" xMax="386.054000" yMax="221.461000">
+        <line xMin="362.429000" yMin="211.916500" xMax="386.054000" yMax="221.461000">
+          <word xMin="362.429000" yMin="211.916500" xMax="386.054000" yMax="221.461000">96.10</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="440.998000" yMin="211.916500" xMax="464.623000" yMax="221.461000">
+        <line xMin="440.998000" yMin="211.916500" xMax="464.623000" yMax="221.461000">
+          <word xMin="440.998000" yMin="211.916500" xMax="464.623000" yMax="221.461000">95.80</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="70.866000" yMin="246.078000" xMax="510.234000" yMax="258.078000">
+        <line xMin="70.866000" yMin="246.078000" xMax="510.234000" yMax="258.078000">
+          <word xMin="70.866000" yMin="246.078000" xMax="510.234000" yMax="258.078000">两项指标上均取得最优结果，因此可将其视为端侧正式基线，线性支持向量机和决</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="266.003000" xMax="510.237000" yMax="278.903000">
+        <line xMin="70.866000" yMin="266.003000" xMax="510.237000" yMax="278.903000">
+          <word xMin="70.866000" yMin="266.003000" xMax="416.850000" yMax="278.003000">策树则作为传统轻量对照。进一步从整体结果看，分类性能沿端侧</word>
+          <word xMin="419.697000" yMin="267.995000" xMax="460.365000" yMax="278.903000">Softmax</word>
+          <word xMin="463.209000" yMin="266.003000" xMax="510.237000" yMax="278.003000">回归、线</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="285.929000" xMax="510.241000" yMax="298.829000">
+        <line xMin="70.866000" yMin="285.929000" xMax="510.241000" yMax="298.829000">
+          <word xMin="70.866000" yMin="285.929000" xMax="190.866000" yMax="297.929000">性定长一维卷积网络和</word>
+          <word xMin="193.739000" yMin="287.921000" xMax="221.063000" yMax="298.829000">DTW</word>
+          <word xMin="223.933000" yMin="285.929000" xMax="510.241000" yMax="297.929000">多模板增强方法呈现逐级提升趋势。其中，线性定长一</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="305.854000" xMax="510.236000" yMax="318.754000">
+        <line xMin="70.866000" yMin="305.854000" xMax="510.236000" yMax="318.754000">
+          <word xMin="70.866000" yMin="305.854000" xMax="190.866000" yMax="317.854000">维卷积网络相较于端侧</word>
+          <word xMin="193.811000" yMin="307.846000" xMax="234.479000" yMax="318.754000">Softmax</word>
+          <word xMin="237.420000" yMin="305.854000" xMax="369.024000" yMax="317.854000">回归取得了小幅提升，而</word>
+          <word xMin="371.969000" yMin="307.846000" xMax="399.293000" yMax="318.754000">DTW</word>
+          <word xMin="402.236000" yMin="305.854000" xMax="510.236000" yMax="317.854000">多模板增强方法进一</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="325.779000" xMax="518.908000" yMax="339.433199">
+        <line xMin="70.866000" yMin="325.779000" xMax="518.908000" yMax="339.433199">
+          <word xMin="70.866000" yMin="325.779000" xMax="94.866000" yMax="337.779000">步将</word>
+          <word xMin="97.606000" yMin="327.771000" xMax="143.578000" yMax="338.679000">Accuracy</word>
+          <word xMin="146.313000" yMin="325.779000" xMax="194.313000" yMax="337.779000">和宏平均</word>
+          <word xMin="197.054000" yMin="327.759000" xMax="204.650000" yMax="338.415000">F</word>
+          <word xMin="204.660000" yMin="332.355751" xMax="208.892123" yMax="339.433199">1</word>
+          <word xMin="212.133000" yMin="325.779000" xMax="272.133000" yMax="337.779000">分别提升至</word>
+          <word xMin="274.873000" yMin="327.771000" xMax="311.869000" yMax="338.679000">96.10%</word>
+          <word xMin="314.609000" yMin="325.779000" xMax="326.609000" yMax="337.779000">和</word>
+          <word xMin="329.350000" yMin="327.771000" xMax="436.774000" yMax="338.679000">95.80%。相较于端侧</word>
+          <word xMin="439.504000" yMin="327.771000" xMax="480.172000" yMax="338.679000">Softmax</word>
+          <word xMin="482.908000" yMin="325.779000" xMax="518.908000" yMax="337.779000">回归，</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="345.705000" xMax="510.236000" yMax="359.359199">
+        <line xMin="70.866000" yMin="345.705000" xMax="510.236000" yMax="359.359199">
+          <word xMin="70.866000" yMin="345.705000" xMax="131.154000" yMax="357.705000">最终方法的</word>
+          <word xMin="134.361000" yMin="347.697000" xMax="180.333000" yMax="358.605000">Accuracy</word>
+          <word xMin="183.524000" yMin="345.705000" xMax="231.740000" yMax="357.705000">和宏平均</word>
+          <word xMin="234.945000" yMin="347.685000" xMax="242.541000" yMax="358.341000">F</word>
+          <word xMin="242.551000" yMin="352.281751" xMax="246.783123" yMax="359.359199">1</word>
+          <word xMin="250.480000" yMin="345.705000" xMax="310.768000" yMax="357.705000">分别提升了</word>
+          <word xMin="313.975000" yMin="347.697000" xMax="334.975000" yMax="358.605000">6.34</word>
+          <word xMin="338.171000" yMin="345.705000" xMax="350.171000" yMax="357.705000">和</word>
+          <word xMin="353.368000" yMin="347.697000" xMax="374.368000" yMax="358.605000">7.41</word>
+          <word xMin="377.564000" yMin="345.705000" xMax="510.236000" yMax="357.705000">个百分点；相较于线性定</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="365.630000" xMax="510.229000" yMax="378.530000">
+        <line xMin="70.866000" yMin="365.630000" xMax="510.229000" yMax="378.530000">
+          <word xMin="70.866000" yMin="365.630000" xMax="251.346000" yMax="377.630000">长一维卷积网络基线，分别提升了</word>
+          <word xMin="254.452000" yMin="367.622000" xMax="275.452000" yMax="378.530000">5.37</word>
+          <word xMin="278.551000" yMin="365.630000" xMax="290.551000" yMax="377.630000">和</word>
+          <word xMin="293.650000" yMin="367.622000" xMax="314.650000" yMax="378.530000">5.83</word>
+          <word xMin="317.749000" yMin="365.630000" xMax="510.229000" yMax="377.630000">个百分点。这表明，在不显式估计车</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="385.555000" xMax="510.234000" yMax="397.555000">
+        <line xMin="70.866000" yMin="385.555000" xMax="510.234000" yMax="397.555000">
+          <word xMin="70.866000" yMin="385.555000" xMax="510.234000" yMax="397.555000">速的条件下，时间对齐与多模板表征能够缓解自然车流条件下由速度变化及局部结</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="405.480000" xMax="510.246000" yMax="417.480000">
+        <line xMin="70.866000" yMin="405.480000" xMax="510.246000" yMax="417.480000">
+          <word xMin="70.866000" yMin="405.480000" xMax="510.246000" yMax="417.480000">构差异带来的时序不一致，从而提升单地磁车型三分类的整体稳定性。这一结果也与</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="425.406000" xMax="468.643000" yMax="437.406000">
+        <line xMin="70.866000" yMin="425.406000" xMax="468.643000" yMax="437.406000">
+          <word xMin="70.866000" yMin="425.406000" xMax="442.866000" yMax="437.406000">已有磁传感研究中关于交通状态变化会影响波形时间尺度的观察相一致</word>
+          <word xMin="442.866000" yMin="425.835721" xMax="456.144043" yMax="433.080542">[44]</word>
+          <word xMin="456.643000" yMin="425.406000" xMax="468.643000" yMax="437.406000">。</word>
+        </line>
+      </block>
+      <block xMin="94.866000" yMin="445.331000" xMax="510.225000" yMax="458.231000">
+        <line xMin="94.866000" yMin="445.331000" xMax="510.225000" yMax="458.231000">
+          <word xMin="94.866000" yMin="445.331000" xMax="130.950000" yMax="457.331000">结合图</word>
+          <word xMin="134.063000" yMin="447.323000" xMax="179.099000" yMax="458.231000">3.12和表</word>
+          <word xMin="182.217000" yMin="447.323000" xMax="510.225000" yMax="458.231000">3.7可以进一步看出，离线增强方法的主要收益并非平均分布于</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="465.256000" xMax="510.246000" yMax="477.256000">
+        <line xMin="70.866000" yMin="465.256000" xMax="510.246000" yMax="477.256000">
+          <word xMin="70.866000" yMin="465.256000" xMax="510.246000" yMax="477.256000">三类样本，而是集中体现在中型车这一过渡类别上。相较于线性定长一维卷积网络基</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="485.182000" xMax="510.243000" yMax="498.836199">
+        <line xMin="70.866000" yMin="485.182000" xMax="510.243000" yMax="498.836199">
+          <word xMin="70.866000" yMin="485.182000" xMax="141.318000" yMax="497.182000">线，中型车的</word>
+          <word xMin="144.096000" yMin="487.174000" xMax="174.756000" yMax="498.082000">Recall</word>
+          <word xMin="177.531000" yMin="485.182000" xMax="189.531000" yMax="497.182000">由</word>
+          <word xMin="192.315000" yMin="487.174000" xMax="229.311000" yMax="498.082000">85.25%</word>
+          <word xMin="232.096000" yMin="485.182000" xMax="268.096000" yMax="497.182000">提升至</word>
+          <word xMin="270.881000" yMin="487.174000" xMax="325.918000" yMax="498.082000">96.72%，F</word>
+          <word xMin="325.928000" yMin="491.758751" xMax="330.160123" yMax="498.836199">1</word>
+          <word xMin="333.445000" yMin="485.182000" xMax="345.445000" yMax="497.182000">由</word>
+          <word xMin="348.230000" yMin="487.174000" xMax="385.226000" yMax="498.082000">84.55%</word>
+          <word xMin="388.010000" yMin="485.182000" xMax="424.010000" yMax="497.182000">提升至</word>
+          <word xMin="426.795000" yMin="487.174000" xMax="510.243000" yMax="498.082000">93.65%，对应提</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="505.107000" xMax="510.238000" yMax="518.007000">
+        <line xMin="70.866000" yMin="505.107000" xMax="510.238000" yMax="518.007000">
+          <word xMin="70.866000" yMin="505.107000" xMax="154.866000" yMax="517.107000">升幅度分别达到</word>
+          <word xMin="157.624000" yMin="507.099000" xMax="184.180000" yMax="518.007000">11.47</word>
+          <word xMin="186.937000" yMin="505.107000" xMax="198.937000" yMax="517.107000">和</word>
+          <word xMin="201.696000" yMin="507.099000" xMax="222.696000" yMax="518.007000">9.10</word>
+          <word xMin="225.454000" yMin="505.107000" xMax="510.238000" yMax="517.107000">个百分点。相比之下，小型车和大型车在基线下已具有</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="525.032000" xMax="510.236000" yMax="537.932000">
+        <line xMin="70.866000" yMin="525.032000" xMax="510.236000" yMax="537.932000">
+          <word xMin="70.866000" yMin="525.032000" xMax="345.090000" yMax="537.032000">较高识别率，其提升幅度相对较小。总体上，这说明</word>
+          <word xMin="348.001000" yMin="527.024000" xMax="375.325000" yMax="537.932000">DTW</word>
+          <word xMin="378.236000" yMin="525.032000" xMax="510.236000" yMax="537.032000">多模板增强方法的主要收</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="544.957000" xMax="510.246000" yMax="556.957000">
+        <line xMin="70.866000" yMin="544.957000" xMax="510.246000" yMax="556.957000">
+          <word xMin="70.866000" yMin="544.957000" xMax="510.246000" yMax="556.957000">益在于降低中型车与相邻类别之间的混淆，从而提升三分类任务的整体性能。更具体</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="564.883000" xMax="334.866000" yMax="576.883000">
+        <line xMin="70.866000" yMin="564.883000" xMax="334.866000" yMax="576.883000">
+          <word xMin="70.866000" yMin="564.883000" xMax="334.866000" yMax="576.883000">的性能来源将在下一节结合消融实验进一步分析。</word>
+        </line>
+      </block>
+      <block xMin="182.430000" yMin="586.006500" xMax="398.673000" yMax="597.953917">
+        <line xMin="182.430000" yMin="586.006500" xMax="398.673000" yMax="597.953917">
+          <word xMin="182.430000" yMin="586.006500" xMax="192.930000" yMax="596.506500">表</word>
+          <word xMin="195.555000" yMin="587.749500" xMax="208.680000" yMax="597.294000">3.7</word>
+          <word xMin="216.555000" yMin="586.006500" xMax="248.055000" yMax="596.506500">各类别</word>
+          <word xMin="250.680000" yMin="587.749500" xMax="327.084500" yMax="597.294000">Precision、Recall</word>
+          <word xMin="329.701000" yMin="586.006500" xMax="340.201000" yMax="596.506500">与</word>
+          <word xMin="342.826000" yMin="587.739000" xMax="349.577500" yMax="597.063000">F</word>
+          <word xMin="349.578000" yMin="591.761183" xMax="353.546092" yMax="597.953917">1</word>
+          <word xMin="356.673000" yMin="586.006500" xMax="398.673000" yMax="596.506500">指标对比</word>
+        </line>
+      </block>
+      <block xMin="143.773000" yMin="612.275500" xMax="164.773000" yMax="622.775500">
+        <line xMin="143.773000" yMin="612.275500" xMax="164.773000" yMax="622.775500">
+          <word xMin="143.773000" yMin="612.275500" xMax="164.773000" yMax="622.775500">类别</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="179.977000" yMin="612.275500" xMax="448.526000" yMax="623.563000">
+        <line xMin="179.977000" yMin="612.275500" xMax="448.526000" yMax="623.563000">
+          <word xMin="179.977000" yMin="612.275500" xMax="314.732000" yMax="622.775500">线性定长卷积网络基线（%）</word>
+          <word xMin="318.748000" yMin="614.018500" xMax="342.656500" yMax="623.563000">DTW</word>
+          <word xMin="345.280000" yMin="612.275500" xMax="448.526000" yMax="622.775500">多模板增强方法（%）</word>
+        </line>
+      </block>
+      <block xMin="179.986000" yMin="634.493500" xMax="255.848500" yMax="644.038000">
+        <line xMin="179.986000" yMin="634.493500" xMax="255.848500" yMax="644.038000">
+          <word xMin="179.986000" yMin="634.493500" xMax="219.067000" yMax="644.038000">Precision</word>
+          <word xMin="229.021000" yMin="634.493500" xMax="255.848500" yMax="644.038000">Recall</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="281.686000" yMin="634.483000" xMax="292.406092" yMax="644.697917">
+        <line xMin="281.686000" yMin="634.483000" xMax="292.406092" yMax="644.697917">
+          <word xMin="281.686000" yMin="634.483000" xMax="288.437500" yMax="643.807000">F</word>
+          <word xMin="288.438000" yMin="638.505183" xMax="292.406092" yMax="644.697917">1</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="318.748000" yMin="634.493500" xMax="394.610500" yMax="644.038000">
+        <line xMin="318.748000" yMin="634.493500" xMax="394.610500" yMax="644.038000">
+          <word xMin="318.748000" yMin="634.493500" xMax="357.829000" yMax="644.038000">Precision</word>
+          <word xMin="367.783000" yMin="634.493500" xMax="394.610500" yMax="644.038000">Recall</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="417.964000" yMin="634.483000" xMax="428.684092" yMax="644.697917">
+        <line xMin="417.964000" yMin="634.483000" xMax="428.684092" yMax="644.697917">
+          <word xMin="417.964000" yMin="634.483000" xMax="424.715500" yMax="643.807000">F</word>
+          <word xMin="424.716000" yMin="638.505183" xMax="428.684092" yMax="644.697917">1</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="138.523000" yMin="653.623500" xMax="170.023000" yMax="664.123500">
+        <line xMin="138.523000" yMin="653.623500" xMax="170.023000" yMax="664.123500">
+          <word xMin="138.523000" yMin="653.623500" xMax="170.023000" yMax="664.123500">小型车</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="187.712000" yMin="655.366500" xMax="211.337000" yMax="664.911000">
+        <line xMin="187.712000" yMin="655.366500" xMax="211.337000" yMax="664.911000">
+          <word xMin="187.712000" yMin="655.366500" xMax="211.337000" yMax="664.911000">93.33</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="230.615000" yMin="655.366500" xMax="254.240000" yMax="664.911000">
+        <line xMin="230.615000" yMin="655.366500" xMax="254.240000" yMax="664.911000">
+          <word xMin="230.615000" yMin="655.366500" xMax="254.240000" yMax="664.911000">95.15</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="275.481500" yMin="655.366500" xMax="299.106500" yMax="664.911000">
+        <line xMin="275.481500" yMin="655.366500" xMax="299.106500" yMax="664.911000">
+          <word xMin="275.481500" yMin="655.366500" xMax="299.106500" yMax="664.911000">94.23</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="326.469500" yMin="655.366500" xMax="350.094500" yMax="664.911000">
+        <line xMin="326.469500" yMin="655.366500" xMax="350.094500" yMax="664.911000">
+          <word xMin="326.469500" yMin="655.366500" xMax="350.094500" yMax="664.911000">98.04</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="369.383000" yMin="655.366500" xMax="393.008000" yMax="664.911000">
+        <line xMin="369.383000" yMin="655.366500" xMax="393.008000" yMax="664.911000">
+          <word xMin="369.383000" yMin="655.366500" xMax="393.008000" yMax="664.911000">97.09</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="411.761000" yMin="655.366500" xMax="435.386000" yMax="664.911000">
+        <line xMin="411.761000" yMin="655.366500" xMax="435.386000" yMax="664.911000">
+          <word xMin="411.761000" yMin="655.366500" xMax="435.386000" yMax="664.911000">97.56</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="138.523000" yMin="674.098500" xMax="170.023000" yMax="684.598500">
+        <line xMin="138.523000" yMin="674.098500" xMax="170.023000" yMax="684.598500">
+          <word xMin="138.523000" yMin="674.098500" xMax="170.023000" yMax="684.598500">中型车</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="187.712000" yMin="675.841500" xMax="211.337000" yMax="685.386000">
+        <line xMin="187.712000" yMin="675.841500" xMax="211.337000" yMax="685.386000">
+          <word xMin="187.712000" yMin="675.841500" xMax="211.337000" yMax="685.386000">83.87</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="230.615000" yMin="675.841500" xMax="254.240000" yMax="685.386000">
+        <line xMin="230.615000" yMin="675.841500" xMax="254.240000" yMax="685.386000">
+          <word xMin="230.615000" yMin="675.841500" xMax="254.240000" yMax="685.386000">85.25</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="275.481500" yMin="675.841500" xMax="299.106500" yMax="685.386000">
+        <line xMin="275.481500" yMin="675.841500" xMax="299.106500" yMax="685.386000">
+          <word xMin="275.481500" yMin="675.841500" xMax="299.106500" yMax="685.386000">84.55</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="326.469500" yMin="675.841500" xMax="350.094500" yMax="685.386000">
+        <line xMin="326.469500" yMin="675.841500" xMax="350.094500" yMax="685.386000">
+          <word xMin="326.469500" yMin="675.841500" xMax="350.094500" yMax="685.386000">90.77</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="369.383000" yMin="675.841500" xMax="393.008000" yMax="685.386000">
+        <line xMin="369.383000" yMin="675.841500" xMax="393.008000" yMax="685.386000">
+          <word xMin="369.383000" yMin="675.841500" xMax="393.008000" yMax="685.386000">96.72</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="411.761000" yMin="675.841500" xMax="435.386000" yMax="685.386000">
+        <line xMin="411.761000" yMin="675.841500" xMax="435.386000" yMax="685.386000">
+          <word xMin="411.761000" yMin="675.841500" xMax="435.386000" yMax="685.386000">93.65</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="138.523000" yMin="694.573500" xMax="170.023000" yMax="705.073500">
+        <line xMin="138.523000" yMin="694.573500" xMax="170.023000" yMax="705.073500">
+          <word xMin="138.523000" yMin="694.573500" xMax="170.023000" yMax="705.073500">大型车</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="187.712000" yMin="696.316500" xMax="211.337000" yMax="705.861000">
+        <line xMin="187.712000" yMin="696.316500" xMax="211.337000" yMax="705.861000">
+          <word xMin="187.712000" yMin="696.316500" xMax="211.337000" yMax="705.861000">94.74</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="230.615000" yMin="696.316500" xMax="254.240000" yMax="705.861000">
+        <line xMin="230.615000" yMin="696.316500" xMax="254.240000" yMax="705.861000">
+          <word xMin="230.615000" yMin="696.316500" xMax="254.240000" yMax="705.861000">87.80</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="275.481500" yMin="696.316500" xMax="299.106500" yMax="705.861000">
+        <line xMin="275.481500" yMin="696.316500" xMax="299.106500" yMax="705.861000">
+          <word xMin="275.481500" yMin="696.316500" xMax="299.106500" yMax="705.861000">91.14</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="323.844500" yMin="696.316500" xMax="352.719500" yMax="705.861000">
+        <line xMin="323.844500" yMin="696.316500" xMax="352.719500" yMax="705.861000">
+          <word xMin="323.844500" yMin="696.316500" xMax="352.719500" yMax="705.861000">100.00</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="369.383000" yMin="696.316500" xMax="393.008000" yMax="705.861000">
+        <line xMin="369.383000" yMin="696.316500" xMax="393.008000" yMax="705.861000">
+          <word xMin="369.383000" yMin="696.316500" xMax="393.008000" yMax="705.861000">92.68</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="411.761000" yMin="696.316500" xMax="435.386000" yMax="705.861000">
+        <line xMin="411.761000" yMin="696.316500" xMax="435.386000" yMax="705.861000">
+          <word xMin="411.761000" yMin="696.316500" xMax="435.386000" yMax="705.861000">96.20</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">
+        <line xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">
+          <word xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">40</word>
+        </line>
+      </block>
+    </flow>
+  </page>
+</doc>
+</body>
+</html>

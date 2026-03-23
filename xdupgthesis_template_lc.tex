@@ -264,7 +264,7 @@
 \subsection{单地磁车辆事件检测研究现状}
 \label{sec:related_sensor_detection}
 
-车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、路侧系统实现和多源融合增强等思路展开。Ding 等\cite{ch2_ding2004signal}较早从传感节点数据处理出发研究车辆检测中的信号处理问题，为后续基于磁扰动特征的事件检测提供了方法基础。Lou 等\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。
+车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、动态检测判据、时序状态约束和多源融合增强等思路展开。Ding 等\cite{ch2_ding2004signal}较早从传感节点数据处理、自适应阈值检测与状态机判决角度研究车辆检测问题，为后续基于磁扰动特征的事件检测提供了基础思路。Markevicius 等\cite{R12}进一步从动态车辆检测角度讨论了磁场传感器在连续通行场景中的检测能力，说明时序扰动变化可作为车辆事件判定的重要依据。近期，Stojanovi\'{c} 等\cite{stojanovic2025fsm}将固定阈值检测实现为有限状态机形式，表明通过状态顺序约束可以提高车辆到达与离开判定的稳定性。Lou 等\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。
 
 总体来看，已有研究更多关注车辆是否通过及其进入、离开时刻的检测问题，而较少进一步讨论如何将连续观测稳定组织为可复用的统一事件片段。对本文而言，车辆事件检测不仅用于完成车辆通过识别，更在于从连续三轴地磁观测中稳定提取边界一致、表达统一的车辆事件片段，为后续车型分类与停车、占用判定提供共享的事件级输入。
 
@@ -386,17 +386,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 此外，车辆速度变化会使扰动波形在时间轴上发生拉伸或压缩，即不同车速下的波形整体形态可能相近，但持续时间并不相同。这种特性会降低固定时间窗或固定持续时间阈值策略在不同速度条件下的适用性，并对后续特征提取与识别造成不利影响。因此，检测阶段需要通过鲁棒特征构造与时序判决机制降低速度变化和噪声的影响，在完成事件分割之后，再根据具体上层任务组织相应的事件级输入。
 
-基于上述分析，本文将车辆检测问题表述为连续磁场序列中的车辆扰动事件边界提取问题。设车辆扰动进入检测判定区间时的起始采样点为 $k_{in}$，无车判决重新成立后的第一个采样点为 $k_{out}$，则单车事件片段定义为：
-\begin{equation}
-[k_{in},k_{out})
-\end{equation}
-相应的事件持续点数与事件持续时间分别记为：
-\begin{equation}
-N_{\mathrm{evt}}=k_{out}-k_{in}
-\end{equation}
-\begin{equation}
-T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
-\end{equation}
+基于上述分析，本文将车辆检测问题表述为连续磁场序列中的车辆扰动事件边界提取问题。设车辆扰动进入检测判定区间时的起始采样点为 $k_{in}$，无车判决重新成立后的第一个采样点为 $k_{out}$，则单车事件片段定义为 $[k_{in},k_{out})$。相应的事件持续点数与事件持续时间分别记为 $N_{\mathrm{evt}}=k_{out}-k_{in}$ 和 $T_{\mathrm{evt}}=N_{\mathrm{evt}}/f_s$。
 若需表示事件内最后一个采样点，则记为 $k_{last}=k_{out}-1$。上述事件片段既构成第3章车型分类的直接输入，也作为第4章停车与占用状态判定的事件触发基础。
 
 第~\ref{sec:vehicle_detection} 节将在此基础上进一步给出基于三轴一阶差分的特征构造方式及有限状态机判决流程，以在复杂道路环境下稳定定位 $k_{in}$ 与 $k_{out}$。
@@ -441,15 +431,7 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 \begin{equation}
     p_{0,l}(k)=2\left[1-\Phi\!\left(\frac{\left|\overline{D}_l(k)-\hat{\mu}_{l,0}\right|}{\hat{\sigma}_{l,0}}\right)\right]
 \end{equation}
-其中 $\Phi(\cdot)$ 为标准正态分布的累积分布函数。为避免三轴乘积导致数值下溢，对得分作下界截断：
-\begin{equation}
-    p_{0,l}(k)=\max\big(p_{0,l}(k),\,p_{\min}\big)
-\end{equation}
-其中 $p_{\min}=\ProbFloor$。
-相应地，定义单轴扰动得分为：
-\begin{equation}
-    p_{1,l}(k)=1-p_{0,l}(k)
-\end{equation}
+其中 $\Phi(\cdot)$ 为标准正态分布的累积分布函数。为避免三轴乘积导致数值下溢，对得分作下界截断，即令 $p_{0,l}(k)=\max\big(p_{0,l}(k),\,p_{\min}\big)$，其中 $p_{\min}=\ProbFloor$。相应地，定义单轴扰动得分为 $p_{1,l}(k)=1-p_{0,l}(k)$。
 
 再次，对三个轴向的单轴得分进行朴素融合，得到融合有车概率。由于车辆姿态、传感器安装方向和局部磁化结构差异会使 $X$、$Y$、$Z$ 三轴呈现不同的扰动形式，单轴得分难以在复杂场景下保持稳定；但若直接拟合三轴联合分布，则会显著增加建模和参数估计难度。基于此，三轴得分在实现中采用朴素融合方式进行合成，并引入相关性修正系数 $\rho_0$ 和 $\rho_1$。在本文实验中，为保持实现简洁并保证参数可复现，取 $\rho_0=\rho_1=1$。进一步归一化后得到融合有车概率：
 \begin{equation}
@@ -466,33 +448,23 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
     \label{fig:p_car_example}
 \end{figure}
 
-在 50 Hz 采样条件下，仅依据融合概率 $P_{car}(k)$ 进行单阈值比较，仍可能因偶发脉冲干扰、事件内部短时回落以及时间尺度变化而产生虚警，或将单车事件误分裂为多个片段。为此，本文在融合概率序列上采用五状态有限状态机进行时序判决，完成事件分割。状态机结构如图~\ref{fig:fsm} 所示，定义状态空间为：
-\begin{equation}
-    S=\{S_1,S_2,S_3,S_4,S_5\}
-\end{equation}
+在 50 Hz 采样条件下，仅依据融合概率 $P_{car}(k)$ 进行单阈值比较，仍可能因偶发脉冲干扰、事件内部短时回落以及时间尺度变化而产生虚警，或将单车事件误分裂为多个片段。为此，本文在融合概率序列上采用五状态有限状态机进行时序判决，完成事件分割。状态机结构如图~\ref{fig:fsm} 所示，定义状态空间为 $S=\{S_1,S_2,S_3,S_4,S_5\}$。
 其中 $S_1$ 为无车状态，$S_2$ 为到达检测状态，$S_3$ 为延时状态，$S_4$ 为事件维持状态，$S_5$ 为离开检测状态。
 
-考虑到嵌入式实现的计算开销与参数可控性，本文采用阈值判决与连续点数计数相结合的方式。设到达与离开概率阈值分别为 $\theta_{arr}$ 和 $\theta_{lea}$，连续计数阈值分别为 $N_{arr}$ 和 $N_{lea}$，防断裂延时点数为 $T_d$。定义到达与离开指示量：
+考虑到嵌入式实现的计算开销与参数可控性，本文采用阈值判决与连续点数计数相结合的方式。设到达与离开概率阈值分别为 $\theta_{arr}$ 和 $\theta_{lea}$，连续计数阈值分别为 $N_{arr}$ 和 $N_{lea}$，防断裂延时点数为 $T_d$。定义到达与离开指示量 $I_{arr}(k)=\mathbb{I}\!\left(P_{car}(k)\ge \theta_{arr}\right)$ 和 $I_{lea}(k)=\mathbb{I}\!\left(P_{car}(k)\le \theta_{lea}\right)$，并以递推方式维护连续计数器：
 \begin{equation}
-    I_{arr}(k)=\mathbb{I}\!\left(P_{car}(k)\ge \theta_{arr}\right)
-\end{equation}
-\begin{equation}
-    I_{lea}(k)=\mathbb{I}\!\left(P_{car}(k)\le \theta_{lea}\right)
-\end{equation}
-并以递推方式维护连续计数器：
-\begin{equation}
-    n_{arr}(k)=
-    \begin{cases}
-        n_{arr}(k-1)+1, & I_{arr}(k)=1\\
-        0, & I_{arr}(k)=0
-    \end{cases}
-\end{equation}
-\begin{equation}
-    n_{lea}(k)=
-    \begin{cases}
-        n_{lea}(k-1)+1, & I_{lea}(k)=1\\
-        0, & I_{lea}(k)=0
-    \end{cases}
+    \begin{aligned}
+        n_{arr}(k)&=
+        \begin{cases}
+            n_{arr}(k-1)+1, & I_{arr}(k)=1\\
+            0, & I_{arr}(k)=0
+        \end{cases}\\
+        n_{lea}(k)&=
+        \begin{cases}
+            n_{lea}(k-1)+1, & I_{lea}(k)=1\\
+            0, & I_{lea}(k)=0
+        \end{cases}
+    \end{aligned}
 \end{equation}
 
 \begin{figure}[!htbp]
@@ -502,17 +474,11 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
     \label{fig:fsm}
 \end{figure}
 
-状态机的跳变逻辑如下。在 $S_1$ 状态下，系统持续监测融合概率。当 $P_{car}(k)$ 连续满足到达阈值条件时，状态机由 $S_1$ 转入 $S_2$，并开始到达计数。在 $S_2$ 状态下，若条件持续满足，则继续累加 $n_{arr}$；若中途被破坏，则说明当前仅为局部扰动，状态机退回 $S_1$ 并清零 $n_{arr}$。当 $n_{arr}(k)\ge N_{arr}$ 时，确认车辆到达，并将事件起始边界定义为：
-\begin{equation}
-    k_{in} = k - N_{arr} + 1
-\end{equation}
+状态机的跳变逻辑如下。在 $S_1$ 状态下，系统持续监测融合概率。当 $P_{car}(k)$ 连续满足到达阈值条件时，状态机由 $S_1$ 转入 $S_2$，并开始到达计数。在 $S_2$ 状态下，若条件持续满足，则继续累加 $n_{arr}$；若中途被破坏，则说明当前仅为局部扰动，状态机退回 $S_1$ 并清零 $n_{arr}$。当 $n_{arr}(k)\ge N_{arr}$ 时，确认车辆到达，并将事件起始边界定义为 $k_{in}=k-N_{arr}+1$。
 
 车辆到达后，若立即启动离开检测，事件内部可能出现短时回落。这类回落常由车底弱磁区域或局部姿态变化引起，可能被误判为车辆离开，进而导致单车事件被错误分裂。为避免这一问题，状态机在确认车辆到达后先转入 $S_3$ 延时状态。在该状态下，延时计数器逐点递增；当延时长度达到 $T_d$ 后，状态机再转入 $S_4$。
 
-在 $S_4$ 状态下，系统认为当前处于事件维持阶段；当融合概率下降并连续满足离开阈值条件时，状态机由 $S_4$ 转入 $S_5$，并开始离开计数。若离开条件持续满足，则继续累加 $n_{lea}$；若条件再次被破坏，则状态机退回 $S_4$ 并清零 $n_{lea}$。当 $n_{lea}(k)\ge N_{lea}$ 时，确认当前扰动事件结束，并定义事件结束边界索引为：
-\begin{equation}
-    k_{out} = k - N_{lea} + 1
-\end{equation}
+在 $S_4$ 状态下，系统认为当前处于事件维持阶段；当融合概率下降并连续满足离开阈值条件时，状态机由 $S_4$ 转入 $S_5$，并开始离开计数。若离开条件持续满足，则继续累加 $n_{lea}$；若条件再次被破坏，则状态机退回 $S_4$ 并清零 $n_{lea}$。当 $n_{lea}(k)\ge N_{lea}$ 时，确认当前扰动事件结束，并定义事件结束边界索引为 $k_{out}=k-N_{lea}+1$。
 由于 $k_{out}$ 对应无车判决重新成立的第一个采样点，因此最终输出的车辆事件片段为 $[k_{in},k_{out})$。
 
 为保证本章检测方法在 $f_s=\Fs$ 条件下具有可复现性和工程鲁棒性，下面分两步说明关键参数的取值依据。首先，根据有车与无车状态下的融合概率分布确定到达阈值与离开阈值，如图~\ref{fig:param_basis_threshold} 所示。其中到达阈值与离开阈值满足 $\theta_{arr}>\theta_{lea}$，对应的确认时延分别可表示为 $N_{arr}/f_s$、$N_{lea}/f_s$ 和 $T_d/f_s$。
@@ -573,16 +539,16 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 
 在第~\ref{sec:vehicle_detection}节给出的车辆事件检测方法基础上，本文采用地磁车辆检测模块作为路侧嵌入式感知节点，用于完成连续三轴地磁采样、端侧车辆事件检测与低功耗无线结果上报。该模块面向道路侧长期在线部署场景设计，将地磁感知、边缘处理、无线通信、供电管理和运行状态监测等功能集成于单节点之内，使连续观测、事件提取与结果上传能够在节点侧一体化完成。图~\ref{fig:module_photo}给出了检测模块硬件实物。
 
-从硬件构成看，节点以主控 MCU 为核心，结合 VCM5883 三轴地磁传感器和 LoRa 无线通信模块构成采样、处理与传输的核心链路。其中，VCM5883 负责持续感知节点周围磁场变化并输出三轴地磁观测序列，主控 MCU 负责完成数据缓存、必要预处理及事件判决逻辑，LoRa 模块负责将端侧生成的事件级结果上传至路侧通信基站。除核心链路外，节点还集成电源管理、温度监测、电量检测和本地存储等辅助单元，用于支撑设备状态监控、参数保存与异常情况下的数据留存，从而提高复杂道路环境下长期运行的稳定性与可维护性。
-
-在工作流程上，节点以 $f_s=\Fs$ 对连续三轴地磁序列 $\mathbf{B}(k)$ 进行采样，并在端侧执行第~\ref{sec:vehicle_detection}节给出的一阶差分特征提取、平滑处理、概率融合与有限状态机判决流程，在线提取车辆事件起止边界及其持续量。与持续回传原始波形相比，节点侧先完成事件检测、再进行结果上报的方式能够显著降低通信链路负载与系统功耗，更适合道路侧长时在线部署场景\cite{ch2_sifuentes2011wakeup}。同时，辅助监测与存储单元为节点运行状态判断和后续维护提供支撑，使检测模块不仅能够完成事件感知，还具备工程部署所要求的可靠性保障。
-
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.86\linewidth]{images/fig_module_photo}
     \caption{地磁车辆检测模块硬件实物图}
     \label{fig:module_photo}
 \end{figure}
+
+从硬件构成看，节点以主控 MCU 为核心，结合 VCM5883 三轴地磁传感器和 LoRa 无线通信模块构成采样、处理与传输的核心链路。其中，VCM5883 负责持续感知节点周围磁场变化并输出三轴地磁观测序列，主控 MCU 负责完成数据缓存、必要预处理及事件判决逻辑，LoRa 模块负责将端侧生成的事件级结果上传至路侧通信基站。除核心链路外，节点还集成电源管理、温度监测、电量检测和本地存储等辅助单元，用于支撑设备状态监控、参数保存与异常情况下的数据留存，从而提高复杂道路环境下长期运行的稳定性与可维护性。
+
+在工作流程上，节点以 $f_s=\Fs$ 对连续三轴地磁序列 $\mathbf{B}(k)$ 进行采样，并在端侧执行第~\ref{sec:vehicle_detection}节给出的一阶差分特征提取、平滑处理、概率融合与有限状态机判决流程，在线提取车辆事件起止边界及其持续量。与持续回传原始波形相比，节点侧先完成事件检测、再进行结果上报的方式能够显著降低通信链路负载与系统功耗，更适合道路侧长时在线部署场景\cite{ch2_sifuentes2011wakeup}。同时，辅助监测与存储单元为节点运行状态判断和后续维护提供支撑，使检测模块不仅能够完成事件感知，还具备工程部署所要求的可靠性保障。
 
 需要说明的是，本节重点不在于器件级电路实现，而在于说明该检测模块如何作为前端硬件载体支撑第~\ref{sec:vehicle_detection}节给出的车辆事件检测流程，并向后续平台侧处理提供统一的事件级结果。换言之，节点侧主要完成连续采样、端侧判决、结果封装和无线回传等前端任务，而有关多节点汇聚、云平台接入与可视化管理的内容，将在第~\ref{sec:ch2_platform}节进一步说明。由此，第二章在系统层面形成的事件边界、事件片段及其摘要信息，也为第3章车型分类与第4章停车、占用判定提供了共享的数据入口。
 
@@ -643,10 +609,7 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 \subsection{标签定义与标注口径}
 \label{subsec:ch3_data_build}
 
-本章研究单地磁条件下的车型三分类任务，类别集合定义为：
-\begin{equation}
-    \mathcal{Y}=\{\text{小型车},\text{中型车},\text{大型车}\}
-\end{equation}
+本章研究单地磁条件下的车型三分类任务，类别集合记为 $\mathcal{Y}$，包含小型车、中型车和大型车三类。
 考虑到单地磁节点仅能观测车辆通过时的局部三轴磁场扰动，无法直接获得车长、总质量和乘坐人数等显式物理量，过细的车型划分难以在单地磁条件下形成稳定且可复现的判别边界。为兼顾交通管理中的分类依据、现场样本的可标注性以及单地磁信号的可观测性，本文参考道路交通管理中的机动车分类标准\cite{ch3_mps_ga8022019}，将现场可辨识的细粒度车型归并为小型车、中型车和大型车三类标签，用于后续模型训练与评测。三类标签的判据边界与典型车辆类型如表~\ref{tab:ch3_label_rule}所示。
 
 \begin{table}[!htbp]
@@ -680,14 +643,7 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 \subsection{事件级样本与输入表示}
 \label{subsec:ch3_sample_repr}
 
-为统一后续分类方法的输入口径，本文在第\ref{ch:ch2_event_detect}章逐点在线检测得到的车辆事件边界基础上，进一步构造事件级样本表示。本节给出的事件样本矩阵并非端侧固件天然输出的数据结构，而是为了将第二章得到的事件边界 $[k_{in},k_{out})$ 重新组织为可供后续建模使用的统一输入。设连续三轴地磁序列为：
-\begin{equation}
-    \mathbf{B}(k)=\big[B_x(k),\,B_y(k),\,B_z(k)\big]^T
-\end{equation}
-由第二章得到单车事件边界索引 $[k_{in},k_{out})$，则对应事件持续点数记为：
-\begin{equation}
-    N_{\mathrm{evt}}=k_{out}-k_{in}
-\end{equation}
+为统一后续分类方法的输入口径，本文在第\ref{ch:ch2_event_detect}章逐点在线检测得到的车辆事件边界基础上，进一步构造事件级样本表示。本节给出的事件样本矩阵并非端侧固件天然输出的数据结构，而是为了将第二章得到的事件边界 $[k_{in},k_{out})$ 重新组织为可供后续建模使用的统一输入。设连续三轴地磁序列为 $\mathbf{B}(k)=\big[B_x(k),\,B_y(k),\,B_z(k)\big]^T$。由第二章得到单车事件边界索引 $[k_{in},k_{out})$，则对应事件持续点数记为 $N_{\mathrm{evt}}=k_{out}-k_{in}$。
 为便于后续特征提取与模型训练，将事件片段重新编号为局部索引 $n$，其中 $1\le n\le N_{\mathrm{evt}}$。考虑到环境基线会随时间缓慢漂移，本文采用事件起始前的短窗口估计局部基线。在 $50\,\mathrm{Hz}$ 采样率下，取 $N_{\mathrm{pre}}=25$，对应事件起始前 $0.5\,\mathrm{s}$ 的基线估计窗口，则基线向量定义为：
 \begin{equation}
     \mathbf{B}_0=\frac{1}{N_{\mathrm{pre}}}\sum_{k=k_{in}-N_{\mathrm{pre}}}^{k_{in}-1}\mathbf{B}(k)
@@ -885,7 +841,7 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.90\linewidth]{images/fig_motivation_speed_same_vehicle.png}
+\includegraphics[width=0.84\linewidth]{images/fig_motivation_speed_same_vehicle.png}
 \caption{不同速度条件下的车辆事件波形示意图}
 \label{fig:ch3_speed_stretch}
 \end{figure}
@@ -948,17 +904,17 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 
 设两条线性定长后的四通道序列分别为：
 \begin{equation}
-    \mathbf{p}=\{\mathbf{p}_1,\ldots,\mathbf{p}_{L_{\mathrm{uni}}}\}
+    \begin{aligned}
+        \mathbf{p}&=\{\mathbf{p}_1,\ldots,\mathbf{p}_{L_{\mathrm{uni}}}\}\\
+        \mathbf{q}&=\{\mathbf{q}_1,\ldots,\mathbf{q}_{L_{\mathrm{uni}}}\}
+    \end{aligned}
 \end{equation}
+其中各时刻的四通道向量定义为：
 \begin{equation}
-    \mathbf{q}=\{\mathbf{q}_1,\ldots,\mathbf{q}_{L_{\mathrm{uni}}}\}
-\end{equation}
-其中：
-\begin{equation}
-    \mathbf{p}_i=\big[p_i^{(x)},\,p_i^{(y)},\,p_i^{(z)},\,p_i^{(b)}\big]^T
-\end{equation}
-\begin{equation}
-    \mathbf{q}_j=\big[q_j^{(x)},\,q_j^{(y)},\,q_j^{(z)},\,q_j^{(b)}\big]^T
+    \begin{aligned}
+        \mathbf{p}_i&=\big[p_i^{(x)},\,p_i^{(y)},\,p_i^{(z)},\,p_i^{(b)}\big]^T\\
+        \mathbf{q}_j&=\big[q_j^{(x)},\,q_j^{(y)},\,q_j^{(z)},\,q_j^{(b)}\big]^T
+    \end{aligned}
 \end{equation}
 考虑到当前离线链路以模值通道作为时间结构对齐的主要依据，本文在路径搜索阶段采用模值通道上的平方欧氏距离作为局部距离，即：
 \begin{equation}
@@ -1011,14 +967,7 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 \end{equation}
 随后，以选定模板为参考，对输入样本进行时间对齐，得到对齐后的四通道序列 $\mathbf{X}'\in\mathbb{R}^{4\times L_{\mathrm{uni}}}$，再按通道标准化后输入与第\ref{subsec:ch3_offline_base}节一致的一维卷积网络完成分类。这里默认将待对齐样本规整到参考模板的时间轴上，因此对齐后的序列长度与参考模板保持一致。其中，$c_{\mathrm{ref}}$ 仅作为对齐参考模板的选择变量，用于执行预对齐路由，而最终类别仍由后续卷积网络给出。该方法在不增加输入通道数的条件下引入了单模板原型路由与 DTW 对齐，因此适合作为验证该组合策略是否有效的直接对照。单模板链路可概括为：模板构造、参考类别选择、DTW 对齐和卷积分类。
 
-考虑到同一类别内部的地磁波形不仅受车型影响，还会随车速变化而改变事件持续长度，单模板对齐仍难以充分覆盖类内形态差异。因此，本文进一步提出多模板 DTW 增强方法，以扩大类内表征范围。为避免与端侧特征维度 $K$ 混淆，模板数统一记为 $K_{\mathrm{MT}}$。本文采用事件持续时间作为时间尺度代理量，在每个类别的训练样本中按持续时间分位点选取代表性模板。当 $K_{\mathrm{MT}}=1$ 时，取：
-\begin{equation}
-    q_1=0.5
-\end{equation}
-即选择事件持续时间最接近类内中位数的样本作为模板；当 $K_{\mathrm{MT}}>1$ 时，在区间 $[0.15,\,0.85]$ 上均匀选取 $K_{\mathrm{MT}}$ 个分位点，即：
-\begin{equation}
-    q_k=0.15+\frac{0.70(k-1)}{K_{\mathrm{MT}}-1}, k=1,2,\ldots,K_{\mathrm{MT}}
-\end{equation}
+考虑到同一类别内部的地磁波形不仅受车型影响，还会随车速变化而改变事件持续长度，单模板对齐仍难以充分覆盖类内形态差异。因此，本文进一步提出多模板 DTW 增强方法，以扩大类内表征范围。为避免与端侧特征维度 $K$ 混淆，模板数统一记为 $K_{\mathrm{MT}}$。本文采用事件持续时间作为时间尺度代理量，在每个类别的训练样本中按持续时间分位点选取代表性模板。当 $K_{\mathrm{MT}}=1$ 时，取 $q_1=0.5$，即选择事件持续时间最接近类内中位数的样本作为模板；当 $K_{\mathrm{MT}}>1$ 时，在区间 $[0.15,\,0.85]$ 上均匀选取 $K_{\mathrm{MT}}$ 个分位点，即 $q_k=0.15+\frac{0.70(k-1)}{K_{\mathrm{MT}}-1}$，其中 $k=1,2,\ldots,K_{\mathrm{MT}}$。
 这里不直接取极端分位点，主要是考虑到持续时间分布尾部样本更容易受到边界截断、局部波动或样本稀疏性的影响，从而削弱模板的代表性。
 据此，可为每一类构造模板集合：
 \begin{equation}
@@ -1115,19 +1064,17 @@ T_{\mathrm{evt}}=\frac{N_{\mathrm{evt}}}{f_s}
 
 \begin{figure}[!htbp]
 \centering
-\begin{subfigure}[t]{0.495\linewidth}
+\makebox[\linewidth][c]{%
+\begin{subfigure}[t]{0.50\linewidth}
   \centering
   \includegraphics[width=\linewidth]{images/ch3_event_length_boxplot.png}
-  \caption{三类车辆事件持续时间分布箱线图}
-  \label{fig:ch3_event_length_boxplot}
-\end{subfigure}
-\hfill
-\begin{subfigure}[t]{0.495\linewidth}
+\end{subfigure}%
+\hspace{0.006\linewidth}%
+\begin{subfigure}[t]{0.50\linewidth}
   \centering
   \includegraphics[width=\linewidth]{images/ch3_mag_energy_boxplot.png}
-  \caption{三类车辆模值能量分布箱线图}
-  \label{fig:ch3_mag_energy_boxplot}
-\end{subfigure}
+\end{subfigure}%
+}
 \caption{三类车辆事件持续时间与模值能量统计分布图}
 \label{fig:ch3_stat_boxplots}
 \end{figure}
@@ -1171,7 +1118,7 @@ Softmax 回归 & 正则化系数 $\lambda\in\{10^{-4},10^{-3},10^{-2},10^{-1}\}$
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.72\linewidth]{images/ablation_edge_K.png}
+\includegraphics[width=0.68\linewidth]{images/ablation_edge_K.png}
 \caption{端侧特征维度 $K$ 选择结果图}
 \label{fig:ch3_ablation_edge_k}
 \end{figure}
@@ -1202,7 +1149,7 @@ $N_{zc}^{(z)}$ & 式(\ref{eq:ch3_edge_stat_zc}) & 表征 $z$ 轴波形复杂度�
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.72\linewidth]{images/ablation_K.png}
+\includegraphics[width=0.68\linewidth]{images/ablation_K.png}
 \caption{多模板数量 $K_{\mathrm{MT}}$ 选择结果图}
 \label{fig:ch3_ablation_k}
 \end{figure}
@@ -1211,7 +1158,7 @@ $N_{zc}^{(z)}$ & 式(\ref{eq:ch3_edge_stat_zc}) & 表征 $z$ 轴波形复杂度�
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.82\linewidth]{images/ch3_cnn_training_curve.png}
+\includegraphics[width=0.74\linewidth]{images/ch3_cnn_training_curve.png}
 \caption{线性定长卷积网络训练收敛曲线图}
 \label{fig:ch3_cnn_train}
 \end{figure}
@@ -1221,22 +1168,22 @@ $N_{zc}^{(z)}$ & 式(\ref{eq:ch3_edge_stat_zc}) & 表征 $z$ 轴波形复杂度�
 \subsection{总体结果分析}
 \label{subsec:ch3_exp_result}
 
-为比较端侧轻量方法与离线增强方法的整体性能，本文将各类方案在测试集上的结果统一汇总于表~\ref{tab:ch3_overall}。其中，Softmax 回归、线性支持向量机和决策树构成端侧统计特征链路的轻量对照，线性定长一维卷积网络作为离线链路的基础基线，DTW 多模板增强方法为本文最终采用的离线增强方案，其模板数取 $K_{\mathrm{MT}}=2$，并以后续卷积网络完成分类。单模板 DTW 与容量控制对照结果将在第\ref{subsec:ch3_ablation}节单独分析，因而不纳入本节主表比较。
+为比较端侧轻量方法与离线增强方法的整体性能，本文将各类方案在测试集上的结果统一汇总于表~\ref{tab:ch3_overall}。其中，Softmax 回归、线性支持向量机和决策树为端侧统计特征链路的比较方法，线性定长一维卷积网络为离线链路的基础基线，DTW 多模板增强方法为本文最终采用的离线增强方案，正式结果取 $K_{\mathrm{MT}}=2$。单模板 DTW 与容量控制对照结果将在第\ref{subsec:ch3_ablation}节单独分析，因而不纳入本节主表比较。
 
 \begin{table}[!htbp]
 \centering
 \small
 \caption{不同车型分类方案总体性能对比}
 \label{tab:ch3_overall}
-\begin{tabularx}{0.94\linewidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{2.0cm} >{\centering\arraybackslash}p{2.7cm}}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{2.5cm} >{\centering\arraybackslash}p{2.7cm}}
 \hline
-方法 & Accuracy（\%） & 宏平均 $F_1$（\%） \\
+方法 & \mbox{Accuracy（\%）} & 宏平均 $F_1$（\%） \\
 \hline
 端侧 Softmax 回归 & 89.76 & 88.39 \\
-端侧 SVM（对照） & 86.34 & 84.33 \\
-端侧 DT（对照） & 87.32 & 86.85 \\
-离线 CNN（线性定长） & 90.73 & 89.97 \\
-DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.80 \\
+端侧 SVM & 86.34 & 84.33 \\
+端侧 DT & 87.32 & 86.85 \\
+线性定长 CNN 基线 & 90.73 & 89.97 \\
+DTW 多模板增强方法 & 96.10 & 95.80 \\
 \hline
 \end{tabularx}
 \end{table}
@@ -1367,11 +1314,7 @@ DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.8
 
 上述困难最终体现在车辆通过事件与停车事件的信号形态差异上。当车辆进入传感器敏感区域时，三轴磁场 $B_x$、$B_y$、$B_z$ 均会产生明显扰动。普通通过事件通常表现为短时峰谷结构，扰动结束后原始磁场快速回归背景水平，一阶差分幅值主要在到达与离开阶段出现明显峰值；而停车事件在车辆减速并停稳后往往形成持续的平台偏置，其稳态水平与车辆相对位置、车辆姿态及车辆磁特性等因素相关，在停稳占用阶段一阶差分幅值则回落至接近零的噪声水平。因此，差分响应的回落只能说明显著变化减弱，不能直接表明信号已经进入可用于占用状态判定的稳态。
 
-为直观展示车辆通过与车辆停车在稳态水平和一阶差分特征上的差异，图\ref{fig:ch4_pass_vs_park}给出了两类事件的实测对比。图中上行为以事件到达前短时空闲段三轴均值向量 $\mathbf{B}_0$ 作为基线得到的三轴磁场扰动：
-\begin{equation}
-\delta\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}_0
-\end{equation}
-下行为相邻采样点的一阶差分幅值 $\lVert\Delta_1\mathbf{B}(t)\rVert_2$，其中 $\Delta_1\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}(t-\Delta t)$，$\Delta t=1/f_s$。可以看到，通过事件在扰动结束后 $\delta\mathbf{B}(t)$ 迅速回归零附近，而停车事件在停稳阶段形成持续平台偏置；与此同时，$\lVert\Delta_1\mathbf{B}(t)\rVert_2$ 主要在到达与离开阶段出现峰值，在停稳占用阶段回落至接近零的噪声水平。由此可见，仅依赖单次差分事件边界仍难以直接给出占用状态边界，后续仍需结合稳态水平及其持续关系进行判定。
+为直观展示车辆通过与车辆停车在稳态水平和一阶差分特征上的差异，图\ref{fig:ch4_pass_vs_park}给出了两类事件的实测对比。图中上行为以事件到达前短时空闲段三轴均值向量 $\mathbf{B}_0$ 作为基线得到的三轴磁场扰动 $\delta\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}_0$；下行为相邻采样点的一阶差分幅值 $\lVert\Delta_1\mathbf{B}(t)\rVert_2$，其中 $\Delta_1\mathbf{B}(t)=\mathbf{B}(t)-\mathbf{B}(t-\Delta t)$，$\Delta t=1/f_s$。可以看到，通过事件在扰动结束后 $\delta\mathbf{B}(t)$ 迅速回归零附近，而停车事件在停稳阶段形成持续平台偏置；与此同时，$\lVert\Delta_1\mathbf{B}(t)\rVert_2$ 主要在到达与离开阶段出现峰值，在停稳占用阶段回落至接近零的噪声水平。由此可见，仅依赖单次差分事件边界仍难以直接给出占用状态边界，后续仍需结合稳态水平及其持续关系进行判定。
 
 \begin{figure}[!htbp]
     \centering
@@ -1391,10 +1334,7 @@ DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.8
 
 需要强调的是，本章的状态判定建立在事件结束后的稳态证据之上，因此，触发占用建立或解除判定的扰动事件结束时刻，与算法完成状态建立或解除的确认时刻并不必然重合。为与事件级触发口径保持一致，本文将最终预测占用区间的进入与释放边界记为触发占用建立或解除判定的相应扰动事件结束时刻；另一方面，将基于稳定点或退化证据完成状态建立与解除判定的时刻记为确认时刻。前者用于构成占用状态段并进行区间级评测，后者用于量化算法内部的确认滞后。
 
-从状态建模角度，可将占用状态表示为二状态序列：
-\begin{equation}
-    o(k)\in\{0,1\}
-\end{equation}
+从状态建模角度，可将占用状态表示为二状态序列 $o(k)\in\{0,1\}$。
 其中，$o(k)=0$ 表示空闲，$o(k)=1$ 表示占用。若算法输出的占用进入边界与释放边界分别记为 $k_{\mathrm{in}}^{o}$ 和 $k_{\mathrm{out}}^{o}$，则对应的占用状态序列可写为：
 \begin{equation}
     o(k)=
@@ -1468,13 +1408,11 @@ DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.8
 
 为抑制局部伪稳态和偶发短时回落带来的误触发，本文进一步引入连续稳定窗门控。若在事件结束后的搜索区间内，存在首个索引 $k^\ast$ 满足：
 \begin{equation}
-    R(\ell)\le R_{\mathrm{th}}
-\end{equation}
-\begin{equation}
-    M(\ell)\le M_{\mathrm{th}}
-\end{equation}
-\begin{equation}
-    \forall\,\ell\in\{k^\ast-N_{\mathrm{stable}}+1,\ldots,k^\ast\}
+    \begin{aligned}
+        R(\ell)&\le R_{\mathrm{th}}\\
+        M(\ell)&\le M_{\mathrm{th}}\\
+        &\forall\,\ell\in\{k^\ast-N_{\mathrm{stable}}+1,\ldots,k^\ast\}
+    \end{aligned}
 \end{equation}
 则将稳定点定义为：
 \begin{equation}
@@ -1502,13 +1440,14 @@ DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.8
 \begin{equation}
     \Delta\mathbf{S}=\mathbf{S}_{\mathrm{new}}-\mathbf{S}_{\mathrm{pre}}
 \end{equation}
-相应的漂移幅值定义为：
+相应的环境距离定义为：
 \begin{equation}
-    \Delta S=\lVert\Delta\mathbf{S}\rVert_2
+    D_{\mathrm{env}}=\lVert\Delta\mathbf{S}\rVert_2
 \end{equation}
-若 $\Delta S>D_{\mathrm{th}}$，则说明事件结束后形成了与环境参考显著不同的稳态水平，可判定占用状态建立，并将占用参考初始化为：
+若 $D_{\mathrm{env}}>D_{\mathrm{th}}$，则说明事件结束后形成了与环境参考显著不同的稳态水平，可判定占用状态建立，并将占用参考初始化为 $\mathbf{S}_{\mathrm{post}}=\mathbf{S}_{\mathrm{new}}$。
+此时，对应的占用偏移量定义为：
 \begin{equation}
-    \mathbf{S}_{\mathrm{post}}=\mathbf{S}_{\mathrm{new}}
+    D_{\mathrm{occ}}=\lVert\mathbf{S}_{\mathrm{post}}-\mathbf{S}_{\mathrm{pre}}\rVert_2
 \end{equation}
 否则，认为该事件对应的扰动尚不足以支持占用状态建立，将其作为普通通过事件处理，不建立占用状态。
 

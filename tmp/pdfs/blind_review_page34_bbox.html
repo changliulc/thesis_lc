@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>面向智慧交通的车型分类及停车占用检测方法研究</title>
+<meta name="Subject" content="西安电子科技大学硕士学位论文"/>
+<meta name="Author" content="XXX"/>
+<meta name="Creator" content="XeLaTeX with xdupgthesis class in XDUTS"/>
+<meta name="Producer" content="xdvipdfmx (20250205)"/>
+<meta name="CreationDate" content="2026-03-23T09:41:21+08"/>
+<meta name="ModDate" content="2026-03-23T14:43:47+08"/>
+</head>
+<body>
+<doc>
+  <page width="595.280000" height="841.890000">
+    <flow>
+      <block xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">
+        <line xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">
+          <word xMin="217.051000" yMin="63.256500" xMax="364.051000" yMax="73.756500">西安电子科技大学硕士学位论文</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="94.866000" yMin="90.655000" xMax="510.235000" yMax="103.555000">
+        <line xMin="94.866000" yMin="90.655000" xMax="510.235000" yMax="103.555000">
+          <word xMin="94.866000" yMin="90.655000" xMax="106.866000" yMax="102.655000">第</word>
+          <word xMin="109.968000" yMin="92.647000" xMax="133.968000" yMax="103.555000">2.2.2</word>
+          <word xMin="137.071000" yMin="90.655000" xMax="510.235000" yMax="102.655000">节将在此基础上进一步给出基于三轴一阶差分的特征构造方式及有限状</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="110.580000" xMax="377.160000" yMax="124.234199">
+        <line xMin="70.866000" yMin="110.580000" xMax="377.160000" yMax="124.234199">
+          <word xMin="70.866000" yMin="110.580000" xMax="310.866000" yMax="122.580000">态机判决流程，以在复杂道路环境下稳定定位</word>
+          <word xMin="313.866000" yMin="112.560000" xMax="319.974000" yMax="123.216000">k</word>
+          <word xMin="319.977000" yMin="117.156751" xMax="327.986950" yMax="124.234199">in</word>
+          <word xMin="331.497000" yMin="110.580000" xMax="343.497000" yMax="122.580000">与</word>
+          <word xMin="346.497000" yMin="112.560000" xMax="352.605000" yMax="123.216000">k</word>
+          <word xMin="352.608000" yMin="117.156751" xMax="364.650821" yMax="124.234199">out</word>
+          <word xMin="365.160000" yMin="110.580000" xMax="377.160000" yMax="122.580000">。</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="94.866000" yMin="140.743000" xMax="353.866000" yMax="155.793000">
+        <line xMin="94.866000" yMin="140.743000" xMax="353.866000" yMax="155.793000">
+          <word xMin="94.866000" yMin="143.291000" xMax="122.866000" yMax="155.793000">2.2.2</word>
+          <word xMin="129.866000" yMin="140.743000" xMax="353.866000" yMax="154.743000">基于一阶差分的状态机车辆检测算法</word>
+        </line>
+      </block>
+      <block xMin="94.866000" yMin="168.364000" xMax="510.234000" yMax="180.364000">
+        <line xMin="94.866000" yMin="168.364000" xMax="510.234000" yMax="180.364000">
+          <word xMin="94.866000" yMin="168.364000" xMax="510.234000" yMax="180.364000">本节给出本文后续使用的车辆事件检测与事件分割方法。考虑到实际道路环境</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="188.289000" xMax="510.246000" yMax="200.289000">
+        <line xMin="70.866000" yMin="188.289000" xMax="510.246000" yMax="200.289000">
+          <word xMin="70.866000" yMin="188.289000" xMax="510.246000" yMax="200.289000">中存在慢变漂移、传感器温漂、偶发电磁干扰和短时回落等因素，车辆事件检测过程</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="208.214000" xMax="510.246000" yMax="220.214000">
+        <line xMin="70.866000" yMin="208.214000" xMax="510.246000" yMax="220.214000">
+          <word xMin="70.866000" yMin="208.214000" xMax="510.246000" yMax="220.214000">可概括为两级判决：首先，基于三轴一阶差分构造单轴扰动得分并进行三轴融合，得</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="228.139000" xMax="510.235000" yMax="241.793199">
+        <line xMin="70.866000" yMin="228.139000" xMax="510.235000" yMax="241.793199">
+          <word xMin="70.866000" yMin="228.139000" xMax="155.670000" yMax="240.139000">到实时有车概率</word>
+          <word xMin="159.036000" yMin="230.119000" xMax="166.608000" yMax="240.775000">P</word>
+          <word xMin="166.610000" yMin="234.715751" xMax="178.589060" yMax="241.793199">car</word>
+          <word xMin="179.330000" yMin="230.119000" xMax="510.235000" yMax="240.775000">(k)；随后，在融合概率序列上引入五状态有限状态机和连续点</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="248.065000" xMax="510.233000" yMax="261.719199">
+        <line xMin="70.866000" yMin="248.065000" xMax="510.233000" yMax="261.719199">
+          <word xMin="70.866000" yMin="248.065000" xMax="275.298000" yMax="260.065000">数确认机制，以稳定定位事件起始边界</word>
+          <word xMin="278.381000" yMin="250.045000" xMax="284.489000" yMax="260.701000">k</word>
+          <word xMin="284.492000" yMin="254.641751" xMax="292.501950" yMax="261.719199">in</word>
+          <word xMin="296.088000" yMin="248.065000" xMax="356.196000" yMax="260.065000">与结束边界</word>
+          <word xMin="359.281000" yMin="250.045000" xMax="365.389000" yMax="260.701000">k</word>
+          <word xMin="365.392000" yMin="254.641751" xMax="377.434821" yMax="261.719199">out</word>
+          <word xMin="377.945000" yMin="248.065000" xMax="510.233000" yMax="260.065000">，并形成标准化车辆事件</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="267.990000" xMax="156.257000" yMax="281.644199">
+        <line xMin="70.866000" yMin="267.990000" xMax="156.257000" yMax="281.644199">
+          <word xMin="70.866000" yMin="267.990000" xMax="94.866000" yMax="279.990000">片段</word>
+          <word xMin="97.866000" yMin="269.970000" xMax="107.238000" yMax="280.626000">[k</word>
+          <word xMin="107.241000" yMin="274.566751" xMax="115.250950" yMax="281.644199">in</word>
+          <word xMin="115.761000" yMin="269.970000" xMax="119.013000" yMax="280.626000">,</word>
+          <word xMin="121.005000" yMin="269.970000" xMax="127.113000" yMax="280.626000">k</word>
+          <word xMin="127.135000" yMin="274.566751" xMax="139.177821" yMax="281.644199">out</word>
+          <word xMin="139.688000" yMin="269.970000" xMax="156.257000" yMax="280.626000">)。</word>
+        </line>
+      </block>
+      <block xMin="94.866000" yMin="287.915000" xMax="510.234000" yMax="300.815000">
+        <line xMin="94.866000" yMin="287.915000" xMax="510.234000" yMax="300.815000">
+          <word xMin="94.866000" yMin="287.915000" xMax="407.802000" yMax="299.915000">首先，对三轴一阶差分特征进行构造并作平滑处理。延续第</word>
+          <word xMin="410.922000" yMin="289.907000" xMax="434.922000" yMax="300.815000">2.2.1</word>
+          <word xMin="438.030000" yMin="287.915000" xMax="510.234000" yMax="299.915000">节对三轴地磁</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="307.841000" xMax="510.246000" yMax="319.841000">
+        <line xMin="70.866000" yMin="307.841000" xMax="510.246000" yMax="319.841000">
+          <word xMin="70.866000" yMin="307.841000" xMax="510.246000" yMax="319.841000">输出的定义，为抑制慢变基线并突出车辆扰动的快速变化分量，对三轴序列进行一阶</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="327.766000" xMax="106.866000" yMax="339.766000">
+        <line xMin="70.866000" yMin="327.766000" xMax="106.866000" yMax="339.766000">
+          <word xMin="70.866000" yMin="327.766000" xMax="106.866000" yMax="339.766000">差分：</word>
+        </line>
+      </block>
+      <block xMin="190.555000" yMin="346.599000" xMax="390.547000" yMax="362.199000">
+        <line xMin="190.555000" yMin="346.599000" xMax="390.547000" yMax="362.199000">
+          <word xMin="190.555000" yMin="349.671000" xMax="200.311000" yMax="360.327000">D</word>
+          <word xMin="200.311000" yMin="354.267751" xMax="202.837522" yMax="361.345199">l</word>
+          <word xMin="203.431000" yMin="349.671000" xMax="219.074000" yMax="360.327000">(k)</word>
+          <word xMin="222.398000" yMin="349.671000" xMax="231.530000" yMax="360.327000">=</word>
+          <word xMin="234.889000" yMin="349.671000" xMax="243.805000" yMax="360.327000">B</word>
+          <word xMin="243.815000" yMin="354.267751" xMax="246.341522" yMax="361.345199">l</word>
+          <word xMin="246.936000" yMin="349.671000" xMax="262.579000" yMax="360.327000">(k)</word>
+          <word xMin="265.255000" yMin="346.599000" xMax="274.579000" yMax="362.199000">−</word>
+          <word xMin="277.255000" yMin="349.671000" xMax="286.171000" yMax="360.327000">B</word>
+          <word xMin="286.181000" yMin="354.267751" xMax="288.707522" yMax="361.345199">l</word>
+          <word xMin="289.302000" yMin="349.671000" xMax="299.979000" yMax="360.327000">(k</word>
+          <word xMin="303.051000" yMin="346.599000" xMax="312.375000" yMax="362.199000">−</word>
+          <word xMin="315.051000" yMin="349.671000" xMax="328.748000" yMax="360.327000">1),</word>
+          <word xMin="330.740000" yMin="349.671000" xMax="334.232000" yMax="360.327000">l</word>
+          <word xMin="337.857000" yMin="346.599000" xMax="345.849000" yMax="362.199000">∈</word>
+          <word xMin="349.173000" yMin="346.599000" xMax="365.114000" yMax="362.199000">{x,</word>
+          <word xMin="367.106000" yMin="349.671000" xMax="376.514000" yMax="360.327000">y,</word>
+          <word xMin="378.518000" yMin="349.671000" xMax="390.547000" yMax="360.327000">z}</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="486.248000" yMin="349.683000" xMax="510.236000" yMax="360.591000">
+        <line xMin="486.248000" yMin="349.683000" xMax="510.236000" yMax="360.591000">
+          <word xMin="486.248000" yMin="349.683000" xMax="510.236000" yMax="360.591000">(2-7)</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="70.866000" yMin="379.616000" xMax="325.108000" yMax="393.270199">
+        <line xMin="70.866000" yMin="379.616000" xMax="325.108000" yMax="393.270199">
+          <word xMin="70.866000" yMin="379.616000" xMax="118.866000" yMax="391.616000">差分序列</word>
+          <word xMin="121.866000" yMin="381.596000" xMax="131.622000" yMax="392.252000">D</word>
+          <word xMin="131.622000" yMin="386.192751" xMax="134.148522" yMax="393.270199">l</word>
+          <word xMin="134.742000" yMin="381.596000" xMax="150.385000" yMax="392.252000">(k)</word>
+          <word xMin="153.395000" yMin="379.616000" xMax="201.395000" yMax="391.616000">的单位与</word>
+          <word xMin="204.395000" yMin="381.596000" xMax="213.311000" yMax="392.252000">B</word>
+          <word xMin="213.321000" yMin="386.192751" xMax="215.847522" yMax="393.270199">l</word>
+          <word xMin="216.441000" yMin="381.596000" xMax="232.085000" yMax="392.252000">(k)</word>
+          <word xMin="235.094000" yMin="379.616000" xMax="295.094000" yMax="391.616000">一致，仍为</word>
+          <word xMin="298.094000" yMin="381.596000" xMax="325.108000" yMax="392.252000">nT。</word>
+        </line>
+      </block>
+      <block xMin="94.866000" yMin="399.542000" xMax="517.962000" yMax="411.542000">
+        <line xMin="94.866000" yMin="399.542000" xMax="517.962000" yMax="411.542000">
+          <word xMin="94.866000" yMin="399.542000" xMax="517.962000" yMax="411.542000">差分会放大高频噪声与偶发尖峰，因此工程实现中需对差分序列进行平滑处理。</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="419.467000" xMax="432.295000" yMax="433.121199">
+        <line xMin="70.866000" yMin="419.467000" xMax="432.295000" yMax="433.121199">
+          <word xMin="70.866000" yMin="419.467000" xMax="118.866000" yMax="431.467000">考虑端侧</word>
+          <word xMin="121.866000" yMin="421.459000" xMax="149.202000" yMax="432.367000">MCU</word>
+          <word xMin="152.206000" yMin="419.467000" xMax="320.206000" yMax="431.467000">的算力与实时性约束，本文采用</word>
+          <word xMin="323.206000" yMin="421.447000" xMax="331.198000" yMax="432.103000">L</word>
+          <word xMin="331.200000" yMin="426.043751" xMax="335.113319" yMax="433.121199">s</word>
+          <word xMin="338.948000" yMin="421.447000" xMax="348.080000" yMax="432.103000">=</word>
+          <word xMin="351.404000" yMin="421.447000" xMax="357.272000" yMax="432.103000">7</word>
+          <word xMin="360.295000" yMin="419.467000" xMax="432.295000" yMax="431.467000">点滑动平均：</word>
+        </line>
+      </block>
+      <block xMin="189.273000" yMin="443.417000" xMax="391.829000" yMax="481.564199">
+        <line xMin="256.492000" yMin="448.059568" xMax="259.982918" yMax="453.373654">
+          <word xMin="256.492000" yMin="448.059568" xMax="259.982918" yMax="453.373654">s</word>
+        </line>
+        <line xMin="238.396000" yMin="443.417000" xMax="269.680000" yMax="460.427000">
+          <word xMin="238.396000" yMin="449.771000" xMax="244.264000" yMax="460.427000">1</word>
+          <word xMin="252.352000" yMin="443.417000" xMax="269.680000" yMax="459.017000">X</word>
+        </line>
+        <line xMin="189.273000" yMin="457.890000" xMax="230.575000" yMax="469.564199">
+          <word xMin="189.273000" yMin="457.890000" xMax="199.029000" yMax="468.546000">D</word>
+          <word xMin="199.355000" yMin="462.486751" xMax="201.881522" yMax="469.564199">l</word>
+          <word xMin="202.476000" yMin="457.890000" xMax="218.119000" yMax="468.546000">(k)</word>
+          <word xMin="221.443000" yMin="457.890000" xMax="230.575000" yMax="468.546000">=</word>
+        </line>
+        <line xMin="273.305000" yMin="454.818000" xMax="391.829000" yMax="470.418000">
+          <word xMin="273.305000" yMin="457.890000" xMax="283.061000" yMax="468.546000">D</word>
+          <word xMin="283.060000" yMin="462.486751" xMax="285.586522" yMax="469.564199">l</word>
+          <word xMin="286.181000" yMin="457.890000" xMax="296.858000" yMax="468.546000">(k</word>
+          <word xMin="299.931000" yMin="454.818000" xMax="309.255000" yMax="470.418000">−</word>
+          <word xMin="311.931000" yMin="457.890000" xMax="330.030000" yMax="468.546000">m),</word>
+          <word xMin="332.022000" yMin="457.890000" xMax="335.514000" yMax="468.546000">l</word>
+          <word xMin="339.139000" yMin="454.818000" xMax="347.131000" yMax="470.418000">∈</word>
+          <word xMin="350.455000" yMin="454.818000" xMax="366.396000" yMax="470.418000">{x,</word>
+          <word xMin="368.388000" yMin="457.890000" xMax="377.796000" yMax="468.546000">y,</word>
+          <word xMin="379.800000" yMin="457.890000" xMax="391.829000" yMax="468.546000">z}</word>
+        </line>
+        <line xMin="235.129000" yMin="466.121000" xMax="270.169426" yMax="481.564199">
+          <word xMin="235.129000" yMin="466.121000" xMax="243.121000" yMax="476.777000">L</word>
+          <word xMin="243.123000" yMin="470.717751" xMax="247.036319" yMax="477.795199">s</word>
+          <word xMin="251.863000" yMin="474.486751" xMax="270.169426" yMax="481.564199">m=0</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="250.733000" yMin="443.645405" xMax="271.303123" yMax="454.006535">
+        <line xMin="250.733000" yMin="443.645405" xMax="271.303123" yMax="454.006535">
+          <word xMin="250.733000" yMin="445.685751" xMax="256.487412" yMax="452.763199">L</word>
+          <word xMin="260.484000" yMin="443.645405" xMax="271.303123" yMax="454.006535">−1</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="486.248000" yMin="457.902000" xMax="510.236000" yMax="468.810000">
+        <line xMin="486.248000" yMin="457.902000" xMax="510.236000" yMax="468.810000">
+          <word xMin="486.248000" yMin="457.902000" xMax="510.236000" yMax="468.810000">(2-8)</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="70.866000" yMin="492.704000" xMax="510.241000" yMax="508.304000">
+        <line xMin="70.866000" yMin="492.704000" xMax="510.241000" yMax="508.304000">
+          <word xMin="70.866000" yMin="493.796000" xMax="202.866000" yMax="505.796000">滑动平均可视为线性相位</word>
+          <word xMin="205.646000" yMin="495.788000" xMax="224.318000" yMax="506.696000">FIR</word>
+          <word xMin="227.100000" yMin="493.796000" xMax="369.516000" yMax="505.796000">滤波器的特例，其群时延为</word>
+          <word xMin="372.291000" yMin="495.776000" xMax="384.853000" yMax="506.432000">(L</word>
+          <word xMin="384.855000" yMin="500.372751" xMax="388.768319" yMax="507.450199">s</word>
+          <word xMin="391.349000" yMin="492.704000" xMax="400.673000" yMax="508.304000">−</word>
+          <word xMin="402.763000" yMin="495.776000" xMax="435.310000" yMax="506.432000">1)/(2f</word>
+          <word xMin="435.318000" yMin="500.372751" xMax="439.231319" yMax="507.450199">s</word>
+          <word xMin="439.732000" yMin="495.776000" xMax="444.292000" yMax="506.432000">)</word>
+          <word xMin="447.635000" yMin="492.704000" xMax="456.959000" yMax="508.304000">≈</word>
+          <word xMin="460.301000" yMin="495.776000" xMax="481.176000" yMax="506.432000">0.06</word>
+          <word xMin="483.168000" yMin="495.776000" xMax="510.241000" yMax="506.432000">s，对</word>
+        </line>
+      </block>
+      <block xMin="70.866000" yMin="513.722000" xMax="487.866000" yMax="526.622000">
+        <line xMin="70.866000" yMin="513.722000" xMax="487.866000" yMax="526.622000">
+          <word xMin="70.866000" yMin="513.722000" xMax="430.866000" yMax="525.722000">边界定位影响较小。差分与平滑处理对三轴序列的作用关系示例如图</word>
+          <word xMin="433.866000" yMin="515.714000" xMax="448.866000" yMax="526.622000">2.3</word>
+          <word xMin="451.866000" yMin="513.722000" xMax="487.866000" yMax="525.722000">所示。</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="199.989000" yMin="739.193500" xMax="381.114000" yMax="750.481000">
+        <line xMin="199.989000" yMin="739.193500" xMax="381.114000" yMax="750.481000">
+          <word xMin="199.989000" yMin="739.193500" xMax="210.489000" yMax="749.693500">图</word>
+          <word xMin="213.114000" yMin="740.936500" xMax="226.239000" yMax="750.481000">2.3</word>
+          <word xMin="234.114000" yMin="739.193500" xMax="381.114000" yMax="749.693500">三轴差分特征与平滑处理对比图</word>
+        </line>
+      </block>
+    </flow>
+    <flow>
+      <block xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">
+        <line xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">
+          <word xMin="286.051000" yMin="786.046000" xMax="295.051000" yMax="794.227000">10</word>
+        </line>
+      </block>
+    </flow>
+  </page>
+</doc>
+</body>
+</html>

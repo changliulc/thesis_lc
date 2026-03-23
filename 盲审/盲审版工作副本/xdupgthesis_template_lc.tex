@@ -1503,14 +1503,15 @@ DTW 多模板增强方法（$K_{\mathrm{MT}}=2$，本文方法） & 96.10 & 95.8
 \begin{equation}
     \Delta\mathbf{S}=\mathbf{S}_{\mathrm{new}}-\mathbf{S}_{\mathrm{pre}}
 \end{equation}
-相应的漂移幅值定义为：
+相应的环境距离定义为：
 \begin{equation}
-    \Delta S=\lVert\Delta\mathbf{S}\rVert_2
+    D_{\mathrm{env}}=\lVert\Delta\mathbf{S}\rVert_2
 \end{equation}
-若 $\Delta S>D_{\mathrm{th}}$，则说明事件结束后形成了与环境参考显著不同的稳态水平，可判定占用状态建立，并将占用参考初始化为：
+若 $D_{\mathrm{env}}>D_{\mathrm{th}}$，则说明事件结束后形成了与环境参考显著不同的稳态水平，可判定占用状态建立，并将占用参考初始化为：
 \begin{equation}
     \mathbf{S}_{\mathrm{post}}=\mathbf{S}_{\mathrm{new}}
 \end{equation}
+此时，对应的占用偏移量可记为 $D_{\mathrm{occ}}=\lVert\mathbf{S}_{\mathrm{post}}-\mathbf{S}_{\mathrm{pre}}\rVert_2$。
 否则，认为该事件对应的扰动尚不足以支持占用状态建立，将其作为普通通过事件处理，不建立占用状态。
 
 对于占用维持与释放，若系统当前处于占用状态，且占用期间再次出现新的扰动事件，则在事件结束后继续搜索新稳定点 $\mathbf{S}_{\mathrm{new}}$。为判断该稳定点对应占用维持还是占用释放，分别定义其到环境参考和当前占用参考的距离为：
