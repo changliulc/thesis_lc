@@ -1,0 +1,700 @@
+
+
+===== PAGE 1 =====
+
+9976 IEEE SENSORS JOURNAL, VOL. 19, NO. 21, NOVEMBER 1, 2019
+V ehicle Classiﬁcation Based on Feature Selection
+With Anisotropic Magnetoresistive Sensor
+Xueting Zhang and Haonan Huang
+Abstract— Vehicle classiﬁcation based on magnetic sensors can
+be effectively applied to intelligent transportation and realize
+intelligent management of trafﬁc. The use of representative vehi-
+cle signal features is a prerequisite and guarantee for accurate
+vehicle classiﬁcation. This paper uses a single 3-axis magnetic
+sensor to acquire vehicle signals and extract a large number
+of features from the vehicle signals. In order to obtain a set
+of features that are simple and without loss of classiﬁcation
+accuracy, we propose a Filtering algorithm based on Feature
+Pairing Elimination (FPE-Filter). In addition, choosing the right
+classiﬁer is also crucial for models with high classiﬁcation
+accuracy. In this paper, we compare four common classiﬁcation
+models: SVM, RF, KNN, and C4.5. The experimental results
+show that the SVM performs best and the classiﬁcation accuracy
+reaches 95%.
+Index Terms — Anisotropic magnetoresistive sensor (AMR),
+vehicle classiﬁcation, feature selection, ReliefF.
+I. I NTRODUCTION
+W
+ITH the rising of the people’s travel demand, intelligent
+transportation technology plays an increasingly impor-
+tant role in the optimal management of trafﬁc. The detection of
+vehicles and the classiﬁcation o f vehicles are an indispensable
+part of intelligent transportatio n technology. For vehicle detec-
+tion, inductive loop detectors and cameras are commonly used
+for detection. However, it is well known that the installation of
+the inductive loop detector has a high cost, and the ﬂaw of the
+camera being vulnerable to the climatic environment is still
+its biggest shortcoming. Compared with induction coils and
+cameras, the magnetic sensor’s small size, easy installation,
+low cost and strong climate adaptability make it more and
+more widely used. Many methods have studied the detection of
+vehicles based on magnetic sensors, such as [1]–[3]. The focus
+of this paper is on the vehicle classiﬁcation. Therefore, after
+comparing various vehicle detection algorithms, the double
+window detection algorithm proposed in [3] is used for vehicle
+detection and signal acquisition because of its strong stability
+and higher accuracy.
+In many studies, the number of sensors used by vehicle
+detection nodes is one or two, both of which have advantages
+Manuscript received May 20, 2019; revised July 4, 2019; accepted July 10,
+2019. Date of publication July 15, 2019; da te of current version October 4,
+2019. This work was supported by the Zhejiang Provincial Key Lab of Equip-
+ment Electronics under Grant 2019E10009. Th e associate editor coordinating
+the review of this paper and approvin g it for publication was Prof. Meribout
+Mahmoud. (Corresponding author: Haonan Huang.)
+The authors are with the College of El ectronic and Information, Hangzhou
+Dianzi University, Hangzhou 310000, China (e-mail: x.t.zhang@hotmail.com;
+hellodaren@outlook.com).
+Digital Object Identiﬁer 10.1109/JSEN.2019.2928828
+and disadvantages. The use of two magnetic sensors provides
+an important feature of vehicle length, while the use of a single
+magnetic sensor reduces costs. In addition, the vehicle signal
+features extracted by different literature are also different. For
+example, the work detailed in [4] uses two 3-axis AMR sensors
+to collect the magnetic ﬁeld disturbance signal of the vehicle.
+The vehicle length, average energy and the peak number of the
+hill pattern are taken as featur es of the vehicle. The process
+in [5] uses a single 3-axis AMR sensor to extract the duration
+of the signal, the signal energy, the average energy of the
+signal, the positive-negative energy ratio of the X-axis signal,
+and the positive-negative energy ratio of the Y -axis signal as
+features of the vehicle. Other similar methods such as [6]–[8]
+extract the average perpendicular magnetic height, differential
+energy, variance, maximum value, number of extreme values,
+and other features of the signal.
+On the other hand, most methods directly apply the obtained
+feature set to the classiﬁcation a lgorithm after feature extrac-
+tion. However, not all of these features are equally important
+for a speciﬁc task. Some of them may be redundant or
+even irrelevant [9]. These redundant features can not only
+impair the accuracy of the classi ﬁcation algorithm, but also
+affect the execution efﬁcien cy of the algorithm. One way
+to solve this problem is featur e selection. Feature selection
+is the process of selecting a smaller features subset that is
+sufﬁcient to accurately predict the class labels of the training
+set [10].
+This paper focuses on the effectiveness of feature selection
+for vehicle classiﬁcation based on 3-axis magnetic sensors.
+First, the vehicle is detected using double window detection
+algorithm and the original vehicle signal is acquired. Second,
+different features for characteriz ing the original vehicle signal
+are extracted to obtain a featur e set for vehicle classiﬁca-
+tion algorithm training and testing. Moreover, the established
+feature selection algorithm sel ects the optimal feature subset
+without redundant features in the feature set. Finally, the
+classiﬁcation algorithm is used to train the obtained feature
+subsets to obtain the optimal classiﬁcation model.
+The remainder of this paper is organized as follows.
+Section II introduces the foundation of vehicle classiﬁcation
+using magnetic sensor. Section III introduces the feature
+extraction of vehicle signals. Section IV describes the princi-
+ples of the novel feature selection algorithm. Section V intro-
+duces how to build the classiﬁcation models. The experimental
+results of vehicle classiﬁcation are given in Section VI. Section
+VII gives the conclusions of this paper.
+1558-1748 © 2019 I EEE. Personal u se is perm itted, but republication/redistri bution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+ZHANG AND HUANG: VEHICLE CLASSIFICA TION BASED ON FEA TURE SELECTION WITH AMR 9977
+Fig. 1. Sensor node.
+Fig. 2. Sensor node conﬁguration diagram.
+II. F OUNDA TION OF VEHICLE CLASSIFICA TION
+USING AMR S ENSOR
+The earth provides a uniform magnetic ﬁeld over a wide
+area. A car can cause magnetic ﬁeld disturbances in speciﬁc
+areas due to its own metal material. Under the same mea-
+surement conditions, the magnetic ﬁeld disturbance caused by
+different types of vehicles will be different. Therefore, the
+magnetic ﬁeld disturbance information of different vehicles
+collected using the magnetic sensor can be used for vehicle
+classiﬁcation.
+Fig.1 shows a sensor node for vehicle detection and
+signal collection. The node contains an STM32F107ZET6
+microprocessor, a 3-axis magnetic sensor module and a wire-
+less transmission module. Among them, the 3-axis mag-
+netic sensor we used is Honeywell triaxial HMC5883L.
+This sensor can achieve 5 milligauss resolution in ±8g a u s s
+ﬁeld. In this paper, the sample rate of the magnetic sensor is
+75 Sa/s.
+Fig.2 shows the layout of the sensor nodes. The X-axis
+is perpendicular to the direction of the lane. The Y -axis
+is contrary to the direction of the lane and the Z-axis is
+perpendicular to the road surface and upward.
+TABLE I
+FEA TURES EXTRACTED FROM VEHICLE SIGNALS
+III. F EA TURE EXTRACTION
+Generally, a huge number of data points are included in the
+vehicle signal. Redundant data slow down the classiﬁcation
+process and often cause inaccurate results. To reduce the data
+dimensionality and for a better performance, feature extraction
+techniques are often used in this stage [11]. In this paper,
+the features of the signals acquired in the three directions of
+the 3-axis magnetic sensor will be extracted. The obtained
+features will be combined into a feature set to describe the
+vehicle type information for a car. It should be noted that the
+signal described in this paper is the signal after the background
+magnetic ﬁeld is removed. The features used in this paper are
+shown in T ABLE I. Among these features, maximum, range,
+relative position of maximum, relative position of minimum,
+number of local maxima, and the number of local minima
+can describe the difference in local structure between different
+signals, while the mean, ratio of positive and negative energy,
+variance, approximate entropy, crossing mean counts, and the
+average energy can reﬂect the inherent differences in the over-
+all structure between different signals. After extracting each set
+of features for each vehicle, we include each set of features in
+a feature set. This feature set will be used as the operational
+object of the subsequent feature selection algorithm.
+In T ABLE I, X
+max , Ymax ,a n d Zmax represent the maximum
+values of the signals collected in the X-axis, Y -axis, and Z-axis
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+9978 IEEE SENSORS JOURNAL, VOL. 19, NO. 21, NOVEMBER 1, 2019
+Fig. 3. Interpretation of features.
+directions of the magnetic sensor, respectively. The same
+principle is also applied to other feature symbol. Speciﬁcally,
+the relative position of maximum and the relative position of
+minimum are deﬁned as⎧
+⎨⎨
+⎨
+⎨⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨⎩
+X_P
+max = X_Lmax
+X L
+Y _Pmax = Y _Lmax
+YL
+Z _Pmax = Z _Lmax
+Z L
+(1)
+where, Lmax and Lmin indicate the distances of the maximum
+point and the minimum point to the detection starting point,
+L represent the length of the signal (Fig.3).
+The ratio of positive and negative energy and the average
+energy are deﬁned as
+⎧
+⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎨⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨
+⎨⎩
+X
+Pn =
+
+X (k)>0
+X (k)
+
+X (k)<0
+X (k)
+YPn =
+
+Y (k)>0
+Y (k)
+
+Y (k)<0
+Y (k)
+Z Pn =
+
+Z (k)>0
+Z (k)
+
+Z (k)<0
+Z (k)
+Ev =
+L
+k=1
+(X (k)2 + Y (k)2 + Z (k)2)
+L
+(2)
+where, X (k), Y (k),a n d Z (k) indicates the k-th value of the
+signal in the three directions of the magnetic sensor.
+Crossing mean counts feature is deﬁned as the times of
+vehicle signal crossing the mean line [7], which is two in
+the Fig.3. Approximate entropy is an indicator to describe the
+complexity of a signal. The sp eciﬁc calculation is described
+in [12].
+In conclusion, we extracted a total of 34 features from the
+sensor’s triaxial signal:
+F =[ Xmax , X R , X_ Pmax , Xmean , X Pn , X_Nmax ,
+X_Nmin , Xvar , X ApEn , Xcross ,
+Ymax , YR , Y _Pmax , Ymean , YPn , Y _Nmax ,
+Y _Nmin , Yvar , YApEn , Ycross ,
+Zmax , Z R , Z _Pmax , Zmean , Z Pn , Z _Nmax ,
+Z _Nmin , Zvar , Z ApEn , Zcross ,
+Ev] (3)
+IV . F EA TURE SELECTION
+After the process of feature extraction, the signal samples
+for each vehicle will be descri bed by 34 features. Designing
+a classiﬁer with a large number of features under a limited
+number of samples can make the computational overhead
+too large and affect classiﬁca tion performance. Therefore,
+it is particularly important to select a feature subset that is
+smaller and more stable than th e entire feature set by feature
+selection. Feature selection can be divided into three general
+categories: 1) ﬁlters 2) wrappers 3) embedded techniques.
+Filter methods represent the simplest and fastest approaches.
+They sorts and selects features based on statistical measures
+(e.g., correlation, entropy). The main disadvantage of the
+ﬁlter approach is that it totally ignores the effects of the
+selected feature subset on the performance of the induction
+algorithm [13]. On the other hand, wrapper uses a search
+algorithm to search through the space of possible features
+and evaluate each subset by running the follow-up learning
+model on the feature subset. Wrapper can be computationally
+expensive and have a risk of overﬁtting to the model [14].
+Finally, the main idea of embedded selection is to integrate
+the feature selection process w ith the learning process of the
+selected classiﬁer. The CART is a representative example of
+this method. Embedded techniques are more computationally
+efﬁcient than wrappers as they only need one model to produce
+results, but because of that, they are limited to the biases
+and weaknesses of a speciﬁc classiﬁer [15]. Considering the
+advantages and disadvantages of the three feature selection
+methods, we propose a ﬁltering selection method based on
+Feature Pairing Elimination – FPE-Filter. This method not only
+has the advantages of the ﬁltering method, but also removes
+the redundant features in the feature set, avoiding the high
+computational cost of the wrapper algorithm.
+FPE-Filter is divided into two steps: First, the ﬁltering
+algorithm is used to perform preliminary ﬁltering on the
+feature set, and secondly, the redundant features in the ﬁltered
+feature set are deleted.
+A. Preliminary Filter
+In this paper, ReliefF [16] algorithm is used to ﬁlter the
+feature set. Although the ReliefF algorithm is simple, its high
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+ZHANG AND HUANG: VEHICLE CLASSIFICA TION BASED ON FEA TURE SELECTION WITH AMR 9979
+efﬁciency and good running results make it widely used. The
+feature selection criteria of the ReliefF algorithm is based
+on the ability of features to di stinguish between close-range
+samples. When dealing with multi-classiﬁcation problems,
+ReliefF randomly selects an instance R, and then searches
+for k of its nearest neighbors from the same class, called
+nearest hits H
+j , and also k nearest neighbors from each of
+the different classes, called nearest misses M j (C) [17]. The
+weight calculation formula of feature A is as follows
+W (A)i+1 = W (A)i −
+k
+j=1
+diff(A, R, H j )
+m · k
++
+
+C=class (R)
+p(C)
+1− p(class (R)) ·
+k
+j=1
+diff(A, R, M j (C))
+m · k
+(4)
+where, m represent the number of samples, class (R) is the
+class label of the instance R, p(C) is the probability of class C.
+diff(A, R1, R2) indicates the difference between the samples
+R1 and R2 on the feature A. The calculation formula is as
+follows
+diff(A, R
+1, R2) = |R1(A) − R2(A)|
+max (A) − min (A) (5)
+Therefore, the preliminary ﬁltering based on the ReliefF
+algorithm is given below:
+1) The weight of each feature in t he feature set F is obtained
+by the ReliefF algorithm.
+2) The features in the feature set F are sorted in descending
+order by reliefF weights.
+3) The weight threshold Wt needs to be set, and if the
+feature’s reliefF weight is lower than Wt , the feature will
+be deleted from the feature set F. Finally, we can get a
+new feature set F.
+The ReliefF ﬁltered feature subset F is not optimal and
+may contain redundant features. Therefore, further screening
+and ﬁltering is required for the obtained feature subset.
+B. Remove Redundant Features
+Redundant features can be found by calculating the correla-
+tion between features. This pap er uses the Pearson correlation
+coefﬁcient to measure the correlation between two features.
+The calculated value of the Pearso n correlation coefﬁcient falls
+within the interval [ − 1, 1]. When the correlation coefﬁcient
+is 1, it becomes completely positive correlation; when the
+correlation coefﬁcient is − 1, it becomes completely negative
+correlation; the larger the absolute value of the correlation
+coefﬁcient is, the stronger the correlation is; the closer the
+correlation coefﬁcient is to 0, the weaker the correlation. The
+formula for calculating the Pear son coefﬁcient between two
+features is as follows
+r (A
+1, A2) = Cov( A1, A2)
+√
+ Va r(A1) · √
+ Va r(A2) (6)
+where, Cov( X, Y ) is the covariance between X and Y , Va r(X)
+is the variance of X.
+Fig. 4. Schematic diagram of s electing redundant features.
+The correlation coefﬁcient threshold Rt needs to be set
+before the ﬁltering of the redundant features. In this paper,
+if the absolute value of the correlation coefﬁcient between
+the two features is greater than the threshold Rt ,t h et w o
+features are said to be paired. In addition, the concept of
+Feature Pairing Number (FPN) is introduced on the basis of
+feature pairing. If two different features are paired, the FPN
+of both features is increased by one. The initial FPN of each
+feature is zero. Obviously, if the FPN of a feature is larger,
+the correlation between it and oth er features is greater, and the
+redundancy of the feature is stronger. The idea of the feature
+selection algorithm proposed in this paper is mainly to count
+the FPN of each feature, and to s implify the feature set by
+removing the features corresponding to the larger FPN.
+Figure 4 is taken as an example to show the selection
+process of redundant features. The feature pair (m, n) is used
+to represent the m-th feature and the n-th feature pair in the
+feature subset F
+. Because the features have been sorted in
+descending order by weight in the reliefF ﬁltering stage, the
+larger the feature number, the smaller the corresponding reliefF
+weight. In order to facilitate the calculation of FPN, we store
+all paired feature pairs in an array called Pos. The feature with
+the largest FPN will be selected and the feature pair containing
+the feature will be removed from the Pos, and meanwhile
+the feature will be removed from the feature subset F
+.T h e
+determination of the maximum FPN and the deletion of the
+feature corresponding to the maximum FPN are repeatedly
+performed until Pos is empty. In a certain selection, if multiple
+features obtain the largest FPN value, the feature with the
+lowest reliefF weight among the features will be selected as
+redundant feature and deleted in the feature set. The pseudo
+code of the speciﬁc algorithm is shown in Alogrithm 1.
+The algorithm ﬁnally gets an optimal subset F
+g that with-
+out redundant features. In conclusion, this feature selection
+algorithm requires two input parameters, one is the reliefF
+weight threshold Wt , and the other is the Pearson correlation
+coefﬁcient threshold Rt .
+V. B UILDING CLASSIFICA TION MODELS
+The classiﬁcation results obtained by different classiﬁers
+under the same data set are also different. So in order to ﬁnd
+the classiﬁer that is most suitable for vehicle classiﬁcation, we
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+9980 IEEE SENSORS JOURNAL, VOL. 19, NO. 21, NOVEMBER 1, 2019
+Algorithm 1 Basic Idea for Removing Redundant Features
+Input: Feature subset F ﬁltered by ReliefF
+Output: Optimal subset Fg without redundant features
+1 Initialize P ={ Pn = 0, n = 1, 2,··· , N}, Pos ← ∅. Pn
+is the FPN of the n-th feature, and N is the number of
+features in F;
+2 The Pearson correlation coefﬁcient rij between two
+different features in F is calculated;
+3 if abs (rij ) ≥ Rt then
+4 Pos ← (i, j );
+5 Pi = Pi + 1, Pj = Pj + 1;
+6 while Pos = ∅ do
+7 Find the maximum value of P;
+8 if (The number of maximum values in P) = 1 then
+9 The ReliefF weights of all the features that obtain
+the FPN maximum value are compared, and the
+feature with the smallest ReliefF weight is taken as
+the redundant feature;
+10 else
+11 The feature corresponding to the maximum value
+is taken as the redundant feature;
+12 Delete the feature pairs in the Pos that contains the
+redundant feature;
+13 Delete the redundant feature in F;
+14 Update the FPN according to the Pos;
+15 return F;
+Fig. 5. Schematic diagram of cons tructing classiﬁcation models.
+compare four commonly used classiﬁer models: C4.5, KNN,
+SVM, and Random Forest (RF).
+In this paper, the vehicle types are divided into three
+categories according to the si ze and structure of the vehi-
+cle: TRUCK, Saloon and SUV (SAS), and BUS. We col-
+lected a total of 2436 vehicle signals (BUS-738, SAUV -987,
+TRUCK-711) and extracted 34 si gnal features for each vehicle
+signal. In order to get a reliable classiﬁcation result, the data
+set is divided into two parts. As shown in Figure 5, 70% of
+the data is used to train the model and the remaining 30% is
+used as an independent test set. Then, we apply FPE-Filter
+to the train set. Under the condition of Wt ∈[ 0.04, 0.1]
+(step: 0.01), Rt ∈[ 0.55, 0.85] (step: 0.1), 28 sets of feature
+subsets are obtained (Some of these feature subsets are likely
+to be the same). Next, we constructed different classiﬁcation
+Fig. 6. Accuracy of feature subsets.
+models with different classiﬁers on these feature subsets. In the
+process of model building, grid search is used to search for
+optimal model parameters, and 5 -fold cross-validation is used
+to evaluate the model classiﬁcation accuracy. Finally, the test
+set was used to verify the model performance.
+VI. E
+XPERIMENTAL RESULTS AND ANALYSIS
+This paper uses the classiﬁcation accuracy ACC as the
+indicator to evaluate the classiﬁcation model. It is deﬁned as
+ACC = Ncorrect /Ntotal (7)
+where, Ncorrect is the number of correctly classiﬁed cars, and
+Ntotal is the total number of tested vehicles.
+A total of 8 different feature subsets were generated in
+this experiment, as shown in Table II. Fig. 6 shows the
+classiﬁcation accuracy and average classiﬁcation accuracy of
+C4.5, KNN, SVM, and RF under different subsets. From
+the perspective of the classiﬁcation average, the SVM per-
+f o r m sb e s ti nf o u rc l a s s i ﬁ e r s ,f o l l o w e db yR F ,a n dC 4 . 5i s
+the worst performer. In addition, the optimal feature subsets
+corresponding to different classiﬁers are also different. For
+example, SVM achieves the highest classiﬁcation accuracy in
+the fourth feature subset, while KNN obtains the optimal value
+in the sixth feature subset. Mor eover, We also compared the
+results of the classiﬁers between the FPE-Filter based and the
+no-feature-selection under the c onditions of feature extraction
+and no feature extraction, respectively, as shown in Table III.
+The construction method for the data set under the no feature
+extraction condition is as follows.
+Since the information of each vehicle is characterized by
+the magnetic ﬁeld disturbance signal in the three directions of
+X, Y , Z, we serially connect the signals into a new signal S
+in the order of X, Y , and Z, that is, S
+i =[ Xi , Yi , Zi],w h e r e
+i represents the data sample for the i -th car. Considering the
+length of each Si is different, we consider the length of the
+longest signal as the length reference, and the other shorter
+signals are padded with the zero-padding method to keep the
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+ZHANG AND HUANG: VEHICLE CLASSIFICA TION BASED ON FEA TURE SELECTION WITH AMR 9981
+TABLE II
+FEA TURE SUBSETS SELECTED BY FPE-F ILTER
+TABLE III
+VEHICLE CLASSIFICA TION RESULTS UNDER DIFFERENT CONDITIONS
+feature dimensions of the entir e data set the same. Therefore,
+each data point in a signal represents a feature of the data set.
+In this paper, the number of features of the data set under the
+no feature extraction condition is 846.
+As can be seen in Table III, under the condition of using
+data processed by feature extraction, feature selection slightly
+improves recognition performance of the KNN and SVM
+classiﬁers but slightly decreases performance of the C4.5 and
+RF classiﬁers. From the perspective of run-time efﬁciency and
+the number of selected features, FPE-Filter selects less than
+half of the total number of features in about 4 seconds, but
+achieves a classiﬁcation accuracy that is not inferior to no-
+feature-selection. Under the condition of no feature extraction,
+the accuracies of the four classiﬁers based on FPE-Filter are
+improved compared with no-feature-selection, and the number
+of features used has been reduced from more than 840 to only
+about 30. In addition, under the same conditions, the data
+based on feature extraction performs better on the classiﬁer
+than the data without feature extraction, both in terms of classi-
+ﬁcation accuracy and the number of features used. In summary,
+the experimental results in Table III verify the high efﬁciency
+of FPE-Filter and the necessity of using feature extraction.
+Furthermore, this paper uses Clopper-Pearson interval to assess
+the conﬁdence range of each classiﬁcation accuracy. It can
+be seen that the conﬁdence intervals are kept in a small
+range. And according to the average and the best value of
+the classiﬁcation accuracy, we can also conclude that SVM
+is more suitable for vehicle classiﬁcation than RF, KNN, and
+C4.5. Table IV lists the classiﬁcation results for the three types
+of vehicles that correspond to the SVM’s best classiﬁcation
+accuracy. The corresponding feature subset is as follows
+F
+best =[ Xmax , X_Pmax , X_ Pmin , X_Nmax , Xvar , Ymax ,
+Y _Pmax , Y _Pmin , Yvar , Z _Pmax , Z _Pmin ] (8)
+As can be seen from Table IV , the classiﬁcation accuracy
+of the three types of vehicles has reached more than 90%,
+of which SAS achieves nearly 100%. The main misclassiﬁed
+samples are mainly concentrated between TRUCK and BUS.
+During the experiment, we found that if the distance between
+the SUV and the sensor node is very close, the magnetic ﬁeld
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+9982 IEEE SENSORS JOURNAL, VOL. 19, NO. 21, NOVEMBER 1, 2019
+TABLE IV
+THE BEST CLASSIFICA TION RESUL T OF SVM
+disturbance caused by the SUV may reach the level of the
+BUS. But the experimental results show that this inﬂuencing
+factor can be offset by some features. In general, the high
+classiﬁcation accuracy of the c lassiﬁcation model veriﬁes the
+effectiveness of the FPE-Filter algorithm.
+VII. C ONCLUSION
+This paper studies the effectiveness of feature selection
+for the vehicle classiﬁcation based on magnetic sensors from
+the perspective of data mining. A novel and concise feature
+selection algorithm, FPE-Filter, is used to select the optimal
+subset from the 34 extracted features. The feature selection
+algorithm needs to preset two input parameters, namely a
+reliefF threshold W
+t and a Pearson correlation coefﬁcient
+threshold Rt . We compare the classiﬁcation performance of
+the classiﬁers in the condition of feature extraction and no
+feature extraction, respectively. The experimental results show
+that the feature extraction can signiﬁcantly improve the accu-
+racy of the classiﬁers. Under the premise of using feature
+extraction, we also compare the classiﬁcation performance
+of the four classiﬁers in the condition of FPE-ﬁlter and no
+feature selection, respectivel y. The experimental results show
+that FPE-ﬁlter allows using only approximately one third
+of all considered features without decreasing classiﬁcation
+accuracy. In the four types of classiﬁers that participated in
+the comparison, SVM showed the best performance in both
+the average accuracy and the highest accuracy. Although the
+classiﬁer based on FPE-Filter is not signiﬁcantly better than
+the classiﬁer without feature selection, it still has practical
+application signiﬁcance due to its fewer feature numbers and
+high classiﬁcation accuracy. If m ore vehicle data is collected,
+we can get more accurate and reliable classiﬁcation results.
+The experimental results reveal the preference of different
+classiﬁers for different features, so ﬁnding efﬁcient features
+is also one of the keys to improve classiﬁcation performance.
+Under the experimental conditions of this paper, we did not
+consider the interference fact ors of adjacent lanes. Congested
+trafﬁc conditions can also make vehicle classiﬁcation more
+difﬁcult. These will be the focus of our future research.
+R
+EFERENCES
+[1] Q. Wang, J. Zheng, H. Xu, B. Xu, and R. Chen, “Roadside magnetic
+sensor system for vehicle detection in urban environments,” IEEE Trans.
+Intell. Transp. Syst. , vol. 19, no. 5, pp. 1365–1374, May 2018.
+[2] X. Guan, Z. Zhang, J. Zhou, and F. Y u, “A vehicle detection algorithm
+based on wireless magnetic sensor networks,” in Proc. 4th IEEE Int.
+Conf. Inf. Sci. Technol. , Aug. 2014, pp. 727–730.
+[3] X. Bao, H. Li, D. Xu, L. Jia, B. Ran, and J. Rong, “Trafﬁc vehicle
+counting in jam ﬂow conditions using low-cost and energy-efﬁcient
+wireless magnetic sensors,” Sensors, vol. 16, no. 11, p. 1868, 2016.
+[4] S. Kaewkamnerd, R. Pongthornseri, J. Chinrungrueng, and T. Silawan,
+“Automatic vehicle classiﬁcation using wireless magnetic sensor,” in
+Proc. IEEE Int. Workshop Intell. Data Acquisition Adv. Comput. Syst.,
+Technol. Appl., Sep. 2009, pp. 420–424.
+[5] B. Y ang and Y . Lei, “V ehicle detection and classiﬁcation for low-
+speed congested trafﬁc with anisotropic magnetoresistive sensor,” IEEE
+Sensors J. , vol. 15, no. 2, pp. 1132–1138, Feb. 2015.
+[6] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[7] H. Dong, X. Wang, C. Zhang, R. He, L. Jia, and Y . Qin, “Improved
+robust vehicle detection and identiﬁcation based on single magnetic
+sensor,” IEEE Access , vol. 6, pp. 5247–5255, 2018.
+[8] S. Kaewkamnerd, J. Chinrungrueng, R. Pongthornseri, and S. Dumnin,
+“V ehicle classiﬁcation based on magnetic sensor signal,” in Proc. IEEE
+Int. Conf. Inf. Autom. , Jun. 2010, pp. 935–939.
+[9] S.-W. Lin, K.-C. Ying, S.-C. Chen, and Z.-J. Lee, “Particle swarm opti-
+mization for parameter determina tion and feature selection of support
+vector machines,” Expert Syst. Appl. , vol. 35, no. 4, pp. 1817–1824,
+Nov. 2008.
+[10] M. Aladeemy, S. Tutun, and M. T. Khasawneh, “A new hybrid approach
+for feature selection and support vector machine model selection
+based on self-adaptive cohort intelligence,” Expert Syst. Appl. , vol. 88,
+pp. 118–131, Dec. 2017.
+[11] H. R. Al Ghayab, Y . Li, S. Siuly, and S. Abdulla, “A feature extraction
+technique based on tunable Q-factor wa velet transform for brain signal
+classiﬁcation,” J. Neurosci. Methods , vol. 312, pp. 43–52, Jan. 2019.
+[12] S. M. Pincus, “Approximate entropy as a measure of system complexity,”
+Proc. Nat. Acad. Sci. USA , vol. 88, no. 6, pp. 2297–2301, Mar. 1991.
+[Online]. Available: https:// www.pnas.org/content/88/6/2297
+[13] R. Kohavi and G. H. John, “Wrappers for feature subset selection,” Artif.
+Intell., vol. 97, nos. 1–2, pp. 273–324, 1997.
+[14] Y . He, Y . Du, and L. Sun, “V ehicle classiﬁcation method based on
+single-point magnetic sensor,” Procedia-Social Behav. Sci. , vol. 43,
+no. 4, pp. 618–627, 2012. doi: 10.1016/j.sbspro.2012.04.135.
+[15] S. Georganos et al. , “Less is more: Optimizing classiﬁcation perfor-
+mance through feature selection in a very-high-resolution remote sensing
+object-based urban application,” GISci. Remote Sens. , vol. 55, no. 2,
+pp. 221–242, Nov. 2018.
+[16] I. Kononenko, “Estimating attributes : Analysis and extensions of relief,”
+in Proc. Eur . Conf. Mach. Learn. Berlin, Germany: Springer, 1994,
+pp. 171–182.
+[17] M. Robnik-Šikonja and I. Kononenko, “Theoretical and empirical analy-
+sis of ReliefF and RReliefF,” Mach. Learn., vol. 53, nos. 1–2, pp. 23–69,
+Oct. 2003.
+Xueting Zhang received the B.Sc. degree from
+Xi’an Jiaotong University in 2000, and the M.S. and
+Ph.D. degrees from Zhejiang University, in 2003 and
+2017, respectively.
+He is currently an Associate Professor with
+Hangzhou Dianzi University. His main research
+interests include magnetic sensors-based deteciton
+technique.
+Haonan Huang was born in Zhejiang, China,
+in 1995. He is currently pursuing the M.S. degree
+with Hangzhou Dianzi University.
+His research interests include the application of
+magnetic sensors.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:20:04 UTC from IEEE Xplore.  Restrictions apply. 

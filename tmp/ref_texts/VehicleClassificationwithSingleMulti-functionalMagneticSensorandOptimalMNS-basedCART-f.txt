@@ -1,0 +1,944 @@
+
+
+===== PAGE 1 =====
+
+Vehicle classiﬁcation with single multi-functional magnetic
+sensor and optimal MNS-based CART
+Haijian Li a,b, Honghui Dong a, Limin Jia a,⇑, Moyu Ren b
+a State Key Laboratory of Rail Trafﬁc Control and Safety, Beijing Jiaotong University, Beijing 100044, China
+b School of Trafﬁc and Transportation, Beijing Jiaotong University, Beijing 100044, China
+article info
+Article history:
+Received 2 August 2013
+Received in revised form 16 December 2013
+Accepted 23 April 2014
+Available online 5 May 2014
+Keywords:
+Vehicle classiﬁcation
+Multi-functional magnetic sensor
+CART algorithm
+Decision tree
+abstract
+To take advantages of magnetic sensor technology in terms of cost, size, weight, power
+consumption and wireless communication, a wireless multi-functional magnetic sensor
+was designed and developed. Then, a novel method with single multi-functional magnetic
+sensor and optimal Minimum Number of Split-sample (MNS)-based Classiﬁcation and
+Regression Tree (CART) algorithm was proposed in this paper to classify on-road vehicles.
+The sensor was deployed on the road to acquire real-time vehicle waveform data. The
+decision tree model based on CART algorithm was used to execute on-line vehicle classi-
+ﬁcation in the sensor node. Eight speed-independent time-domain waveform features
+were extracted as the model inputs. This paper trained the decision tree model by using
+vehicle samples derived from the multi-functional magnetic sensor and pruned the opti-
+mal decision tree with a Minimum Error Pruning (MEP) rule to obtain an optimal pruning
+tree which is more robust to new samples. Some experiments were implemented by dif-
+ferent sample sets and classiﬁcation methods. The results showed that the proposed
+method achieved on-line vehicle classiﬁcation in the sensor node. For the ﬁeld sample
+sets with two vehicle classes, the average accuracy rates of test samples were 88.9%
+and 94.4% in the original samples and swapping samples respectively. Besides higher
+accuracy, the method also has a better sample robustness, which is easy to classify
+new samples. The comparison results of current methods also showed that the proposed
+method has some advantages in aspects of accuracy rate, sample robustness and execu-
+tion time.
+/C2112014 Published by Elsevier Ltd.
+1. Introduction
+In recent years, Intelligent Transportation System (ITS)
+programs have been initiated in many countries [1].A sa
+part of ITS, on-line vehicle classiﬁcation system plays an
+important role since it gathers some critical parts of the
+data used in ITS.
+Over the past few years, vehicle classiﬁcation has
+been widely studied and become an important source of
+information for transportation design and management.
+A vehicle classiﬁcation system is essential for trafﬁc
+management, automatic toll collection, parking optimiza-
+tion, law enforcement, autonomous navigation, etc. [2].
+Moreover, transportation agencies collect vehicle classiﬁ-
+cation information to create highway maintenance plan,
+evaluate highway usage and optimize the deployment of
+various resources on the road [3]. Electronic toll collec-
+tion and automatic enforcement also require accurate
+identiﬁcation of vehicle classes on highways so that
+vehicles of different classes are charged accordingly
+[4,5]. In trafﬁc safety research and implementation, the
+http://dx.doi.org/10.1016/j.measurement.2014.04.028
+0263-2241//C2112014 Published by Elsevier Ltd.
+⇑ Corresponding author. Tel./fax: +86 10 51683824.
+E-mail address: jialm@vip.sina.com (L. Jia).
+Measurement 55 (2014) 142–152
+Contents lists available at ScienceDirect
+Measurement
+journal homepage: www.elsevier.com/locate/measurement
+
+
+===== PAGE 2 =====
+
+distribution of trucks in trafﬁc is a critical design factor,
+due to its signiﬁcantly lower speed and larger size [6].I n
+addition, vehicle classiﬁcation information allows us to
+analyze crash data with certain vehicle classes, which
+support the derivation of more effective countermeasure
+for the safety enhancement. In pavement design and man-
+agement, pavement life is estimated according to the
+distribution of vehicle types running over it, and this distri-
+bution may be used to schedule re-surfacing. Furthermore,
+the distribution of vehicle types also provides valuable
+data to the prediction of highways capacity, assessment
+of the effectiveness of trafﬁc legislation, weight enforce-
+ment strategies and environmental impact studies [6].
+Hence, these needs have made engineers and researchers
+keep developing trafﬁc surveillance systems capable of
+providing accurate and reliable vehicle classiﬁcation infor-
+mation [4].
+Currently, various technologies are used for vehicle
+classiﬁcation. Loop [7,8], video [2,9,10], acoustic [11,12],
+and other sensors [13] are used in vehicle classiﬁcation
+systems, and a large number of researchers devote them-
+selves to the models and algorithms for vehicle classiﬁca-
+tion by those sensors. Jeng et al. [8] proposed a two-step
+algorithm to execute vehicle classiﬁcation using the
+inductive loop signature technology. Employing some
+speed estimation advances, Coifman and Kim [7] brought
+length based vehicle classiﬁcation to single-loop detec-
+tors. Then their classiﬁcation methodology was evaluated
+against concurrent measurements from video and dual-
+loop detectors. For video and acoustic sensors, Kafai and
+Bhanu [2] presented a stochastic multiclass vehicle classi-
+ﬁcation system which classiﬁes a vehicle into one of four
+classes: sedan, pickup truck, SUV/minivan, and unknown.
+A feature set of tail light and vehicle dimensions was
+extracted which fed a feature selection algorithm to
+deﬁne a low-dimensional feature vector. To obtain more
+complete knowledge regarding vehicles’ acoustic charac-
+teristics, Guo et al. [11] proposed a fusion approach to
+combine two sets of features, in which various aspects
+of an acoustic signature were emphasized individually.
+Next, they proposed a modiﬁed Bayesian based fusion
+method to take advantage of matching each speciﬁc fea-
+ture set with its favored classiﬁer. Thus, feature-based
+methods have been commonly used for vehicle
+classiﬁcation.
+However, existing technologies such as piezoelectric
+sensors, inductive loops and video imaging have very
+high installation and maintenance costs. Some technolo-
+gies such as infrared sensors, video imaging are sensitive
+to trafﬁc, environmental, and weather conditions [3].
+Furthermore, the performance of microwave radar,
+infrared sensor and video imaging is often affected by
+Doppler effects or noise introduced by moving vehicles
+and terrain variations. In contrast, magnetic sensors are
+less sensitive to weather, terrain, noise and Doppler
+effects. Moreover, magnetic sensors have advantages in
+terms of cost, size, weight, power consumption and
+wireless communication [14]. Hence, applying magnetic
+sensors to vehicle classiﬁcation is a promising research
+topic.
+Recently, some methods on vehicle classiﬁcation or re-
+identiﬁcation utilizing magnetic sensors have been
+reported in literature [1,3,5,6,15]. In order to improve the
+recognition rate by a single magnetic sensor, Lan et al.
+[1] proposed a novel feature extraction algorithm and a
+novel vehicle classiﬁcation and recognition algorithm.
+Based on the features of the concavity and convexity areas,
+and the angles of concave and convex parts of the wave-
+form, they developed an improved support vector machine
+(ISVM) classiﬁer to perform vehicle classiﬁcation and rec-
+ognition. A wireless sensor network (WSN) for vehicle clas-
+siﬁcation based on axle count and spacing was designed,
+calibrated, tested, and deployed near a weigh station in
+Sunol, California [3]. Bajwa et al. collected 53 different
+trucks exiting the weigh station and applied the Axle
+Detection algorithm (ADET) to successfully classify all 53
+trucks. Kaewkamnerd et al. [5] studied vehicle classiﬁca-
+tion system based the features of vehicle magnetic length,
+averaged energy, and Hill-pattern peaks. They classiﬁed
+vehicles into 4 types: motorcycle, car, pickup and van.
+Their system automatically detected vehicles, extracted
+features, and classiﬁed them with an average accuracy rate
+about 79.66%. Cheung and Varaiya [6] studied vehicle clas-
+siﬁcation using magnetic sensors based on the 13-class
+Federal Highway Administration (FHWA) scheme. They
+studied three classiﬁers (k-Nearest Neighbor, Support Vec-
+tor Machine and Direct Hill-Pattern Matching) in different
+datasets. Their average accuracy rate was about 70%. If the
+feature of magnetic length was considered, the average
+accuracy rate will be slightly improved. However, in order
+to obtain accurate magnetic length, more magnetic sensors
+are needed. The existing methods are either developed
+with too small sample size to verify the statistical robust-
+ness or lack of execution time analysis which cannot reveal
+the effectiveness for on-line vehicle classiﬁcation in mag-
+netic sensor nodes. Besides, some are vehicle-length-based
+or magnetic-length-based methods which use more than
+one sensor to implement vehicle classiﬁcation. This will
+greatly increase the costs of system hardware and data
+processing.
+The main objective of this paper is to develop a more
+effective vehicle classiﬁcation method by a single multi-
+functional magnetic sensor for urban road. In this paper,
+a novel method is proposed to classify vehicles by measur-
+ing and processing ﬁeld magnetic signal based on a single
+multi-functional sensor which is designed and developed.
+We ﬁrstly proposed the on-line vehicle classiﬁcation
+method with a single multi-functional magnetic sensor
+and optimal MNS-based CART. The CART-based model
+had a simple structure and fast execution efﬁciency. And
+the multi-functional magnetic sensor was superior to the
+existing sensors in terms of reliability, cost, size and func-
+tion. Furthermore, by comparison with some current
+methods, the proposed method was competitive in terms
+of accuracy rate, sample robustness and execution time.
+Finally, some experiments based on vehicle waveform data
+in a ﬁeld road were implemented to test the performance
+of the new method.
+In the rest of this paper, Section 2 describes the multi-
+functional magnetic sensor and data acquisition method
+H. Li et al. / Measurement 55 (2014) 142–152 143
+
+===== PAGE 3 =====
+
+of this study. Section 3 discusses the steps of waveform
+feature extraction. Section 4 introduces the method pro-
+posed in this paper. Section 5 shows the experimental
+results. Finally, Section 6 concludes this paper.
+2. Data acquisition
+The wireless multi-functional magnetic sensor
+(referred to as ‘sensor’ in following texts) is used to
+acquire the vehicle waveform data. The sensor is designed
+and developed by our group ( Fig. 1 ). Its shape parameters
+are diameter D = 100 mm and height H = 64 mm. The sen-
+sor is capable of detecting real-time magnetic ﬁeld
+strength. Making use of the magnetoresistance effect, it
+translates the magnetic ﬁeld strength into mV level volt-
+age signal, and then into V level voltage signal by an
+ampliﬁer. A ﬁlter is used to reduce environment noise.
+Then a digital output of the sensor will be obtained by
+an A/D converter. The values of digital output are corre-
+sponding to the variations that a vehicle disturbs the mag-
+netic ﬁeld. If there is no vehicle around the sensor, the
+digital output of the sensor would be an invariable value
+(eliminating the stochastic noises), which is deﬁned as
+the benchmark value y
+b. When there is a vehicle passing
+by the sensor, for the effect of ferromagnetic objects to
+magnetic ﬁeld, the outputs of sensor are superposition
+values of the benchmark value yb and the variations
+caused by the vehicle, which is deﬁned as the vehicle
+waveform. The multi-functional sensor can detect several
+trafﬁc ﬂow parameters such as vehicle exist, vehicle stop,
+vehicle retrogradation, vehicle classiﬁcation, trafﬁc count,
+vehicle speed, occupancy ratios.
+Due to the inﬂuences of environment and the sensor
+itself, the vehicle waveform data contain some high fre-
+quency noises (the sampling frequency fs = 333 Hz in this
+paper). Therefore, a low-pass ﬁlter should be designed to
+eliminate high frequency noises. By analyzing the fre-
+quency distribution of noises, we designed a low-pass ﬁlter
+and obtained smooth vehicle waveforms.
+With a low-pass ﬁlter, the vehicle waveform will be
+smoother and better for vehicle detection and feature
+extraction. A dual-window vehicle detection algorithm is
+used to extract the features of each vehicle waveform
+[16]. A vehicle waveform of car is shown in Fig. 2 . yb is
+the benchmark value. W1 and W2 are deﬁned as the vehicle
+approach detection window (VADW) and the vehicle
+departure detection window (VDDW), respectively.
+The dual-window vehicle detection algorithm is
+described as Algorithm 1 .
+Algorithm 1 :
+1: Initializing yb and the size of W 1 and W 2
+2: Start W 1
+3: Input the vehicle waveform data in turn
+if The data is located outside W 1
+Note the sampling point of this data as o 1, and
+go to step 4
+else
+Clear the data before the sampling point which
+is located inside W 1, and go to step 2
+end if
+4: Start W 2
+5: Input the vehicle waveform data in turn
+if The data is located inside W 2
+Note the sampling point of this data as o 2, add
+the vehicle count by 1 and record the data
+between o 1 and o 2 as a vehicle waveform, then
+go to step 2 to detect next vehicle
+else
+Clear the data before the sampling point which
+is located outside W 2, and go to step 4
+end if
+The integral waveform of each vehicle will be obtained
+using the dual-window vehicle detection algorithm. Fig. 3
+shows some integral vehicle waveforms. For the differ-
+ences of spatial distribution of ferromagnetic objects, the
+waveform features of each vehicle will be different, which
+is the foundation for vehicle classiﬁcation.
+3. Feature extraction
+For a vehicle waveform, there are several features. The
+features which are easy to compute and useful to the work
+of vehicle classiﬁcation should be extracted. For the same
+vehicle, when it passes the sensor at different speeds, the
+vehicle waveforms acquired at different time would not
+be the same with a ﬁxed sampling frequency. For the time
+interval that a vehicle passes a sensor is small, the change
+of the vehicle speed can be ignored sometimes. Therefore,
+it can be supposed that a vehicle passes a sensor at a
+constant speed each time. Then, for the same vehicle, the
+Fig. 1. Field trafﬁc data acquisition by utilizing the wireless multi-functional magnetic sensor (a) wireless multi-functional magnetic sensor; (b) inst allation
+of the sensor; and (c) ﬁeld trafﬁc data acquisition on trafﬁc road.
+144 H. Li et al. / Measurement 55 (2014) 142–152
+
+===== PAGE 4 =====
+
+differences of the vehicle waveforms acquired at different
+times will be stretched or compressed at time axis. In order
+to eliminate the effect of speed on vehicle classiﬁcation,
+some speed-independent features will be introduced. In
+this paper, 8 time-domain features are selected as the
+model inputs. Those features and their notations are the
+number of peaks ( x1), the maximum peak time ratio ( x2),
+the minimum trough time ratio ( x3), the mean value ( x4),
+the standard deviation ( x5), the maximum peak amplitude
+(x6), the minimum trough amplitude ( x7) and the maxi-
+mum peak/trough amplitude ratio ( x8). Denote vector s
+as a vehicle waveform series, that is s =[ s1,s 2, ... ,s n],
+where s 1,s 2, ... ,s n are the sampling point of a vehicle
+waveform, and n is the number of the sampling points.
+Fig. 4 shows the waveform of a vehicle and its time-
+domain features. o1,o 2 are the start point and the end point
+of the vehicle waveform which are obtained by Algorithm
+1;p 1,p 2 are the maximum peak point and minimum
+trough point; n1, n2 are the number of sampling points
+from o 1 to p 1 and o 1 to p 2, respectively.
+1900
+2000
+2100
+2200
+2300
+2400
+2500
+1 51 101 151 201 251 301 351 401 451 501 551 601
+W2
+amplitude
+sampling point
+W1
+o1
+o2
+yb
+Fig. 2. Sketch map of dual-window vehicle detection algorithm.
+1 100 200 300 400 500 600 700 800 9001800
+2000
+2200
+2400
+2600
+sampling point
+amplitude
+1 100 200 300 400 500 600 700 8001900
+2000
+2100
+2200
+2300
+2400
+sampling point
+amplitude
+1 100 200 300 400 5001800
+2000
+2200
+2400
+2600
+sampling point
+amplitude
+1 200 400 600 800 1000 1200 14001600
+1800
+2000
+2200
+2400
+2600
+2800
+sampling point
+amplitude
+Fig. 3. Vehicle waveforms of cars and busses (a and b) cars; and (c and d) busses).
+n
+yb
+p1
+p2
+n1
+n2
+o1 o2
+Fig. 4. A vehicle waveform and its time-domain features.
+H. Li et al. / Measurement 55 (2014) 142–152 145
+
+===== PAGE 5 =====
+
+Denote np, nt as the number of peaks and troughs,
+respectively, we have | np /C0 nt| = 0 or 1. Then: x1 = np,
+x2 = n1/n, x3 = n2/n, x4 = ave(s), x5 = var(s), x6 = max(s),
+x7 = min(s), x8 = max(s)/min(s), where ave, var, max, min
+are the mean function, the standard deviation function,
+the maximum function and the minimum function of vec-
+tor s, respectively.
+Denote x as the feature vector of a vehicle waveform,
+then x =[ x1, x2, x3, x4, x5, x6, x7, x8]. Features such as x1,
+x2, x3, x6, x7, x8 reﬂect the concentration and relative posi-
+tion of ferromagnetic material of a vehicle, which is the
+inherent property of the vehicle and therefore they are
+speed-independent. Features such as x
+4, x5 reﬂect the aver-
+age distribution density and uniformity of ferromagnetic
+material. While different vehicle speeds lead to different
+numbers of sampling points, the average distribution den-
+sity and uniformity of ferromagnetic material will be con-
+stant. Besides, the sensor outputs are uniform sampling
+based on both time and space. Therefore, the features x4
+and x5 can be looked upon speed-independent ones.
+Each vehicle waveform is be replaced by 8 speed-
+independent features. Compared with traditional methods,
+these features will eliminate some errors caused by differ-
+ent vehicle speeds. When these 8 speed-independent fea-
+tures are selected as the model inputs, the time and
+space complexities of algorithm will be greatly reduced.
+So then, the algorithms of vehicle classiﬁcation will be
+implemented easily in sensor nodes with limited memory
+and energy sources.
+4. Methodology
+4.1. Model and algorithm
+Decision tree is a very efﬁcient machine learning classi-
+ﬁcation model and it uses binary tree to represent process-
+ing logic. The basic principle of a decision tree is that it
+recursively splits the data into subsets so that each subset
+contains a similar state or region of the data features.
+When this recursive process is done, a decision tree is cre-
+ated. Creating a decision tree is a process of tree growth
+that ceaselessly splits data set. Each split is corresponding
+to a decision problem, but also a node. For each split, a Max
+‘difference’ between a subset and the rest of data set is
+required [17].
+A decision tree is made of decision nodes, branches and
+leaves. The top node of decision nodes is the root node
+and each branch generates a new decision node or a leaf.
+Each decision node represents a problem or decision, and
+generally corresponds to a feature of an object to be clas-
+siﬁed. Each leaf node represents a possible classiﬁcation
+result.
+In this paper, the optimal MNS-based CART algorithm is
+used to create a decision tree. The CART algorithm adopts a
+binary recursive partitioning technology to split current
+sample set into two subsets, which makes the resulting
+decision tree has two branches for each non-leaf node.
+The decision tree which is based on CART algorithm is a
+binary tree with a simple structure [17]. The CART algo-
+rithm is provided in Algorithm 2:
+Algorithm 2:
+1: Create a root node R of sample set T
+2: if All the samples of T are the same class or T only
+contains s samples
+then
+The node R is a leaf node, and return
+else
+Go to step 3
+end if
+3: For each feature xi of T (1 <= i <= N, N is the
+number of features, in this paper N = 8), compute
+GINI values of different split cases, and denote the
+minimum GINI of xi as GINI( i)
+4: for i =1 ? k
+Find the minimum GINI( i), select xi as the
+decision feature of node R, and record the split
+case
+end for
+5: According to the split case in step 4, split sample
+set T into two subset T1 and T2
+6: Repeat step 1 to 5 for T1
+7: Repeat step 1 to 5 for T2
+8: A decision tree has been created
+The algorithm parameter s is the MNS which relates to
+the ﬁtting degree of training samples based decision tree
+model. When s = 1, it will be the optimal division for the
+training samples, but it will result in an over-ﬁtting deci-
+sion tree. An over-ﬁtting decision tree is not appropriate
+to classify new samples and will lead to low accuracy rates.
+Therefore, it is necessary to ﬁnd an optimal s for CART algo-
+rithm. Fortunately, the sample set is always limited and the
+model learning is an off-line process. We can ﬁnd the opti-
+mal s by computing the classiﬁcation accuracy rates of all
+samples based on different decision trees trained with dif-
+ferent values of s. The value of s corresponding to the max-
+imum accuracy rate will be the optimal one.
+Another algorithm parameter GINI is a measure of
+impurity for a sample set or subset [17], and GINI of sam-
+ple set T is
+GINIT ¼ 1 /C0
+Xc
+k¼1
+pðkÞ
+2
+ð1Þ
+where k represents the kth class in set T, 1 6 k 6 c; c is the
+number of total classes; p(k) is the (possibly weighted) rel-
+ative frequency of class k in set T, and Pc
+k¼1pðkÞ¼ 1.
+Assume that a split s of some feature divides set T into
+two subsets T1 and T2, and then the new GINI generated by
+s will be
+GINITðsÞ¼ q /C2 GINIT1 þð 1 /C0 qÞ/C2 GINIT2 ð2Þ
+where q is the (possibly weighted) fraction of samples
+going T1.
+CART can achieve self-learning according to the input
+features, and can select the most effective features for
+growing a decision tree. CART uses a ‘‘priors’’ mechanism.
+Priors are akin to target class weights but they are invisible
+in that they do not affect any counts reported by CART in
+the tree. It automatically reweights the data to balance
+the classes, and ensures that the tree selected as optimal
+146 H. Li et al. / Measurement 55 (2014) 142–152
+
+===== PAGE 6 =====
+
+minimizes balanced class error. The reweighting is implicit
+in the calculation of all probabilities and improvements
+and requires no user intervention [17]. To provide this ﬂex-
+ibility, CART is unnecessary to those steps of eliminating
+invalid features and calculating feature correlation which
+are essential steps in other classiﬁcation algorithms such
+as Artiﬁcial Neural Network or Naive Bayes.
+4.2. Off-line training and optimal MNS s
+An optimal decision tree ( To) which is able to effectively
+classify the known samples can be established by training
+those samples. Then the on-line classiﬁcation process can
+be executed by making use of the To. Denote m as the num-
+ber of training samples, we can obtain the feature matrix
+which is denoted as Xm/C2 8, that is Xm/C2 8 =[ x1, x2, ... , xi, ... ,
+xm]T. Where xi is the feature vector of ith vehicle waveform
+and xi =[ xi1, xi2, xi3, xi4, xi5, xi6, xi7, xi8], i =1 ,2 , ... , m. Denote yi
+as the corresponding vehicle class of ith vehicle waveform
+and the vehicle class vector will be y =[ y1, y2, ... , yi,... , ym]T.
+By training sample feature matrix X m/C2 8 and corre-
+sponding vehicle class vector y with different values of s,
+a series of decision trees can be created. The decision tree
+which has a maximum classiﬁcation accuracy rate of all
+samples will be selected as the T
+o, and corresponding value
+of s is the optimal s. The structure of a decision tree can be
+described as following. A triangle represents a decision
+node which has two branches and a little dot represents
+a leaf node which is a vehicle class.
+4.3. Pruning
+Due to possible over-ﬁtting for To, it will be necessary to
+create an optimal pruning tree PTo by pruning a To some-
+times. And then the PTo will be more robust to new sam-
+ples. CART algorithm uses afterwards pruning method. By
+pruning branches on an over-ﬁtting tree, the nodes which
+are not pruned at the bottom will be denoted as leaf nodes.
+This paper adopts a MEP-based rule to prune To and selects
+a pruning tree with a maximum classiﬁcation accuracy rate
+of the test samples as the optimal pruning tree PTo.
+Making use of the To and PTo, it will be easy to imple-
+ment a vehicle classiﬁcation algorithm in a sensor node
+and to achieve on-line classiﬁcation for urban trafﬁc. In
+the trees of To and PTo, the optimal features can be
+revealed. In order to reduce computation, calculating those
+optimal features will be enough for on-line vehicle classiﬁ-
+cation in practice. On-line vehicle classiﬁcation is an ergo-
+dic process along the decision tree from top to bottom. In
+the process, it will go to next branch based on the decision
+result of each decision node. The process will eventually
+reach a leaf node. Reading the information of the leaf node,
+a class of the new sample can be obtained.
+5. Experiments
+5.1. Vehicle samples
+The magnetic sensors used for collecting vehicle wave-
+form data in the paper are laid in the center of a lane of
+Jiadadonglu road, Haidian district. From May, 2009 to
+November, 2009, we collected vehicle waveform data of
+470 cars and 72 busses, and used the video to record
+the corresponding vehicle classes. Those 542 vehicle
+waveforms were selected as sample sets to test our
+method.
+After two steps of vehicle waveform data acquisition
+and feature extraction, the feature matrix of 542 vehicle
+waveforms can be obtained (denoted as X542/C2 8). In order
+to train and test different methods, 271 vehicle waveform
+(including 235 cars and 36 busses) samples were selected
+randomly as the training samples in this paper (denoted
+as X
+train). And the rest were test samples (denoted as
+Xtest). At the same time, we used the videos to count the
+actual vehicle classes. Denote 1 as the car, 2 as the bus,
+and then we got the vehicle class vector ytrain correspond-
+ing to Xtrain and vehicle class vector ytest corresponding to
+Xtest.
+5.2. Optimal MNS s
+In order to obtain the optimal s, accuracy rates of
+samples Xtrain and Xtest which are based on different deci-
+sion trees with different values of s were computed
+(Table 1 ). As shown in Table 1 , when s is small, the clas-
+siﬁcation accuracy rate of Xtrain will be 100%, but the
+accuracy rate and adaptability of Xtest are poor. As s
+increases, the accuracy rate of Xtrain will fall; however,
+the accuracy rate of Xtest can be improved. When s is
+big enough, the decision tree will not be able to classify
+the samples. In principle, s should not be larger than the
+number of a class of least samples. Otherwise, it will
+make against the classiﬁcation of a class of samples with
+least number. In this paper, the averages of two accuracy
+rates of Xtrain and Xtest will be computed with different s,
+and the corresponding value of s with maximum average
+rate will be the optimal one.
+By computing the average classiﬁcation accuracy rates
+of the sample set X542/C2 8, Fig. 5 shows the average accuracy
+rates of Xtrain and Xtest which are based on decision trees
+with different values of s. It can be drawn that when s is
+4, 5, 6, 7, 8 or 9, we have the maximum average accuracy
+rate. The greater the value of s is, the faster the speed of
+algorithm converge will be, therefore, the optimal s is 9
+in this paper.
+5.3. Results
+When s = 9, through training the samples of Xtrain and
+ytrain, the optimal decision tree To can be obtained based
+on CART ( Fig. 6 ). In Fig. 6 , the triangles represent decision
+nodes, the dots represent leaf nodes, and 1 represents that
+the result of vehicle classiﬁcation is a car, 2 represents a
+bus.
+From To, we have the best combination of waveform
+features xopt =[ x1, x2, x6, x8]. Using the decision tree To to
+implement on-line vehicle classiﬁcation, we just need to
+calculate the four features x1, x2, x6 and x8. Derived from
+Fig. 6 , the on-line classiﬁcation algorithm ( Algorithm 3 )
+can be shown as follows:
+H. Li et al. / Measurement 55 (2014) 142–152 147
+
+===== PAGE 7 =====
+
+Algorithm 3:
+1: node 1 if x1 < 5.5 then node 2 else node 3
+2: node 2 if x2 < 0.898613 then node 4 else node 5
+3: node 3 if x8 < 1.12183 then node 6 else node 7
+4: node 4 if x2 < 0.0938607 then node 8 else node 9
+5: node 5 class = 2
+6: node 6 class = 1
+7: node 7 class = 2
+8: node 8 if x2 < 0.0926934 then node 10 else
+node 11
+9: node 9 class = 1
+10: node 10 if x6 < 2480.33 then node 12 else node
+13
+11: node 11 class = 2
+12: node 12 class = 1
+13: node 13 class = 2
+Table 1
+Accuracy rates of samples Xtrain and Xtest based on different decision trees with different s.
+s Accuracy rate of Xtrain Accuracy rate of Xtest
+Bus Car Average Bus Car Average
+1 1.000 1.000 1.000 0.750 0.987 0.869
+2 1.000 1.000 1.000 0.750 0.987 0.869
+3 1.000 1.000 1.000 0.750 0.987 0.869
+4 1.000 0.996 0.998 0.778 0.987 0.883
+5 1.000 0.996 0.998 0.778 0.987 0.883
+6 1.000 0.996 0.998 0.778 0.987 0.883
+7 1.000 0.996 0.998 0.778 0.987 0.883
+8 1.000 0.996 0.998 0.778 0.987 0.883
+9 1.000 0.996 0.998 0.778 0.987 0.883
+10 0.972 0.996 0.984 0.778 0.996 0.887
+11 0.944 0.996 0.970 0.778 1.000 0.889
+12 0.944 0.996 0.970 0.778 1.000 0.889
+13 0.944 0.996 0.970 0.778 1.000 0.889
+14 0.944 0.996 0.970 0.778 1.000 0.889
+15 0.944 0.996 0.970 0.778 1.000 0.889
+16 0.944 0.996 0.970 0.778 1.000 0.889
+17 0.944 0.996 0.970 0.778 1.000 0.889
+18 0.944 0.996 0.970 0.778 1.000 0.889
+19 0.944 0.996 0.970 0.778 1.000 0.889
+20 0.944 0.996 0.970 0.778 1.000 0.889
+36
+a 0.944 0.991 0.968 0.778 1.000 0.889
+235b 0.944 0.991 0.968 0.778 1.000 0.889
+271c 0.917 0.991 0.954 0.778 1.000 0.889
+>271 0.000 1.000 0.500 0.000 1.000 0.500
+a Number of busses in Xtrain.
+b Number of cars in Xtrain.
+c Number of cars and busses in Xtrain.
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+92
+92.5
+93
+93.5
+94
+94.5
+95
+MNS-τ
+average accuracy rate / %
+Fig. 5. Average accuracy rates of training and test samples based on decision trees with different s.
+Fig. 6. Optimal decision tree based on CART by training the training
+samples.
+148 H. Li et al. / Measurement 55 (2014) 142–152
+
+===== PAGE 8 =====
+
+By using Algorithm 3 , we respectively take the sets of
+training samples Xtrain and test samples Xtest to test the
+validity and effectiveness of our method. Test results of
+Xtrain and Xtest are shown in Fig. 7 .
+By counting the test results in Fig. 7, the accuracy rates
+of Xtrain and Xtest are shown in Tables 2 and 3 .
+In order to improve the classiﬁcation accuracy of the
+test samples, we obtain the optimal pruning tree PTo by
+pruning the To based on the MEP rule. As shown in Fig. 8 ,
+the dotted lines are some parts of the To and the rest are
+the PTo.
+Based on PTo in Fig. 8, a new on-line classiﬁcation algo-
+rithm is shown in Algorithm 4 .
+Algorithm 4:
+1: node 1 if x1 < 5.5 then node 2 else node 3
+2: node 2 if x2 < 0.898613 then node 4 else node 5
+3: node 3 if x8 < 1.12183 then node 6 else node 7
+4: node 4 class = 1
+5: node 5 class = 2
+6: node 6 class = 1
+7: node 7 class = 2
+Compared with Algorithm 3, Algorithm 4 is more con-
+cise and its computation will be lower, which is very
+important to implement on-line vehicle classiﬁcation in a
+sensor node with very limited arithmetic and memory
+capacity. To adopt MEP-based rule to execute pruning
+operation of To, Algorithm 4 has a higher classiﬁcation
+accuracy and robustness for new samples than Algorithm
+3. Based on Algorithm 4, test results of Xtrain and Xtest are
+shown in Tables 4 and 5 respectively. As we can see, the
+accuracy rate of Xtrain based on PTo has been a little bit
+declined, but the accuracy rate of Xtest will be improved.
+To improve the accuracy of new samples is quite important
+to on-line vehicle classiﬁcation on the ﬁeld road.
+5.4. Comparison and discussion
+In order to make a further veriﬁcation of the effective-
+ness of the proposed method, we compared the method
+with a variety of current classiﬁcation methods in accuracy
+rate, sample robustness and execution time. Based on Xtrain
+and Xtest, Table 6 presented the results of the classiﬁcation
+accuracy rates of CART algorithm and other current classi-
+ﬁcation methods such as Template Matching (TPM), Artiﬁ-
+cial Neural Network (ANN), Support Vector Machine
+1 36 271
+0
+1
+2
+buses cars
+result of classification
+result of busses      
+result of cars           
+1 36 271
+1
+2
+buses cars
+result of classification
+result of busses        
+result of cars        
+Fig. 7. Distribution graphs of vehicle classiﬁcation based on To (a) training samples Xtrain; and (b) test samples Xtest).
+Table 2
+Results of training samples Xtrain based on To.
+Cars (tree output) Busses
+(tree output)
+Accuracy
+rate (%)
+Cars (235) 234 1 99.6
+Busses (36) 0 36 100.0
+Average 99.8
+Table 3
+Results of test samples Xtest based on To.
+Cars (tree
+output)
+Busses (tree
+output)
+Accuracy rate
+(%)
+Cars (235) 232 3 98.7
+Busses (36) 8 28 77.8
+Average 88.3
+H. Li et al. / Measurement 55 (2014) 142–152 149
+
+===== PAGE 9 =====
+
+(SVM), Naive Bayes classiﬁcation (NBayes). In Table 6 , the
+CART algorithm has a higher accuracy both in tests of Xtrain
+and Xtest. Because of the smaller sample size of busses, the
+training of those algorithms will be not enough. This will
+result in a low accuracy rate of bus samples for those
+methods, but CART and SVM can present better results.
+In addition, in the learning process of samples, CART algo-
+rithm can get a stable classiﬁer model with a higher ﬁtting
+degree (See results of Xtrain in Table 6 ).
+To test the sample robustness of CART algorithm, we
+swapped Xtrain and Xtest in the next experiment. Then, for
+each classiﬁcation method, the particularity of results
+caused by the particularity of samples could be avoided.
+Table 7 presented the accuracy rates different methods
+by swapping Xtrain and Xtest. Compared with Table 6, CART
+algorithm still can obtain a higher classiﬁcation accuracy
+Fig. 8. Optimal pruning tree PTo by pruning To based on MEP.
+Table 4
+Results of training samples Xtrain based on PTo.
+Cars (tree output) Busses
+(tree output)
+Accuracy
+rate (%)
+Cars (235) 234 1 99.6
+Busses (36) 2 34 94.4
+Average 97.0
+Table 5
+Results of test samples Xtest based on PTo.
+Cars (tree output) Busses
+(tree output)
+Accuracy
+rate (%)
+Cars (235) 235 0 100.0
+Busses (36) 8 28 77.8
+Average 88.9
+Table 6
+Accuracy rates of different methods by original samples of Xtrain and Xtest.
+Methods Object Action Accuracy rate of car (%) Accuracy rate of bus (%) Average (%)
+TPM Xtrain Training 92.3 72.2 82.3
+Xtest Testing 79.1 19.4 49.3
+ANN Xtrain Training 98.7 83.3 91.0
+Xtest Testing 100.0 69.4 84.7
+SVM Xtrain Training 99.6 86.1 92.8
+Xtest Testing 100.0 77.8 88.9
+NBayes Xtrain Training 99.1 66.7 82.9
+Xtest Testing 99.6 66.7 83.1
+CART Xtrain Training 99.6 94.4 97.0
+Xtest Testing 100.0 77.8 88.9
+Table 7
+Accuracy rates of different methods by swapping samples of Xtrain and Xtest.
+Methods Object Action Accuracy rate of car (%) Accuracy rate of bus (%) Average (%)
+TPM Xtest Training 91.5 55.6 73.6
+Xtrain Testing 100.0 0.0 50.0
+ANN Xtest Training 99.6 77.8 88.7
+Xtrain Testing 99.6 80.6 90.2
+SVM Xtest Training 100.0 80.6 90.3
+Xtrain Testing 100.0 77.8 88.9
+NBayes Xtest Training 99.6 61.1 80.4
+Xtrain Testing 99.1 63.9 81.5
+CART Xtest Training 99.6 97.2 98.4
+Xtrain Testing 97.0 91.7 94.4
+150 H. Li et al. / Measurement 55 (2014) 142–152
+
+===== PAGE 10 =====
+
+rate for different samples, and then SVM followed. There-
+fore, conclusions can be drawn from Tables 6 and 7 that
+CART algorithm can obtain higher classiﬁcation accuracy
+in those methods and its sample robustness is better, too.
+Due to the off-line processes of algorithm learning and
+model optimization proposed in this paper, there is no
+need to consider the timeliness. However, using the
+trained model to implement vehicle classiﬁcation is an
+on-line process in sensor nodes whose energy and comput-
+ing resources are limited. The process is an on-line real-
+time classiﬁcation problem. For execution time, we mainly
+focus on the time of on-line vehicle classiﬁcation. Fig. 9
+shows the computer CPU time of the different methods
+to classify samples of Xtrain and Xtest (the results are the
+average values of test results in ten times).
+In Fig. 9, ANN and TPM are not suitable for on-line clas-
+siﬁcation due to their longer CPU time. In terms of on-line
+classiﬁcation speed, CART, SVM and NBayes are better and
+their CPU time is small. But considering the accuracy rate
+of classiﬁcation, the advantage of CART is more obvious,
+the second is SVM.
+6. Conclusions
+Using self-developed multi-functional magnetic sen-
+sors, the vehicle waveforms can be acquired in real time.
+The magnetic sensor transmits data by radio, and it is con-
+venient to deploy in urban roads. Besides, the sensor has a
+low cost in hardware, maintenance and implementation.
+Through two steps of vehicle waveform data processing
+and feature extraction, the vehicle waveform features
+which are suitable to vehicle classiﬁcation for urban road
+can be obtained. Making use of those waveform features,
+the MNS-based CART proposed in this paper enables efﬁ-
+cient vehicle classiﬁcation. By pruning the optimal decision
+tree based on MEP rule, the new optimal pruning tree can
+effectively improve the accuracy and robustness for new
+samples. For those do not need different features’ correla-
+tion analysis, this method can give an optimal feature com-
+bination by automatically ﬁltering and self-learning.
+Compared with several current classiﬁcation methods,
+the proposed method has obvious advantages in terms of
+accuracy rate, sample robustness and execution time.
+Moreover, comparing with traditional classiﬁcation
+methods, the proposed method does not require vehicle
+or magnetic length information, and achieves on-line
+vehicle classiﬁcation by just a single multi-functional mag-
+netic sensor. Therefore, this method also has advantages in
+terms of cost and complexity of application system realiza-
+tion. In addition, according to the multifarious application
+requirements for vehicle classiﬁcation, we can train vari-
+ous decision tree models to meet different applications of
+vehicle classiﬁcation, which need to collect more samples
+of different vehicle classes, and it is one of main directions
+for future researches.
+Acknowledgments
+This work is supported by the National high-tech devel-
+opment program of China (2012AA112401) and the
+National Natural Science Foundation of China (61104164).
+The supports are gratefully acknowledged.
+References
+[1] J. Lan, Y. Xiang, L. Wang, Y. Shi, Vehicle detection and classiﬁcation
+by measuring and processing magnetic signal, Measurement 44 (1)
+(2011) 174–180 .
+[2] M. Kafai, B. Bhanu, Dynamic Bayesian networks for vehicle
+classiﬁcation in video, IEEE Trans. Industr. Inf. 8 (1) (2012) 100–109 .
+[3] R. Bajwa, R. Rajagopal, P. Varaiya, R. Kavaler, In-Pavement wireless
+sensor network for vehicle classiﬁcation, in: 10th IEEE International
+Conference on Information Processing in Sensor, Networks, 2011, pp.
+85–96.
+[4] C. Oh, S.G. Ritchie, Recognizing vehicle classiﬁcation information
+from blade sensor signature, Pattern Recogn. Lett. 28 (9) (2007)
+1041–1049.
+[5] S. Kaewkamnerd, R. Pongthornseri, J. Chinrungrueng, T. Silawan,
+Automatic vehicle classiﬁcation using wireless magnetic sensor, in:
+IEEE International Workshop on Intelligent Data Acquisition and
+Advanced Computing Systems: Technology and Applications, 2009,
+pp. 420–424.
+[6] S.Y. Cheung, P. Varaiya, Trafﬁc Surveillance by Wireless Sensor
+Networks: Final Report, University of California, Berkeley, California,
+2007.
+[7] B. Coifman, S. Kim, Speed estimation and length based vehicle
+classiﬁcation from freeway single-loop detectors, Transp. Res. Part C
+17 (4) (2009) 349–364 .
+[8] S.T. Jeng, L. Chu, S.V. Hernandez, A wavelet-KNN based vehicle
+classiﬁcation approach using inductive loop signatures, in:
+Transportation Research Board 92nd Annual Meeting, 2013 (No.
+13-3182).
+[9] C. Harlow, S. Peng, Automatic vehicle classiﬁcation system with
+range sensors, Transp. Res. Part C 9 (4) (2001) 231–247 .
+[10] P. Rajesh, M.K. Geetha, R. Ramu, Trafﬁc density estimation, vehicle
+classiﬁcation and stopped vehicle detection for trafﬁc surveillance
+system using predeﬁned trafﬁc videos, Comp. Sci. Eng. 56 (2013)
+13671–13676.
+[11] B.F. Guo, M.S. Nixon, T.R. Damarla, Acoustic information fusion for
+ground vehicle classiﬁcation, in: IEEE 11th International Conference
+on Information Fusion, 2008, pp. 1–7.
+Fig. 9. CPU time of different methods to classify samples of Xtrain and Xtest.
+H. Li et al. / Measurement 55 (2014) 142–152 151
+
+===== PAGE 11 =====
+
+[12] M.P. Paulraj, A.H. Adoma, S. Sundararaj, N.B.A. Rahima, Moving
+vehicle recognition and classiﬁcation based on time domain
+approach, Procedia Eng. 53 (2013) 405–410 .
+[13] B. Han, K. Zhang, X. Yu, E. Kwon, J. Ou, Nickel particle-based self-
+sensing pavement for vehicle detection, Measurement 44 (9) (2011)
+1645–1650
+.
+[14] S. Nazlibilek, Y. Ege, O. Kalender, M.G. Sensoy, D. Karacor, M.H. Sazlı,
+Identiﬁcation of materials with magnetic characteristics by neural
+networks, Measurement 45 (4) (2012) 734–744 .
+[15] K. Kwong, R. Kavaler, R. Rajagopal, P. Varaiya, Arterial travel time
+estimation based on vehicle re-identiﬁcation using wireless
+magnetic sensors, Transp. Res. Part C 17 (6) (2009) 586–606 .
+[16] H.J. Li, H.H. Dong, L.M. Jia, D.W. Xu, Y. Qin, Some practical vehicle
+speed estimation methods by a single trafﬁc magnetic sensor, in: IEEE
+14th International IEEE Conference on Intelligent Transportation
+Systems, 2011, pp. 1566–1573.
+[17] D. Steinberg, CART: Classiﬁcation and Regression Trees, in: X. Wu, V.
+Kumar (Eds.), The Top Ten Algorithms in Data Mining, Chapman &
+Hall/CRC, Boca Raton, 2009, pp. 179–207 .
+152 H. Li et al. / Measurement 55 (2014) 142–152

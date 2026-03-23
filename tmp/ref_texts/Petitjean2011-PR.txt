@@ -1,0 +1,1704 @@
+
+
+===== PAGE 1 =====
+
+A global averaging method for dynamic time warping, with applications to clustering
+Franc ¸ois Petitjeana,b,c,∗, Alain Ketterlina, Pierre Ganc ¸arskia,b
+aUniversity of Strasbourg, 7 rue Ren´ e Descartes, 67084 Strasbourg Cedex, France
+bLSIIT – UMR 7005, Pˆ ole API, Bd S´ ebastien Brant, BP 10413, 67412 Illkirch Cedex, France
+cCentre National d’ ´Etudes Spatiales, 18 avenue Edouard Belin, 31401 Toulouse Cedex 9, France
+Abstract
+Mining sequential data is an old topic that has been revived in the last decade, due to the increasing availability of sequential
+datasets. Most works in this ﬁeld are centred on the deﬁnition and use of a distance (or, at least, a similarity measure) between
+sequences of elements. A measure called Dynamic Time Warping (DTW) seems to be currently the most relevant for a large panel
+of applications. This article is about the use of DTW in data mining algorithms, and focuses on the computation of an average of a
+set of sequences. Averaging is an essential tool for the analysis of data. For example, the K- means clustering algorithm repeatedly
+computes such an average, and needs to provide a description of the clusters it forms. Averaging is here a crucial step, which must
+be sound in order to make algorithms work accurately. When dealing with sequences, especially when sequences are compared
+with DTW, averaging is not a trivial task.
+Starting with existing techniques developed around DTW, the article suggests an analysis framework to classify averaging
+techniques. It then proceeds to study the two major questions lifted by the framework. First, we develop a global technique for
+averaging a set of sequences. This technique is original in that it avoids using iterative pairwise averaging. It is thus insensitive to
+ordering eﬀects. Second, we describe a new strategy to reduce the length of the resulting average sequence. This has a favourable
+impact on performance, but also on the relevance of the results. Both aspects are evaluated on standard datasets, and the evaluation
+shows that they compare favourably with existing methods. The article ends by describing the use of averaging in clustering.
+The last section also introduces a new application domain, namely the analysis of satellite image time series, where data mining
+techniques provide an original approach.
+Key words: sequence analysis, time series clustering, dynamic time warping, distance-based clustering, time series averaging,
+DTW Barycenter Averaging, global averaging, satellite image time series
+1. Introduction
+Time series data have started to appear in several applica-
+tion domains, like biology, ﬁnance, multimedia, image anal-
+ysis, etc. Data mining researchers and practitioners are thus
+adapting their techniques and algorithms to this kind of data.
+In exploratory data analysis, a common way to deal with such
+data consists in applying clustering algorithms. Clustering, i.e.,
+the unsupervised classiﬁcation of objects into groups, is often
+an important ﬁrst step in a data mining process. Several exten-
+sive reviews of clustering techniques in general have been pub-
+lished [1–4] as well as a survey on time series clustering [5].
+Given a suitable similarity measure between sequential data,
+most classical learning algorithms are readily applicable.
+A similarity measure on time series data (also referred to as
+sequences hereafter) is more diﬃcult to deﬁne than on classical
+data, because the order of elements in the sequences has to be
+∗Corresponding author – LSIIT, P ˆole API, Bd S ´ebastien Brant, BP 10413,
+67412 Illkirch Cedex, France – Tel.:+33 3 68 85 45 78 – Fax.: +33 3 68 85 44
+55
+Email addresses: fpetitjean@unistra.fr (Franc ¸ois Petitjean),
+alain@unistra.fr (Alain Ketterlin), gancarski@unistra.fr (Pierre
+Ganc ¸arski)
+considered. Accordingly, experiments have shown that the tra-
+ditional Euclidean distance metric is not an accurate similarity
+measure for time series. A similarity measure called Dynamic
+Time Warping (DTW) has been proposed [6, 7]. Its relevance
+was demonstrated in various applications [8–13].
+Given this similarity measure, many distance-based learn-
+ing algorithms can be used (e.g., hierarchical or centroid-based
+ones). However, many of them, like the well-known K- means
+algorithm, or even Ascendant Hierarchical Clustering, also re-
+quire an averaging method, and highly depend on the quality
+of this averaging. Time series averaging is not a trivial task,
+mostly because it has to be consistent with the ability of DTW
+to realign sequences over time. Several attempts at deﬁning
+an averaging method for DTW have been made, but they pro-
+vide an inaccurate notion of average [14], and perturb the con-
+vergence of such clustering algorithms [15]. That is mostly
+why several time series clustering attemps prefer to use the
+K-medoids algorithm instead (see [16–18] for examples com-
+bining DTW and the K- medoids algorithm). Throughout this
+article, and without loss of generality, we use some times the
+example of the K-means algorithm, because of its intensive use
+of the averaging operation, and because of its applicability to
+large datasets.
+Article accepted for publication in Pattern Recognition accessible at doi:10.1016/j.patcog.2010.09.013
+
+===== PAGE 2 =====
+
+In this article, we propose a novel method for averaging
+a set of sequences under DTW. The proposed method avoids
+the drawbacks of other techniques, and is designed to be used,
+among others, in similarity-based methods ( e.g., K- means) to
+mine sequential datasets. Section 2 introduces the DTW sim-
+ilarity measure on sequences. Then Section 3 considers the
+problem of ﬁnding a consensus sequence from a set of sequences,
+providing theoretical background and reviewing existing meth-
+ods. Section 4 introduces the proposed averaging method, called
+Dtw Barycenter Averaging (DBA). It also describes experi-
+ments on standard datasets from the UCR time series classiﬁca-
+tion and clustering archive [19] in order to compare our method
+to existing averaging methods. Then, Section 5 looks deeper
+into the su ﬃcient number of points to accurately represent of
+a set of sequences. Section 6 describes experiments conducted
+to demonstrate the applicability of DBA to clustering, by de-
+tailing experiments carried out with the K- means algorithm on
+standard datasets as well as on an application domain, namely
+satellite image time series. Finally, Section 7 concludes the ar-
+ticle and presents some further work.
+2. Dynamic Time Warping (DTW)
+In this section, we recall the deﬁnition of the euclidean dis-
+tance and of the DTW similarity measure. Throughout this
+section, let A = ⟨a1,..., aT ⟩ and B = ⟨b1,..., bT ⟩ be two se-
+quences, and let δ be a distance between elements (or coordi-
+nates) of sequences.
+Euclidean distance. This distance is commonly accepted as the
+simplest distance between sequences. The distance between A
+and B is deﬁned by:
+D(A, B) =
+√
+δ(a1, b1)2 + · · · +δ(aT, bT )2
+Unfortunately, this distance does not correspond to the com-
+mon understanding of what a sequence really is, and cannot
+capture ﬂexible similarities. For example, X = ⟨a, b, a, a⟩ and
+Y = ⟨a, a, b, a⟩ are di ﬀerent according to this distance even
+though they represent similar trajectories.
+Dynamic Time Warping. DTW is based on the Levenshtein dis-
+tance (also called edit distance) and was introduced in [6, 7],
+with applications in speech recognition. It ﬁnds the optimal
+alignment (or coupling) between two sequences of numerical
+values, and captures ﬂexible similarities by aligning the coordi-
+nates inside both sequences. The cost of the optimal alignment
+can be recursively computed by:
+D(Ai, B j) =δ(ai, b j) + min
+
+D(Ai−1, B j−1)
+D(Ai, B j−1)
+D(Ai−1, B j)
+ (1)
+where Ai is the subsequence ⟨a1,..., ai⟩. The overall similarity
+is given by D(A|A|, B|B|) = D(AT, BT ).
+Unfortunately, a direct implementation of this recursive def-
+inition leads to an algorithm that has exponential cost in time.
+Fortunately, the fact that the overall problem exhibits overlap-
+ping subproblems allows for the memoization of partial results
+in a matrix, which makes the minimal-weight coupling compu-
+tation a process that costs|A|·| B| basic operations. This measure
+has thus a time and a space complexity of O(|A| · |B|).
+DTW is able to ﬁnd optimal global alignment between se-
+quences and is probably the most commonly used measure to
+quantify the dissimilarity between sequences [9–13]. It also
+provides an overall real number that quantiﬁes similarity. An
+example DTW-alignment of two sequences can be found in Fig-
+ure 1: it shows the alignment of points taken from two sinu-
+soids, one being slightly shifted in time. The numerical result
+computed by DTW is the sum of the heights 1 of the associa-
+tions. Alignments at both extremities on Figure 1 show that
+DTW is able to correctly re-align one sequence with the other,
+a process which, in this case, highlights similarities that Eu-
+clidean distance is unable to capture. Algorithm 1 details the
+computation.
+Algorithm 1 DTW
+Require: A = ⟨a1,..., aS ⟩
+Require: B = ⟨b1,..., bT ⟩
+Let δ be a distance between coordinates of sequences
+Let m[S, T] be the matrix of couples (cost, path)
+m[1, 1] ← (δ(a1, b1), (0, 0) )
+for i ← 2 to S do
+m[i, 1] ← ( m[i − 1, 1, 1] +δ(ai, b1), (i − 1, 1) )
+end for
+for j ← 2 to T do
+m[1, j] ← ( m[1, j − 1, 1] +δ(a1, b j), (1, j − 1) )
+end for
+for i ← 2 to S do
+for j ← 2 to T do
+minimum ← minVal( m[i − 1, j] , m[i, j − 1] , m[i −
+1, j − 1] )
+m[i, j] ← ( f irst(minimum) +
+δ(ai, b j), second(minimum))
+end for
+end for
+return m[S, T]
+Algorithm 2 ﬁrst
+Require: p = (a, b) : couple
+return a
+Algorithm 3 second
+Require: p = (a, b) : couple
+return b
+1In fact, the distance δ(ai, b j) computed in Equation 1 is the distance be-
+tween two coordinates without considering the time distance between them.
+
+===== PAGE 3 =====
+
+Algorithm 4 minVal
+Require: v1, v2, v3 : couple
+if f irst(v1) ≤ min( f irst(v2), f irst(v3) ) then
+return v1
+else if f irst(v2) ≤ f irst(v3) then
+return v2
+else
+return v3
+end if
+Figure 1: Two 1D sequences aligned with Dynamic Time Warping. Coordinates
+of the top and bottom sequences have been respectively computed by cos( t)
+and cos(t +α). For visualization purpose, the top sequence is drawn vertically
+shifted.
+3. Related work
+In the context of classiﬁcation, many algorithms require a
+method to represent in one object, informations from a set of
+objects. Algorithms like K- medoids are using the medoid of a
+set of objects. Some others like K- means need to average a set
+of objects, by ﬁnding a mean of the set. If these “consensus”
+representations are easily deﬁnable for objects in the Euclidean
+space, this is much more diﬃcult for sequences under DTW.
+Finding a consensus representation of a set of sequences is
+even described by [20], chapter 14, as the Holy Grail. In this
+section, we ﬁrst introduce the problem of ﬁnding a consensus
+sequence from a set of sequences, inspired by theories devel-
+oped in computational biology. Then, we make the link be-
+tween these theories on strings and methods currently used to
+average sequences of numbers under Dynamic Time Warping.
+To simplify explanations, we use the term coordinate to
+designate an element, or point, or component of a sequence.
+Without loss of generality, we consider that sequences con-
+tain T coordinates that are one-dimensional data. We note A(β)
+a sequence of length β. In the following, we consider a set
+S = {S1, · · ·, SN} of N sequences from which we want to com-
+pute a consensus sequence C.
+3.1. The consensus sequence problem
+As we focus on DTW, we will only detail the consensus
+sequence problem from the edit distance side. (The problem
+for DTW is almost the same, and we will detail the di ﬀerences
+in next subsection.) The term consensus is subjective, and de-
+pends on the needs. In the context of sequences, this term is
+used with three meanings: the longest common subsequence of
+a set, the medoid sequence of the set, or the average sequence
+of the set.
+The longest common subsequence generally permits to vi-
+sualize a summary of a set of sequences. It is however generally
+not used in algorithms because the resulting common subse-
+quence does not cover the whole data.
+The two other concepts refer to a more formal deﬁnition,
+corresponding to the sequence in the center of the set of se-
+quences. We have to know what the center notion means. The
+commonly accepted deﬁnition is the object minimizing the sum
+of squared distances to objects of the set. When the center must
+be found in the dataset, the center is called “medoid sequence”.
+Otherwise, when the search space of the center is not restricted,
+the most widely used term is “average sequence”.
+As our purpose is the deﬁnition of a center minimizing the
+sum of squared distances to sequences of a set, we focus on
+the deﬁnition of an average sequence when the corresponding
+distance is DTW.
+Deﬁnition. Let E be the space of the coordinates of sequences.
+By a minor abuse of notation, we use ET to designate the space
+of all sequences of length T. Given a set of sequences S =
+{S1, · · ·, SN}, the average sequence C(T) must fulﬁll:
+∀X ∈ ET,
+N∑
+n=1
+DTW 2(C(T), Sn) ≤
+N∑
+n=1
+DTW 2(X, Sn) (2)
+Since no information on the length of the average sequence
+is available, the search cannot be limited to sequences of a given
+length, so all possible values for T have to be considered. Note
+that sequences of S have a ﬁxed lengthT. C has hence to fulﬁll:
+∀t ∈ [1, +∞[,
+∀X ∈ Et,
+N∑
+n=1
+DTW 2(C, Sn) ≤
+N∑
+n=1
+DTW 2(X, Sn)
+
+(3)
+This deﬁnition relies in fact on the Steiner trees theory; C
+is called Steiner sequence [20]. Note that the sums in Equa-
+tions (2) and (3), is often called Within Group Sum of Squares
+(WGSS), or discrepancy distance in [21]. We will also use the
+simple term inertia, used in most works on clustering.
+3.2. Exact solutions to the Steiner sequence problem
+As shown in [22], when considered objects are simple points
+in an α-dimensional space, the minimization problem corre-
+sponding to Equation (2) can be solved by using the property
+of the arithmetic mean. As the notion of arithmetic mean is not
+easily extendable to semi-pseudometric spaces ( i.e., spaces in-
+duced by semi-pseudometrics like DTW), we need to detail this
+
+===== PAGE 4 =====
+
+Steiner sequence problem, i.e., the problem to ﬁnd an average
+sequence. To solve this problem, there are two close families of
+methods.
+The ﬁrst one consists in computing the global multiple align-
+ment [23] of the N sequences of S. This multiple alignment is
+computable by extending DTW for aligning N sequences. For
+instance, instead of computing DTW by comparing three val-
+ues in a square, one have to compare seven values in a cube
+for three sequences. This idea can be generalized by computing
+DTW in a N-dimensional hypercube. Given this global align-
+ment, C can be found by averaging column by column the mul-
+tiple alignment. However this method presents two major dif-
+ﬁculties, that prevent its use. First, the multiple alignment pro-
+cess takesΘ
+(
+T N
+)
+operations [24], and is not tractable for more
+than a few sequences. Second, the global length of the multiple
+alignment can be on the order of T N, and requires unrealistic
+amounts of memory.
+The second family of methods consists in searching through
+the solution space, keeping those minimizing the sum (Equation
+2). In the discrete case (i.e., sequences of characters or of sym-
+bolical values), as the alphabet is generally ﬁnite, this scan is
+easy. However, as the length of the global alignment is poten-
+tially T N − 2T, scanning the space takes Θ(T N) operations. In
+the continuous case ( i.e., sequences of numbers or of number
+vectors), scanning all solutions is impossible. Nevertheless, we
+will explain in the next paragraph how this search can be guided
+towards potential solutions, even though this strategy also ex-
+hibits exponential complexity.
+In fact, we need a method to generate all potential solu-
+tions. Each solution corresponds to a coupling between C and
+each sequence of S. As all coordinates of each sequence of S
+must be associated to at least one coordinate of C, we have to
+generate all possible groupings between coordinates of each se-
+quence of S and coordinates of C. Each coordinate of C must
+be associated to a non-empty non-overlapping set of coordi-
+nates of sequences of S. To generate all possible groupings,
+we can consider that each sequence is split in as many subse-
+quences as there are coordinates in C. Thus, the ﬁrst coordinate
+of C will be associated to the coordinates appearing in the ﬁrst
+subsequences of sequences of S, the second coordinate to coor-
+dinates appearing in the second subsequences of sequences of
+S, and so on. Then, for C(p) (C of length p), the N sequences
+of S have to be cut into p parts. There are
+(T
+p
+)
+ways to cut a se-
+quence of length T into p subsequences. Thus, for N sequences
+there are
+(T
+p
+)N
+possibilities. The time complexity of this scan is
+therefore inΘ(
+(T
+p
+)N
+).
+One can note in Equation (3) that p > T does not make
+sense. It would mean that sequences have to be split in more
+subsequences than they contain coordinates. Thus, we can limit
+the search conditions of C to p ∈ [1, T]. But even with this
+tighter bound, the overall computation remains intractable.
+3.3. Approximating the exact solution
+As we explained in the previous subsection, ﬁnding the av-
+erage sequence is deeply linked to the multiple alignment prob-
+lem. Unfortunately, 30 years of well-motivated research did
+not provide any exact scalable algorithm, neither for the mul-
+tiple alignment problem, nor for the consensus sequence prob-
+lem. Given a sequence standing for the solution, we even can-
+not check if the potential solution is optimal because we rely on
+a subset of the search space. A number of heuristics have been
+developed to solve this problem (see [25–29] for examples). We
+present in this subsection the most common family of methods
+used to approximate the average sequence: iterative pairwise
+averaging. We will also link this family to existing averaging
+method for DTW.
+Iterative pairwise averaging consists in iteratively merging
+two average sequences of two subsets of sequences into a single
+average sequence of the union of those subsets. The simplest
+strategy computes an average of two sequences and iteratively
+incorporates one sequence to the average sequence. Diﬀerences
+between existing methods are the order in which the merges are
+done, and the way they compute an average of two sequences.
+3.3.1. Ordering schemes
+Tournament scheme. The simplest and most obvious averag-
+ing ordering consists in pairwise averaging sequences follow-
+ing a tournament scheme. That way, N/2 average sequences
+are created at ﬁrst step. Then those N/2 sequences, in turn,
+are pairwise averaged into N/4 sequences, and so on, until one
+sequence is obtained. In this approach, the averaging method
+(between two sequences) is applied N times.
+Ascendant hierarchical scheme. A second approach consists
+in averaging at ﬁrst the two sequences whose distance (DTW)
+is minimal over all pairs of sequences. This works like As-
+cendant Hierarchical Clustering, computing a distance matrix
+before each average computation. In that way, the averaging
+method is also called N − 1 times. In addition, one has to take
+into account the required time to compute N times the distance
+matrix.
+3.3.2. Computing the average sequence
+Regarding the way to compute an average from two se-
+quences under DTW, most methods are using associations (cou-
+pling) computed with DTW.
+One coordinate by association. Starting from a coupling be-
+tween two sequences, the average sequence is built using the
+center of each association. Each coordinate of the average se-
+quence will thus be the center of each association created by
+DTW. The main problem of this technique is that the resulting
+mean can grow substantially in length, because up to|A|+|B|− 2
+associations can be created between two sequences A and B.
+One coordinate by connected component. Considering that the
+coupling (created by DTW) between two sequences forms a
+graph, the idea is to associate each connected component of this
+graph to a coordinate of the resulting mean, usually taken as the
+barycenter of this component. Contrary to previous methods,
+the length of resulting mean can decrease. The resulting length
+will be between 2 and min(|A|, |B|).
+
+===== PAGE 5 =====
+
+3.4. Existing algorithms
+The diﬀerent ordering schemes and average computations
+just described are combined in the DTW literature to make up
+algorithms. The two main averaging methods for DTW are pre-
+sented below.
+NonLinear Alignment and Averaging Filters. NLAAF was in-
+troduced in [30] and rediscovered in [15]. This method uses
+the tournament scheme and the one coordinate by association
+averaging method. Its main drawback lies in the growth of its
+resulting mean. As stated earlier, each use of the averaging
+method can almost double the length of the average sequence.
+The entire NLAAF process could produce, over all sequences,
+an average sequence of length N × T. As classical datasets
+comprise thousands of sequences made up on the order of hun-
+dred coordinates, simply storing the resulting mean could be
+impossible. This length problem is moreover worsened by the
+complexity of DTW, that grows bi-linearly with lengths of se-
+quences. That is why NLAAF is generally used in conjunction
+with a process reducing the length of the mean, leading to a loss
+of information and thus to an unsatisfactory approximation.
+Prioritized Shape Averaging. PSA was introduced in [21] to
+resolve shortcomings of NLAAF. This method uses the Ascen-
+dant hierarchical scheme and the one by connected compo-
+nent averaging method. Although this hierarchical averaging
+method aims at preventing the error to propagate too much, the
+length of average sequences remains a problem. If one align-
+ment (with DTW) between two sequences leads to two con-
+nected components ( i.e., associations are forming two hand-
+held fans), the overall resulting mean will be composed of only
+two coordinates. Obviously, such a sequence cannot represent
+a full set of potentially long sequences. This is why authors
+proposed to replicate each coordinate of the average sequence
+as many times as there were associations in the corresponding
+connected component. However, this repetition of coordinates
+causes the problem already observed with NLAAF, by poten-
+tially doubling the number of coordinates of each intermediate
+average sequence. To alleviate this problem, the authors sug-
+gest using a process in order to reduce the length of the resulting
+mean.
+3.5. Motivation
+We have seen that most of the works on averaging sets of
+sequences can be analyzed along two dimensions: ﬁrst, the
+way they consider the individual sequences when averaging,
+and second, the way they compute the elements of the result-
+ing sequences. These two characteristics have proved useful to
+classify the existing averaging techniques. They are also useful
+angles under which new solutions can be elaborated.
+Regarding the averaging of individual sequences, the main
+shortcoming of all existing methods is their use of pairwise av-
+eraging. When computing the mean ofN sequences by pairwise
+averaging, the order in which sequences are taken inﬂuences the
+quality of the result, because neither NLAAF nor PSA are asso-
+ciative functions. Pairwise averaging strategies are intrinsically
+sensitive to the order, with no guarantee that a di ﬀerent order
+would lead to the same result. Local averaging strategies like
+PSA or NLAAF may let an initial approximation error propa-
+gate throughout the averaging process. If the averaging process
+has to be repeated (e.g., during K- means iterations), the eﬀects
+may dramatically alter the quality of the result. This is why a
+global approach is desirable, where sequences would be aver-
+aged all together, with no sensitivity to their order of consider-
+ation. The obvious analogy to a global method is the compu-
+tation of the barycenter of a set of points in a Euclidean space.
+Section 4 follows this line of reasoning in order to introduce a
+global averaging strategy suitable for DTW, and provides em-
+pirical evidence of its superiority over existing techniques.
+The second dimension along which averaging techniques
+can be classiﬁed is the way they select the elements of the mean.
+We have seen that a naive use of the DTW-computed associa-
+tions may lead to some sort of “overﬁt”, with an average cover-
+ing almost every detail of every sequence, whereas simpler and
+smoother averages could well provide a better description of the
+set of sequences. Moreover, long and detailed averages have a
+strong impact on further processing. Here again, iterative algo-
+rithms like K-means are especially at risk: every iteration may
+lead to a longer average, and because the complexity of DTW is
+directly related to the length of the sequences involved, later it-
+erations will take longer than earlier ones. In such cases, uncon-
+strained averaging will not only lead to an inadequate descrip-
+tion of clusters, it will also cause a severe performance degrada-
+tion. This negative eﬀect of sequence averaging is well-known,
+and corrective actions have been proposed. Section 5 builds on
+our averaging strategy to suggest new ways of shortening the
+average.
+4. A new averaging method for DTW
+To solve the problems of existing pairwise averaging meth-
+ods, we introduce a global averaging strategy called Dtw Barycen-
+ter Averaging (DBA). This section ﬁrst deﬁnes the new averag-
+ing method and details its complexity. Then DBA is compared
+to NLAAF and PSA on standard datasets [19]. Finally, the ro-
+bustness and the convergence of DBA are studied.
+4.1. Deﬁnition of DBA
+DBA stands for Dtw Barycenter Averaging. It consists in a
+heuristic strategy, designed as a global averaging method. DBA
+is an averaging method which consists in iteratively reﬁning
+an initially (potentially arbitrary) average sequence, in order to
+minimize its squared distance (DTW) to averaged sequences.
+Let us provide an intuition on the mechanism of DBA. The
+aim is to minimize the sum of squared DTW distances from the
+average sequence to the set of sequences. This sum is formed
+by single distances between each coordinate of the average se-
+quence and coordinates of sequences associated to it. Thus,
+the contribution of one coordinate of the average sequence to
+the total sum of squared distance is actually a sum of euclidean
+distances between this coordinate and coordinates of sequences
+
+===== PAGE 6 =====
+
+associated to it during the computation of DTW. Note that a co-
+ordinate of one of the sequences may contribute to the new po-
+sition of several coordinates of the average. Conversely, any co-
+ordinate of the average is updated with contributions from one
+or more coordinates of each sequence. In addition, minimizing
+this partial sum for each coordinate of the average sequence is
+achieved by taking the barycenter of this set of coordinates. The
+principle of DBA is to compute each coordinate of the average
+sequence as the barycenter of its associated coordinates of the
+set of sequences. Thus, each coordinate will minimize its part
+of the total WGSS in order to minimize the total WGSS. The
+updated average sequence is deﬁned once all barycenters are
+computed.
+Technically, for each reﬁnement i.e., for each iteration, DBA
+works in two steps:
+1. Computing DTW between each individual sequence and
+the temporary average sequence to be reﬁned, in order
+to ﬁnd associations between coordinates of the average
+sequence and coordinates of the set of sequences.
+2. Updating each coordinate of the average sequence as the
+barycenter of coordinates associated to it during the ﬁrst
+step.
+Let S = {S1, · · ·, SN} be the set of sequences to be averaged,
+let C = ⟨C1,..., CT ⟩ be the average sequence at iteration i and
+let C
+′
+= ⟨C
+′
+1,..., C
+′
+T ⟩ be the update of C at iteration i + 1, of
+which we want to ﬁnd coordinates. In addition, each coordinate
+of the average sequence is deﬁned in an arbitrary vector spaceE
+(e.g., usually a Euclidean space):
+∀t ∈ [1, T], Ct ∈ E (4)
+We consider the function assoc, that links each coordinate
+of the average sequence to one or more coordinates of the se-
+quences of S. This function is computed during DTW compu-
+tation between C and each sequence of S. The tth coordinate of
+the average sequence C
+′
+t is then deﬁned as:
+C
+′
+t = barycenter (assoc (Ct)) (5)
+where
+barycenter {X1,..., Xα} = X1 +... + Xα
+α (6)
+(the addition of Xi is the vector addition). Algorithm 5 details
+the complete DBA computation.
+Then, by computing again DTW between the average se-
+quence and all sequences ofS, the associations created by DTW
+may change. As it is impossible to anticipate how these associ-
+ations will change, we propose to make C iteratively converge.
+Figure 2 shows four iterations (i.e., four updates) of DBA on an
+example with two sequences.
+As a summary, the proposed averaging method for Dynamic
+Time Warping is a global approach that can average a set of se-
+quences all together. The update of the average sequence be-
+tween two iterations is independent of the order with which the
+individual sequences are used to compute their contribution to
+the update in question. Figure 3 shows an example of an av-
+erage sequence computed with DBA, on one dataset from [19].
+This ﬁgure shows that DBA preserves the ability of DTW, iden-
+tifying time shifts.
+1
+2
+3
+4
+Figure 2: DBA iteratively adjusting the average of two sequences.
+
+===== PAGE 7 =====
+
+Algorithm 5 DBA
+Require: C = ⟨C1,..., CT ′ ⟩ the initial average sequence
+Require: S1 = ⟨s11,..., s1T ⟩ the 1st sequence to average
+...
+Require: Sn = ⟨sn1,..., snT ⟩ the nth sequence to average
+Let T be the length of sequences
+Let assocTab be a table of size T ′ containing in each cell a set
+of coordinates associated to each coordinate of C
+Let m[T, T] be a temporary DTW (cost,path) matrix
+assocTab ← [∅,..., ∅]
+for seq in S do
+m ← DTW ( C, seq )
+i ← T ′
+j ← T
+while i ≥ 1 and j ≥ 1 do
+assocTab [i] ← assocTab [i] ∪ seq j
+(i, j) ← second(m[i, j])
+end while
+end for
+for i = 1 to T do
+C
+′
+i = barycenter(assocTab [i]) {see Equation 6}
+end for
+return C
+′
+4.2. Initialization and Convergence
+The DBA algorithm starts with an initial averaging and re-
+ﬁnes it by minimizing its WGSS with respect to the sequences
+it averages. This section examines the eﬀect of the initialisation
+and the rate of convergence.
+Initialization. There are two major factors to consider when
+priming the iterative reﬁnement:
+• ﬁrst the length of the starting average sequence,
+• and second the values of its coordinates.
+Regarding the length of the initial average, we have seen in Sec-
+tion 3.2 that its upper bound isT N, but that such a length cannot
+reasonably be used. However, the inherent redundancy of the
+Trace
+0 25 50 75 100 125 150 175 200 225 250 275
+-2,25
+-2,00
+-1,75
+-1,50
+-1,25
+-1,00
+-0,75
+-0,50
+-0,25
+0,00
+0,25
+0,50
+0,75
+1,00
+1,25
+1,50
+1,75
+2,00
+2,25
+2,50
+2,75
+3,00
+3,25
+3,50
+3,75
+4,00
+4,25
+(a) A cluster of the Trace dataset.
+Trace
+0 25 50 75 100 125 150 175 200 225 250 275
+-2,00
+-1,75
+-1,50
+-1,25
+-1,00
+-0,75
+-0,50
+-0,25
+0,00
+0,25
+0,50
+0,75
+1,00
+1,25
+1,50
+1,75
+2,00
+2,25
+2,50
+2,75
+3,00
+3,25
+3,50
+3,75
+4,00 (b) The average sequence of the
+cluster.
+Figure 3: An example of the DBA averaging method on one cluster from the
+“Trace” dataset from [19].
+data lets one except that a much shorter sequence can be ade-
+quate. We will observe in Section 4.5 that a length of around T
+(the length of the sequences to average) performs well.
+Regarding the values of the initial coordinates, it is theoreti-
+cally impossible to determine the optimal values, otherwise the
+whole averaging process would become useless. In methods
+that require an initialisation, e.g., K- means clustering, a large
+number of heuristics have been developed. We will describe
+in Section 4.5 experiments with the most frequent techniques:
+ﬁrst, a randomized choice, and second, using an element of the
+set of sequences to average. We will show empirically that the
+latter gives an eﬃcient initialisation.
+Convergence. As explained previously, DBA is an iterative pro-
+cess. It is necessary, once the average is computed, to update it
+several times. This has the property of letting DTW reﬁne its
+associations. It is important to note that at each iteration, iner-
+tia can only decrease, since the new average sequence is closer
+(under DTW) to the elements it averages. If the update does not
+modify the alignment of the sequences, so the Huygens’ theo-
+rem applies; barycenters composing the average sequence will
+get closer to coordinates ofS. In the other case, if the alignment
+is modiﬁed, it means that DTW calculates a better alignment
+with a smaller inertia (which decreases in that case also). We
+thus have a guarantee of convergence. Section 4.6 details some
+experiments in order to quantify this convergence.
+4.3. Complexity study
+This section details the time complexity of DBA. Each iter-
+ation of the iterative process is divided into two parts:
+1. Computing DTW between each individual sequence and
+the temporary (i.e., current) average sequence, to ﬁnd as-
+sociations between its coordinates and coordinates of the
+sequences.
+2. Updating the mean according to the associations just com-
+puted.
+Finding associations. The aim of Step 1 is to determine the set
+of associations between each coordinate ofC and coordinates of
+sequences of S. Therefore we have to compute DTW once per
+sequence to average, that is N times. The complexity of DTW
+isΘ
+(
+T 2
+)
+. The complexity of Step 1 is thereforeΘ
+(
+N · T 2
+)
+.
+Updating the mean. After Step 1, each coordinate Ct of the
+average sequence has a set of coordinates {p1,..., pαt } associ-
+ated to it. The process of updating C consists in updating each
+coordinate of the average sequence as the barycenter this set
+of coordinates. Since the average sequence is associated to N
+sequences, its T coordinates are, overall, associated to N · T
+coordinates, i.e., all coordinates of sequences of S. The update
+step will thus have a time complexity ofΘ (N · T).
+Overall complexity. Because DBA is an iterative process, let
+us note I the number of iterations. The time complexity of the
+averaging process of N sequences, each one containing T coor-
+dinates, is thus:
+Θ (DBA) = Θ
+(
+I
+(
+N · T 2 + N · T
+))
+= Θ
+(
+I · N · T 2)
+(7)
+
+===== PAGE 8 =====
+
+Comparison with PSA and NLAAF . To compute an average se-
+quence from two sequences, PSA and NLAAF need to compute
+DTW between these two sequences, which has a time com-
+plexity of Θ(T 2). Then, to compute the temporary average
+sequence, PSA and NLAAF require Θ(T) operations. How-
+ever, after having computed this average sequence, it has to
+be shorten to the length of averaged sequences. The classi-
+cal averaging process used is Uniform Scaling which requires
+Θ(T +2T +3T +· · ·+T 2) =Θ(T 3). The computation of the aver-
+age sequence of two sequences requiresΘ(T 3+T 2+T) =Θ(T 3).
+The overall NLAAF averaging of a set of N sequences then re-
+quires:
+Θ((N − 1) · (T 3 + T 2 + T)) =Θ(N · T 3) (8)
+Moreover, as PSA is using a hierarchical strategy to order se-
+quences, it has at least to compute a dissimilarity matrix, which
+requiresΘ(N2 · T 2) operations. The overall PSA averaging of a
+set of N sequences then requires:
+Θ((N − 1) · (T 3 + T 2 + T) + N2 · T 2) =Θ(N · T 3 + N2 · T 2) (9)
+As I ≪ T, the time complexity of DBA is thus smaller than
+PSA and NLAAF ones.
+4.4. Experiments on standard datasets
+Evaluating an average sequence is not a trivial task. No
+ground truth of the expected sequence is available and we saw
+in Section 3 that many meanings are covered by the “average”
+(or consensus) notion. Most experimental and theoretical works
+use the WGSS to quantify the relative quality of an averaging
+technique. Thus, to assess the performance of DBA by com-
+parison with existing averaging methods, we compare DBA to
+NLAAF and PSA in terms of WGSS over datasets from the
+UCR classiﬁcation/clustering archive [19] (see Figure 4).
+Let us brieﬂy remind what NLAAF and PSA are. NLAAF
+works by placing each coordinate of the average sequence of
+two sequences, as the center of each association created by
+DTW. PSA associates each connected component of the graph
+(formed by the coupling between two sequences) to a coor-
+dinate of the average sequence. Moreover, to average N se-
+quences, it uses a hierarchical method to average at ﬁrst closest
+sequences.
+Experimental settings. To make these experiments reproducible,
+we provide here the details about our experimental settings:
+• all programs are implemented in Java and run on a Core
+2 Duo processor running at 2.4 GHz with 3 GB of RAM;
+• the distance used between two coordinates of sequences
+is the squared Euclidean distance. As the square function
+is a strictly increasing function on positive numbers, and
+because we only use comparisons between distances, it
+is unnecessary to compute square roots. The same opti-
+mization has been used in [31], and seems rather com-
+mon;
+50 words
+0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210 220 230 240 250 260 270 280
+0,0
+2,5
+5,0
+Adiac
+0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180
+-2
+-1
+0
+1
+2
+Beef
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475
+0,0
+0,1
+0,2
+0,3
+CBF
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130
+-2,5
+0,0
+Coﬀee
+0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210 220 230 240 250 260 270 280 290
+0
+10
+20
+30
+ECG200
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95
+0,0
+2,5
+FaceAll
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130 135
+0
+5
+FaceFour
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350
+-2,5
+0,0
+2,5
+Fish
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475
+-1
+0
+1
+2
+GunPoint
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130 135 140 145 150 155
+0
+1
+Lighting2
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475 500 525 550 575 600 625 650
+0,0
+2,5
+5,0
+Lighting7
+0 25 50 75 100 125 150 175 200 225 250 275 300 325
+0
+5
+10
+OliveOil
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475 500 525 550 575
+0,0
+0,5
+1,0
+1,5
+OSULeaf
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425
+-2,5
+0,0
+2,5
+SwedishLeaf
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130
+-2,5
+0,0
+2,5
+Synthetic control
+0,0 2,5 5,0 7,5 10,0 12,5 15,0 17,5 20,0 22,5 25,0 27,5 30,0 32,5 35,0 37,5 40,0 42,5 45,0 47,5 50,0 52,5 55,0 57,5 60,0
+-2
+-1
+0
+1
+2
+Trace
+0 10 20 30 40 50 60 70 80 90 100 110 120 130 140 150 160 170 180 190 200 210 220 230 240 250 260 270 280
+0,0
+2,5
+Two patterns
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130
+-2
+-1
+0
+1
+2
+Wafer
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95 100 105 110 115 120 125 130 135 140 145 150 155
+-1
+0
+1
+2
+Yoga
+0 25 50 75 100 125 150 175 200 225 250 275 300 325 350 375 400 425
+-1
+0
+1
+Figure 4: Sample instances from the test datasets. One time series from each
+class is displayed for each dataset.
+• sequences have been normalized with Z-score: for each
+sequence, the mean ¯ x and standard deviation σ of the
+coordinate values are computed, and each coordinate yi
+is replaced by:
+y′
+i = yi − ¯x
+σ (10)
+• we compare DBA to NLAAF on all datasets from [19]
+and to PSA using results given by [21];
+• as we want to test the capacity of DBA to minimize the
+WGSS, and because we do not focus on supervised meth-
+ods, we put all sequences from bothtrain and test dataset
+together;
+• for each set of sequences under consideration, we report
+the inertia under DBA and other averaging techniques.
+To provide quantitative evaluation, we indicate the ratio
+between the inertia with respect to the average computed
+by DBA and those computed by NLAAF and /or PSA
+(see the tables below). To provide an overall evaluation,
+
+===== PAGE 9 =====
+
+Intraclass inertia
+Dataset NLAAF DBA DBA
+NLAAF
+50words 11.98 6.21 52 %
+Adiac 0.21 0.17 81 %
+Beef 29.90 9.50 32 %
+CBF 14.25 13.34 94 %
+Coﬀee 0.72 0.55 76 %
+ECG200 11.34 6.95 61 %
+FaceAll 17.77 14.73 83 %
+FaceFour 34.46 24.87 72 %
+Fish 1.35 1.02 75 %
+GunPoint 7.24 2.46 34 %
+Lighting2 194.07 77.57 40 %
+Lighting7 48.25 28.77 60 %
+OliveOil 0.018261 0.018259 100 %
+OSULeaf 53.03 22.69 43 %
+SwedishLeaf 2.50 2.21 88 %
+Synthetic control 9.71 9.28 96 %
+Trace 1.65 0.92 56 %
+Two patterns 9.19 8.66 94 %
+Wafer 54.66 30.40 56 %
+Yoga 40.07 37.27 93 %
+Table 1: Comparison of intraclass inertia under DTW between NLAAF and
+DBA.
+Intraclass inertia
+Dataset PSA DBA DBA
+PS A
+Beef 25.65 9.50 37 %
+Coﬀee 0.72 0.55 76 %
+ECG200 9.16 6.95 76 %
+FaceFour 33.68 24.87 74 %
+Synthetic control 10.97 9.28 85 %
+Trace 1.66 0.92 56 %
+Table 2: Comparison of intraclass inertia under DTW between PSA and DBA.
+the text also sometimes mentions geometric averages of
+these ratios.
+Intraclass inertia comparison. In this ﬁrst set of experiments,
+we compute an average for each class in each dataset. Table 1
+shows the global WGSS obtained for each dataset. We notice
+that, for all datasets, DBA reduces /improves the intraclass in-
+ertia. The geometric average of the ratios shown in Table 1 is
+65 %.
+Table 2 shows a comparison between results of DBA and
+PSA. Here again, for all results published in [21], DBA outper-
+forms PSA, with a geometric average of inertia ratios of 65 %.
+Actually, such a decreases of inertia show that old averaging
+methods could not be seriously considered for machine learning
+use.
+Global dataset inertia. In the previous paragraph, we com-
+puted an average for each class in each dataset. In this para-
+graph, the goal is to test robustness of DBA with more data
+variety. Therefore, we average all sequences of each dataset.
+Global dataset inertia
+Dataset NLAAF DBA DBA
+PS A
+50words 51 642 26 688 52 %
+Adiac 647 470 73 %
+Beef 3 154 979 31 %
+CBF 21 306 18 698 88 %
+Coﬀee 61.60 39.25 64 %
+ECG200 2 190 1 466 67 %
+FaceAll 72 356 63 800 88 %
+FaceFour 6 569 3 838 58 %
+Fish 658 468 71 %
+GunPoint 1 525 600 39 %
+Lighting2 25 708 9 673 38 %
+Lighting7 14 388 7 379 51 %
+OliveOil 2.24 1.83 82 %
+OSULeaf 30 293 12 936 43 %
+SwedishLeaf 5 590 4 571 82 %
+Synthetic control 17 939 13 613 76 %
+Trace 22 613 4 521 20 %
+Two patterns 122 471 100 084 82 %
+Wafer 416 376 258 020 62 %
+Yoga 136 547 39 712 29 %
+Table 3: Comparison of global dataset inertia under DTW between NLAAF
+and DBA.
+This means that only one average sequence is computed for a
+whole dataset. That way, we compute the global dataset inertia
+under DTW with NLAAF and DBA, to compare their capacity
+to summarize mixed data.
+As can be seen in Table 3, DBA systematically reduces/improves
+the global dataset inertia with a geometric average ratio of 56 %.
+This means that DBA not only performs better than NLAAF
+(Table 1), but is also more robust to diversity.
+4.5. Impact of initialisation
+DBA is deterministic once the initial average sequence C is
+chosen. It is thus important to study the impact of the choice
+of the initial mean on the results of DBA. When used with
+K-means, this choice must be done at each iteration of the al-
+gorithm, for example by taking as the initialisation the average
+sequence C obtained at the previous iteration. However, DBA
+is not limited to this context.
+We have seen in Section 4.2 that two aspects of initialisa-
+tion have to be evaluated empirically: ﬁrst, the length of the ini-
+tial average sequence, and second the values of its coordinates.
+We have designed three experiments on some of the datasets
+from [19]. Because these experiments require heavy computa-
+tions, we have not repeated the computation on all data sets.
+1. The ﬁrst experiment starts with randomly generated se-
+quences, of lengths varying from 1 to 2T, where T is the
+length of the sequences in the data set. Once the length
+is chosen, the coordinates are generated randomly with a
+normal distribution of mean zero and variance one. The
+curves on Figure 5 show the variation of inertia with the
+length.
+
+===== PAGE 10 =====
+
+100 2 00 30 0 400 500
+Length of the mean
+10
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs)
+(a) 50words
+100 200 300
+Length of the mean
+0,1
+1
+10
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs) (b) Adiac
+200 400 600 800
+Length of the mean
+10
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs)
+(c) Beef
+50 1 00 15 0 200 250
+Length of the mean
+10
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs) (d) CBF
+100 20 0 300 400 50 0
+Length of the mean
+1
+10
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs)
+(e) Co ﬀee
+50 100 150
+Length of the mean
+10
+100
+Inertia
+T
+Random sequences
+Random sequence of length T (100 runs)
+Sequence from the dataset (100 runs) (f) ECG200
+Figure 5: Impact of di ﬀerent initialisation strategies on DBA. Note that the
+Inertia is displayed with logarithmic scale.
+2. Because the previous experiment shows that the optimal
+inertia is attained with an initial sequence of length in the
+order of T, we have repeated the computation 100 times
+with diﬀerent, randomly generated initial sequences of
+length T: the goal of this experiment is to measure how
+stable this heuristic is. Green triangles on Figure 5 show
+the inertias with the di ﬀerent random initialisations of
+length T.
+3. Because priming DBA with a sequence of lengthT seems
+to be an adequate choice, we have tried to replace the ran-
+domly generated sequence with one drawn (randomly)
+from the dataset. We have repeated this experiment 100
+times. Red triangles on Figure 5 show the inertias with
+the diﬀerent initial sequences from the dataset.
+Our experiments on the choice of the initial average se-
+quence lead to two main conclusions. First, an initial average
+of length T (the length of the data sequences) is the most appro-
+priate. It almost always leads to the minimal inertia. Second,
+randomly choosing an element of the dataset leads to the least
+inertia on almost all cases. Using some data to prime an it-
+erative algorithm is part of the folklore. DBA is another case
+where it performs well. We have used this strategy in all our
+experiments with DBA.
+Moreover, in order to compare the impact of the initialisa-
+Beef Coﬀee ECG200 Gun_Poi nt Lighting7
+0
+10
+20
+30
+40
+50
+NLAAF
+DBA
+Dataset NLAAF DBA
+Best score Worst score
+Beef 26.7 13.2
+Coﬀee 0.69 0.66
+ECG200 9.98 8.9
+Gun Point 7.2 3.1
+Lighting7 45 32
+Figure 6: Eﬀect of initialisation on NLAAF and DBA.
+2 4 6 8 1 0
+Iteration
+0
+0,1
+0,2
+0,3
+0,4
+0,5
+0,6
+0,7
+0,8
+0,9
+1
+Normalized inertia
+(a) Average convergence of the
+iterative process over 50 clus-
+ters.
+2 4 6 8 1 0
+Iteration
+200
+300
+400
+500
+600
+700
+Inertia
+(b) Example of an uneven con-
+vergence (cluster 4).
+Figure 7: Convergence of the iterative process for the 50words dataset.
+tion on DBA and on NLAAF, we perform 100 computations of
+the average on few datasets (because of computing times), by
+choosing a random sequence from the dataset as an initialisa-
+tion of DBA. As NLAAF is sensitive to the initialisation too, the
+same method is followed, in order to compare results. Figure
+6 presents the mean and standard deviation of the ﬁnal inertia.
+The results of DBA are not only better than NLAAF (shown
+on the left part of Figure 6), but the best inertia obtained by
+NLAAF is even worse as the worst inertia obtained by DBA
+(see the table on the right of Figure 6).
+4.6. Convergence of the iterative process
+As explained previously, DBA is an iterative process. It is
+necessary, once the average is computed, to update it several
+times. This has the property of letting DTW reﬁne its asso-
+ciations. Figure 7(a) presents the average convergence of the
+iterative process on the 50words dataset. This dataset is diverse
+enough (it contains 50 di ﬀerent classes) to test the robustness
+of the convergence of DBA.
+Besides the overall shape of the convergence curve in Fig-
+ure 7(a), it is important to note that in some cases, the conver-
+gence can be uneven (see Figure 7(b) for an example). Even
+if this case is somewhat unusual, one has to keep in mind that
+DTW makes nonlinear distortions, which cannot be predicted.
+Consequently, the convergence of DBA, based on alignments,
+cannot be always smooth.
+
+===== PAGE 11 =====
+
+5. Optimization of the mean by length shortening
+We mentioned in Section 3.4 that algorithms such as NLAAF
+need to reduce the length of a sequence. Actually, this problem
+is more global and concerns the scaling problem of a sequence
+under time warping. Many applications working with subse-
+quences or even with diﬀerent resolutions2 require a method to
+uniformly scale a sequence to a ﬁxed length. This kind of meth-
+ods is generally called Uniform Scaling; further details about its
+inner working can be found in [31].
+Unfortunately, the use of Uniform Scaling is not always co-
+herent in the context of DTW, which computes non-uniform
+distortions. To avoid the use of Uniform Scaling with DTW, as
+done in [15, 21, 31], we propose here a new approach speciﬁ-
+cally designed for DTW. It is called Adaptive Scaling, and aims
+at reducing the length of a sequence with respect to one or more
+other sequences. In this section, we ﬁrst recall the deﬁnition of
+Uniform Scaling, then we detail the proposed approach and ﬁ-
+nally its complexity is studied and discussed.
+5.1. Uniform Scaling
+Uniform Scaling is a process that reduces the length of a
+sequence with regard to another sequence. Let A and B be two
+sequences. Uniform Scaling ﬁnds the preﬁxAsub of A such that,
+scaled up to B, DTW (Asub, B) is minimal. The subsequence
+Asub is deﬁned by:
+Asub = argmin
+i∈[1,T]
+{DTW (A1,i, B)} (11)
+Uniform Scaling has two main drawbacks: one is directly linked
+to the method itself, and one is linked to its use with DTW. First,
+while Uniform Scaling considers a preﬁx of the sequence (i.e., a
+subsequence), the representativeness of the resulting mean us-
+ing such a reduction process can be discussed. Second, Uni-
+form Scaling is a uniform reduction process, whereas DTW
+makes non-uniform alignments.
+5.2. Adaptive Scaling
+We propose to make the scaling adaptive. The idea of the
+proposed Adaptive Scaling process is to answer to the following
+question: “How can one remove a point from a sequence, such
+as the distance to another sequence does not increase much?”
+To answer this question, Adaptive Scaling works by merging
+the two closest successive coordinates.
+To explain how Adaptive Scaling works, let us start with
+a simple example. If two consecutive coordinates are identical,
+they can be merged. DTW is able to stretch the resulting coordi-
+nate and so recover the original sequence. This fusion process
+is illustrated in Figure 8. Note that in this example, DTW gives
+the same score in Figure 8(a) as in Figure 8(b).
+This article focuses on ﬁnding an average sequence consis-
+tent with DTW. Performances of DBA have been demonstrated
+on an average sequence of length arbitrarily ﬁxed to T. In this
+2The resolution in this case is the number of samples used to describe a
+phenomenon. For instance, a music can be sampled with diﬀerent bit rates.
+(a) Alignment of two sequences: sequence below is composed of
+two same coordinates
+(b) Alignment of two sequences: sequence below is composed of
+only one coordinate
+Figure 8: Illustration of the length reduction process
+context, the question is to know if this average sequence can
+be shortened, without making a less representative mean ( i.e.,
+without increasing inertia). We show in the ﬁrst example, that
+the constraint on inertia is respected. Even if Uniform Scal-
+ing could be used to reduce the length of the mean, an adaptive
+scaling would give better results, because DTW is able to make
+deformations on the time axis. Adaptive Scaling is described in
+Algorithm 6.
+Algorithm 6 Adaptive Scaling
+Require: A = ⟨A1,..., AT ⟩
+while Need to reduce the length of A do
+(i, j) ← successive coordinates with minimal distance
+merge Ai with A j
+end while
+return A
+Let us now explain how the inertia can also decrease by
+using Adaptive Scaling. Figure 9 illustrates the example used
+below. Imagine now that the next to last coordinate CT −1 of
+the average sequence is perfectly aligned with the last α coor-
+dinates of the N sequences of S. In this case, the last coordi-
+nate CT of the average sequence must still be, at least, linked to
+all last coordinates of the N sequences of S. Therefore, as the
+next to last coordinate was (in this example) perfectly aligned,
+aligning the last coordinate will increase the total inertia. This
+is why Adaptive Scaling is not only able to shorten the average
+sequence, but also to reduce the inertia. Moreover, by checking
+the evolution of inertia after each merging, we can control this
+length reduction process, and so guarantee the improvement of
+inertia. Thus, given the resulting mean of DBA, coordinates
+of the average sequence can be successively merged as long as
+inertia decreases.
+
+===== PAGE 12 =====
+
+Figure 9: Average sequence is drawn at the bottom and one sequence of the set
+is drawn at the top.
+Intraclass inertia Length of the mean
+Dataset DBA DBA+AS DBA DBA+AS
+50words 6.21 6.09 270 151
+Adiac 0.17 0.16 176 162
+CBF 13.34 12.11 128 57
+FaceAll 14.73 14.04 131 95
+Fish 1.02 0.98 463 365
+GunPoint 2.46 2.0 150 48
+Lighting2 77.57 72.45 637 188
+Lighting7 28.77 26.97 319 137
+OliveOil 0.018259 0.01818 570 534
+OSULeaf 22.69 21.96 427 210
+SwedishLeaf 2.21 2.07 128 95
+Two patterns 8.66 6.99 128 59
+Wafer 30.40 17.56 152 24
+Yoga 37.27 11.57 426 195
+Beef 9.50 9.05 470 242
+Coﬀee 0.55 0.525 286 201
+ECG200 6.95 6.45 96 48
+FaceFour 24.87 21.38 350 201
+Synthetic control 9.28 8.15 60 33
+Trace 0.92 0.66 275 108
+Table 4: Inertia comparison of intraclass inertias and lengths of resulting means
+with or without using the Adaptive Scaling (AS) process.
+5.3. Experiments
+Table 4 gives scores obtained by using Adaptive Scaling af-
+ter the DBA process on various datasets. It shows that Adaptive
+Scaling alone always reduces the intraclass inertia, with a ge-
+ometric average of 84 %. Furthermore, the resulting average
+sequences are much shorter, by almost two thirds. This is an
+interesting idea of the minimum necessary length for respre-
+senting a tim behaviour.
+In order to demonstrate that Adaptive Scaling is not only
+designed for DBA, Figure 10 shows its performances as a re-
+ducing process in NLAAF. Adaptive Scaling is here used to re-
+duce the length of a temporary pairwise average sequence (see
+Section 3.4). Figure 10 shows that Adaptive Scaling used in
+NLAAF leads to scores similar to the ones achieved by PSA.
+5.4. Complexity
+Adaptive Scaling (AS) consists in merging the two closest
+successive coordinates in the sequence. If we know ahead of
+time the number K of coordinates that must be merged, for ex-
+Beef Coffee ECG200 FaceF our OliveOil Synthetic control Trace
+0
+10
+20
+30
+40
+50
+NLAAF with Uniform Scaling
+NLAAF with Adaptive Scaling
+PSA
+Figure 10: Adaptive Scaling: beneﬁts of the reduction process for NLAAF.
+ample using AS for NLAAF to be scalable, it requires a time
+complexity ofΘ(K · T), and is thus tractable.
+One could however need to guarantee that Adaptive Scaling
+does not merge too many coordinates. That is why we suggest
+to control the dataset inertia, by computing it and by stopping
+the Adaptive Scaling process if inertia increases. Unfortunately,
+computing the dataset inertia under DTW takes Θ
+(
+N · T 2
+)
+. Its
+complexity may prevent its use in some cases.
+Nevertheless, we give here some interesting cases, where
+the use of Adaptive Scaling could be beneﬁcial, because hav-
+ing shorter sequences means spending less time in computing
+DTW. In databases, the construction of indexes is an active re-
+search domain. The aim of indexes is to represent data in a
+better way while being fast queryable. Using Adaptive Scal-
+ing could be used here, because it correctly represents data and
+reduces the DTW complexity for further queries. The construc-
+tion time of the index is here negligible compared to the mil-
+lions of potential queries. Another example is (supervised or
+unsupervised) learning, where the learning time is often neg-
+ligible compared to the time spent in classiﬁcation. Adaptive
+Scaling could be very useful in such contexts, and can be seen
+in this case as an optimization process, more than an alternative
+to Uniform Scaling.
+6. Application to clustering
+Even if DBA can be used in association to DTW out of the
+context of K- means (and more generally out of the context of
+clustering), it is interesting to test the behaviour of DBA with
+K-means because this algorithm makes a heavy use of averag-
+ing. Most clustering techniques with DTW use the K- medoids
+algorithm, which does not require any computation of an aver-
+age [15–18]. However K-medoids has some problems related to
+its use of the notion of median: K- medoids is not idempotent,
+which means that its results can oscillate. Whereas DTW is one
+of the most used similarity on time series, it was not possible to
+use it reliably with well-known clustering algorithms.
+To estimate the capacity of DBA to summarize clusters, we
+have tested its use with the K- means algorithm. We present
+here diﬀerent tests on standard datasets and on a satellite image
+
+===== PAGE 13 =====
+
+Intracluster inertia
+Dataset NLAAF DBA DBA
+NLAAF
+50words 5 920 3 503 59 %
+Adiac 86 84 98 %
+Beef 393 274 70 %
+CBF 12 450 11 178 90 %
+Coﬀee 39.7 31.5 79 %
+ECG200 1 429 950 66 %
+FaceAll 34 780 29 148 84 %
+FaceFour 3 155 2 822 89 %
+Fish 221 324 147 %
+GunPoint 408 180 44 %
+Lighting2 16 333 6 519 40 %
+Lighting7 6 530 3 679 56 %
+OliveOil 0.55 0.80 146 %
+OSULeaf 13 591 7 213 53 %
+SwedishLeaf 2 300 1 996 87 %
+Synthetic control 5 993 5 686 95 %
+Trace 387 203 52 %
+Two patterns 45 557 40 588 89 %
+Wafer 157 507 108 336 69 %
+Yoga 73 944 24 670 33 %
+Table 5: Comparison of intracluster inertia under DTW between NLAAF and
+DBA
+time series. Here again, result of DBA are compared to those
+obtained with NLAAF.
+6.1. On UCR datasets
+Table 5 shows, for each dataset, the global WGSS resulting
+from a K-means clustering. Since K- means requires initial cen-
+ters, we place randomly as many centers as there are classes in
+each dataset. As shown in the table, DBA outperforms NLAAF
+in all cases except for Fish and OliveOil datasets. Including
+these exceptions, the inertia is reduced with a geometric aver-
+age of 72 %.
+Let us try to explain the seemingly negative results that ap-
+pear in Table 5. First, on OliveOil, the inertia over the whole
+dataset is very low (i.e., all sequences are almost identical; see
+Figure 4), which makes it diﬃcult to obtain meaningful results.
+The other particular dataset is Fish. We have seen, in Section
+4.4, that DBA outperforms NLAAF provided it has meaningful
+clusters to start with. However, here, the K- means algorithm
+tries to minimize this inertia in grouping elements in “centroid
+form”. Thus, if clusters to identify are not organized around
+“centroids”, this algorithm may converge to any local minima.
+In this case, we explain this exceptional behaviour on Fish as
+due to non-centroid clusters. We have shown in Section 4.4
+that, if sequences are averaged per class, DBA outperforms all
+results, even those of these two datasets. This means that these
+two seemingly negative results are linked to the K- means al-
+gorithm itself, that converges to a less optimal local minimum
+even though the averaging method is better.
+· · ·
+1 2 · · · n − 1 n
+Figure 11: Extract of the Satellite Image Time Serie of Kalideos used. c⃝ CNES
+2009 – Distribution Spot Image
+6.2. On satellite image time series
+We have applied the K-means algorithm with DTW and DBA
+in the domain of satellite image time series analysis. In this
+domain, each dataset ( i.e., sequence of images) provides thou-
+sands of relatively short sequences. This kind of data is the op-
+posite of sequences commonly used to validate time sequences
+analysis. Thus, in addition to evaluate our approach on small
+datasets of long sequences, we test our method on large datasets
+of short sequences.
+Our data are sequences of numerical values, corresponding
+to radiometric values of pixels from a Satellite Image Time Se-
+ries (SITS). For every pixel, identiﬁed by its coordinates (x, y),
+and for a sequence of images ⟨I1,..., In⟩, we deﬁne a sequence
+as ⟨I1(x, y),..., In(x, y)⟩. That means that a sequence is identi-
+ﬁed by coordinates x and y of a pixel (not used in measuring
+similarity), and that the values of its coordinates are the vectors
+of radiometric values of this pixel in each image. Each dataset
+contains as many sequences as there are pixels in one image.
+We have tested DBA on one SITS of size 450 ×450 pixels,
+and of length 35 (corresponding to images sensed between 1990
+and 2006). The whole experiment thus deals with 202 , 500
+sequences of length 35 each, and each coordinate is made of
+three radiometric values. This SITS is provided by the Kalideos
+database [32] (see Figure 11 for an extract).
+We have applied the K-means algorithm on this dataset, with
+a number of clusters of ten or twenty, chosen arbitrarily. Then
+we computed the sum of intraclass inertia after ﬁve or ten iter-
+ations.
+Table 6 summarizes results obtained with diﬀerent parame-
+ters.
+We can note that scores (to be minimized) are always or-
+dered as NLAAF > DBA > DBA+AS, which tends to conﬁrm
+the behaviour of DBA and Adaptive Scaling. As we could ex-
+pect, Adaptive Scaling permits to signiﬁcantly reduce the score
+of DBA. We can see that even if the improvement seems less
+satisfactory, than those obtained on synthetic data, it remains
+however better than NLAAF.
+Let us try to explain why the results of DBA are close to
+those of NLAAF. One can consider that when clusters are close
+to each other, then the improvement is reduced. The most likely
+explanation is that, by using so short sequences, DTW has not
+much material to work on, and that the alignment it ﬁnds early
+have little chance to change over the successive iterations. In
+fact, the shorter the sequences are, the closer DTW is from the
+Euclidean distance. Moreover, NLAAF makes less errors when
+there is no re-alignment between sequences. Thus, when se-
+
+===== PAGE 14 =====
+
+Nb Nb Inertia
+seeds iterations NLAAF DBA DBA and AS
+10 5 2.82 × 107 2.73 × 107 2.59 × 107
+20 5 2.58 × 107 2.52 × 107 2.38 × 107
+10 10 2.79 × 107 2.72 × 107 2.58 × 107
+20 10 2.57 × 107 2.51 × 107 2.37 × 107
+Table 6: Comparison of intracluster inertia of K- means with diﬀerent parame-
+terizations. Distance used is DTW while averaging methods are NLAAF, DBA
+and DBA followed by Adaptive Scaling (AS).
+Figure 12: The average of one of the clusters produced by K-means on the satel-
+lite image time series. This sequence corresponds to the thematical behaviour
+of the urban growth (construction of buildings, roads, etc.). The three rectan-
+gles corresponds to three phases: vegetation or bare soil, followed by new roofs
+and roads, followed by damaged and dusty roofs and roads.
+quences are small, NLAAF makes less errors. For that reason,
+even if DBA is in this case again better than NLAAF, the im-
+provement is smaller.
+Let us now explain why Adaptive Scaling is so useful here.
+In SITS, there are several evolutions which can be considered
+as random perturbations. Thus, the mean may not need to rep-
+resent these perturbations, and we think that shorter means are
+sometimes better, because they can represent a perturbed con-
+stant subsequence by a single coordinate. Actually, this is often
+the case in SITS. As an example, a river can stay almost the
+same over a SITS and one or two coordinates can be su ﬃcient
+to represent the evolution of such an area.
+From a thematic point of view, having an average for each
+cluster of radiometric evolution sequences highlights and de-
+scribes typical ground evolutions. For instance, the experiment
+just described provides a cluster representing a typical urban
+growth behaviour (appearance of new buildings and urban den-
+siﬁcation). This is illustrated on Figure 12. Combining DTW
+with DBA has led to the extraction of urbanizing zones, but
+has also provided a symbolic description of this particular be-
+haviour. Using euclidean distance instead of DTW, or any other
+averaging technique instead of DBA, has led to inferior results.
+Euclidean distance was expected to fail somehow, because ur-
+banization has gone faster in some zones than in others, and
+because the data sampling is non uniform. The other averaging
+methods have also failed to produce meaningful results, prob-
+ably because of the intrinsic diﬃculty of the data (various sen-
+sors, irregular sampling, etc.), which leads to diﬃcultly separa-
+ble objects. In such cases, less precise averaging tends to blur
+cluster boundaries.
+7. Conclusion
+The DTW similarity measure is probably the most used
+and useful tool to analyse sets of sequences. Unfortunately,
+its applicability to data analysis was reduced because it had
+no suitable associated averaging technique. Several attempts
+have been made to ﬁll the gap. This article proposes a way
+to classify these averaging methods. This “interpretive lens”
+permits to understand where existing techniques could be im-
+proved. In light of this contextualization, this article deﬁnes
+a global averaging method, called D tw Barycenter Averaging
+(DBA). We have shown that DBA achieves better results on all
+tested datasets, and that its behaviour is robust.
+The length of the average sequence is not trivial to choose.
+It has to be as short as possible, but also su ﬃciently long to
+represent the data it covers. This article also introduces a short-
+ening technique of the length of a sequence called Adaptive
+Scaling. This process is shown to shorten the average sequence
+in adequacy to DTW and to the data, but also to improve its
+representativity.
+Having a sound averaging algorithm lets us apply clustering
+techniques to time series data. Our results show again a signif-
+icant improvement in cluster inertia compared to other tech-
+niques, which certainly increases the usefulness of clustering
+techniques.
+Many application domains now provide time-based data and
+need data mining techniques to handle large volumes of such
+data. DTW provides a good similarity measure for time series,
+and DBA complements it with an averaging method. Taken to-
+gether, they constitute a useful foundation to develop new data
+mining systems for time series. For instance, satellite imagery
+has started to produce satellite image time series, containing
+millions of sequences of multi-dimensional radiometric data.
+We have brieﬂy described preliminary experiments in this do-
+main.
+We believe this work opens up a number of research direc-
+tions. First, because it is, as far as we know, the ﬁrst global ap-
+proach to the problem of averaging a set of sequences, it raises
+interesting questions on the topology of the space of sequences,
+and on how the mean relates to the individual sequences.
+Regarding Dtw Barycenter Averaging proper, the are still a
+few aspects to be studied. One aspect could be the choice of the
+initial sequence where sequences to be averaged do not have
+the same length. Also we have provided an empirical analy-
+sis of the rate of convergence of the averaging process. More
+theoretical or empirical work is needed to derive a more robust
+strategy, able to adjust the number of iterations to perform. An
+orientation of this work could be the study of the distribution
+of coordinates contributing to a coordinate of the average se-
+quence. Eventually, averaging very small datasets with DBA
+could be a limitation that should be studied.
+Adaptive Scaling has important implications on performance
+and relevance. Because of its adaptive nature, it ensures that
+
+===== PAGE 15 =====
+
+average sequences have “the right level of detail” on appropri-
+ate sequence segments. It currently considers only the coor-
+dinates of the average sequence. Incorporating averaged se-
+quences may lead to a more precise scaling, but would require
+more computation time. Finding the right balance between cost
+and precision requires further investigation.
+When combining DBA with Adaptive Scaling, e.g., when
+building reduced average sequences, we have often noticed that
+they provide short summaries, that are at the same time easy to
+visualize and truly representative of the underlying phenomenon.
+For instance, the process of length reduction builds an average
+sequence around the major states of the data. It thus provides a
+sampling of the dataset built from the data themselves. Exploit-
+ing and extending this property is a promising research direc-
+tion.
+References
+[1] A. K. Jain, M. N. Murty, P. J. Flynn, Data clustering: a review, ACM
+Computing Surveys 31 (3) (1999) 264–323.
+[2] A. Rauber, E. Pampalk, J. Paralic, Empirical evaluation of clustering algo-
+rithms, Journal of Information and Organizational Sciences (JIOS) 24 (2)
+(2000) 195–209.
+[3] P. Berkhin, Survey of clustering data mining techniques, Tech. rep., Ac-
+crue Software, San Jose, CA (2002).
+[4] R. Xu, D. Wunsch, Survey of clustering algorithms, IEEE Transactions
+on Neural Networks 16 (3) (2005) 645–678.
+[5] T. W. Liao, Clustering of time series data – a survey, Pattern Recognition
+38 (11) (2005) 1857 – 1874.
+[6] H. Sakoe, S. Chiba, A dynamic programming approach to continuous
+speech recognition, in: Proceedings of the Seventh International Congress
+on Acoustics, V ol. 3, 1971, pp. 65–69.
+[7] H. Sakoe, S. Chiba, Dynamic programming algorithm optimization for
+spoken word recognition, IEEE Transactions on Acoustics, Speech and
+Signal Processing 26 (1) (1978) 43–49.
+[8] A. P. Shanker, A. Rajagopalan, Oﬀ-line signature veriﬁcation using DTW,
+Pattern Recognition Letters 28 (12) (2007) 1407 – 1414.
+[9] D. Sanko ﬀ, J. Kruskal, Time Warps, String Edits and Macromolecules:
+The Theory and Practice of Sequence Comparison, Addison Wesley Pub-
+lishing Company, 1983, Ch. The symmetric time-warping problem: from
+continuous to discrete, pp. 125–161.
+[10] J. Aach, G. M. Church, Aligning gene expression time series with time
+warping algorithms, Bioinformatics 17 (6) (2001) 495–508.
+[11] Z. Bar-Joseph, G. Gerber, D. K. Gi ﬀord, T. S. Jaakkola, I. Simon, A new
+approach to analyzing gene expression time series data, in: RECOMB:
+Proceedings of the sixth annual international conference on Computa-
+tional Biology, ACM, New York, NY , USA, 2002, pp. 39–48.
+[12] D. M. Gavrila, L. S. Davis, Towards 3-D model-based tracking and recog-
+nition of human movement: a multi-view approach, in: IEEE Interna-
+tional Workshop on Automatic Face- and Gesture-Recognition., 1995, pp.
+272–277.
+[13] T. Rath, R. Manmatha, Word image matching using dynamic time warp-
+ing, in: IEEE Conference on Computer Vision and Pattern Recognition,
+V ol. 2, 2003, pp. 521–527.
+[14] V . Niennattrakul, C. A. Ratanamahatana, Inaccuracies of shape averaging
+method using dynamic time warping for time series data, in: S. Berlin
+(Ed.), Computational Science – ICCS, V ol. 4487 of LNCS, 2007.
+[15] V . Niennattrakul, C. A. Ratanamahatana, On Clustering Multimedia Time
+Series Data Using K-Means and Dynamic Time Warping, in: Interna-
+tional Conference on Multimedia and Ubiquitous Engineering, 2007, pp.
+733–738.
+[16] T. Liao, B. Bolt, J. Forester, E. Hailman, C. Hansen, R. Kaste, J. O’May,
+Understanding and projecting the battle state, in: 23rd Army Science
+Conference, 2002.
+[17] T. W. Liao, C.-F. Ting, P.-C. Chang, An adaptive genetic clustering
+method for exploratory mining of feature vector and time series data, In-
+ternational Journal of Production Research 44 (2006) 2731–2748.
+[18] V . Hautamaki, P. Nykanen, P. Franti, Time-series clustering by approxi-
+mate prototypes, in: 19th International Conference on Pattern Recogni-
+tion, 2008, pp. 1–4.
+[19] E. Keogh, X. Xi, L. Wei, C. A. Ratanamahatana, The UCR Time Se-
+ries Classiﬁcation / Clustering Homepage, http://www.cs.ucr.edu/
+~eamonn/time_series_data/ (2006).
+[20] D. Gusﬁeld, Algorithms on Strings, Trees, and Sequences: Computer Sci-
+ence and Computational Biology, Cambridge University Press, 1997.
+[21] V . Niennattrakul, C. A. Ratanamahatana, Shape Averaging under
+Time Warping, in: International Conference on Electrical Engineer-
+ing/Electronics, Computer, Telecommunications, and Information Tech-
+nology, 2009.
+[22] E. Dimitriadou, A. Weingessel, K. Hornik, A combination scheme for
+fuzzy clustering, International Journal of Pattern Recognition and Artiﬁ-
+cial Intelligence 16 (7) (2002) 901–912.
+[23] S. B. Needleman, C. D. Wunsch, A general method applicable to the
+search for similarities in the amino acid sequence of two proteins, Journal
+of Molecular Biology 48 (3) (1970) 443–453.
+[24] L. Wang, T. Jiang, On the complexity of multiple sequence alignment,
+Journal of Computational Biology 1 (4) (1994) 337–348.
+[25] R. C. Edgar, MUSCLE: a multiple sequence alignment method with re-
+duced time and space complexity, BMC Bioinformatics 5 (1) (2004)
+1792–1797.
+[26] J. Pei, R. Sadreyev, N. V . Grishin, PCMA: fast and accurate multiple
+sequence alignment based on proﬁle consistency, Bioinformatics 19 (3)
+(2003) 427–428.
+[27] T. Lassmann, E. L. L. Sonnhammer, Kalign - an accurate and fast multiple
+sequence alignment algorithm, BMC Bioinformatics 6 (1) (2005) 298–
+306.
+[28] C. Notredame, D. G. Higgins, J. Heringa, T-co ﬀee: a novel method for
+fast and accurate multiple sequence alignment, Journal of Molecular Bi-
+ology 302 (1) (2000) 205–217.
+[29] J. Pei, N. V . Grishin, PROMALS: towards accurate multiple sequence
+alignments of distantly related proteins, Bioinformatics 23 (7) (2007)
+802–808.
+[30] L. Gupta, D. Molfese, R. Tammana, P. Simos, Nonlinear alignment and
+averaging for estimating the evoked potential, IEEE Transactions on
+Biomedical Engineering 43 (4) (1996) 348–356.
+[31] A. W.-C. Fu, E. J. Keogh, L. Y . H. Lau, C. A. Ratanamahatana, R. C.-W.
+Wong, Scaling and time warping in time series querying., VLDB Journal
+17 (4) (2008) 899–921.
+[32] CNES, Kalid ´eos, Distribution Spot Image,http://kalideos.cnes.fr
+(2009).

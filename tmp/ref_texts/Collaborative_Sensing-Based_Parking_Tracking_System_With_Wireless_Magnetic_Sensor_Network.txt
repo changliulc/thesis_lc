@@ -1,0 +1,832 @@
+
+
+===== PAGE 1 =====
+
+IEEE SENSORS JOURNAL, VOL. 20, NO. 9, MA Y 1, 2020 4859
+Collaborative Sensing-Based Parking T racking
+System With Wireless Magnetic Sensor Network
+Zusheng Zhang , Xufei Mao, Kunxiao Zhou, and Huaqiang Y uan
+Abstract —Wireless magnetic sensor networks provide a
+low-cost technology for the outdoor real-time parking tracking
+system. However, the magnetic sensor is susceptible to the
+interference caused by vehicles parked in adjacent spaces.
+Most existing detection systems are solely based on local
+sampled data from the sensor node and they are prone to
+high false and missed detection rates in the case of a low
+signal-to-noise ratio. This paper proposes a collaborative
+sensing parking tracking system by fusing the signals of
+the adjacent sensors to eliminate the interference. Sensor
+nodes convert magnetic signals into signatures represented
+by peak values, and then the base station computes the spatial
+relationships between adjacent signatures to identify parking
+event or interference. An experiment system includes sixty sensor nodes that were deployed in bay parking spaces.
+Experiment results veriﬁed that the proposed system has better detection accuracy than existing systems.
+Index Terms— Magnetic sensor, parking tracking system, collaborative sensing, wireless sensor network.
+I. I NTRODUCTION
+P
+ROBLEMS arising from the gap between the demand
+and supply of parking spaces ar e becoming increasingly
+acute in most urban environment. An automated parking track-
+ing system is an intelligent transportation system technology
+where the presence of parked vehicles is monitored in real-
+time. This technology can be used by drivers to ﬁnd parking
+efﬁciently while minimizing time and effort.
+Parking space tracking systems are categorized into two
+types: indoor and outdoor. Technologies currently employed
+indoors, such as ultrasonic [1], image (camera) [2], are not
+suitable for large scale appli cations in outdoor because they
+are susceptible to outdoor environmental interference, such as
+weather conditions, occlusions, and lighting variations. Based
+on the fact that most vehicles have ferrous metals, a Wireless
+Magnetic Sensor Network (WMSN) [3]–[5] is a viable and
+pragmatic alternative for an outdoor parking tracking system.
+Manuscript received October 24, 2019; revised December 30, 2019;
+accepted January 7, 2020. Date of publication January 10, 2020; date
+of current version April 3, 2020. This work was supported in part by the
+National Natural Science Fund, China, under Grant 61872083 and Grant
+61572131, in part by the Science and T echnology Project of Guangdong
+Province under Grant 2019A1515011123, Grant 2017A030310659,
+Grant 2017KQNCX194, and Grant 2018KTSCX221. The associate edi-
+tor coordinating the review of this article and approving it for publication
+was Prof. Meribout Mahmoud.
+(Corresponding author: Zusheng Zhang.)
+The authors are with the School of Cyberspace Security , Dong-
+guan University of T echnology , Dongguan 523808, China (e-mail:
+zszhang@dgut.edu.cn; xufei.mao@gmail.com; zhoukx@dgut.edu.cn;
+yuanhq@dgut.edu.cn).
+Digital Object Identiﬁer 10.1109/JSEN.2020.2965560
+WMSN is wireless communication system, battery powered,
+and its life expectancy is more th an 5 years. Recently, wireless
+magnetic sensor networks are gradually used for outdoor
+parking detection.
+In a WMSN parking tracking system, the sensor node is
+deployed at the center of each parking space. The sensor
+samples the geomagnetic ﬁeld periodically. When a vehicle
+enters or leaves the space, the sensor detects the status change
+and generates parking event. However, a vehicle’s magnetic
+ﬁeld is not only the target of detection but also the source
+of interference. Adjacent inte rference is created by vehicles
+parked on adjacent spaces. There are three types of parking
+spaces: bay, parallel and angled. In the case of bay parking,
+the distance between the sensor node and adjacent parked
+vehicle is shorter than angled and parallel parking. Therefore,
+adjacent interference is signi ﬁcant and more prominent in bay
+parking. All of the following discussion of this work is based
+on the bay parking spaces.
+Most of the existing WMSN based parking tracking systems
+make an occupied or vacant decision solely on the local sam-
+pled data of the sensor. The sensors in bay parking spaces are
+susceptible to the adjacent interference and result in high false
+and missed detection rates. Zhu et al. [6] proposed a hybrid
+detection algorithm based on local threshold detection and
+data fusion. However, in the actual parking tracking system,
+these thresholds of local detection are difﬁcult to accurately
+estimate. This paper proposes a collaborative sensing based
+parking tracking system. Our main contributions are given as
+follows:
+1558-1748 © 2020 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+4860 IEEE SENSORS JOURNAL, VOL. 20, NO. 9, MA Y 1, 2020
+(1) The theoretical model of adjacent magnetic signals
+caused by the parking action of a vehicle is established and
+the characteristics of the adjacen t interference are analyzed.
+(2) All parking detections are made by fusing the data of
+adjacent sensors. Sensor nodes convert magnetic signals into
+signatures represented by peak values, and BS (Base Station)
+computes the pattern similarity between adjacent signatures to
+identify parking event and interference.
+(3) We developed a parking tracking system which includes
+sixty sensor nodes, and experiment results veriﬁed that the
+proposed system has better detection accuracy than existing
+systems.
+The remainder of this paper is organized as follows.
+Section II surveys the related wo rks. Section III describes the
+adjacent interference problem and the signal model. Section IV
+proposes the algorithm for parking detection. Section V con-
+ducts experiments to prove the performance of the system.
+Finally, Section VI makes a brief conclusion.
+II. R ELA TED WORKS
+Parking tracking system w ith WMSN has been present in
+both the research community and industry. Threshold detection
+algorithms [7] usually are used to measure the geomagnetic
+ﬁeld change after the vehicle is parked, if the change contin-
+uous exceeds a threshold, the sensor will indicate the space
+is occupied. Cheung et al. [8] proposed an adaptive thresh-
+old algorithm for parking detection. Ding and Cheung [9]
+proposed a min-max detection algorithm. Modiﬁed min-max
+algorithm for magnetometers [10] has also been published.
+Zhu et al. [11] proposed a parking detection algorithm by
+calculating the correlation bet ween the sampled signals and a
+referential signal. Zhang and Y u [12] proposed an algorithm
+for parking occupancy detection based on the distance dis-
+criminate analysis method.
+Some works have studied the problem of adjacent inter-
+ference. Trigona et al. [13] conducted the magnetic interfer-
+ence test of the adjacent vehic le in the bay parking spaces.
+Saiﬁl et al. [14] found that the Z-axis was less affected by
+interference. Liu and Zheng [15] analyzed the interference
+problem caused by the neighboring vehicles and studied the
+inﬂuence of parking direction and sensor coordinate direction
+on the magnetic ﬁeld strength. These methods choose the
+signal with the least interference (e.g. Z-axis’ signal) for vehi-
+cle detection. They ignore the sp atial correlation of adjacent
+signals and are not reliable.
+Zhu et al. [6] proposed a parking detection method includes
+two parts: 1) Local detection algorithm, each node uses hard
+thresholds and state machine m echanism for parking detection;
+2) Data fusion based on Dempste r-Shafer evidence, when the
+local detection algorithm cannot achieve accurate detection,
+they use the Dempster-Shafer evidence theory for the ﬁnal
+detection. However, their al gorithm is mainly based on local
+data detection, and more than 90% of the parking detection
+only depends on local data for decision-making. The hard
+thresholds for local detection are related to many factors, such
+as the actual deployment environment, the model of the sensor,
+the gain settings of sensor (e.g., there are eight settings for
+the gain of HMC5983), and so on. The disadvantage of this
+method is that its hard thresholds are difﬁcult to estimate
+accurately.
+Some researchers propose to add other types of sensors
+for auxiliary detection. Farhad et al. [16] employed four
+sensors, magnetic, light, temperature, and ambient temperature
+sensors of the motes for reliable detection of the free space.
+Sifuentes et al. [17] designed a node based on two sensors (one
+magnetic and one optical) to detect the presence of a vehicle.
+When a vehicle arrives or departs, an optical sensor detects
+the change of light and wakes up the magnetic sensor which
+measures the magnetic ﬁeld to detect the vehicle. However,
+these sensors are often susceptible to the outdoor physical
+interference such as a dust blocked optical sensor which can’t
+work effectively.
+III. P
+ROBLEM DEFINITION
+Considering a parking tracking WMSN G = (B, R, BS),
+where B ={ B1, B2, ..., Bn} is the set of sensor nodes,
+R ={ R1, R2, ..., Rm} is the set of routers, and BS denotes
+a base station. The discrete sampled signal M(t) from a sensor
+node Bi can be expressed as equation 1.
+Mγ (t) = Eγ (t) + Vγ (t) + Iγ (t) (1)
+where t denotes the sample time, γ indicates the index of
+sensor’s axis, Eγ (t) is the geomagnetic ﬁeld which is uniform
+over a wide area on a scale of kilometers, Vγ (t) is the target
+magnetic signal created by a parking vehicle, Iγ (t) is the
+interference signal.
+A. Adjacent Interference Problem
+The sensor used is a three-axis AMR (Anisotropic Magneto-
+Resistive) sensor QMC5883 [18]. In order to reduce the
+dimension of the raw signal, the three-axis signals are syn-
+thesized as a fused signal using equation (2).
+S (t) =
+
+γ
+Mγ(t) − Eγ(t)
+ γ ∈ (x, y, z) (2)
+The earth’s magnetic ﬁeld has been drifting westward, and
+the change is minimal for several months [19]. Therefore,
+in our system, BS issues an instruction to update Eγ every
+two months. Eγ is approximately equal to the average value
+of samples when the status of Bi and its adjacent parking
+spaces are all vacant .
+As shown in Fig. 1 , B1 = (0,w, 0) and B2 = (0, 0, 0)
+represent two adjacent nodes deployed in the parking spaces,
+where w is the width of a parking space. V ehicles with high
+magnetic ﬂux density can interfere with sensors in adjacent
+parking spaces. For example, when a Cadillac SUV had
+parked in B
+2, Fig. 2 shows the signals S1 and S2 from nodes
+B1 and B2, respectively. The signal S
+1 shown in Fig. 3 is a
+signal of a mini vehicle parked in B1. Compare signals S1
+(in Fig. 2 )a n d S
+1 (in Fig. 3 ), if only based on the local data
+of the sensor node, it can’t make a correct decision whether
+there is a target signal or adjacent interference. Therefore,
+it is necessary to fuse the adj acent signals to identify the
+interference.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+ZHANG et al.: COLLABORA TIVE SENSING-BASED P ARKING TRACKING SYSTEM WI TH WMSN 4861
+Fig. 1. Model of a vehicle parking.
+Fig. 2. Experiment signals of adjacent nodes.
+Fig. 3. The magnetic signal of a smart car.
+As shown in Fig. 2 , a whole parking period includes three
+phases: entering, parking and leaving. In the entering or
+leaving phases, the signal ﬂuctuates continuously. When a
+node Bi detects the ﬂuctuation cau s e db yav e h i c l ee n t e r so r
+leaves, Bi extracts the peak values (including the initial value,
+local maxima, local minima, and the terminal value) as the
+signal’s signature [12], [20] and sends it to BS. BS uses a
+Collaborative Sensing Detection Algorithm (CSDA) to decide
+the parking space status. Presuming the ID of a parking space
+is same with the correspond node’s ID, the algorithm can be
+deﬁned as following:
+Deﬁnition 1: Collaborative sensing
+R = CSDA (U
+i , Ui− 1, Ui+1).
+Input: Ui is B i ’s signature, Ui− 1 and Ui+1 are the signature
+vectors from the adjacent nodes B i− 1 and B i+1.
+Ta sk :The algorithm needs to accurately identify the adja-
+cent interference signal and the target signal in order to realize
+the accurate detection of the parking status.
+Output: R = 1, the parking space B i is {occupied };R = 0,
+the parking space B i is {vacant }.
+B. Signal Model of Adjacent Interference
+Generally, the magnetic ﬁeld of a vehicle can be approx-
+imated by the ﬁeld created by a rectangular magnet. Fig. 1
+shows a rectangle magnet with length l, width g, height h
+and a uniform magnetization in its body under the saturation
+state. The point O = (a, b, c) is the initial position of a
+vehicle. According to the magnetic ﬁeld model of rectangle
+magnet [21], the magnetic signals created by a vehicle can be
+calculated as equation 3.
+S(t)
+= K
+2 [(x(t), y(t), z(t))− ( l
+2 − x(t), y(t), z(t))
+−(x(t), g− y(t), z(t))+( l
+2− x(t), g− y(t), z(t))]|h
+0 (3)
+where K = μ0 J/4π, μ0 is the air magnetic permeability, J
+is the surface current density, x(t), y(t), z(t) are the distance
+functions between vehicle coordinates and node coordinates
+on the three axes of x, y, z, respectively.
+ (r1, r2, r3) = ln
+
+r 2
+1 + r 2
+2 + (r3 −ˆz)2 − r2
+
+r 2
+1 + r 2
+2 + (r3 −ˆz)2 + r2
+(4)
+where [•]|h
+0 represents the difference of function in the bracket
+when ˆz = h and ˆz = 0.
+Given the linear motion of the vehicle along the X-axis,
+the parking process is as follows: at time t = 0, a vehicle starts
+from O and enters the B2 with velocity v0, then it parks on the
+sensor B2 for a period of T , and then it leaves B2. Assuming
+the vehicle’s acceleration is uni form during the entering and
+leaving phases, i.e. c is acceleration and c = v2
+0/2a.F o r
+node B1, the functions can be expressed as {x1(t), y1(t) =
+w − b, z1(t) = c},w h e r e x1(t) is shown in equation (5).
+The functions for node B2 are {x2(t) = x1(t), y2(t) = b,
+z2(t) = c}.
+x1 (t) =
+⎧
+⎪⎨
+⎪⎩
+a +
+	 t
+0 (v0 − ct)dt i f 0 < t ≤ Te
+0 if T e < t ≤ Ts
+−
+	 t
+Ts (c ∗(t − Ts))dt i f T s < t ≤ Tl
+(5)
+where Te = v0/c, Ts = Te + T and Tl = Ts + Te are the
+end times of a vehicle’s entering, parking and leaving phases,
+respectively.
+Assume O = (− 8, 0.2, 0.2), the speed is v0 = 5m/s,
+the parking stop time is T = 5s, the sampling frequency is
+f = 200HZ , and the measurement noise is Gaussian white
+noise. Fig. 4 shows the simulated signals by using the signal
+model when a vehicle parked in B2. The simulated patterns
+are in agreement with the experiment measurements. We found
+that the adjacent signals caused by a vehicle parking have the
+following characteristics.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+4862 IEEE SENSORS JOURNAL, VOL. 20, NO. 9, MA Y 1, 2020
+Fig. 4. Simulation signals of adjacent nodes.
+Deﬁnition 2: Characteristics of adjacent signals: as shown
+in Fig. 4 ,S 1 and S 2 are the adjacent signals, S 1 is the
+interference signal, S 2 is the target signal.
+(1) Time synchronization: during the entering and leaving
+phases, the ﬂuctuation of S 1 and S 2 are basically synchronized
+in the time domain.
+(2) Change ratio: the function Change () records the dif-
+ference between the last and the ﬁrst value of a continuous
+ﬂuctuation. In the entering phase, the Change (Entering (S1))
+is much less than Change (Entering (S2)),i . e .C E1  CE 2.
+It is same in the leaving phase.
+(3) Pattern similarity: the waveform of S 1 and S2 are similar
+during the entering and leaving phases.
+IV . A LGORITHM
+In this section, we ﬁrst introduce the similarity calculation
+method, then describe the collaborative sensing algorithm.
+A. Similarity Calculation
+Given U1 and U2 are the received signatures from two
+adjacent nodes, BS calculates the ir similarity according to the
+deﬁnition 2.
+U1 = {(i, ti, xi), 0 ≤ i ≤ N} (6)
+U2 = 
+( j, h j, y j), 0 ≤ j ≤ M (7)
+where i and j are the counters, ti and h j are the sample times,
+xi and y j are the peak values.
+1) Time Synchronization : If the time of U1 and U2 are
+basically synchronized, there has Syn (U1, U2) = 1, otherwise,
+Syn (U1, U2) = 0.
+Syn (U1, U2) =
+
+1 if |t0 − h0| ≈ 0& & |tn − hm|≈ 0
+0 other wise (8)
+where t0 and tn are the start time and end time of U1, h0 and
+hm are the start time and end time of U2.
+Fig. 5. T wo pattern sequences.
+2) Change Ratio : If the Change (U2) is far greater than
+Change (U1), there has Ratio (U1, U2) = 1. Otherwise,
+Ratio (U1, U2) = 0.
+Ratio (U1, U2) =
+
+1 i f Change (U2)/Change (U1) ≥ G1
+0 other wise
+(9)
+where G1 is a given constant, Change (U2) = (ym − y0) and
+Change (U1) = (xn − x0).
+3) Pattern Similarity : Pattern distance is often used to
+calculate the morphological similarity of time series [22].
+A pattern represents a tendency. The pattern is a triple
+{Up , Ho ld, Down}, and can also be expressed as P =
+{1, 0,− 1}. The signature is transformed into a pattern
+sequence according to the Slope values, following use U1 as
+an example.
+Slope i = xi − xi− 1
+ti − ti− 1
+(10)
+pi =
+⎧
+⎪⎨
+⎪⎩
+1S lope i ≥+ g ∗G2
+− 1S lope i ≤− g ∗G2
+0O ther wise
+(11)
+where G2 is a constant and g = √
+ Change (U). The pattern
+sequence is expressed as an order set of the ( pattern , time )
+pair:
+U = {(∧, t0),( p1, t1),..., ( pi, ti) ,..., ( pn, tn)} (12)
+where pi ∈ P, ∧ indicates null , ti (i = 1, 2,..., n)i st h e
+pattern ending time, n is the number of pattern segments.
+Pattern pi keeps from ti− 1 to ti .
+Usually, the time segments between two pattern sequence
+from adjacent nodes are not consistent. Fig. 5 shows the
+pattern representation of two sequences S1a n d S2. Their
+time segments are inconsistent. Therefore, it is necessary
+to perform a time equivalent process before calculating the
+pattern distance.
+S1 = {(∧, t0) ,(1, t1),(− 1, t3) ,(0, t4)} (13)
+S2 = {(∧, t0) ,(1, t2) ,(− 1, t4)} (14)
+The time equivalent process is to re-divide the line inter-
+val according to the union of the extremes of two series.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+ZHANG et al.: COLLABORA TIVE SENSING-BASED P ARKING TRACKING SYSTEM WI TH WMSN 4863
+After the time equivalent process, the results of S1a n d S2
+are as equations (15) and (16):
+S1 = {(∧, t0) ,(1, t1),(− 1, t2) ,(− 1, t3)( 0, t4)} (15)
+S2 = {(∧, t0) ,(1, t1) ,(1, t2) ,(− 1, t3)(− 1, t4)} (16)
+Presume the transformed U1 and U2 are pattern sequences
+whose segments are the same in the time domain. The pattern
+distance can be computed as equation (19).
+U
+1 =
+
+(∧, t0) ,
+
+p
+1, t1
+
+,...,
+
+p
+i, ti
+
+,...,
+
+p
+n, tn
+
+(17)
+U2 = 
+(∧, t0) ,  p
+1, t1
+,...,  p
+i , ti
+,...,  p
+n, tn
+ (18)
+D (U1, U2)
+= 1
+Ts
+ n
+i=1
+(ti − ti− 1) ∗
+ p
+i − p
+i
+
+
+(19)
+Ts =
+n
+i=1
+(ti − ti− 1) (20)
+where Ts denotes the length of time series, tih = (ti − ti− 1)
+denotes the hold time of the i-th pattern, n is the total numbers
+of patterns. tih is a weight, the longer the hold time, the more
+ratios it has in the distance.
+The pattern similarity can be describes as: if the waveforms
+of U1 and U2 are basically similar, there has Sim (U1, U2) = 1.
+Otherwise, Sim (U1, U2) = 0.
+Sim
+
+U1, U2
+
+=
+
+1 if D
+
+U1, U2
+
+< G3
+0 other wise (21)
+where G3 is the given constant, D(U1, U2) is the pattern
+distance.
+So it is determined that U1 is an adjacent interference if
+Similarity
+
+U1, U2
+
+= 1. Otherwise, it is a target signal.
+Similarity
+
+U1, U2
+
+=
+⎧
+⎪⎪⎪
+⎨
+⎪⎪
+⎪⎩
+1 if S y n
+
+U
+1, U2
+
+= 1
+and Ratio
+
+U1, U2
+
+= 1
+and Sim
+
+U1, U2
+
+= 1
+0 other wise
+(22)
+B. Collaborative Sensing Algorithm
+This subsection introduces the CSDA (Collaborative Sens-
+ing Detection Algorithm) according to the deﬁnition 1. If the
+signal ﬂuctuates, node Bi extracts the signature and sends the
+vector Ui to BS. When BS receives the signature from Bi at
+time Tr , it acquires signature s from adjacent nodes of Bi in
+time period (Tr − tw) ∼ (Tr + tw),w h e r etw is the time of
+a waiting timer. When the signatures of adjacent nodes are
+received or the waiting timer is timed out, BS performs the
+collaborative sensing calculation.
+Assuming node Bi ’s neighbors are Bi− 1 and Bi+1.
+Ui , Ui− 1 and Ui+1 are the signature sequences of Bi ,
+Bi− 1 and Bi+1, respectively. If Similarity (Ui, Ui− 1) =
+0&& Similarity (Ui, Ui+1) = 0, Ui is a target magnetic
+signal created by a parking vehicle, i.e. it isn’t a adjacent
+interference signal which is caused by a vehicle parking on
+B
+i− 1 or Bi+1. The pseudo code of the collaborative sensing
+is shown in algorithm 1.
+Algorithm 1 The Collaborative Sensing Algorithm
+1 Function R = CSDA
+ (Ui, Ui− 1, Ui+1);
+Input : Ui is the received signature of node Bi ; Ui− 1
+and Ui+1 are the signatures for Bi ’s adjacent
+nodes.
+Output: R = 0: the space Bi is vacant ;
+R = 1: the space Bi is occupied ;
+/* ST is the latest status of Bi */
+/* CE is the entering change of Bi */
+2 C = Change (Ui);
+3 if Similarity (Ui, Ui− 1) = 0&& Similarity (Ui, Ui+1) =
+0& & |C| > 20 then
+4 if ST = 0 then
+5 CE = C
+6 R = 1;
+7 else
+8 if (CE + C) ≈ 0 then
+9 CE = 0;
+10 R = 0;
+11 end
+12 end
+13 else
+14 R = ST ;
+15 end
+16 return R;
+Parking space’s status detec tion includes two events:
+{occupied } and {vacant }.G i v e nST is the latest status of Bi ,
+the criteria for {occupied } event detection can be described
+as follows: if ST = 0, Ui is not an interference signal and
+Change (Ui)> 20, the status is {occupied }, R = 1.
+As shown in Fig. 4 , when the vehicle left, there has
+Change (Entering (S2)) + Change (Leaving (S2)) ≈ 0, i.e.
+CE 2 + CL 2 ≈ 0. Given CE is the entering change of
+Bi , the criteria for {vacant } detection can be described as
+follows: if ST = 1, Ui is not an interference signal and
+(CE + Change (Ui)) ≈ 0, the status is {vacant }, R = 0.
+V. E XPERIMENTS
+A. Experiment Scenario and Results
+To test the proposed system, we deployed sixty sensor
+nodes in outdoor bay parking spaces. As shown in Fig. 6 ,
+the node is using the STM8L151C8 MCU, LoRa modula
+SX1278 communication module, QMC5883 magnetic sensor
+[18], and the Contiki operating system [23]. As shown in
+Fig. 7 , we used high strength PVC as node shell for resisting
+the crush of the parking vehicles. Nodes are placed at the
+center of each parking space.
+We developed a parking tracking system as shown in Fig. 8.
+The node colored as a green dot indicates the correspond
+parking space is vacant; a red dot means the parking space is
+occupied; the lines with an arrow describe the wireless network
+topology. Parameters used in our experiments are given in
+table I . The values of the parameters G
+1, G2, G3 in table I
+are trained by the collected sample magnetic ﬁeld signals.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+4864 IEEE SENSORS JOURNAL, VOL. 20, NO. 9, MA Y 1, 2020
+Fig. 6. A magnetic sensor node.
+Fig. 7. The shell of a sensor node.
+Fig. 8. A parking tracking system.
+T ABLE I
+EXPERIMENT PARAMETERS
+The value of waiting timer tw is an empirical value, which
+is related to the communication delay of the network, and the
+communication delay is usually no more than 1 second.
+Fig. 9 shows the parking detection experiment scene. In our
+experiments, using manual recording and video monitoring,
+we can obtain the exact status of the parking spaces. The
+performance of the CSDA is analyzed using the accuracy of
+detection.
+The experiment system has operated for more than two
+years. As shown in table II , there have three cases: no adja-
+cent interference, interferenc e from one adjacent space, and
+interference from two adjacent s paces, the detection accuracy
+of these cases are 99 .85%, 99.57%, and 99 .25%, respectively.
+Fig. 9. Experiment scene.
+T ABLE II
+DETECTION ACCURACY
+Fig. 10. The interference signals produced by moving vehicles.
+B. Interference of Moving Vehicle
+The moving vehicle in the adj acent road produces the mag-
+netic interference signal, and the interference can be discuss
+as following two cases:
+(1) While the status of a sensor node is ‘vacant’, some
+vehicles which have high-intensity magnetic ﬁeld passed in the
+adjacent lane. As shown in Fig. 10 , the magnetic interference
+signals, generated by moving vehicles, are pulse signals. The
+characteristic of a stable change is a necessary condition for
+‘occupied’ event detection, so that pulse signals produced by
+moving vehicles will not affect the ‘occupied’ event detection.
+(2) While the status of a sensor node is ‘occupied’, there
+has interference caused by moving vehicle in the adjacent
+road. As shown in Fig. 11 , the interference signal is a
+pulse signal. The criteria for ‘vacant’ vent detection is as
+follow: if a vehicle left, there must has Change (Entering )+
+Change (Leaving ) ≈ 0, take Fig. 11 for example,
+CE + CL ≈ 0. So pulse signals produced by moving vehicles
+do not lead to false detection of ‘vacant’ event.
+C. Performance Comparison
+In order to facilitate the performance analysis of the
+algorithm, the original sampling data of the magnetic ﬁeld
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+ZHANG et al.: COLLABORA TIVE SENSING-BASED P ARKING TRACKING SYSTEM WI TH WMSN 4865
+Fig. 11. The magnetic signal of vehicle parking and a interference signal
+of a moving vehicle.
+T ABLE III
+PERFORMANCE COMP ARISON OF ALGORITHMS
+Fig. 12. The weak signal of a vehicle parking.
+is packaged and uploaded. Based on the original magnetic
+data, algorithms A TDA(Adaptive Threshold Detection Algo-
+rithm) [8], DCDA (Distance-based Classiﬁcation Detection
+Algorithm) [12] and FSCA (Finite-State and Collaborative
+Algorithm) [6] are adopted for performance comparison with
+the proposed CSDA. A TDA is a popular parking detection
+algorithm which is based on the threshold and state machine
+mechanisms. In order to reduce the missed detections of the
+weak magnetic signal vehicles, the threshold of A TDA is
+Fig. 13. The ﬁrst case of adjacent interference.
+equal to 75. DCDA is a distance-based classiﬁcation detection
+algorithm that we proposed in 2015, and it has good detection
+accuracy in parallel parking spaces. According to the refer [6],
+the thresholds of FSCA ’s local detection are T
+max = 80 and
+Tmin = 40.
+We performed performance comparison experiments of
+three algorithms. For each algorithm, the input data included
+5000 parking events. As shown in table III , the average
+detection accuracy of A TDA, DCDA, FSCA and CSDA are
+89.56%, 93.06%, 97.56% and 99 .54%, respectively. Magnetic
+signals in bay parking are suscep tible to adjacent interference.
+A TDA and DCDA only use the local data of the sensor node,
+in the case of low signal to noise ratio, they can’t make a
+correct decision whether there is a target signal or adjacent
+interference. The selection of hard thresholds has a great
+inﬂuence on the pe rformance of FSCA.
+As shown in Fig. 12(a) , the magnetic signal from node
+B15 ﬂuctuates, but these signals from neighbor nodes B14 and
+B16 do not ﬂuctuate. So it is a parking signal without
+adjacent interference. Fig. 12(b) displays the detection results
+of algorithms as proposed above, where 0 and 1 indicate the
+parking status vacant and occupi ed, respectively. The A TDA
+results in missed detections when the target signal less than
+its threshold.
+Fig. 13(a) shows the sampled signals S
+01 and S02 of two
+adjacent nodes B01 and B02, respectively. The signal of S01 is
+an adjacent interference. The detection results of S01 are shown
+in Fig. 13(b) . The A TDA and FSCA result in false detections
+when the adjacent interference si gnal higher than its threshold.
+The amplitude of ﬂuctuation in the entering phase is bigger
+than DCDA ’s threshold, so the detection result of DCDA is ’1’.
+CSDA fuses the data of the adjacent sensors to identify the
+adjacent interference, an d its result is correct.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+4866 IEEE SENSORS JOURNAL, VOL. 20, NO. 9, MA Y 1, 2020
+Fig. 14. The second case of adjacent interference.
+Fig. 15. The third case of adjacent interference.
+Fig. 14(a) shows the sampled signals S11 and S12 of adjacent
+nodes B11 and B12, respectively. The sequence number of the
+pulse is marked above the signal graph. For the signal S12,
+pulses I1 and I3 are the adjacent interferences caused by a
+vehicle parked in the B11 parking space. Pulses I2 and I4 are
+the entering and leaving signals caused by a vehicle parked
+in the B12 parking space, so I2 and I4 are the detection
+targets. The detection results of S12 is shown in Fig. 14(b) .
+Algorithms A TDA, DCDA and FSCA generate false detections
+of the pulse I1, and only CSDA produces the correct results.
+Fig. 15(a) shows another case of adjacent interference. For
+the signal S20, I1 and I4 are the pulses caused by the entering
+and leaving of the vehicle parked in the B20 parking space,
+I2 and I3 are interferences caused by a vehicle parked in the
+B21 parking space, so I1 and I4 are the detection targets. The
+detection results are shown in Fig. 15(b) : A TDA generates
+missed detections because the magnetic ﬁeld signal is below
+the threshold between I2 and I3.
+VI. C ONCLUSION
+Recently, WMSN is being gradually used as an outdoor
+parking tracking system. However, the magnetic signal is
+susceptible to the interferenc e by vehicles parked in adjacent
+spaces. This paper proposes a collaborative sensing based
+tracking system to eliminate adjacent interference. Sensor
+nodes convert magnetic signals into signatures represented by
+peak values, and BS computes the pattern similarity between
+adjacent signatures to identify p arking event and interference.
+Experiment results show that the system has better detection
+accuracy than existing systems.
+R
+EFERENCES
+[1] A. Sahfutri et al., “Smart parking using wireless sensor network system,”
+in Proc. Int. Conf. Electr . Eng. Comput. Sci. (ICECOS) , Oct. 2018,
+pp. 117–122.
+[2] S.-E. Shih and W.-H. Tsai, “A convenient vision-based system for
+automatic detection of parking spaces in indoor parking lots using
+wide-angle cameras,” IEEE Trans. Veh. Technol. , vol. 63, no. 6,
+pp. 2521–2532, Jul. 2014.
+[3] Q. Wang, J. Zheng, H. Xu, B. Xu, and R. Chen, “Roadside magnetic
+sensor system for vehicle detection in urban environments,” IEEE Trans.
+Intell. Transp. Syst. , vol. 19, no. 5, pp. 1365–1374, May 2018.
+[4] J. Li, S. Cheng, Z. Cai, J. Y u, C. Wang, and Y . Li, “Approximate holistic
+aggregation in wireless sensor networks,” ACM Trans. Sensor Netw. ,
+vol. 13, no. 2, p. 11, Aug. 2017.
+[5] Z. He, Z. Cai, S. Cheng, and X. Wang, “Approximate aggregation for
+tracking quantiles and range counti ngs in wireless sensor networks,”
+Theor . Comput. Sci., vol. 607, pp. 381–390, Nov. 2015.
+[6] H. Zhu, S. Feng, and F. Y u, “Parking detection method based on ﬁnite-
+state machine and collaborative decision-making,” IEEE Sensors J. ,
+vol. 18, no. 23, pp. 9829–9839, Dec. 2018.
+[7] A. Haoui, R. Kavaler, and P . V araiya, “Wireless magnetic sensors for
+trafﬁc surveillance,” Transp. Res. C, Emerg. technol. , vol. 16, no. 3,
+pp. 294–306, Jun. 2008.
+[8] S. Cheung and P . V araiya, “Trafﬁc surveillance by wireless sensor
+networks: Final report,” California P A TH, Univ. California, Berkeley,
+CA, USA, Tech. Rep. UCB-ITS-PRR-2007-4, 2007.
+[9] J. Ding, S.-Y . Cheung, C.-W. Tan, a nd P . V araiya, “Signal processing
+of sensor node data for vehicle detection,” in Proc. 7th Int. IEEE Conf.
+Intell. Transp. Syst. , Apr. 2005, pp. 70–75.
+[10] J. Gu, Z. Zhang, F. Y u, and Q. Liu, “Design and implementation of a
+street parking system using wireless sensor networks,” in Proc. IEEE
+10th Int. Conf. Ind. Informat. , Jul. 2012, pp. 1212–1217.
+[11] H. Zhu and F. Y u, “A vehicle parking detection method based on
+correlation of magnetic signals,” Int. J. Distrib. Sensor Netw. , vol. 11,
+no. 7, Jul. 2015, Art. no. 361242.
+[12] Z. Zhang, M. Tao, and H. Y uan, “A parking occupancy detection
+algorithm based on AMR sensor,” IEEE Sensors J. , vol. 15, no. 2,
+pp. 1261–1269, Feb. 2015.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+ZHANG et al.: COLLABORA TIVE SENSING-BASED P ARKING TRACKING SYSTEM WI TH WMSN 4867
+[13] C. Trigona et al. , “Implementation and characterization of a smart
+parking system based on 3-axis magnetic sensors,” in Proc. IEEE Int.
+Instrum. Meas. Technol. Conf. , May 2016, pp. 1–6.
+[14] S. A. A ’ssri, F. H. K. Zaman, and S. Mubdi, “The efﬁcient parking bay
+allocation and management system using LoRaW AN,” in Proc. IEEE 8th
+Control Syst. Graduate Res. Colloq. (ICSGRC) , Aug. 2017, pp. 127–131.
+[15] Y . Liu and L. Zheng, “Research of anti-interference technology based
+on magnetic ﬁeld variation of vehicle,” in Proc. 8th Int. Symp. Comput.
+Intell. Design (ISCID) , Dec. 2015, pp. 397–400.
+[16] S. Farhad, I. Alahi, and M. M. Is lam, “Internet of Things based free
+parking space management system,” in Proc. Int. Conf. Cloud Comput.
+Res. Innov. (ICCCRI) , Apr. 2017, pp. 1–6.
+[17] E. Sifuentes, O. Casas, and R. Pallas-Areny, “Wireless magnetic sensor
+node for vehicle detection with optical wake-up,” IEEE Sensors J. ,
+vol. 11, no. 8, pp. 1669–1676, Aug. 2011.
+[18] (2020). Datasheet of qmc5983 . Qst corp group. [Online]. Available:
+http://www.qstcorp.com/productinfo/153108.html
+[19] M. Dumberry and C. C. Finlay, “Eastward and westward drift of the
+Earth’s magnetic ﬁeld for the last three millennia,” Earth Planetary Sci.
+Lett., vol. 254, nos. 1–2, pp. 146–157, Feb. 2007.
+[20] K. Kwong, R. Kavaler, R. Rajagopal, and P . V araiya, “Real-time
+measurement of link vehicle count and travel time in a road network,”
+IEEE Trans. Intell. Transp. Syst. , vol. 11, no. 4, pp. 814–825, Dec. 2010.
+[21] W. Y ang, C. Hu, M. Q. H. Meng, H. Dai, and D. Chen, “A new 6D
+magnetic localization technique for wireless capsule endoscope based
+on a rectangle magnet,” C h i n .J .E l e c t r o n ., vol. 19, no. 2, pp. 360–364,
+Aug. 2010.
+[22] W. Zeng, D. Li, and Q. Yin, “Distance and similarity measures between
+hesitant fuzzy sets and their application in pattern recognition,” Pattern
+Recognit. Lett. , vol. 84, pp. 267–271, Dec. 2016.
+[23] D. Caglar, C. Moharram, D. Orhan, and K. Geylani, “Modelling contiki-
+based IoT systems,” in Proc. 6th Symp. Lang., Appl. Technol. , vol. 56,
+2017.
+Zusheng Zhang received the B.S. degree from
+the Hunan University of Science and T echnology ,
+Xiangtan, China, in 2003, the M.S. degree from
+Nankai University , Tianjin, China, in 2006, and
+the Ph.D. degree from the Institute of Comput-
+ing T echnology , Chinese Academy of Sciences,
+Beijing, China, in 2010. He is currently an Asso-
+ciate Professor with the Dongguan University
+of T echnology , Dongguan, China. His research
+interests include intelligent transportation sys-
+tems and wireless sensor networks.
+Xufei Mao received the bachelor’s degree from
+the Shenyang University of T echnology , in 1999,
+the M.S. degree from Northeastern University ,
+in 2003, and the Ph.D. degree from the Illinois
+Institute of T echnology , Chicago, in 2010, all in
+computer science. He is currently an Associate
+Professor with the Dongguan University of T ech-
+nology , Dongguan, China. His research interests
+include span AIoT , wireless ad hoc networks,
+wireless sensor networks, pervasive computing,
+and mobile cloud computing.
+Kunxiao Zhou received the Ph.D. degree in
+computer science from the City University of
+Hong Kong, in 2013, and the M.S. degree in
+computer science from Wuhan University , China,
+in 2006. He is currently an Associate Profes-
+sor with the School of Computer Science and
+Network Security , Dongguan University of T ech-
+nology , Dongguan, China. His research interests
+include wireless sensor networks.
+Huaqiang Yuan received the Ph.D. degree
+from Shanghai Jiao T ong University , Shanghai,
+China, in 1996. He is currently a Professor with
+the School of Computer and Network Security ,
+Dongguan University of T echnology , Dongguan,
+China. His primary research interests include
+signal processing and wireless sensor networks.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:59 UTC from IEEE Xplore.  Restrictions apply. 

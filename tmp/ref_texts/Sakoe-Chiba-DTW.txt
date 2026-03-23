@@ -1,0 +1,682 @@
+
+
+===== PAGE 1 =====
+
+IEEE  TRANSACTIONS  ON ACOUSTICS, SPEECH, AND SIGNAL PROCESSING, VOL. ASSP-26, NO. 1, FEBRUARY 1978 43 
+Dynamic  Programming  Algorithm  Optimization  for 
+Spoken Word  Recognition 
+HIROAKI  SAKOE 
+Abstract-This paper  reports on an optimum  dynamic programming 
+(DP)  based  time-normalization  algorithm for  spoken word recognition. 
+First, a  general  principle of  time-normalization is given  using time- 
+warping function.  Then, two time-normalized distance  definitions, 
+ded symmetric and asymmetric  forms, are derived  from the principle. 
+These two forms are compared  with  each other through theoretical 
+discussions and experimental  studies. The  symmetric  form  algorithm 
+superiority is  established. A new  technique, called slope  constraint, is 
+successfully  introduced,  in which the warping function  slope  is restricted 
+so as to improve  discrimination between words  in different categories. 
+The effective  slope  constraint characteristic is qualitatively  analyzed, 
+and the  optimum  slope  constraint  condition  is determined  through 
+experiments. The optimized algorithm is then  extensively  subjected to 
+experimentat  comparison with various  DP-algorithms,  previously  applied 
+to spoken word recognition  by  different research  groups.  The experi- 
+ment  shows that the present  algorithm gives no more  than about  two- 
+thirds  errors,  even  compared to the best  conventional algorithm. 
+I 
+I.  INTRODUCTION 
+T is  well known that speaking rate variation causes nonlinear 
+fluctuation  in  a  speech  pattern  time axis. Elimination of 
+this  fluctuation,  or  time-normalization,  has  been  one  of  the 
+central  problems in spoken  word  recognition research. At an 
+early stage, some linear normalization  techniques were exam- 
+ined, in which timing  differences  between  speech  patterns 
+were eliminated  by linear transformation of the  time axis. 
+Reports  on these efforts  indicated that any linear transforma- 
+tion is inherently insufficient for dealing with highly compli- 
+cated  fluctuation  nonlinearity as  well  as that time-normalization 
+significantly improves  recognition  accuracy. 
+DP-matching, discussed in this paper, is a  pattern matching 
+algorithm  with  a  nonlinear  time-normalization  effect.  In  this 
+algorithm, the time-axis  fluctuation is approximately  modeled 
+with  a  nonlinear warping function  of some carefully specified 
+properties. Timing differences  between two speech  patterns 
+are eliminated  by warping the time axis of  one so that  the 
+maximum  coincidence is attained  with  the  other.  Then,  the 
+time-normalized  distance is calculated as the minimized resid- 
+ual distance  between  them.  This  minimization  process is very 
+efficiently carried out by  use  of the  dynamic programming 
+(DP) technique. The  basic idea  of  DP-matching  has been 
+reported in  several publications [ 13 -[3] , where it has been 
+shown  by  preliminary  experiment on Japanese digit words that 
+a  recognition  accuracy as high as 99.8  percent  has  been  achieved, 
+indicating the DP-matching effectiveness. 
+This paper  reports  an  optimum  algorithm  for  DP-matching 
+through theoretical discussions and  experimental studies. In- 
+Manuscript  received  February 17,  1977; revised  September 7,  1977. 
+The authors are with Central  Research  Laboratories,  Nippon  Electric 
+Company,  Limited, Kawasaki,  Japan. 
+AND SEIBI  CHIBA 
+vestigations were made, based on the  assumption that speech 
+patterns are time-sampled  with  a  common  and  uniform  sam- 
+pling period, as in most  general cases. One  of  the  problems 
+discussed in this paper involves the relative superiority of either 
+a  symmetric  form  of  DP-matching  or  an  asymmetric  one.  In 
+the  asymmetric form, time-normalization is  achieved by trans- 
+forming  the  time axis of  a  speech pattern  onto  that  of  the 
+other.  In  the  symmetric  form,  on  the  other  hand,  both  time 
+axes are transformed onto  a temporarily  defined  common axis. 
+Theoretical  and  experimental  comparisons  show that  the sym- 
+metric  form gives better recognition  than  the  asymmetric  one. 
+Another  problem discussed concerns  slope  constraint  technique. 
+Since too  much  of  the  warping  function flexibility sometimes 
+results in poor  discrimination  between  words in  different 
+categories, a  constraint is  newly introduced on the warping 
+function slope. Detailed  slope  constraint  condition is optimized 
+through  experimental studies. As a  further investigation, the 
+optimized  algorithm is experimentally  compared  with several 
+varieties of the DP-algorithm,  which have been  applied to 
+spoken  word  recognition by  some research  groups [3] -[6] . 
+The optimized  algorithm  superiority is established, indicating 
+the validity of  this investigation. 
+11. DP-MATCHING  PRINCIPLE 
+A. General  Time-Normalized  Distance  Definition 
+as a  sequence  of  feature vectors. 
+Speech can  be expressed  by  appropriate  feature  extraction 
+Consider  the  problem of eliminating  timing  differences  between 
+these  two  speech  patterns.  In  order to clarify the  nature of 
+time-axis fluctuation  or  timing differences, let  us  consider an 
+i - j plane,  shown in Fig. 1, where patterns A and B are  devel- 
+oped along the i-axis and  j-axis, respectively. Where these 
+speech  patterns are of  the same category,  the  timing differ- 
+ences  between  them can be  depicted  by  a  sequence  of  points 
+c = (i,j): 
+F= c(l), c(2), ------, c(k), ------) c(K), (2) 
+where 
+c(k) = (i(W(~)). 
+This  sequence  can be considered to represent  a  function  which 
+approximately realizes a  mapping  from the time axis of pattern 
+A onto  that of pattern B. Hereafter,  it is called a  warping 
+function. When there is no timing  difference  between  these 
+0096-35  18/78/0200-0043$00.75 0 1978 IEEE 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+44 IEEE TRANSACTIONS ON ACOUSTICS, SPEECH, AND SIGNAL PROCESSING, VOL. ASSP-26,  NO. 1, FEBRUARY 1978 
+A 
+Fig. 1. Warping function  and  adjustment window  definition. 
+patterns,  the  warping  function  coincides  with  the  diagonal 
+line j = i. It deviates further  from  the diagonal line as the  tim- 
+ing difference  grows. 
+As a  measure  of the difference  between  two  feature  vectors 
+ai and bi, a  distance 
+d(c) = d(i,j) = (I ai - bi II (3) 
+is employed  between  them.  Then,  the  weighted  summation of 
+distances on  warping function F becomes 
+E (F) = 2 d(c(k)) . ~(k) 
+k=l 
+(where w(k) is a  nonnegative weighting coefficient, which is 
+intentionally introduced to allow the E(F) measure flexible 
+characteristic) and is a  reasonable  measure for  the  goodness of 
+warping  function F. It attains  its  minimum value  when 
+warping function F is determined so as to optimally adjust 
+the  timing difference. This minimum residual distance value 
+can  be considered to be a  distance  between patternsA and B, 
+remaining still after eliminating  the  timing  differences  between 
+them, and is naturally expected to be stable against time-axis 
+fluctuation. Based on  these  considerations, the time-normalized 
+distance  between two speech  patterns A and B is defined as 
+follows: 
+D(A , B) = Min (5) 
+I;. 
+where  denominator C w(k) is employed to compensate for  the 
+effect of K (number  of  points  on  the warping function F). 
+Equation (5) is no more  than  a  fundamental definition of 
+time-normalized distance. Effective characteristics of this 
+measure greatly depend  on  the warping function specification 
+and  the weighting 'coefficient definition. Desirable characteris- 
+tics of the  time-normalized  distance measure  will vary, accord- 
+ing to speech pattern properties (especially time axis expression 
+of  speech  pattern) to be dealt with.  Therefore,  the  present 
+problem is restricted to the  most general  case  where the fol- 
+lowing two  conditions  hold: 
+Condition 1: Speech  patterns are time-sampled  with  a  com- 
+mon  and  constant  sampling  period. 
+Condition 2: We have no a priori knowledge  about which 
+parts of speech  pattern  contain linguistically important 
+information. 
+In this case, it is reasonable to consider  each  part of a  speech 
+pattern to contain an equal  amount of linguistic information. 
+B. Restrictions on Warping Function 
+Warping function F, defined by (2), is a  model  of  time-axis 
+fluctuation in a  speech pattern. Accordingly, it should  ap- 
+proximate  the  properties of actual time-axis fluctuation.  In 
+other words,  function F, when viewed  as a mapping from  the 
+time axis of  pattern A onto  that of  pattern B, must preserve 
+linguistically essential structures in pattern A time axis and 
+vice versa. Essential speech  pattern  time-axis  structures are 
+continuity,  monotonicity (or restriction of relative timing 
+in a  speech),  limitation  on  the  acoustic  parameter transition 
+speed in a  speech,  and so on. These conditions can  be  realized 
+as the  following restrictions on  warping  function F (or points 
+= (i(kMk)). 
+1) Monotonic  conditions: 
+i(k - 1) 5 i(k) and j(k - 1) sj(k). 
+2) Continuity  conditions: 
+i(k) - i(k - 1) 5 1 and j(k) - j(k - 1) 5 1. 
+As a result of these  two restrictions, the following relation 
+holds  between two consecutive points. 
+{ 
+w, i(k) - 11, 
+c(k - 1) = (i(k) - 1, j(k) - l), (6) 
+or (i(k) - 1, j(k)). 
+3) Boundary  conditions: 
+i(1)= 1, j(l)= 1,and 
+i(K) = I, j(K) = J. (7) 
+4) Adjustment  window  condition (see  Fig. 1): 
+Ii(k)-j(k)Ilr (8) 
+where r is an  appropriate positive integer called window  length. 
+This  condition  corresponds to  the  fact  that time-axis fluctua- 
+tion in usual cases  never  causes a too excessive timing difference. 
+5) Slope  constraint  condition: 
+Neither too  steep nor too gentle a  gradient  should be  allowed 
+for warping function F because such  deviations may  cause un- 
+desirable time-axis  warping.  Too  steep  a gradient, for  example, 
+causes  an unrealistic correspondence  between  a very short 
+pattern A segment  and  a relatively long  pattern B segment. 
+Then,  such  a case occurs where a  short  segment in consonant 
+or  phoneme  transition  part  happens to be in good  coincidence 
+with  an  entire  steady vowel part. Therefore,  a restriction called 
+a  slope  constraint  condition, was set upon  the warping function 
+F, so that  its first derivative  is of discrete form. The slope  con- 
+straint  condition is realized as a restriction on  the possible rela- 
+tion among (or the possible configuration of) several consecu- 
+tive points  on  the warping function, as is shown in  Fig. 2(a) 
+and (b). To put  it  concretely, if point c(k) moves forward in 
+the  direction  of i (orj)-axis consecutive rn times, then  point 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+SAKOE AND CHIBA:  OPTIMIZATION FOR SPOKEN WORD RECOGNITION 45 
+/ m-times 
+Minimum  slope 
+(a) 
+I 
+/ 
+Maximum  slope 
+(b) 
+Original slope constraint  Simplified  poth 
+path ( P=l ) (P=I 1 
+(4 (d) 
+Fig. 2. Slope constraint on warping function. 
+c(k) is not allowed to step  further  in  the same direction before 
+stepping at least n times in the diagonal direction. The effective 
+intensity  of  the slope constraint can  be evaluated  by  the 
+following measure 
+P = n/m. (9) 
+The  larger the P measure,  the  more rigidly the warping func- 
+tion slope is restricted. When p = 0, there are no restrictions 
+on  the warping function slope. When p = 00 (that is rn = 0), 
+the warping function is restricted to diagonal line j = i. Nothing 
+more  occurs  than  a  conventional pattern matching no  time- 
+normalization.  Generally  speaking, if the  slope  constraint is 
+too severe, then  time-normalization would not workeffectively. 
+If the  slope  constraint is too  lax,  then discrimination  between 
+speech  patterns in different categories is degraded.  Thus,  set- 
+ting neither  a  too large nor  a too small  value for p is desirable. 
+Section IV reports the results of an investigation on an opti- 
+mum  compromise on p value through several experiments. 
+In Fig. 2(c)  and  (d),  two  examples  of permissible point c(k) 
+paths  under  slope  constraint  condition p = 1 are shown. The 
+Fig. 2(c) type is directly derived from  the above definition, 
+while  Fig. 2(d) is  an approximated  type,  and  there is another 
+constraint.  That is, the  second derivative of warping function 
+F is restricted, so that  the  point c(k) path  does not  orthogo- 
+nally change its  direction. This  new constraint  reduces  the 
+number of paths to be searched.  Therefore,  the simple  Fig. 
+2(d)  type is adopted  afterward,  except  for  the p = 0 case. 
+C. Discussions on Weighting  Coefficient 
+Since the criterion function  in (5) is a rational expression, 
+its  maximization is an unwieldy  problem. If the  denominator 
+in (5) 
+N= w(k) 
+K 
+k=l 
+(called normalization coefficient) is independent of warping 
+function F, it can  be put  out  of  the  bracket, while simplifying 
+the  equation as follows: 
+This simplified problem can  be effectively solved by use of the 
+dynamic  programming  technique.  There are two typical 
+weighting coefficient definitions which  enable  this simplifica- 
+tion. They  are as follows. 
+1) Symmetric  form: 
+w(k) = (i(k) - i(k - 1)) + ( j(k) - i(k - l)), (1 2) 
+then 
+N=I+J, (1 3) 
+where I and J are lengths of speech  patterns A and B, respec- 
+tively  [see (l)] . 
+2)  Asymmetric form: 
+w(k) = (i(k) - i(k - l)), (1 4) 
+then 
+, N=I. (1 5) 
+(Or equivalently, w(k) = (j(k) - j(k - l)), then N = J.) 
+The basic concepts  of  the  symmetric  and  asymmetric  forms 
+were  originally defined by Sakoe  and  Chiba [3]. The problem 
+of their relative superiority has  been left unsolved. 
+If it is  assumed that time axes i and j are both  continuous, 
+then, in the symmetric  form,  the  summation in (5) means  an 
+integration along the  temporarily  defined axis E = i t j. In the 
+asymmetric  form,  on  the other  hand,  the summation means 
+an integration along time axis i. As a result of this difference, 
+time-normalized  distance is symmetric,  or D (A, B) = D (B, A), 
+in the  symmetric  form,  though not in the  asymmetric  form. 
+Another  more  important result, caused by  the  difference in 
+the integration axis, is that, as  is shown in Fig. 3, weighting 
+coefficient w(k) reduces to zero in  the  asymmetric  form, 
+when the  point in  warping function steps in the direction of 
+j -axis, or c(k) = c(k - 1) t (0, 1). This  means that some fea- 
+ture vectors bi are  possibly excluded  from  the  integration in 
+the asymmetric form. On the  contrary, in the case of  sym- 
+metric form, minimum w(k) value  is equal to 1 , and no  exclu- 
+sion occurs. Since  discussions here are  based on  the  assumption 
+that each  part in a  speech pattern should be treated  equally,  an 
+exclusion  of any feature  vectors  from  integration  should be 
+avoided  as long as possible. It can  be expected,  therefore,  that 
+the  symmetric  form will  give better recognition  accuracy than 
+the  asymmetric form. However, it should be noted  that  the 
+slope constraint  reduces  the  situation where the  point in 
+warping function steps in the  j-axis direction. The difference 
+in performance  between  the  symmetric  one  and  asymmetric 
+one  will gradually vanish as the slope  constraint is intensified. 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+46 IEEE TRANSACTIONS ON ACOUSTICS,  SPEECH, AND SIGNAL PROCESSING, VOL. ASSP-26, NO. 1, FEBRUARY 1978 
+w-2 f 
+Symmetric  form  Asymmetric  form 
+(a) (b) 
+Fig. 3. Weighting coefficient W(k) for  both symmetric and asymmetric 
+forms. 
+111. PRACTICAL  DIPMATCHING ALGORITHM 
+A. DP-Equation 
+A simplified definition  of time-normalized distance D(A, B) 
+given by (1 1) is one of the typical  problems to which the well- 
+known DP-principle [7] can be applied.  The basic algorithm 
+for calculating (1 1) is written as follows. 
+Initial  condition: 
+gl (c(1)) = d(c(1)) - w(1). (1 6) 
+DIP-equation: 
+gk (c(k)) :@:) [gk-1 (c(k- l>)t d(c(k)) w(k)l. 
+(17) 
+Time-normalized distance: 
+1 
+D(A , B) = gK (C(K)). (1 8) 
+It is implicitly assumed here that c(0) = (0, 0). Accordingly, 
+w(1) = 2 in  the  symmetric form,  and w(1) = 1 in  the  asym- 
+metric  form. By realizing the restriction on  the warping func- 
+tion described in Section 11-B and  substituting (12) or (14) for 
+weighting coefficient w(k) in (17), several practical algorithms 
+can be derived. As one of the simplest examples, the algorithm 
+for  symmetric form,  in which no slope constraint is employed 
+(that is P = 0), is shown here. 
+Initial  condition: 
+g(l,1)=2d(l, 1). 
+DP-equation: 
+Restricting condition  (adjustment window): 
+Time-normalized distance: 
+1 D(A, B) = g(I, J), where N = I t J. (22) 
+Calculation details are briefly depicted  in  Section 111-€3. 
+The algorithm, especially the  DP-equation,  should be modified 
+when the asymmetric form is adopted  or some slope constraint 
+is employed. In Table I, algorithms are summarized for  both 
+symmetric  and  asymmetric  forms,with various slope constraint 
+conditions.  In  this  table,  DP-equations  for asymmetric forms 
+are shown in some improved  form. The first expression in  the 
+bracket of  the asymmetric  form  DP-equation  for P = 1 (that is, 
+g(i - 1, j - 2) t (d(i, j - 1) + d(i, j))/2) corresponds to 
+the case  where c(k - 1) = (i(k), j(k) - 1) and c(k - 2) = 
+(i(k - 1) - 1, j(k - 1) - 1). Accordingly, if the  definition  in 
+(14) is strictly  obeyed, w(k) is equal to zero while w(k - 1) is 
+equal to 1, thus completely omitting  the d(c(k)) from  the 
+summation.  In  order to avoid this  situation to a certain extent, 
+the  weighting coefficient w(k - 1) = 1 is  divided between two 
+weighting coefficients w(k - 1) and w(k). Thus, (d(i, j - 1) + 
+d(i, j))/2 is substituted  for d(i, j - 1) + 0 * d(i, j) in  this  ex- 
+pression. Similar modifications are applied to other  asymmetric 
+form  DP-equations.  In fact,  it has been established, by a pre- 
+liminary experiment,  that this  modification significantly im- 
+proves the asymmetric form performance. 
+B. Calculation Details 
+DP-equation  or g(i, j) must  be  recurrently calculated in as- 
+cending order  with respect to coordinates i and j, starting  from 
+initial condition at (1, 1) up to (I, J). The domain  in which 
+the  DP-equation  must be calculated is specified by 
+1s is I, 15 jz J: 
+and 
+j - r 5 i 5 j t r (adjustment window). 
+A practical procedure  for calculating the time-normalized 
+distance is shown in Fig. 4 as a flowchart. 
+IV. EXPERIMENTS AND RESULTS 
+A. Experiment Outline 
+In  order to quantitatively evaluate various types of  DP- 
+matching, several recognition experiments were conducted. 
+The speech analyzer used through these experiments was a 10- 
+channel bandpass filter  bank  which covered up to a 5.9-kHz 
+frequency range.  The output  ofeach channel was time-sampled 
+every 18 ms and was  digitized in  order  that  it could be fed  into 
+the digital computer (NEAC-3100). Automatic gain control 
+effect was  realized  by  dividing each  filter output level  by their 
+sum total,  at every sampling period.  The so-called time- 
+frequency  amplitude  pattern thus obtained was stored on a 
+digital magnetic tape file. Recognition  experiments were con- 
+ducted  for the speech pattern read out of this file. The recog- 
+nition scheme  used  was the  forced decision pattern matching 
+method, where the  input  pattern (unknown) was decided to 
+be of the same category as the reference pattern to which  the 
+maximum coincidence (that is the minimum time-normalized 
+distance) was achieved. Distance d(i, j) was  measured  by the 
+Chebyshev norm, which was employed  in the previous work 
+(21 . Reference patterns were adapted to each speaker. That 
+is, one  repetition of the complete  vocabulary,  pronounced by 
+each  speaker, was used as the reference patterns  for  each 
+speaker. 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+SAKOE AND CHIBA:  OPTIMIZATION  FOR  SPOKEN WORD RECOGNITION 41 
+TABLE I 
+SYMMETRIC AND ASYMMETRIC DP-ALGORITHMS WITH SLOPE CONSTRAINT CONDITION P = 0, 4, 1, AND 2 
+I 
+Schematic 
+DP-equation 4 explanation 
+Symmetric 
+g(i, j) = 
+Symmetric min g(i-l,j-l)+2d(i,j) 
+[ 1 
+g(i,j-I)+d(i,j) 
+g(i-l,j)+d(i,j) 
+Asymmetric 
+g(i-l,j)+d(i,.i) 1 
+Symmetric 
+Asymmetric 
+g(i-l,j-3)+2d(i,j-2)+d(i,j-l)+d(i,j) 
+g(i-l,j-2)+2d(i,j-l)+d(i,j) 
+g(i-2,j-l)+2d(i-l,J)+d(i,j) 
+g(i-3,j-1)+2d(i-Z,~)+d(i-l,j)+d(i,j) 
+g(i-l,j-2)+(d(i,j-l)+d(i,j))/2 
+g(i-Z,j-l)+d(i-l,;)+d(i,J) 
+g(i-3,j-l)+d(i-2,~)+d(i-l,j)+d(i,j) 
+1 
+Symmetric  min g(i-l,j-l)+2d(i,j) 
+[ 
+g(i-l,j-2)+2d(i,j-l)+d(i,j) 
+g(i-2,j-l)+2d(i-l,j)+d(i,j) 
+g(i-l,j-2)+(d(i,j-l)+d(i,j))/2 
+g(i-2,j-l)+d(i-l,j)+d(i,j) 1 
+Asymmetric 
+~ Symmetrlc 1 mi: [(i-l,j-l)+2d(i,j) ] , 1 
+g(i-2,j-3)+2d(i.-I,j-2)+2d(i,j-l)+d(i,j) 
+g(i-3,j-2)+2d(j-2,j-1)+2d(i-l,j)+d(i,j) 
+g(i-2,j-3)+2(d(i-l,j-2)+d(i,j-l)+d(i,j))/3 
+g(i-l,j-l)+d(i,j.) 
+g(i-3,j-2)+d(i-2,j-l)+d(i-l,j)+d(i,j) 
+2 
+Asymmetric 
+Experiments were conducted  in  three parts. The first part 
+was carried out with the objectives of comparing  the perfor- 
+mances  of  symmetric  form  DP-matching  and  asymmetric  form 
+DP-matching,  and  optimizing  the  slope  constraint  condition. 
+In  the  second  part,  further  optimization  of  the slope con- 
+straint  condition was investigated. In  the final part  of  the 
+experiments,  the  algorithm  thus  optimized was compared  with 
+several  DP-algorithms proposed  by different research  groups. 
+B. Experiment (I) 
+The  objective  of this experiment was to compare  symmetric 
+form DP-matching and  asymmetric  form  DP-matching perfor- 
+mances,  and to determine the best  compromise for  the  slope 
+constraint  intensity  (parameter P). Speech  data used in this 
+experiment were Japanese digit words (see Table 11) isolatedly 
+spoken  by 10 male speakers. Six repetitions  of the 10 digit 
+words were  made  by each  speaker.  Then, for each  speaker, 
+each  of  the six repetitions was  used  as a reference  pattern 
+set.  For  each  reference  pattern  set,  the remaining  five repeti- 
+tions were supplied to recognition.  Therefore, 10 (persons) 
+X 6 (reference pattern sets) X 50 (input patterns) = 3000 
+(recognition tests) were conducted. The DP-matching  sub- 
+jected to this experiment covered both symmetric  and  asym- 
+metric  forms,  with  slope  constraint  condition  of P = 0, i, 1, 
+and 2. In  each case, window  length r was set equal to 6, which 
+covered the  utmost +lo8 ms timing difference. A linear time- 
+normalization  method was also tested where  the  time axis of 
+the  input  pattern was adjusted to that of  the  reference pattern 
+with linear transformation. 
+Results are shown in Fig. 5 as two error rate curves. In this 
+Stort  i=i , 1.1 
+Initio1  condition 
+- 
+i=i+l 
+DP- equation 
+Fig. 4. DP-matching flowchaxt. 
+figure, it can  be  seen that  the performance  of  the  asymmetric 
+form  DP-matching is evidently inferior to  that of the  symmetric 
+one,  and  that  the  difference in performance  between  them 
+tends to vanish gradually as the slope  constraint is intensified. 
+It can  also  be  seen that symmetric form DP-matching perfor- 
+mance is utterly  unaffected by a  slope  constraint  of  up to 
+P = 1. On the  other  hand,  the asymmetric  form  DP-matching 
+performance is  very effectively improved  by  slope  constraint. 
+The optimum  condition is P= 1. When the  slope  constraint 
+is intensified beyond P = 1, the performance  of  the  asym- 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+48 IEEE TRANSACTIONS ON ACOUSTICS, SPEECH, AND  SIGNAL PROCESSING, VOL. ASSP-26, NO. 1, FEBRUARY 1978 
+TABLE I1 
+TEX JAPANESE DIGITS AND THEIR PHOXEMIC TRANSCRIPTIONS 
+0 9 a 7 56 4 3 12 
+rei kju hatji T~BM roku go jon san ni itji 
+metric form, as  well  as that of the symmetric one tends to 
+be degraded. Since extremely intensified slope constraint 
+does not give any time-normalization,it is naturally understood 
+that  further growth  in slope constraint will result in some 
+worse performance than  that of linear time-normalization 
+method (0.8 percent  error). 
+C. Experiment (11) 
+In order to  further examine the effect of the slope constraint 
+on  the symmetric form DP-matching performance,  another ex- 
+periment was carried out for a 50-Japanese geographical name 
+vocabulary. This vocabulary includes such confusing pairs of 
+words as “Chiba”-“Shiga”, “0kayama”-“Wakayama”, 
+“Fukushima”-“Tokushima”,  and “Hyogo”-“Kyoto”. Each of 
+two male speakers and two female speakers uttered six repeti- 
+tions of the complete vocabulary. The first  repetitions of each 
+speaker were used as the reference patterns. The remaining 
+five repetitions of each speaker were used as unknown input 
+patterns,  thus providing 4 (persons) X 50 (vocabulary size) X 
+5 (repetitions) = 1000 (recognition tests). The window length 
+r here was set equal to 8, which covered utmost k144 ms 
+timing difference. 
+Results are shown in Fig. 6 for each of the slope constraint 
+conditions. These results show that  the slope constraint  has  a 
+marked effect  on the performance of the symmetric form DP 
+matching, too. Optimum performance is also attained at P = 1. 
+D. Experiment (111) 
+Various DP-algorithms have been applied to spoken word 
+recognition, by different research groups. Four typical ones, 
+including those proposed by Sakoe and Chiba [3] , Velichko 
+and Zagoruyko [4] , White and Neely [SI , and Itakura [6] , 
+were subjected to comparison with the algorithms described 
+in this  paper. Details of each algorithm are summarized in 
+Table 111. Some modifications were made to equalize the 
+experimental condition,  but these modifications are not harm- 
+ful to time-normalizing abilities of algorithms. Both the 
+Japanese digit data and Japanese geographical name data were 
+again used as test data. Results are shown in Table IV. From 
+these results, it can be observed that the symmetric form DP- 
+matching with slope constraint P = 1, described in  this  paper, 
+is the best of various DP-algorithms applied to spoken word 
+recognition. 
+V. DISCUSSIONS 
+From the results shown in Fig. 5, it can be observed that 
+the  symmetric  form DP-matching performance is significantly 
+superior to  that of the asymmetric one. It can also be seen 
+that  the difference in performance between them  tends to 
+decrease as the slope constraint grows. These observations 
+completely agree with the theoretical discussions presented 
+in  Section II, indicating the validity of this investigation. 
+R 
+,Asymmetric DP 
+0 92 I 2 
+Slope Constraint 
+Fig. 5. Experiment (I) results (for Japanese digit words). 
+I 
+I 
+I 
+I 
+tP 
+Symmetric DP 
+0 k2 I 2 
+Slope Constraint 
+Fig. 6. Experiment (11) results (for 50 Japanese geographical names). 
+From Figs. 5 and 6, it can be determined that the slope con- 
+straint  condition  with P= 1 is the  optimum  point for  both 
+symmetric and asymmetric forms. Moreover, as can  be seen 
+from Table I, the  DP-equation  for P = .1 is of the most simple 
+form, next to  that  for P = 0. Thus,  the slope constraint  con- 
+dition  with P = 1 is favorable for  computational economy, 
+as well as for best performance. The slope constraint hardly 
+affects the performance of the  symmetric  form DP-matching 
+in case of Japanese digit vocabulary. This is perhaps due to 
+the fact that,  in case  of Japanese digit words, the vocabulary 
+size is so small and the separation between  the words in  the 
+vocabulary is inherently so good that an optimally high recog- 
+nition accuracy was achieved  even without slope constraint. 
+Nevertheless, the usefulness of the slope constraint  for the 
+symmetric form was established by the experiment  on  the 
+Japanese geographical name data. Summing up these discus- 
+sions, the symmetric form  with slope constraint  condition 
+P = 1 is the optimum  condition, when the speech patterns 
+are time-sampled with  a common and uniform sampling 
+period. 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+SAKOE AND CHIBA: OPTIMIZATION FOR SPOKEN WORD RECOGNITION 49 
+TABLE 111 
+FOUR VARITIES OF DP-ALGORITHMS  SUBJECTED TO COMPARISON IN EXPERIMENT (111) 
+Algorithm 
+Initial 
+Sakoe and 
+dl, 1) = 
+Coefficient  N Condition 
+DP-equation Normalization 
+g(i-1, 
+Chiba (31 
+Velichko and 
+Zagoruyko [4] a(1’ ’) 
+g(i, j) = 
++ d(i, j) 
+d(1, 1) 1) + d(i, j) I 
+2) + d(i, j) 1 
+g(i, j-1) 
+g(i-1, j) 1 
+max [I, J I 
+where a(i, j) = 1-d(i, j) 
+White and 
+Neely (51 g(i,  j-1) + d(i, J 
+d(1, 1) g(i-1,  j-1) + d(i!)j) (1 + J) 
+g(i-1, j) + d(i, j) 
+d(1, 1) g(i-1, j-1) + d(i, J) I 
+g(i-1,  j)l+al. d(i,,j) 
+g(i-1, j-2) + d(i, j) 1 Itakura [6J 
+where a = - (i(k-1) = i(k-2)) 
+a = 1 (i(k-1) ~f i(k-2)) 
+The  optimized  algorithm was experimentally  compared  with 
+several DP-algorithms,  including  those  reported  by  other re- 
+search  groups,  Results  show that  the present  algorithm gives 
+considerably  better  performance,  for both Japanese digit data 
+and  Japanese  geographical name data. This superiority can be 
+attributed to careful investigations made to realize a  pattern 
+matching  algorithm  with rational characteristics of comparing 
+each  part of speech pattern evenly  as far as possible. 
+As for  the  computational  time,NEAC-3100  computer  (index 
+modified  addition/substruction  execution  time is 8 ps) required 
+about 3 s for each digit word  recognition  and  about 30 s for 
+geographical  name recognition. These computational  times 
+scarcely depended  upon the employed  DP-equation.  Recent 
+high-speed digital integrated circuit devices and pipeline pro- 
+cessor techniques made it feasible to realize the real time DP- 
+matching  operation.  Actually,  a  DP-matching  processor  has 
+been  constructed  which recognizes 60 geographical names 
+in 300 ms after  the  utterance [8]. 
+VI. CONCLUSIONS 
+The optimum  DP-algorithm,  applied to speech  recognition, 
+was investigated, Two  forms  of  pattern  matching method, 
+symmetric  and  asymmetric  forms, were proposed along with 
+a new technique called slope  constraint. These varieties were 
+then  compared  through theoretical and  experimental investiga- 
+tions. Conclusions are  as follows. 
+1) The symmetric  form gives better recognition  accuracy 
+than  the asymmetric  form. 
+2) Slope  constraint is actually effective. Optimum perfor- 
+mance  is attained  when  the  slope  constraint  condition is P = 1. 
+The validity of these results was ensured by a good  agreement 
+between theoretical discussions and  experimental results. 
+The optimized  algorithm was then  experimentally  compared 
+with several other  DP-algorithms  applied to spoken  word 
+recognition by different research  groups,  and  the superiority 
+of the  algorithm  described in this  paper was established. 
+ACKNOWLEDGMENT 
+The authors wish to  thank Y. Kat0  for his encouragement 
+throughout  this research. 
+TABLE IV 
+EXPERIMENT (111) RESULTS 
+Japanese digit words 50 Japanese 
+Geographical  names 
+Sakoe and Chiha 
+Symmetric P = 1 
+[in this paper] 
+Sakoe and Chiba 
+Asymmetric P = 1 
+(in this paperJ 
+Sakoe and Chiba 
+(31 0.3 1.5 
+Velichko and 
+Zagoruyko [4] I 2.0 
+mite and 
+Neely [SJ I 0.33 
+Itakura C6] 
+5.9 0.87 Linear method 
+1.3 0.4 
+REFERENCES 
+[ 11 H. Sakoe and S. Chiba, “A similarity  evaluation of speech patterns 
+by dynamic  programming”  (in  Japanese), presented  at  the Dig. 
+1970 Nat. Meeting, Inst.  Electron. Comm. Eng. Japan, p. 136, 
+July 1970. 
+[2] -, “A dynamic  programming approach to continuous speech 
+recognition,”in 1971 Proc. 7th ICA, Paper 20 CI3, Aug. 1971. 
+[3] -, “Comparative study of DP-pattern  matching techniques for 
+speech recognition”  (in Japanese), in 1973 Tech. Group  Meeting 
+Speech,  Acoust. SOC. Japan, Preprints (S73-22), Dec. 1973. 
+[4] V. M. Velichko and N. G. Zagoruyko,  “Automatic  recognition of 
+200  words,”Int. J. Man-Machine Stud., vol. 2, p.  223,  June  1970. 
+[5] G. White and R. Neely, “Speech  recognition experiments with 
+linear prediction, bandpass  filtering, and dynamic programming,” 
+IEEE  Trans. Acoust., Speech, Signal Processing, vol. ASSP-24, 
+[6] F. Itakura, “Minimum prediction residual principle  applied to 
+speech recognition,” IEEE Trans. Acoust., Speech, Signal  Process- 
+ing, vol. ASSP-23, pp.  67-72,  Feb.  1975. 
+[7] R. Bellman and S. Dreyfus, Applied Dynamic Programming. New 
+Jersey: Princeton Univ. Press, 1962. 
+[ 81 S. Tsuruta, H. Sakoe, and S. Chiba, “Real-time speech  recognition 
+system by  minicomputer with DP processor” (in Japanese), in 
+I9 74 Tech. Group  Meeting Speech,  Acoust. Soc. Japan, Preprints 
+(S74-30), Dec. 1974. 
+pp.  183-188, Apr. 1976. 
+Authorized licensed use limited to: SAINT LOUIS UNIVERSITY. Downloaded on April 17,2022 at 21:54:01 UTC from IEEE Xplore.  Restrictions apply. 

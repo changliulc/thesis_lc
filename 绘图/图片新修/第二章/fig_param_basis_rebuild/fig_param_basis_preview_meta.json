@@ -1,0 +1,32 @@
+{
+  "type": "semantic_rebuild_preview_only",
+  "notes": [
+    "Original plotting code for Fig. 2.6 was not found in the current thesis workspace.",
+    "This preview was rebuilt from the visible chart structure and the parameter-selection text in Chapter 2.",
+    "The current thesis image images/fig_param_basis.png was not overwritten."
+  ],
+  "panel_a_target_stats": {
+    "no_car": {
+      "P99.9": 0.996,
+      "P99": 0.939
+    },
+    "car": {
+      "P1": 0.052,
+      "P5": 0.442
+    }
+  },
+  "panel_b_target_stats": {
+    "max": 9,
+    "P95": 9.0,
+    "P99": 9.0,
+    "N_arr": 10
+  },
+  "panel_c_target_stats": {
+    "n": 5,
+    "coverage_le_Td": 0.8,
+    "max": 11,
+    "P95": 11.0,
+    "P99": 11.0,
+    "T_d": 8
+  }
+}

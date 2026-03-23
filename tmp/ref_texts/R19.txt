@@ -1,0 +1,895 @@
+
+
+===== PAGE 1 =====
+
+Received February 6, 2019, accepted March 11, 2019, date of publication April 4, 2019, date of current version May 1, 2019.
+Digital Object Identifier 10.1 109/ACCESS.2019.2908006
+Road Vehicle Detection and Classification Using
+Magnetic Field Measurement
+XIAO CHEN
+ 1, XIAOYING KONG 1, MIN XU
+ 1, KUMBESAN SANDRASEGARAN
+ 1,
+AND JIANGBIN ZHENG 2
+1Faculty of Engineering and Information Technology, University of Technology Sydney, Ultimo, NSW 2007, Australia
+2School of Software, Northwestern Polytechnical University, Xi’an 710065, China
+Corresponding authors: Min Xu (min.xu@uts.edu.au) and Jiangbin Zheng (zhengjb@nwpu.edu.cn)
+ABSTRACT This paper presents a road vehicle recognition and classiﬁcation approach for intelligent
+transportation systems. This approach uses a roadside installed low-cost magnetometer and associated
+data collection system. The system measures the magnetic ﬁeld changing, detects passing vehicles, and
+recognizes vehicle types. We introduce Mel Frequency Cepstral Coefﬁcients (MFCC) to analyze vehicle
+magnetic signals and extract it as vehicle feature with the representation of cepstrum, frame energy, and gap
+cepstrum of magnetic signals. We design a 3-dimensional map algorithm using V ector Quantization (VQ) to
+classify vehicle magnetic features to 4 typical types of vehicles in Australian suburbs: sedan, van, truck, and
+bus. In order to train an accurate classiﬁer, training samples are selected using the Dynamic Time Warping
+(DTW). The veriﬁcation experiments show that our approach achieves a high level of accuracy for vehicle
+detection and classiﬁcation.
+INDEX TERMS V ehicle classiﬁcation, signal processing, road trafﬁc model, magnetic sensing, mel
+frequency cepstral coefﬁcients (MFCC), vector quantization (VQ), dynamic time warping (DTW), intelligent
+transportation system (ITS).
+I. INTRODUCTION
+Intelligent transportation systems (ITS) apply sensors to col-
+lect and analyze road vehicle information for road vehicle
+monitoring and managing, control of road trafﬁc, and trafﬁc
+data analysis for future development of transportation infras-
+tructures. Useful road trafﬁc information includes: vehicle
+location, type, weight, passing speed and direction, and vehi-
+cle volume in certain zones [1], [2]. The ﬁrst trafﬁc monitor
+sensor was developed and installed for road use in 1928. This
+device used a microphone to detect vehicle sound [1]. Since
+then, road vehicle sensing technologies have been explored in
+vibration, inductive-loop detecting, magnetic ﬁeld, acoustic
+sensing, optical and infrared sensing, satellite signal process-
+ing, camera captured image and video processing, and inertial
+sensing [1, 2]. These sensing technologies can be utilized for
+a single sensor, or in a sensor network.
+V arious types of sensing technologies can be applied in dif-
+ferent locations in transportation systems. The sensors can be
+statically deployed on road side, underneath the road surface,
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Avishek Guha.
+over road, on a pole at an optimal height near the road,
+on bridge crossing over the road, or dynamically installed in
+road or aerial vehicles. In a sensor network, these technolo-
+gies and deployment locations can be integrated.
+From a commercial deployment perspective, the types of
+sensing technologies and the deployment locations of sensors
+will impact the reliability and cost of installation and mainte-
+nance. For example, magnetic sensor installation underneath
+the road surface will increase the sensor measurement accu-
+racy, but disrupt the road trafﬁc in installation and mainte-
+nance phases.
+In this paper, we propose a road vehicle detection and clas-
+siﬁcation approach using roadside-installed single magnetic
+sensor. The magnetic sensor measures the magnetic ﬁeld
+changes when a vehicle is passing the sensor. The sensor
+measurement signals are analyzed to extract vehicle features,
+and these features are classiﬁed into vehicle types. Passing
+vehicles on road trafﬁc are detected for four types of vehicles:
+sedan, van, truck, and bus.
+This paper is organized as follows. Section II reviews
+related work in vehicle detecting and classiﬁcation.
+Section III presents the experimental design for magnetic
+52622
+2169-3536 
+ 2019 IEEE. Translations and content mining are permitted for academic research only.
+Personal use is also permitted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+VOLUME 7, 2019
+
+===== PAGE 2 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+sensing in this research. Section IV presents an algorithm
+for vehicle identiﬁcation and vehicle type classiﬁcation. The
+results of the road vehicle identiﬁcation and classiﬁcation
+are demonstrated and evaluated in Section V . Conclusion are
+drawn ﬁnally in Section VI.
+II. RELATED WORK
+Sensing technologies provide vehicle and road trafﬁc infor-
+mation to intelligent transportation systems.
+Accelerometer is able to measure the vibration of the road
+when a vehicle is passing. ITS can receive sensor input from
+accelerometers installed under road surface, and compute the
+weight of passing vehicle and number of vehicles.
+Inductive loop technology uses electrical conducting loop
+that is installed on road surface. When a vehicle passes
+the loop, a current is induced in wired loops, and this sig-
+nal change is processed and transmitted to ITS to compute
+the detection of the passing vehicle type [1]. The vehicle
+detection and type classiﬁcation algorithms include back-
+propagation neural networks [3], neural genetic controller
+using single-loop [4], and 2-axle tractor/3-axle semi-trailer
+approach [5].
+Radar is a mature technology to detect passing vehicle
+length, height and speed. Frequency modulated continuous
+wave using Doppler radar is one of the traditional radar
+techniques to extract shape information and classify vehicle
+types [6]. Recent radar techniques include detecting vehicle
+and analysis of the frequency of incoming vehicle and using
+reconﬁgurable antenna array and Synthetic Aperture Radar
+technique, which were applied for estimation of angular coor-
+dinates [7].
+Infrared (IR), including active infrared laser radar and pas-
+sive infrared, has been used in road vehicle acquisition, track-
+ing, and especially for night vision. Infrared is available to
+operate in multiple lanes [1]. IR detecting techniques include
+extracting histograms of oriented gradient features and local
+binary pattern features, and concatenating to form classiﬁca-
+tion features [8]. IR technique can be applied to detect both
+vehicles and pedestrians on road. However, infrared sensors
+may reduce vehicle sensitivity in bad weather conditions, like
+rain, fog and snow [1].
+Cameras capture passing vehicle’s location, speed and
+shapes in images and videos. Road trafﬁc images contain
+rich information in wide area. V ehicle image detecting tech-
+niques can be used in multiple lanes and multiple zones.
+Weather conditions and day-to-night transition may heavily
+affect the performance [1]. Street lighting is required to assist
+video image recording at night time for obtaining reliable
+signals [1]. In literature, vehicle’s parameters such as length,
+height and width dimensions were extracted and these fea-
+tures are used to classify vehicle types [9].
+Magnetic sensors measure the magnetic ﬁeld. Mag-
+netic sensing technologies include: squid, ﬁber-optic, opti-
+cal pumped, nuclear procession, search-coil, anisotropic
+magneto-resistive, ﬂux-gate, and so on [10]. These sensors
+detect different magnetic ﬁeld range. The impact of a vehicle
+passing or stopping causes a change to the earth magnetic
+ﬁeld within the range of 1 microgauss to 10 gauss [10].
+Comparing with other types of magnetic ﬁeld sensing tech-
+nologies in range and cost, Anisotropic Magneto-Resistive
+(AMR) sensors are able to work in this range of magnetic
+ﬁeld changes for practical applications.
+Signal analysis of magnetic ﬁeld measurement and clas-
+sifying into signal shape patterns has been an effective
+approach. In Sing Yiu et al.’s approach [11], three-axis mag-
+netic vectors were analyzed separately in magnitude. The
+magnitudes of signals in the x, y and z in time series were
+classiﬁed into a number of patterns. These patterns illustrated
+the shape of hills for each type of vehicles. Using the hill
+pattern approach, Saowaluck et al. [12] extracted features of
+normalized vehicle magnetic length, average energy, number
+of peaks from hill patterns. Their classiﬁcation types include
+motorcycles, cars, pickups, vans, and buses.
+An integrated approach was developed using magnetic
+sensor and DGPS by Taghvaeeym and Rajamani [13]. In [13],
+two magnetic sensors were used. DGPS measured the speed
+of vehicles to aid the magnetic sensing. The vehicle clas-
+siﬁcation was based on magnetic length and estimate of
+the average vertical magnetic height of the vehicle. V ehicle
+length was computed by using the vehicle presence time and
+vehicle speed.
+Using a single AMR sensor, Y ang and Lei [14] detected
+vehicles in a single lane by using sensor measurement when
+vehicle passing the road sensing area. The following features
+were extracted from measured signals for classiﬁcation: sig-
+nal duration, signal energy, average signal of signal, ratio
+of positive and average energy of X-axis signal, and ratio
+of positive and average energy of Y -axis signal. X-axis and
+Y -axis of the magnetic sensor were installed parallel to the
+earth surface. Z-axis was vertically installed. The types were
+classiﬁed into motorcycles, two-box cars, saloon cars, and
+sport utility vehicles in [14].
+Among these approaches, the vehicle detection and classi-
+ﬁcation had been developed as prototypes. In AMR sensor-
+related systems, AMR sensors were installed on roadside,
+under the surface of road, used a single sensor, or applied
+multiple sensors as a sensor network. These impact the factors
+of measured signal strength for detecting accuracy, cost of
+installation and maintenance. Application in deployment has
+not been commercialized in large scale yet due to these impact
+factors. Further research of approaches is needed to achieving
+reliable detection and classiﬁcation results while reducing the
+cost caused by sensor installation and maintenance.
+Compared with different types of sensors, e.g. radar, opti-
+cal images/videos and Infrared, AMR sensor has three main
+advantages. 1) The AMR is the overall systems low cost and
+smaller size due to high sensitivity, and they still maintain
+reliability and quality. 2) AMR sensors have high sensitivity
+and ﬂexibility; therefore, they are placed further away from
+the magnet. This allows the AMR sensor to be installed where
+it is needed for the optimal performance. And, 3) the most
+advantage of these solid-state devices are their durability
+VOLUME 7, 2019 52623
+
+===== PAGE 3 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+and immunity to shock and vibration. They record magnetic
+signals in a stable fashion that is not inﬂuenced by different
+weather conditions.
+In our research, considering the cost of installation and
+maintenance, we use a single AMR magnetic sensor to install
+on roadside. Our approach is proposed for Australia road
+environment. The types of vehicles in Australia road trafﬁc
+are typically sedan, van, truck and bus. We analyze these
+vehicle types by using measured earth magnetic ﬁeld signal
+changes in time domain, when vehicle passes our sensing
+area. We explore vehicle identiﬁcation and classiﬁcation by
+extending audio signal analysis approach. The sensor mea-
+surements of magnetic ﬁeld are processed by signal feature
+extraction and vector quantization for vehicle type classi-
+ﬁcation. Compared with Y ang and Lei’s work, we target
+vehicle types which are suitable to Australia road trafﬁc. Our
+method of feature extraction and classiﬁcation outperforms
+the method proposed in [14] 1% on average classiﬁcation
+accuracy.
+III. EXPERIMENT DESIGN USING MAGNETIC SENSOR IN
+ROAD TRAFFIC
+In our experiments, an AMR magnetic sensor is installed
+on road side to collect data of a single lane. The distance
+between the sensor and passing vehicles is 60 centimeters.
+The roadside sensor is able to detect one vehicle on one lane
+in our experiment. When vehicle passes the sensing area,
+the magnetic ﬁeld in that area will change and cause the mag-
+netic measurement changes. These changes are displayed as a
+signal wave in measurement. From the observation of vehicle
+types on road, we classify and analyze road vehicles using
+four types: sedan, van, truck, and bus. When these vehicles
+pass the experiment spot, the magnetic ﬁeld measurements
+display signal changes as the form of waves. We have applied
+dynamic time warping (DTW) to select the most representa-
+tive samples from each vehicle type. Figure 1, 2, 3, 4 illustrate
+the magnetic ﬁeld changes in one dimension for these types
+of vehicles.
+FIGURE 1. Magnetic sensor measurement of Sedan signal.
+FIGURE 2. Magnetic sensor measurement of van signal.
+FIGURE 3. Magnetic sensor measurement of Truck signal.
+FIGURE 4. Magnetic sensor measurement of Bus signal.
+From the experiments, we found that magnetic signal wave
+and audio wave display similar characteristics, such as reﬂec-
+tion, refraction, intervene, measurement data and diffraction.
+In time domain and frequency domain, the speed, length, and
+52624 VOLUME 7, 2019
+
+===== PAGE 4 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+frequency of signal waves have certain relationship for both
+magnetic wave and audio wave. In our research, we explore
+ﬁltering raw magnetic measurement signals as well as the
+signal feature extraction to analyze magnetic ﬁeld signal
+features.
+In this paper, we present a road vehicle detection and
+classiﬁcation approach using magnetic sensor and magnetic
+signal feature extraction and classiﬁcation. In order to reduce
+the deployment, interruption of road trafﬁc and maintenance
+cost, we apply a road-side magnetic sensor to detect the
+vehicles. The magnetic signal processing approach extended
+MFCC to extract the magnetic signal feature and classify
+the feature to categorize ﬁve types, as shown in Figure 6.
+In our experiments, the signal types are: sedan, van, truck,
+bus and non-vehicle. Figure 5 shows the ﬁrst four dimen-
+sions of MFCC extracted from the signature signal of four
+different vehicle types. Usually, when there is no vehicle
+in measurement area, the basic output signal from magnetic
+sensor is the earth magnetic ﬁeld with environment noises.
+The non-vehicle can also include passengers, bicycles and
+motors and the earth magnetic ﬁeld with environment noises.
+Since the signal sample length is set as one second, the num-
+ber of non-vehicle samples is the number of seconds that
+non-vehicle signal lasts.
+FIGURE 5. The first four dimensions of MFCC feature extracted from
+signals of four different vehicle types.
+IV. VEHICLE CLASSIFICATION ALGORITHM
+In our research, we extract Mel Frequency Cepstral Coefﬁ-
+cients (MFCC) feature from signals and apply V ector Quan-
+tization (VQ) to classify magnetic ﬁeld measurement data for
+passing vehicles. In order to efﬁciently model the probability
+density functions, we use Dynamic Time Warping (DTW) to
+FIGURE 6. Vehicle magnetic feature extraction and classification process.
+ﬁlter the raw measurement signals to prepare training data
+for VQ. MFCC has been proved to be one of the robust and
+widely used features to analyze the characteristic of audio sig-
+nals [15], [16]. V ector Quantization is a classiﬁer to compare
+the distance in vectors. VQ transforms several scalar data into
+one vector data, and quantizes whole vector space [17].
+In identiﬁcation and classiﬁcation of vehicle signals,
+we ﬁlter the raw magnetic ﬁeld measurement signals and
+extract relative features, and then label the features to differ-
+ent types of vehicles. The method is presented below.
+A. TRAINING SAMPLE SELECTION BY DYNAMIC TIME
+WARPING SELECTION OF MAGNETIC
+MEASUREMENT SIGNAL
+As we all know, for effective machine learning to occur, it is
+important to select representative positive training samples.
+Collected magnetic signals can be very raw due to noisy
+introduced by environmental condition. (i.e. pedestrian, road
+work, train/tram noise and track maintenance) In order to
+accurately model the probability density function for each
+type of vehicle, we introduce sample selection to make sure
+training data efﬁciently represent the characteristics of each
+vehicle type. Since magnetic signals are complex series with
+the shift and stretching of amplitude, dynamic time warp-
+ing (DTW) is applied in our research to measure similarity
+among signals. In some boundary and temporal consistency
+constrains, DTW is a point to point method and it can obtain
+a global optimal solution through cost matrix [18], [19].
+For each vehicle class, assuming we have n magnetic sig-
+nals S={s1, s2, s3··· sn}. Any two magnetic signals of one
+category are compared with each other. Figure 7 shows an
+example of comparison of two van sample pairs. We apply
+16 sampling points. Each point has been compared between
+two magnetic signals.
+VOLUME 7, 2019 52625
+
+===== PAGE 5 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+Assuming sw={x i}16
+i=1 and su={y j}16
+j=1 are the two sig-
+nals in S. When u̸= w, u= 1,..., n, w= 1,..., n, xi, i=
+1,..., 16 and yj, j= 1,..., 16 represent the sample points
+of two magnetic signals, sw and su. DTW(sw, su) is used to
+present the DTW distance between sw and su, which can be
+calculated by the following equation (1).
+DTW(sw, su)=
+∑i
+i=1
+∑j
+j=1 min(d
+(
+xi−1, yj
+)
+,
+d
+(
+xi, yj−1
+)
+, d
+(
+xi−1, yj−1
+)
+). (1)
+where d(xi,⟨⟩)=∞, d
+(
+⟨⟩, yj
+)
+=∞ and d(⟨⟩,⟨⟩)= 0. The
+⟨⟩ indicates empty series. The d
+(
+xi, yj
+)
+indicates the distance
+between two points xi and yj, which can be represented by
+Euclidean Distance.
+The D={D 1, D2, D3... Dn−1 describes a set of DTW dis-
+tance that each magnetic signal compared with the rest signals
+within the same class, as demonstrated below:
+D1=
+{
+DTW 1,2, DTW 1,3,··· DTW 1,n
+}
+D2=
+{
+DTW 2,1, DTW 2,3,··· DTW 2,n
+}
+..
+.
+Dn−1=
+{
+DTW n,1, DTW n,2,··· DTW n,n−1
+}
+. (2)
+The average distance between each magnetic signal to the rest
+within the same class can be calculated as follows:
+D1= 1
+n− 1
+(
+DTW 1,2+ DTW 1,3+···+ DTW 1,n
+)
+D2= 1
+n− 1
+(
+DTW 2,1+ DTW 2,3+···+DTW 2,n
+)
+..
+.
+Dn−1= 1
+n− 1
+(
+DTW n,1+ DTW n,2+···+ DTW n,n−1
+)
+(3)
+The equation (3) can be further summarized as
+Dp= 1
+n− 1
+
+
+∑
+m= 1,..., n
+m̸= p
+DTW p,m, p= 1,..., n−1
+
+
+Dr= arg minp
+{
+Dp, p= 1,..., n−1
+}
+. (4)
+We then select Sr as the signature magnetic signal of the class
+where Sr belongs to. For four vehicle classes, we can acquire
+four signature signals, which is showed in Figure 1, 2, 3, 4.
+In order to select training samples of each vehicle class,
+we calculate the DTW distance of each sample in that class
+to the signature signal of that class and select samples with
+DTW distance no greater than 2 as training samples. The
+number of training samples of each vehicle class are listed
+in the APPENDIX. Fig. 7 shows an example, which is a van
+signal compared with its signature signal. The DTW distance
+between these two signals is 0.167847.
+FIGURE 7. An example of a van signal compared with its signature signal
+by DTW.
+B. MAGNETIC FEATURE EXTRACTION PROCESS
+The process ﬂow of magnetic ﬁeld features extraction is as
+Figure 8. Each step of the process is presented in this section.
+Preemphasis: The ﬁrst step of magnetic signal feature
+extraction is ‘‘preemphasis’’. This step improves the energy
+in high frequencies and balances the energy from lower and
+higher frequencies. In the time domain, the ﬁlter equation is
+as below:
+y [n]= x [n]−αx[n− 1]. (5)
+where, n is the time, x[n] is the input signal, and 0.9≤α≤ 1.
+Windowing: In the second step ‘‘Windowing’’, we extract
+signal feature from a small window of signal. The windowing
+process is performed using signal value and window value.
+If the value of the signal at time n is s [n], the value of
+the window at time n is w [n], the signal value y[n] of this
+windowing process is presented as the following equation:
+y [n]= w [n] s [n]. (6)
+In order to shrink the values of the signal toward zero at the
+window boundaries and avoid discontinuities, we deﬁne two
+windowing functions: ‘‘Rectangular’’ and ‘‘Hamming’’.
+52626 VOLUME 7, 2019
+
+===== PAGE 6 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+FIGURE 8. Magnetic measurement feature extraction.
+Rectangular: We set the window to 1 when signal timen is
+between 0 and L-1, L is the length of the frame of the signal.
+In another time period, we set window to 0 [15, 16].
+w[ [n]=
+{
+1 0 ≤ n≤ L− 1
+0 othervise. (7)
+Hamming: Hamming window is the goal to extract the spec-
+tral features, not from the entire signal, it can extract spectral
+features from a small window of signal [15], [16].
+w [n]=
+{
+0.54− 0.46 cos 2πn
+L 0≤ n≤ L− 1
+0 othervise. (8)
+After the ‘‘Windowing’’ process, the distributed frames
+will result in two states: dynamic state and static state. The
+feature extracting process will go through two different ﬂows
+as in Figure 8. After ‘‘Windowing’’ processing, there is a
+condition to process each frame in magnetic feature and here
+are two steps including dynamic and static site, due to the
+reason of each frame in ‘‘Windowing’’.
+The windowing process includes ‘‘frame shift’’ and ‘‘frame
+size’’. In the frame state, there are two conditions: dynamic
+state and static state to resolve this issue. The dynamic pro-
+cessing is caused by frame shift that is 10ms, while the static
+state is frame size, which is 25ms. Therefore, the total feature
+is the data of dynamic and static.
+1) STATIC STATE
+Discrete Fourier Transform (DFT): For static frame con-
+dition, the third step is Discrete Fourier Transform (DFT).
+We extract magnetic information for windowed signal.
+We calculate how much energy the signal contains at different
+frequency bands. DFT is deﬁned as:
+x [k]=
+∑N−1
+n=0 x[n]ejθ. (9)
+where k and N are the sequence of frame and discrete fre-
+quency bands respectively. The e, and θ are presented in
+Euler’s formula as below:
+ejθ= cosθ+ j sinθ. (10)
+where,θ=−2 π
+N kn.
+Mel Filter Bank: The next steps of feature extraction are
+‘‘Mel Filter Bank’’ and ‘‘Log Processing’’ to reduce to lower
+amplitudes. This is computed using:
+mel(f)= 1127In(1+ f
+700 ). (11)
+where f is the frequency of the input signal.
+The ﬁnal steps are ‘‘Inverse Discrete Fourier Transform’’
+(IDFT) and ‘‘Deltas’’ and ‘‘Energy’’: therefore, the magnetic
+feature include Cepstrum, Deltas and Energy.
+Inverse Discrete Fourier Transform (IDFT): IDFT is
+computed using the following equations:
+c [n]=
+∑N−1
+n=0 log(|∑N−1
+n=0 x[n]e−j 2π
+N kn|)ej 2π
+N kn. (12)
+where c is the cepstrum of magnetic feature.
+Delta: In Delta stage, we compute the gap cepstrum (delta).
+Delta is deﬁned as the value of average of current cepstrum
+and the cepstrum of next time. Delta d is computed as below.
+d(t)= c(t+ 1)− c(t)
+2 . (13)
+Double delta is deﬁned as:
+z(t)= c(t+ 1)− c(t− 1)
+2 . (14)
+2) DYNAMIC STATE
+For the dynamic state frames after ‘‘Windowing’’, we start
+‘‘Energy’’ process as in Figure 8.
+Energy: Energy is computed using the energy of the frame
+between two time points t1 and t2. We calculate Energy of
+cepstrum c,delta d and double delta z.
+Energy=
+∑t2
+t=t1
+x2[t]. (15)
+Feature: For both process ﬂows for dynamic state and static
+state as in Figure 8, the ﬁnal features are integrated. Magnetic
+feature is presented using integration of cepstrum c, delta d,
+double delta z and Energy, as in Equations 12, 13, 14 and 15.
+V ehicle magnetic features are consequently extracted and
+represented in this process.
+VOLUME 7, 2019 52627
+
+===== PAGE 7 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+C. VEHICLE CLASSIFICATION PROCESS
+To classify magnetic sensor signals for vehicle types,
+we transform several scalar magnetic measurement data into
+one vector. We design this vector containing cepstrum c,
+Energy, and the gap cepstrum d, which are extracted from
+the vehicle magnetic feature extraction process.
+A vector space is quantized using all magnetic feature
+vectors. We compress data and store this feature information
+in magnetic vector space [20].
+We design a 3-dimensional classiﬁcation model to present
+the distribution of vehicle types as in Figure 9.
+FIGURE 9. Distribution of vehicles on 3-dimensional classification
+algorithm.
+In this distribution 3-dimension model (magnetic-x,
+magnetic-y, magnetic-z), we design three axes as the coor-
+dinate. The coordinate displays the different vehicles in the
+region. We uniquely represent each color circle by this coor-
+dinate. In this case, we design sedan as red circle, vans as
+orange circle, truck as dark red circle, bus as yellow circle,
+none-vehicle as blue circle and input data as pink circle
+in Figure 9. For example, we design the coordinate [0.352,
+0.412, 0.786] to allocate the position of one passing sedan
+in this distribution. The VQ algorithm compares the distance
+between input data (pink circle) and others vehicles (red cir-
+cle, orange circle, dark red circle, yellow circle, blue circle).
+If the distance between the input data (pink circle) and sedan
+(red circle) is the shortest, the input signal is labeled as a
+sedan. Similarly, each input signal has corresponding vehicle
+label in this 3-dimension space.
+The classiﬁcation algorithm is roughly described as fol-
+lows. Given M as the number of training samples, the train-
+ing data set can be represented as X = {xm, m =
+1,..., M}. For each training sample in the training set, xm={
+xm,1, xm,2,..., xm,k
+}
+, where k represents the dimension
+number of a feature vector used to represent each sam-
+ple. Divide the classiﬁcation feature space to N parts, i.e.
+N classes. In our case, N = 5 to indicate ﬁve pre-deﬁned
+vehicle classes. For each vehicle class n, a code vector cn={
+cn,1, cn,2,..., cn,k
+}
+, which is the feature vector of the cen-
+troid point of that class. Therefore, in our case, the code-
+book of classiﬁcation space can be represented as C =
+{cn, n= 1,..., 5}. Sn is the encoding region including cn.
+We set partition of the space P={S n, n= 1,..., 5}. If xm is
+in Sn area, xm can be quantized as cn: Q(xm)= cn.
+The average distortion Dave can be computed using
+Dave= 1
+Mk
+∑M
+m=1|xm− Q(xm)|2. (16)
+We design optimality criteria using ‘‘Nearest Neighbor Con-
+dition’’ and ‘‘Centroid Condition’’.
+These criteria are presented as follows:
+‘‘Nearest Neighbor Condition’’:
+Sn={x :|x− cn|2≤
+⏐⏐x− cn′
+⏐
+⏐2∀n
+′
+= 1, 2,..., N}. (17)
+The vectors standing on boundary can be chosen to certain
+region Sn.
+‘‘Centroid Condition’’:
+cn=
+∑xm∈ sXm
+n
+∑xm∈ s1n
+n= 1, 2,..., N. (18)
+If the transformed vehicle magnetic vector meets the both
+‘‘Nearest Neighbor Condition’’ and ‘‘Centroid Condition’’,
+then the magnetic vector can be classiﬁed into that vehicle
+type.
+V. ANALYSIS OF VEHICLE CLASSIFICATION
+EXPERIMENT RESULTS
+We perform experiments for vehicle type classiﬁcation, i.e.
+classifying signals into ﬁve classes including sedan, van,
+truck, bus and non-vehicle, based on features extracted from
+each signal. ‘‘non-vehicle’’ type is deﬁned for magnetic sig-
+nals when vehicles are absent.
+A. CLASSIFICATION WITH ROUGH TRAINING DATA
+AND CROSS- VALIDATION
+We separate magnetic measurement data into two sets: train-
+ing data set and testing data set. Experiments are set up in
+three groups. In Experiment Group 1, we set up 2/3 of entire
+data (87 sedans, 76 vans, 82 trucks, 71 buses and 96 non-
+vehicle signals) as training data and the rest 1/3 data as testing
+data. In Experiment Group 2, we set up 3/4 as training data
+and 1/4 as testing data. The last group 3, we set up 4/5 as
+training data and 1/5 as testing data.
+The cross-validation is an approach to generalize the clas-
+siﬁcation result to an independent data set. In our approach,
+we apply K-fold approaches [21]. K is set up as 3, 4 and
+5 respectively for different experiment groups. For Group 1 of
+3-fold, we ﬁrstly divided the entire experimental data into
+three partitions, each of which had 1/3 of the total data. One
+of the partitions was picked up as testing data. The data in
+the other two partitions were training data. Then, the second
+52628 VOLUME 7, 2019
+
+===== PAGE 8 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+TABLE 1. Cross-validation accuracies of three groups with rough training
+data.
+TABLE 2. Cross-validation accuracies of three groups with DTW selected
+training data.
+TABLE 3. Group 1 round 1 accuracy with rough training data (2/3 for
+training and 1/3 for testing).
+partition was used for testing and the rest two partitions were
+for training. After that, the third 1/3 data were for testing,
+and the rest 2/3 data were for training. At the end, the three
+times accuracies are averaged as the classiﬁcation accuracy
+for 3-fold cross-validation. For Group 2 of 4-fold, we divided
+the whole data set into 4 partitions. Each partition was in
+turn used for testing and the rest were for training. Then,
+TABLE 4. Group 1 round 2 accuracy with rough training data (2/3 for
+training and 1/3 for testing).
+TABLE 5. Group 1 round 3 accuracy with rough training data (2/3 for
+training and 1/3 for testing).
+TABLE 6. Group 2 round 1 accuracy with rough training data (3/4 for
+training and 1/4 for testing).
+TABLE 7. Group 2 round 2 accuracy with rough training data (3/4 for
+training and 1/4 for testing).
+the average accuracy was calculated. For Group 3, i.e. 5-fold,
+the data were divided into 5 partitions for experiments.
+Cross-validation classiﬁcation results of each experimental
+group are listed in Table 1. The number of training samples
+and testing samples are also listed. Please note, when the
+total number of samples cannot be divisible by K, the number
+of training and testing samples can be slightly different for
+each cross-validation run of the same experiment group. It is
+obvious that, the less the testing data, i.e. the more the training
+data, the higher the classiﬁcation accuracy.
+VOLUME 7, 2019 52629
+
+===== PAGE 9 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+TABLE 8. Group 2 round 3 accuracy with rough training data (3/4 for
+training and 1/4 for testing).
+TABLE 9. Group 2 round 4 accuracy with rough training data (3/4 for
+training and 1/4 for testing).
+TABLE 10. Group 3 round 1 accuracy with rough training data (4/5 for
+training and 1/5 for testing).
+TABLE 11. Group 3 round 2 accuracy with rough training data (4/5 for
+training and 1/5 for testing).
+B. CLASSIFICATION WITH DTW SELECTED TRAINING
+DATA AND CROSS-VALIDATION
+As we known, training sample selection is vital for effective
+machine learning to occur. Different from experiments pro-
+posed in V .A, in order to improve the classiﬁcation perfor-
+mance, all training data has been further selected by applying
+Dynamic Time Warping (DTW). For each vehicle type, we set
+DTW = 2 as a threshold value to select training data.
+If DTW(sw, sr) < 2, then sw will be selected for training.
+As discussed in Section IV .A,sr is the signature in a particular
+vehicle class and sw, w= 1,..., n,w̸= r, indicates the rest
+signals in the same class. The numbers of training data used
+for different sets of experiments are listed in the APPENDIX.
+TABLE 12. Group 3 round 3 accuracy with rough training data (4/5 for
+training and 1/5 for testing).
+TABLE 13. Group 3 round 4 accuracy with rough training data (4/5 for
+training and 1/5 for testing).
+TABLE 14. Group 3 round 5 accuracy with rough training data (4/5 for
+training and 1/5 for testing).
+TABLE 15. Group 1 round 1 accuracy with DTW selected training data
+(2/3 for training and 1/3 for testing).
+Table 2 summarizes the cross-validation accuracies of
+three groups with DTW selected training data. We also
+list the number of training and test samples in the table.
+When the total number of samples cannot be divisible by K,
+the number of testing data can be slightly different for each
+cross-validation run of the same experiment group. Detailed
+experimental results of cross-validation runs can be found
+in VII. Appendix.
+Compared Table 2 with Table 1, we can ﬁnd that
+the classiﬁcation performance was improved signiﬁcantly
+by selecting efﬁcient training samples. DTW, as a ﬁl-
+ter, made a great contribution to increasing classiﬁcation
+accuracy.
+52630 VOLUME 7, 2019
+
+===== PAGE 10 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+TABLE 16. Group 1 round 2 accuracy with DTW selected training data
+(2/3 for training and 1/3 for testing).
+TABLE 17. Group 1 round 3 accuracy with DTW selected training data
+(2/3 for training and 1/3 for testing).
+TABLE 18. Group 2 round 1 accuracy with DTW selected training data
+(3/4 for training and 1/4 for testing).
+TABLE 19. Group 2 round 2 accuracy with DTW selected training data
+(3/4 for training and 1/4 for testing).
+VI. CONCLUSION
+In this paper, we present a road vehicle identiﬁcation and
+classiﬁcation approach using magnetic sensing, magnetic
+signal feature extraction and classiﬁcation. This approach is
+designed for analyzing road trafﬁc in intelligent transporta-
+tion systems.
+Using this approach, the installation of magnetic sensor in
+roadside does not require interruption of road trafﬁc. This
+reduces the deployment and maintenance cost.
+Processing magnetic signals by extracting the features of
+MFCC and VQ based on classiﬁcation can categorize ﬁve
+types of vehicle signals. Applying DTW to select efﬁcient
+TABLE 20. Group 2 round 3 accuracy with DTW selected training data
+(3/4 for training and 1/4 for testing).
+TABLE 21. Group 2 round 4 accuracy with DTW selected training data
+(3/4 for training and 1/4 for testing).
+TABLE 22. Group 3 round 1 accuracy with DTW selected training data
+(4/5 for training and 1/5 for testing).
+TABLE 23. Group 3 round 2 accuracy with DTW selected training data
+(4/5 for training and 1/5 for testing).
+TABLE 24. Group 3 round 3 accuracy with DTW selected training data
+(4/5 for training and 1/5 for testing).
+training samples can further improve the classiﬁcation accu-
+racy signiﬁcantly.
+As an initial research, we have set up distance between
+the sensor and passing vehicles as 60 centimeters. In our
+VOLUME 7, 2019 52631
+
+===== PAGE 11 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+TABLE 25. Group 3 round 4 accuracy with DTW selected training data
+(4/5 for training and 1/5 for testing).
+TABLE 26. Group 3 round 5 accuracy with DTW selected training data
+(4/5 for training and 1/5 for testing).
+future studies, we will consider applying multiple sensors to
+monitor multiple lanes. Moreover, experiments can be carried
+out to investigate the effect of various distance between AMR
+sensor and passing vehicles.
+APPENDIX
+Detailed experimental results of cross-validation runs are
+listed as follows.
+CLASSIFICATION WITH ROUGH TRAINING DATA AND
+CROSS-VALIDATION
+See Tables 3–14.
+CLASSIFICATION WITH ROUGH TRAINING DATA AND
+CROSS-VALIDATION
+See Tables 15–26.
+REFERENCES
+[1] Federal Highway Administration Research and Technology Coordinating,
+Developing Highway Transportation Innovations , U.S. Department of
+Transportation, Washington, DC, USA, May 2006.
+[2] G. P . Mazarakis and J. N. Avaritsiotis, ‘‘V ehicle classiﬁcation in
+sensor networks using time-domain signal processing and neural
+networks,’’ Microprocess. Microsyst., vol. 31, no. 6, pp. 381–392,
+Feb. 2007.
+[3] Y . K. Ki and D.-K. Baik, ‘‘V ehicle-classiﬁcation algorithm for single-loop
+detectors using neural networks,’’IEEE Trans. V eh. Technol., vol. 55, no. 6,
+pp. 1704–1711, Nov. 2006.
+[4] P . Bajaj, P . Sharma, and A. Deshmukh, ‘‘V ehicle classiﬁcation for sin-
+gle loop detector with neural genetic controller: A design approach,’’
+in Proc. IEEE Intell. Transp. Syst. Conf. (ITSC), Sep./Oct. 2007,
+pp. 721–725.
+[5] J. Gajda and M. Stencel, ‘‘A highly selective vehicle classiﬁcation uti-
+lizing dual-loop inductive detector,’’ Metrol. Meas. Syst., vol. 21, no. 3,
+pp. 473–484, 2014.
+[6] H. Roe, and G. S. Hobson, ‘‘Improved discrimination of microwave vehicle
+proﬁles,’’ in IEEE MTT-S Int. Microw. Symp. Dig., vol. 2, Jun. 1992,
+pp. 717–720.
+[7] I. Llamas-Garro, K. Lukin, M. T. de Melo, and J.-M. Kim, ‘‘Frequency
+and angular estimations of detected microwave source using unmanned
+aerial vehicles,’’ in IEEE MTT-S Int. Microw. Symp. Dig., Puerto V allarta,
+Mexico, Dec. 2016, pp. 1–3.
+[8] P . Hurney, P . Waldron, F. Morgan, E. Jones, and M. Glavin, ‘‘Night-time
+pedestrian classiﬁcation with histograms of oriented gradients-local binary
+patterns vectors,’’ IET Intell. Transp. Syst., vol. 9, no. 1, pp. 75–85, 2015.
+[9] S. Shi, Z. Qin, and J. Xu, ‘‘Robust algorithm of vehicle classiﬁcation,’’ in
+Proc. 8th ACIS Int. Conf. Softw. Eng., Artif. Intell., Netw., Parallel/Distrib.
+Comput. (SNPD). vol. 3, Jul./Aug. 2007, pp. 269–272.
+[10] M. J. Caruso and L. S. Withanawasam, ‘‘V ehicle detection and compass
+applications using AMR magnetic sensors,’’ Sensors Expo Proc., vol. 477,
+p. 39, May 1999.
+[11] S. Y . Cheung, S. Coleri, B. Dundar, S. Ganesh, C.-W. Tan, and P . V araiya,
+‘‘Trafﬁc measurement and vehicle classiﬁcation with single magnetic
+sensor,’’ Transp. Res. Rec., J. Transp. Res. Board, vol. 1917, no. 1,
+pp. 173–181, 2005.
+[12] S. Keawkamnerd, J. Chinrungrueng, and C. Jaruchart, ‘‘V ehicle classiﬁca-
+tion with low computation magnetic sensor,’’ in Proc. 8th Int. Conf. ITS
+Telecommun. (ITST), Oct. 2008, pp. 164–169.
+[13] S. Taghvaeeyan and R. Rajamani, ‘‘Portable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,’’ IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[14] B. Y ang and Y . Lei, ‘‘V ehicle detection and classiﬁcation for low-speed
+congested trafﬁc with anisotropic magnetoresistive sensor,’’ IEEE Sen-
+sors J., vol. 15, no. 2, pp. 1132–1138, Feb. 2015.
+[15] Z. Ma, H. Y u, Z. Tan, and J. Guo, ‘‘Text-independent speaker iden-
+tiﬁcation using the histogram transform model,’’ IEEE Access, vol. 4,
+pp. 9733–9739, 2016.
+[16] A. K. H. Al-Ali, D. Dean, B. Senadji, V . Chandran, and G. R. Naik,
+‘‘Enhanced forensic speaker veriﬁcation using a combination of DWT
+and MFCC feature warping in the presence of noise and reverberation
+conditions,’’ IEEE Access, vol. 5, pp. 15400–15413, 2017.
+[17] S. Singh and E. G. Rajan, ‘‘V ector quantization approach for speaker
+recognition using MFCC and inverted MFCC,’’ Int. J. Comput. Appl.,
+vol. 17, no. 1, pp. 1–7, Mar. 2011.
+[18] F. Petitjean, G. Forestier, G. I. Webb, A. E. Nicholson, Y . Chen, and
+E. Keogh, ‘‘Dynamic time warping averaging of time series allows faster
+and more accurate classiﬁcation,’’ inProc. ICDM, Dec. 2014, pp. 470–479.
+[19] L. Y e and E. Keogh, ‘‘Time series shapelets: A new primitive for data min-
+ing,’’ in Proc. SIGKDD. New Y ork, NY , USA: ACM, 2009, pp. 947–956.
+[20] R. Gray, ‘‘V ector quantization,’’ IEEE ASSP Mag., vol. 1, no. 2, pp. 4–29,
+Apr. 1984.
+[21] B. Gu, V . S. Sheng, K. Y . Tay, W. Romano, and S. Li, ‘‘Cross validation
+through two-dimensional solution surface for cost-sensitive SVM,’’ IEEE
+Trans. Pattern Anal. Mach. Intell., vol. 39, no. 6, pp. 1103–1121, Jun. 2017.
+XIAO CHEN received the master’s degree in information technology from
+the University of Technology Sydney, Sydney, Australia, in 2016, where he is
+currently pursuing the master’s degree in engineering. His research interests
+include sensor networks and machine learning fundamentals, with a focus
+on applications in image processing, speech processing, data mining, and
+biomedical signal processing.
+XIAOYING KONG received the B.E. and M.E. degrees in control engineer-
+ing from the Beijing University of Aeronautics and Astronautics, and the
+Ph.D. degree in mechatronic engineering from The University of Sydney.
+She is currently a Senior Lecturer with the Faculty of Engineering and Infor-
+mation Technology, University of Technology, Sydney. She has many years’
+of industrial experience in aeronautical engineering and web development.
+Her research interests include control theory, sensor technologies, inertial
+navigation, data fusion, robotics, and web engineering.
+52632 VOLUME 7, 2019
+
+===== PAGE 12 =====
+
+X. Chen et al.: Road Vehicle Detection and Classification Using Magnetic Field Measurement
+MIN XU received the B.E. degree from the University of Science and
+Technology of China, Hefei, China, the M.S. degree from the National Uni-
+versity of Singapore, Singapore, and the Ph.D. degree from The University of
+Newcastle, Callaghan, NSW, Australia. She is currently an Associate Profes-
+sor with the University of Technology Sydney, Ultimo, NSW, Australia. Her
+current research interests include multimedia processing, computer vision,
+and machine learning.
+KUMBESAN SANDRASEGARAN received the Ph.D. degree in electrical
+engineering from McGill University, Canada, 1994. He is currently an
+Associate Professor with the University of Technology, Sydney. His current
+research work focuses on two main areas radio resource management in
+mobile networks, and engineering of remote monitoring systems for novel
+applications with industry through the use of embedded systems, sensors,
+and communications systems.
+JIANGBIN ZHENG was an Assistant Researcher with The Hong Kong
+Polytechnic University, in 2002. From 2004 to 2005, he studied as a Visiting
+Scholar at The University of Sydney, Australia. He is a Ph.D., Doctorial
+Supervisor, a Professor of the School of Software, and the Director of the
+State Training Center of International Software Talents, Northwestern Poly-
+technical University, Xi’an. His main research interests include computer
+vision, mobile media processing technology, image processing, and artiﬁcial
+intelligence. So far, he has won seven awards for science and technology
+at the provincial and ministerial levels, a provincial ﬁrst prize for teaching
+achievement, and two second prizes for the national teaching achievement.
+VOLUME 7, 2019 52633

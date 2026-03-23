@@ -1,0 +1,876 @@
+
+
+===== PAGE 1 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORT ATION SYSTEMS, VOL. 19, NO. 5, MAY 2018 1365
+Roadside Magnetic Sensor System for Vehicle
+Detection in Urban Environments
+Qing Wang, Jianying Zheng, Hao Xu, Bin Xu, and Rong Chen
+Abstract— Intelligent Transportation Systems (ITS) are widely
+researched to improve the trafﬁ c situation. In ITS, vehicle
+detection system plays a signiﬁcant role. At present, vehicle
+detection is often conducted by inductive loops, which are very
+expensive and inconvenient to install and maintain. Video camera
+is another frequently used detector, but it needs high computing
+power. In order to solve these problems, this paper focuses
+on the development of a roadside magnetic sensor system for
+vehicle detection. The device is installed at the side of the
+road and measures trafﬁc in the adjacent lane (the closest lane
+to the sensor node). The data are transmitted by the IEEE
+802.15.4 communication protocol. A novel adapted threshold state
+machine algorithm is proposed to detect vehicles. Since false
+judgments created by large vehicles passing in the nonadjacent
+lane (the lane next to the closest lane to the sensor node) are
+frequent in urban environments, a novel feature extracted by
+fusion of three magnetic sensor signals are proposed to reduce
+this error. The developed magnetic sensor system is wireless,
+compact, and cost-effective. The experimental results show that
+the proposed system achieves high accuracy and is viable in urban
+environments.
+Index Terms — Intelligent transportation systems, magnetic
+sensors, vehicle detection, wireless sensor network.
+I. I NTRODUCTION
+I
+N urban cities, the trafﬁc situation has become very dete-
+riorating and the trafﬁc congestion is very common, which
+produces huge economic losses. Intelligent Transportation
+Systems (ITS) are worldwide re searched to alleviate these
+problems and improve the trafﬁc efﬁciency [1]. As a part of
+ITS, real-time vehicle detection plays an important role, since
+it can gather the fundamental data used in ITS [2]. At present,
+there are various systems used f or vehicle detection, such as
+inductive loop system, video camera system, microwave radar
+system, pneumatic tube system and piezoelectric cable system.
+In these systems, the detectors are ﬁrst buried under the road
+surface or equipped above the road. After that, they collect
+and send data to the trafﬁc management center through wires.
+Manuscript received June 13, 2016; revised January 19, 2017 and
+May 8, 2017; accepted June 27, 2017. Date of publication August 7, 2017; date
+of current version May 2, 2018. This work was supported by the 2015 annual
+general college graduate research and i nnovation project in Jiangsu province
+under Grant KYLX15_1236. The Associate Editor for this paper was
+W.-H. Lin. (Corresponding author: Jianying Zheng.)
+Q. Wang, J. Zheng, B. Xu, and R. Chen are with the School
+of Urban Rail Transportation, Soochow University, Suzhou 215137,
+China (e-mail: wangqing9115@163.com; zhengjianying@suda.edu.cn;
+xubin0924@foxmail.com; chenrong1006@163.com).
+H. Xu is with the Department of Civil and Environmental Engineering,
+University of Nevada, Reno, NV 89557 USA (e-mail: haox@unr.edu).
+Experimental data are available at http://lifepaper.cn/ExperimentalData.zip.
+Color versions of one or more of the ﬁgures in this paper are available
+online at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TITS.2017.2723908
+The shortcomings of these systems are high cost, complicated
+installation and limited scalability [3]. Since wireless sensor
+network (WSN) has many advantages, such as low cost,
+low power consumption, low complexity and self-organizing,
+the vehicle detection systems based on WSN are proposed to
+solve these problems [4], [5].
+The detection sensor is the key part of a vehicle detection
+system. The most common detection sensor used in trafﬁc
+surveillance system is the inductive loop sensor which has the
+following drawbacks. During the time of installation or main-
+tenance, the inductive loop must be directly buried under the
+lane, so that the trafﬁc will be interrupted. The cutting seam
+will soften the pavement and it is easy to damage the road
+surface. The inductive loop is also easily affected by freezing,
+saline and busy trafﬁc [2], [6]. Another widely used detection
+sensor is the video camera. It is a non-intrusive sensor that
+can be installed above the road so as to avoid damaging
+the road. Video camera system collects highly accurate trafﬁc
+information, but requires high computing power, wired power
+supplies and wired communication. This increases the cost
+and decreases scalability. The video camera is also easily
+affected by environmental factors, such as rain, wind, snow
+and fog [7], [8].
+Recently, the magnetic sensor has been used in vehicle
+detection due to its advantages, such as low cost, small
+size, high accuracy, and easy ins tallation. The applications of
+magnetic sensor are often based on WSN. It is a very attractive
+alternate to the conventional vehicle detection sensors, such as
+inductive loops and video cameras. Unlike these conventional
+methods, using magnetic sensor for vehicle detection based on
+WSN has the following advantages.
+1) There is no need to close the lane and cause damage
+to the road surface. The repair is as convenient as
+installation.
+2) Magnetic sensor detects the vehicles through the changes
+on earth’s magnetic ﬁeld, so it can’t be easily inﬂuenced
+by the climate.
+3) There is no reaction to the non-ferromagnetic objects.
+Therefore, the magnetic sensor can effectively reduce
+the detection error.
+4) The type of vehicle can be roughly determined by the
+ﬂuctuation range on the magnetic ﬁeld [9].
+Among the researched magnetic sensor systems, there are
+two main conﬁgurations of the sensor nodes. In one conﬁg-
+uration, the sensor nodes are buried under the road surface.
+Whereas, in the other conﬁguration, the sensor nodes are
+placed at the side of the road. Both of these two conﬁgurations
+1524-9050 © 2017 I EEE. Personal u se is perm itted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+1366 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 19, NO. 5, MAY 2018
+have their own advantages and d isadvantages. For example,
+sensors buried under the road surface have stronger signal
+strength while those placed at the side of the road have
+easier installation and maintenance. University of California at
+Berkeley is the forerunner of using magnetic sensor for vehicle
+detection. Their sensor nodes are designed to deploy in the
+center of the lane and the installation takes about 10 minutes.
+During the period of installation and repair, the trafﬁc has
+to be interrupted [2]. Therefore, the system has the same
+disadvantage as inductive loop systems. In order to reduce
+the system cost and the difﬁcu lty of installation, most recent
+researches prefer a more convenient conﬁguration method that
+deploying the sensor nodes at roadside.
+In this paper, “feature” means character calculated by raw
+data and it can be used in vehicle detection algorithms.
+“Feature” is extracted from raw data and is used in detection
+algorithms instead of the raw data. Vehicle detection algorithm
+based on the extracted feature is of great importance in vehicle
+detection systems. Most researches use threshold methods to
+detect vehicles. Because the magnetic ﬁeld signal is almost
+stable at a value when there are no vehicles around, and the
+signal changes a lot when a vehicle passes by. Finally, this
+signal goes back to the previous stable value when the vehicle
+leaves. This background magnetic signal value is deﬁned as
+magnetic baseline. In [10], a ﬁxed threshold state machine
+algorithm based on a single axis magnetic signal are proposed.
+In this algorithm, a ﬁxed threshold around the magnetic signal
+baseline is set ﬁrst. When a vehicle is passing over the detec-
+tion area, the magnetic signal ﬂuctuates around the baseline
+and crosses the threshold. If the duration of this state surpasses
+a critical value, then the vehicle decision can be generated.
+Since temperature drift and time drift of the magnetic ﬁeld
+can slightly change the magnetic baseline from time to time,
+the ﬁxed threshold method cannot work efﬁciently when the
+drifts occur. In order to solve this problem, in [3] and [11],
+an adaptive threshold state machine algorithm is used to track
+the magnetic baseline. In this method, the magnetic baseline
+keeps updating along with the drifts. To improve the signal-
+to-noise ratio (SNR), in [12], a feature calculated by cross
+correlation between the raw signal and a referential signal
+is obtained ﬁrst. Then, a simple threshold method is used
+to detect vesicles. By this way, there is no need to track
+the magnetic baseline. Another algorithm that can ignore the
+inﬂuence of drifts is used in [13] . In this research, the variance
+weighting is extracted by 3-axis magnetic signals to reﬂect
+the magnetic ﬁeld ﬂuctuations caused by vehicles. Then a
+ﬁxed double-threshold state machine algorithm is proposed.
+When the variance weighting runs over the two thresholds
+excessively, a vehicle detection decision generates. Similarly,
+when the variance weighting goes below the two thresholds
+excessively, a vehicle is considered to leave the detection area.
+By setting two thresholds, the entry or departure of a vehicle
+can be guaranteed.
+Usually, one magnetic sensor node is set to measure one-
+lane trafﬁc because of its low sensing distance. However, large
+vehicles driving in the nonadjacent lane may cause false calls
+for their strong signal strength. This case is easier to take place
+in urban cities in which the lane-width is relatively smaller.
+Until now, little attention has been paid to this circumstance.
+Unlike the most researched magnetic sensor systems, this
+paper describes a more convenient system that place the sensor
+node at the side of the road. The magnetic ﬁeld angle between
+y-axis and z-axis is calculated as the vehicle feature and
+an adaptive threshold state machine algorithm are proposed
+to realize the vehicle detection. In order to reduce the false
+detections caused by vehicles d riving in the nonadjacent lane,
+a novel feature extracted by fusion of magnetic sensor array
+is used to make the system practicable.
+The rest of this paper is organized as follows. In Section II,
+system hardware and sensor node conﬁguration are introduced.
+In Section III, the vehicle feature calculated by the magnetic
+signals is ﬁrst analyzed, and then vehicle detection algorithm is
+presented. In Section IV , the way to reduce misjudgments in
+the nonadjacent lane is introduced. In Section V , the exper-
+imental results and related anal ysis are performed. Finally,
+Section VI draws conclusions and discusses the future works.
+II. H
+ARDWARE PLATFORM AND SYSTEM CONFIGURATION
+Mother-earth provides us with earth’s magnetic ﬁeld that
+permeates everything between the south and north magnetic
+poles. As we know, almost all tra fﬁc vehicles have signiﬁcant
+amount of ferrous metals in their chassis (iron, steel, nickel,
+cobalt, etc.). Once a vehicle passing nearby, it will cause
+disturbances to the magnetic ﬁeld and a magnetic sensor can
+be used to capture these disturbances. Appeal to this fact, mag-
+netic sensor is a good candidate for detecting vehicles [14].
+The triaxial magnetic sensor Honeywell HMC5883L is
+chosen in this research for its high sensitivity and low cost.
+HMC5883L is a fully digital sensor with a 12-bit built-in
+analog-to-digital converter (ADC). This sensor can achieve
+5 milligauss resolution in ±8 gauss ﬁeld and each sensor
+module costs only about 2 dollars [15]. ZigBee is a wireless
+communication protocol based on IEEE 802.15.4 standard.
+Since it uses low overhead data transmission and requires
+low system resources which are vitally important factors
+for embedded sensor networks. ZigBee is a more suitable
+communication technology for the wireless sensor networks
+based ITS applications when compared with other short-range
+wireless protocols such as Bluetooth and Wi-Fi [16]. Therefore
+in this paper, the CC2530 wireless transceiver is used for
+wireless communication. CC2530 is a chip designed by Texas
+Instruments Inc. (TI) which supports ZigBee protocol. This
+transceiver works on the 2.4 GHz channel. It has an outdoor
+communication range of 100 m, required power of 150 mW
+and its data transmission rate is 250 kb/s [17].
+A single printed circuit board (PCB) we designed is shown
+in Fig. 1. It contains an STM32F103RBT6 microprocessor,
+three HMC5883L magnetic sensors and a CC2530 wireless
+transceiver. The magnetic sensors are set at different height and
+the distance between every two adjacent sensors is 5 cm. When
+the circuit is running, the microprocessor samples the magnetic
+sensor output at a rate of 50 Hz. The data is transferred from
+one PCB to another wirelessly or from a PCB to a laptop
+through a serial port. Many rest components of this PCB are
+designed to complete other tasks that have nothing to do with
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+W ANGet al.: ROADSIDE MAGNETIC SENSOR SYSTEM FOR VEHICLE DETECTION IN URBAN ENVIRONMENTS 1367
+Fig. 1. Developed PCB for sensor node.
+Fig. 2. Sensor node conﬁguration diagram.
+this research. In other words, the PCB can be redesigned to
+have a more compact size if it only operates vehicle detection
+task.
+The PCB works as a sensor node or a sink node of the
+entire vehicle detection system. The speciﬁc way of system
+conﬁguration is shown in Fig. 2. The sensor node is deployed
+at the side of the road and the lowest one among the three
+magnetic sensors is set at a height of 20 cm. The x-axis is
+along or contrary to the direction of the lane. The y-axis is per-
+pendicular to the direction of the lane, and the z-axis is
+perpendicular to the road surface and upward. Because the
+direction of the lane differs in different roads, vehicles may
+drive in the forward direction or in the reverse direction of
+x-axis. According to the experiments in [14] and [18], these
+two circumstances only cause the symmetry of the curve of
+x, y,a n d z axes. As a result, the direction of the lane has
+no inﬂuence on the vehicle detection methods used in this
+research. In our ﬁeld experiment, the direction of the lane
+is contrary to the direction of x-axis. This is also shown
+in Fig. 2. The arrow indicates the direction of the driving
+Fig. 3. Magnetic ﬁeld readings for a sedan.
+vehicles. When conducting vehicle detection tasks, the sensor
+node will measure the magnetic ﬁeld and transmit data to the
+sink node by ZigBee communication. Then, the sink node will
+receive the data and transmit it to the laptop by serial port
+communication. Finally, the laptop will display and save the
+trafﬁc measurements. Although the magnetic sensor has three
+axes, in this paper, only y-axis and z-axis outputs are used in
+feature extraction and vehi cle detection algorithms.
+III. V
+EHICLE DETECTION
+A. Signal Filtering and Feature Extraction
+As a vector, the magnetic ﬁeld can be divided into three
+components in x, y,a n d z directions. When a vehicle passes
+by a magnetic sensor, the change of magnetic ﬁeld caused
+by the vehicle can be reﬂected in the output of each sensor
+axis. Fig. 3 depicts the raw outputs of x, y,a n d z axis of the
+sensor at a height of 20 cm when a sedan passing over in
+the adjacent lane. Since the fre quent up-and-down ﬂuctuation
+of the magnetic signal is not a desirable characteristic for the
+vehicle detection algorithm, a smoothing ﬁlter, which takes
+a running average of the signal, is used to smooth out the
+signal [19]. The running average is given by the following
+equation:
+B
+i (k) =
+⎧
+⎪⎨
+⎪⎩
+ri (k) + ri (k − 1) +··· ri (1)
+k , k < M
+ri (k) + ri (k − 1) +··· ri (k − M + 1)
+M , k ≥ M
+fo r i ∈{ x, y, z} (1)
+where r (k) is the raw signal, M is the predeﬁned running
+average buffer size, and the subscript i represents one of the
+three axes. The ﬁltered signal of the above sedan is shown
+in Fig. 4. After ﬁltering, the amplitudes of each signal get a
+little lower. However, the signals become very smooth and it
+facilitates the analysis for vehicle signals.
+Usually, single axis signal is used as the vehicle detection
+feature, and z-axis is commonly used because its signal is the
+most uniform among the three axes. For the magnetic ﬁeld is a
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+1368 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 19, NO. 5, MAY 2018
+Fig. 4. The ﬁltered signal of the sedan.
+vector, both strength and direction of the magnetic ﬁeld at the
+sensor node will change when a vehicle passes by. This paper
+chooses the vehicle detection feature from the magnetic ﬁeld
+direction perspective. We deﬁne A(k) as the angle between
+y-axis and z-axis which can be calculated by the following
+equation:
+A(k) = arctan ( B
+z(k)
+By(k) ) (2)
+where By (k) is the ﬁltered output of y-axis and Bz (k) is the
+ﬁltered output of z-axis.
+Fig. 5 shows the comparison of Bz (k) and A(k) when
+ﬁve vehicles passed by successively. These vehicles are a
+two-axle truck, a minibus, a pickup, a van and a two-axle truck
+respectively in order. The vehicle signals of Bz (k) usually
+only have upward changes. However, observing the forth
+vehicle signal of Bz (k) which created by a van, it can be
+seen that this signal has both upward and downward changes.
+Compared with B
+z (k), the whole ﬁve vehicle signals of A(k)
+almost only have downward changes. This behavior makes
+A(k) very suitable for vehicle d etection, because too much
+vibrations in the signal can easily cause repetitive detections
+of a single vehicle. Therefore, the feature A(k) we proposed
+is more stable and more uniform than the commonly used
+feature Bz (k). Also, compared with the feathers used in other
+researches, such as cross correlation coefﬁcient and variance
+weighting, A(k) is computationally simple and has less impact
+on the real-time running of the sensor node’s processor.
+B. Vehicle Detection Algorithm
+As mentioned above, the angle between y-axis and z-axis is
+chosen for vehicle detection. Based on this feature, an adaptive
+threshold state machine algorithm is designed for detecting
+vehicles in moving trafﬁc. The main reason for using a
+threshold method instead of other statistical methods is to
+decrease the calculation amount of the sensor node’s processor.
+As a result, the detection algorithm can efﬁciently conduct on
+Fig. 5. Comparison of Bz (k) and A(k) signals.
+the sensor node’s processor and the detection results can be
+generated in real time.
+1) Adaptive Baseline: Two scenarios will cause uncontrol-
+lable drifts in the magnetic signal. One scenario comes from
+the fact that mother nature will change the earth’s magnetic
+ﬁeld by small amounts day-to-day and minute-to-minute.
+Another scenario occurs when temperature on the magnetic
+sensor changes rapidly. The worst case is on summer cloudy
+days when the sun comes out of the clouds and suddenly
+begins baking the housing of the sensor [14]. When the
+magnetic sensor system works for a long time, these drifts may
+result of failures if using ﬁxed threshold detection methods.
+In order to eliminate the inﬂuence of drifts in a long time,
+an adaptive baseline is ﬁrst set up to trace the background
+magnetic readings which can be obtained in the absence of
+vehicles. Then the adaptive threshold level can be determined
+by the baseline for the detection state machine. The adaptive
+baselines for three magnetic sensor axes are calculated by the
+following equation:
+L
+i (k) = 1
+N
+k∑
+j=k− N+1
+Bi ( j ) fo r i ∈{ x, y, z} (3)
+Where Li (k) is the adaptive baseline, Bi (k) is the ﬁltered
+magnetic signal, and the subscript i represents one of the
+three axes. The adaptive baseline is only updated on condition
+that the variance of last successive N readings of each axis
+is no more than V0. V0 represents the variance of successive
+N readings of each axis when there are no vehicle and other
+ferrous things around the sensor node. In this way, the baseline
+of each axis can be accurately updated with no interference.
+Then, the baseline of A(k) can also be updated by (2).
+2) Threshold Selection: A threshold of the variation of A(k)
+based on the baseline should be set to distinguish whether
+there is a vehicle passing by or not. By analyzing a quantity
+of vehicle signals, the threshold level can be empirically
+selected. Because of the large ﬂuctuations on A(k),a l m o s t
+each vehicle driving in the adj acent lane can be detected by
+casually choosing a threshold around the baseline. However,
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+W ANGet al.: ROADSIDE MAGNETIC SENSOR SYSTEM FOR VEHICLE DETECTION IN URBAN ENVIRONMENTS 1369
+Fig. 6. Vehicle detection results of varying thresholds.
+many vehicles driving in the nonadjacent lane can also be
+detected if the threshold is too low. Since the application
+of this research is to measure trafﬁc in the adjacent lane,
+vehicle detections in the nona djacent lane is undesired. As a
+result, a suitable threshold should be selected to ensure the
+accuracy in the adjacent lane and reduce the detections in the
+nonadjacent lane as far as possible at the same time.
+A dataset composed of 44 vehicles in the adjacent lane and
+75 vehicles in the nonadjacent lane is used for evaluating the
+threshold. Values range from 0.01 rad to 0.02 rad are selected
+as the threshold of A(k) to analysis the effect. This range is
+empirically chosen for the reason that vehicle detection is quite
+inaccurate out of this range. If the threshold is set lower, more
+extra detections generate by nonadjacent vehicles or signal
+noise. If the threshold is set higher, more small vehicles in
+the adjacent lane cannot be detected. The relationship between
+detected vehicles and varying threshold is shown in Fig. 6. The
+blue curve and the red curve rep resent the detected vehicles
+in the adjacent lane and in the nonadjacent lane respectively.
+Both of these two curves have a declining trend, because more
+and more vehicle cannot pass through the threshold when the
+threshold grows. It can be seen that the 44 vehicles in the
+adjacent lane are all correctly detected when the threshold
+ranges from 0.01 rad to 0.0165 rad. Then the detection
+rate decreases afterwards. When it comes to vehicles in the
+nonadjacent lane, the detection rate keeps going down when
+the threshold increases. As is discussed before, a threshold
+should be chosen to maximize the detection rate in the adjacent
+lane and reduce the detecti ons in the nonadjacent lane as far
+as possible. Therefore, 0.0165 rad is selected as the threshold,
+because this value keeps a 100% de tection rate in the adjacent
+lane and a relatively low detection rate in the nonadjacent lane.
+3) Detection State Machine: The adaptive threshold can
+be easily calculated based on the adaptive baseline and the
+selected threshold which mentioned above. In general cases,
+there should be two thresholds that one is above the baseline
+and the other is underneath the baseline. However, this paper
+only cares about the latter because the feature A(k) almost
+Fig. 7. State machine diagram of vehicle detection algorithm.
+only has downward changes when vehicles passing through
+the detection area. In this way, the computational complexity
+of the detection algorithm can be reduced.
+T (k) is deﬁned as the threshold underneath the baseline.
+Then A(k)< T (k) represents that the signal strength exceeds
+the threshold and this means that a vehicle is entering the
+detection area. Similarly, A(k) ≥ T (k) represents that the
+signal strength stays around the baseline and does not surpass
+the threshold. This means that the place near the sensor
+node is in the absence of vehicles. Therefore in the detection
+state machine, if the successive sequence of A(k)< T (k)
+is up to a critical value M, a vehicle is detected. If the
+successive sequence of A(k) ≥ T (k) is up to a critical value L,
+the detected vehicle is leaving the detection area. The multi-
+hop detection state machine is shown in Fig. 7. Its main
+purpose is to convert A(k) to a binary detection ﬂag. The
+logic ﬂow of the state machine is described as follows.
+S1 (“Update Baseline”): Immediately after the system is
+reset, there must be no vehicles in the detection area. It takes
+2 seconds to initialize the baseline by calculating the average
+outputs of the three axes. Then it will go into state S2. If state
+S1 is reentered from state S2, the baseline will be updated
+adaptively.
+S2 (“Flag0: No_Vehicles”): After initializing or updating
+the baseline, it will jump to this state. If the feature A(k)
+exceeds the adaptive threshold T (k), it will jump to state S3.
+S3 (“Count1”): If a vehicle passes by the sensor node,
+it will produce a successive sequence of A(k) that exceeds
+T (k). This state is set to track the sequence. Once A(k)
+is
+under T (k), it will get into state S4 immediately. If the number
+of the successive sequence is up to a critical value M, it will
+go to state S5.
+S4 (“Count0”): In this state, if A(k) stays under T (k)
+continuously and the number of this sequence reaches a critical
+value L, it will go back to state S2. In order not to miss a
+potential vehicle detection, it will jump back to the state S3 if
+A(k) exceeds the threshold T (k) again.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+1370 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 19, NO. 5, MAY 2018
+Fig. 8. Vehicle signals and detection ﬂags.
+S5 (“Flag1: Vehicl e_Detected”): Getting into this state
+indicates that a vehicle is successfully detected and staying
+in state S5 means that the vehicle is still near the sensor
+node. Consequently, the binary detection ﬂag is set to 1 in
+the whole S5. If A(k) stays under T (k) successively and the
+number of this sequence reaches a critical value L,w h i c h
+means the vehicle has left the d etection area, it will go back
+to state S2 and start waiting for a vehicle again.
+By running the aforementioned detection state machine,
+the binary detection ﬂag D(k) can be generated accordingly.
+Only in state S5, the ﬂag is set to 1. And in other four states,
+the ﬂag remains at 0. Fig. 8 shows the comparison of vehicle
+signals and detection ﬂags. In this ﬁgure, three vehicles pass
+over the sensor node successively and cause three obvious
+downward changes in A(k). Each detection ﬂag changes to
+1 shortly after the corresponding vehicle signal. Since the
+values of M and L are set to 9 and 12 respectively, the slight
+time delay between a vehicle signal and its detection ﬂag is
+within 12 measurements. This costs about 0.24s for the sample
+rate is set to 50 Hz. As a result, the detection can be informed
+to the processor within 0.24s. Considering that the detection
+algorithm is simple to compute and has a short time delay,
+it can be efﬁciently implemented in the sensor node, and the
+sensor node can generate vehicle detection report in real-time.
+Compared with centralized processing systems, this distributed
+processing way can reduce the data transmission and the power
+consumption of the system.
+IV . E
+RROR REDUCTION TO THE NONADJACENT LANE
+Each vehicle can apparently disturb the Earth’s magnetic
+ﬁeld at a certain distance, and this distance varies in different
+vehicles according to how many ferrous metals the vehicle has.
+Analytical modeling and expe rimental measurements show
+Fig. 9. Misjudgment in the nonadjacent lane.
+that the magnetic ﬁeld intensity around a vehicle has a relation
+that approximately varies as 1 /x with distance, where x is the
+lateral distance from the vehicle. A Chevy Impala vehicle is
+tested and it still has a slight magnetic inﬂuence at a distance
+of 6 m [20], [21]. Considering that Chevy Impala is relatively
+small among vehicles, the inﬂuenced distance can be longer
+if the vehicle is larger than Chevy Impala.
+The common lane-width in urban cities is about 3.5 m,
+which means that the distance between the sensor node and
+vehicles in the nonadjacent lane is about 4 m in normal
+driving. Small vehicles such as sedans and Sports Utility Vehi-
+cles (SUVs) may have a slight magnetic disturbance on the
+sensor node and they can be ignored by setting a suitable
+threshold level. However, large vehicles such as vans, buses
+and trucks may have a strong magnetic effect that can cause
+false detections to the system. Fig. 9 shows the four vehicles
+that go through the direction area successively. In this ﬁgure,
+the second vehicle is the only vehicle which passes by in the
+adjacent lane and it is correc tly detected. The third and
+the fourth vehicles are two sedans. They are neglected by
+the detection algorithm, because the signal strength is too low
+and does not exceed the threshold. The ﬁrst vehicle is a truck
+in the nonadjacent lane which still has a strong effect on the
+sensor node. It runs across the threshold and causes a false
+detection to the system. This circumstance occurs in urban
+cities from time to time and the probability of these extra
+detections in the nonadjacent l ane rises when there are more
+large vehicles driving on the road.
+In vehicle detection applications, the magnetic sensor can
+be embedded in the middle of the lane or be placed at the side
+of the road. The two conﬁgurations both generate detections of
+vehicles in the nonadjacent lan e. In the former conﬁguration,
+if the road only has two lanes, the sensor can be slightly
+located toward the outer lane edges to gain a bit of error
+reduction [14]. But in the latter conﬁguration, setting the
+sensor node father from the lane cannot help, because small
+vehicles in the adjacent lane will generate a lower signal and
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+W ANGet al.: ROADSIDE MAGNETIC SENSOR SYSTEM FOR VEHICLE DETECTION IN URBAN ENVIRONMENTS 1371
+Fig. 10. Use of V and A to reduce error detections in the nonadjacent lane.
+be ignored by the detection threshold. The similar solution
+that increasing the threshold is also a useless way to solve
+this problem. Although it can reduce the probability of extra
+detections, a larger threshold will also prevent a part of small
+vehicles in the adjacent lane fro m being detected [22]. This is
+also proven by practical tests in the previous section. In order
+to relieve this problem, in [23], two magnetic sensor nodes are
+placed beside the lane edge in different distance. An estimate
+of the lateral distance of the vehicle is obtained by simply
+evaluating the ratio of the maximum of the measured magnetic
+ﬁelds between the two sensors. By this way, the detections
+in the nonadjacent lane can be efﬁciently reduced. However,
+in this paper, only one sensor node is used to correct the false
+detections and the method is proposed as follows.
+Since each vehicle consists of ma ny different ferrous parts
+and the magnetic ﬁeld intensity produced by the vehicle
+drops off at a rapid rate with increasing distance from the
+vehicle. As a result, the lower the distance from the vehicle
+is, the more drastic ﬂuctuations the magnetic ﬁeld around has.
+In order to reﬂect these ﬂuctuations, three magnetic sensors
+are implemented at different heights on the sensor node, and
+the variance of the peak value of each sensor’s z-axis signals is
+calculated when a vehicle passes by. This variance is deﬁned
+as V in this paper, and the smaller V is, the farther the vehicle
+is likely to be. In addition, a vehicle that goes through in the
+nonadjacent lane usually has a much lower peak value A
+max
+compared to a vehicle that passe s in the adjacent lane. These
+two parameters can be combined together to classify whether
+the vehicle is driving in t he adjacent lane or not.
+A data set shows that when 115 vehicles passed by in the
+adjacent lane are correctly detected, there are also undesired
+20 vehicles passed by in the nonadjacent being detected.
+If taking no solutions, these misjudged 20 vehicles will be
+classiﬁed as the vehicles in the adjacent lane, and it leads the
+total misclassiﬁcation rate up to 14.8% in these 135 vehicles.
+Fig. 10 shows the result of applying the proposed method
+to the data set. A simple linear classiﬁcation line was set to
+differentiate the two classes as much as possible. By using
+this method, ﬁnally, only 5 vehicles in the adjacent lane and
+3 vehicles in the nonadjacent lane are misclassiﬁed. As a
+Fig. 11. The scene of on-road experiment.
+result, the total misclassiﬁcation rate is reduced from 14.8% to
+5.9% efﬁciently, and it makes the number of false detections
+of the system acceptable.
+V. E
+XPERIMENTAL RESULTS AND ANALYSIS
+The experimental test was conducted at S227 Road in
+Xiang-cheng District, Suzhou, China. This road has two
+lanes with one driving direction from south to north. Since,
+S227 Road is mainly responsible for shipping the goods, there
+are more large vehicles driving on this road and the false
+detection rate of vehicles in the nonadjacent lane can be higher
+than that on other common city roads. Therefore, this road
+was typically chosen for the research of false detections. The
+test was proceeded in a sunny morning and the temperature
+was about 26 degrees centigrade. The system devices were
+placed in the left side of moving vehicles. An LTI20-20 Laser
+velocimeter was used to obtain the speed of vehicles. During
+the test, the trafﬁc was running normally and the distance
+between every two vehicles wa s relatively high. The speed
+of vehicles ranged from 32 km/h to 67 km/h during the
+experiments. Fig. 11 shows the test site. The sensor node was
+placed just next to the lane edge. The sink node and the laptop
+were deployed several meters away from the road. A video
+camera was used to shoot local videos, so that the actual
+vehicles can be counted manually to ensure the accuracy. Since
+the trial road has two lanes, the system performance in two
+different scenarios can be both tested. The one scenario is a
+single-lane road, in which there is no interference caused by
+the vehicles driving in other lanes. The other scenario is a
+two-lane road which will generate false detections by vehicles
+driving in the nonadjacent lane.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+1372 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 19, NO. 5, MAY 2018
+TABLE I
+RESULT OF THE SINGLE -L ANE SCENARIO
+TABLE II
+DETECTION RATE DISTRIBUTION OF THE VEHICLES
+IN THE NONADJACENT LANE
+The experimental test lasted about one hour. After scanning
+the recorded video, 81 vehicles in the adjacent lane and
+95 vehicles in the nonadjacent lane were manually observed.
+By using the proposed vehicle detection algorithm, 79 out
+of 81 vehicles in the adjacent lan e were correctly detected.
+Table I shows the result and the detection accuracy is up
+to 97.5%. It indicates that the detection system can achieve
+high accuracy in the single-lane scenario. Among the observed
+95 vehicles in the nonadjacen t lane, 39 vehicles produced
+a strong signal and were also detected. The probability of
+generating extra detections in these vehicles is 41.1% and
+it causes serious excessive detections to the system. If not
+solving this problem, the system just cannot work in two-lane
+scenarios normally because only v ehicles in the adjacent lane
+are desired. Table II shows the speciﬁc vehicle types and each
+detection rate in these 95 vehicles. Among the 39 miscounted
+vehicles in the nonadjacent lane, only 4 vehicles are small
+vehicles (sedans, SUVs, pickups, and minibuses) and the
+remaining 35 vehicles are large vehicles (buses, vans, two
+and three axle trucks, and four to six axle trucks). Therefore,
+the ratio of large vehicles is 89.7% in the miscounted vehicles.
+It can be seen that false detections are almost created by large
+vehicles. If there is a bus, a van or a four to six truck goes
+through the nonadjacent lane, the system is bound to generate
+an extra detection. As a result, the system performance are
+highly relevant to the ratio of large vehicles driving on the
+monitored road. In other words, the more large vehicles
+passing by in the nonadjacent lan e, the more extra detections
+generated by the system.
+Combining two-lane vehicle s together, 118 vehicles are
+detected. Since 39 out of 118 vehicles are extra detections
+which caused by nonadjacent vehic les, the misclassiﬁcation
+rate is 33.1%. After the processing of error reduction method
+which mentioned in Section IV , the misclassiﬁed vehicles are
+reduced to 18 and the misclassiﬁcation rate drops to 15.3%.
+TABLE III
+RESULT OF THE TWO-L ANE SCENARIO
+TABLE IV
+COMPARISON WITH SABER TAGHV AEEYAN ’s WORK
+The result is shown in Table III. It indicates that the system
+performance has improved a lot after using the proposed
+method. Compared with the previous data set, the misclas-
+siﬁcation rate has a little increase because there were more
+large vehicles driving in the trial road.
+To sum up, the experimental results show that the magnetic
+sensor system can achieve high detection accuracy in single-
+lane road and the accuracy is up to 97.5%. When measuring
+two-lane roads, large vehicles passing by in the nonadjacent
+lane may cause false detections with high possibility. After
+using the error reduction method, the misclassiﬁcation rate
+has dropped from 33.1% to 15.3%. Thus the system can
+also work in two-lane roads efﬁciently. This work has some
+improvements on the relevant researches in the past few
+years. Compared with [2], [10], and [19], the sensor node is
+implemented at roadside instead of the center of the road. This
+way can signifycantly reduce the cost and difﬁculty of device
+installation and maintenance. Compared with [3] and [13],
+false detections generated by vehicles in the nonadjacent lane
+are considered and a method is proposed to reduce these errors.
+Regarding the whole work presented in this paper, a highly
+relevant research is done by Taghvaeeyan and Rajamani [23]
+at the University of Minnesota. Their research is summarized
+in [23] in 2014. The detailed comparison between this paper
+and Saber Taghvaeeyan’s work is listed in Table IV . The
+two researches both implement the sensor node at roadside.
+To detect vehicles, this paper uses an adaptive threshold
+algorithm to overcome the drifts of magnetic ﬁeld rather than
+a ﬁxed threshold algorithm used in [23]. Both of these two
+works took the false detecti ons created by vehicles in the
+nonadjacent lane into consideration. Two sensor nodes were
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+W ANGet al.: ROADSIDE MAGNETIC SENSOR SYSTEM FOR VEHICLE DETECTION IN URBAN ENVIRONMENTS 1373
+implemented in Saber Taghvaeeyan’s research and a Support
+Vector Machine (SVM) is used to classify the vehicles in
+different lanes. While in this paper, only one sensor node is
+implemented and the linear classiﬁcation method is simply
+applied. It costs less resources in hardware device. In one-lane
+ﬁeld test, the two researches both achieve high detection
+accuracy. When handling with the problem of false detections
+in the nonadjacent lane, Saber Taghvaeeyan’s work reduced
+the misclassiﬁcation rate from 8% to 1%. And the rate was
+reduced from 33.1% to 15.3% in this paper. It is hard to
+compare the two data directly because of the different test
+roads. However, it can be seen that both of the two researches
+can alleviate the problem of false detections efﬁciently.
+VI. C
+ONCLUSIONS AND FUTURE WORKS
+In this paper, a portable vehicle detection system based on
+magnetic sensors is proposed. Unlike the traditional inductive
+loop systems and video camera systems, this solution is of low
+installation complexity and low cost. It can be implemented
+at the side of the road conveniently and does not interfere the
+trafﬁc during the time of installation and maintenance. In addi-
+tion, the system transmits data by wireless communication.
+Thus, it is also scalable. The experimental results show that
+the system achieves high detec tion accuracy in the one-lane
+scenario. The proposed error reduction method can decrease
+false detections in the two-lane scenario, but it cannot provide
+accurate vehicle detection a nd needs more research.
+Since only vehicles driving at a normal speed is tested
+in this research, the system performance may have trouble
+dealing with congested trafﬁc, in which the vehicle distance
+is very close to each other and the vehicle magnetic signals
+may have strong mutual effects. Consequently, vehicle detec-
+tion methods for low-speed trafﬁc will be researched in the
+future. Regarding ZigBee network, only one point-to-point
+link is implemented in this research. This is just a preliminary
+communication model which is applied in one-node scenario.
+A more practical network that can be utilized in multi-node
+scenario will be researched. In a ddition, vehicle classiﬁcation
+is also a research hotspot and will be investigated as well.
+R
+EFERENCES
+[1] M. Tubaishat, P. Zhuang, Q. Qi, and Y . Shang, “Wireless sensor net-
+works in intelligent transportation systems,” Wireless. Commun. Mobile
+Comput., vol. 9, no. 3, pp. 287–302, 2009.
+[2] S. Y . Cheung and P. Varaiya, “Trafﬁc surveillance by wireless sensor
+networks: Final report,” Califor nia PATH, San Francisco, CA, USA,
+Res. Rep. UCB-ITS-PRR-2007-4, Jan. 2007.
+[3] J. Lan, Y . Xiang, L. Wang, and Y . Shi, “Vehicle detection and classi-
+ﬁcation by measuring and processing magnetic signal,” Measurement,
+vol. 44, no. 1, pp. 174–180, 2011.
+[4] F. Losilla, A.-J. Garcia-Sanchez, F. Garcia-Sanchez, J. Garcia-Haro, and
+Z. J. Haas, “A comprehensive appro ach to WSN-based its applications:
+As u r v e y , ”Sensors, vol. 11, no. 11, pp. 10220–10265, Oct. 2011.
+[5] W. Chen, L. Chen, Z. Chen, and S. Tu, “WITS: A wireless sensor net-
+work for intelligent transportation system,” in Proc. IMSCCS, Hangzhou,
+China, Jun. 2006, pp. 635–641.
+[6] Summary of Vehicle Detection and Surveillance Technologies Used in
+Intelligent Transportation Systems , SWTDI, NMSU, Las Cruces, NM,
+USA, Nov. 2000.
+[7] Y . Jo and I. Jung, “Analysis of vehicle detection with WSN-based
+ultrasonic sensors,” Sensors, vol. 14, no. 8, pp. 14050–14069, Aug. 2014.
+[8] E. Sifuentes, O. Casas, and R. Pallas-Areny, “Wireless magnetic sensor
+node for vehicle detection with optical wake-up,” IEEE Sensors J. ,
+vol. 11, no. 8, pp. 1669–1676, Aug. 2011.
+[9] Q. Wang, J. Zheng, B. Xu, and Y . Hu ang, “Analysis and experiments
+of vehicle detection with magnetic sensors in urban environments,” in
+Proc. IEEE CYBER , Shenyang, China, Jun. 2015, pp. 71–75.
+[10] S. Y . Cheung, S. Coleri, B. D undar, S. Ganesh, C. W. Tan, and
+P. Varaiya, “Trafﬁc measurement and vehicle classiﬁcation with sin-
+gle magnetic sensor,” Transp. Res. Rec., J. Transp. Res. Board ,
+vol. 1917, pp. 173–181, Jan. 2005. [Online]. Available: http://dx.doi.
+org/10.3141/1917-19
+[11] W. Zhang, G. Tan, and N. Ding, “Vehicle speed estimation based on
+sensor networks and signal correlation measurement,” in Proc. CCIS ,
+vol. 418. 2014, pp. 1–12.
+[12] R. Wang, L. Zhang, R. Sun, J. Gong, and L. Cui, “EasiTia: A per-
+vasive trafﬁc information acquisition system based on wireless sensor
+networks,” IEEE Trans. Intell. Transp. Syst., vol. 12, no. 2, pp. 615–621,
+Jun. 2011.
+[13] B. Yang and Y . Lei, “Vehicle detection and classiﬁcation for low-
+speed congested trafﬁc with anisotropic magnetoresistive sensor,” IEEE
+Sensors J., vol. 15, no. 2, pp. 1132–1138, Feb. 2015.
+[14] M. J. Caruso and L. S. Withanawasam, “Vehicle detection and compass
+applications using AMR magnetic sensors,” inProc. Sensors Expo, 1999,
+pp. 1–13.
+[15] Honeywell International Inc ., Plymouth, MN, USA. (Feb. 2013).
+3-Axis Digital Compass IC Datasheet . [Online]. Available: http://
+www51.honeywell.com/aero/common/documents/myaerospacecatalog-
+documents/Defense_Brochures-documents/HMC5883L_3-Axis_Digital
+_Compass_IC.pdf
+[16] K. Selvarajah, B. Arief, A. Tu lly, and P. Blythe, “Deploying wire-
+less sensor devices in intelligent transportation system applications,”
+in Intelligent Transportation Systems . Rijeka, Croatia: InTech, 2012,
+pp. 143–168.
+[17] P. Baronti, P. Pillai, V . W. C. Chook, S. Chessa, A. Gotta, and Y . F. Hu,
+“Wireless sensor networks: A survey on the state of the art and the
+802.15.4 and ZigBee standards,” Comput. Commun , vol. 30, no. 7,
+pp. 1655–1695, 2007.
+[18] J. Zheng et al., “Non-intrusive trafﬁc data collection with wireless sensor
+networks for intelligent transportation systems,” Adhoc Sensors Wireless
+Netw., vol. 34, no. 1, pp. 41–57, 2016.
+[19] I. Jolevski, A. Markoski, and R. Pasic, “Smart vehicle sensing and
+classiﬁcation node with energy aware v ehicle classiﬁcation algorithm,”
+in Proc. ITI, Cavtat, Croatia, Jun. 2011, pp. 409–414.
+[20] S. Taghvaeeyan and R. Rajamani, “Use of vehicle magnetic signa-
+tures for position estimation,” Appl. Phys. Lett. , vol. 99, no. 13,
+pp. 134101-1–134101-3, Sep. 2011.
+[21] S. Taghvaeeyan and R. Rajamani, “The development of vehicle position
+estimation algorithms based on the use of AMR sensors,” IEEE Trans.
+Intell. Transp. Syst., vol. 13, no. 4, pp. 1845–1854, Dec. 2012.
+[22] F. Ahdi, M. K. Khandani, M. Hamedi, and A. Haghani, “Trafﬁc
+data collection and anonymous vehicl e detection using wireless sensor
+networks,” Dept. Civil Environ. Eng., Univ. Maryland, College Park,
+College Park, MD, USA, Tech. Rep. MD-12-SP009B4H, 2012.
+[23] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+Qing Wang received the B.S. degree from Soochow
+University in 2014, where he is currently pursu-
+ing the master’s degree with the School of Urban
+Rail Transportation. His research interests include
+wireless sensor networks and its applications in
+intelligent transportation systems.Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+
+1374 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 19, NO. 5, MAY 2018
+Jianying Zheng received the B.S. degree from the
+University of Science and Technology of China
+in 2004, and the Ph.D. degree from the Shenyang
+Institute of Automation, Chinese Academy of Sci-
+ences, in 2010. He is currently an Associate Profes-
+sor with the School of Urban Rail Transportation,
+Soochow University. His research interests include
+wireless sensor networks, intelligent transportation
+systems, and multiagent systems.
+Hao Xu received the Ph.D. degree in civil engi-
+neering from Texas Tech University. He was a
+Research Associate with the TransTech Laboratory,
+Texas Tech University. He joined the Faculty at the
+Department of Civil & Envi ronmental Engineering,
+University of Nevada, Reno, as an Assistant Profes-
+sor in 2013.
+His main areas of research include intelligent
+transportation systems, trafﬁc operation and control,
+evacuation transportation planning and management,
+and the development of applications for transporta-
+tion engineering. In addition to research and projects, he also teaches
+graduate and undergraduate courses o f Highway Geometric Design, Trafﬁc
+Engineering, and Intelligent Transportation Systems. He is an Active Member
+of several professional societies, such as the Transportation Research Board,
+the American Society of Civil Engineers, and the Institute of Transportation
+Engineers.
+Bin Xu received the B.S. degree from Soochow
+University in 2015, where he is currently pursu-
+ing the master’s degree with the School of Urban
+Rail Transportation. His research interests include
+wireless sensor networks and its applications in
+intelligent transportation systems.
+Rong Chen received the Ph.D. degree in signal and
+information processing from Soochow University
+in 2013. She is currently a Lecturer with the School
+of Urban Rail Transportation, Soochow University.
+Her research interests include communication signal
+processing and joint time-frequency analysis.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:27:34 UTC from IEEE Xplore.  Restrictions apply. 

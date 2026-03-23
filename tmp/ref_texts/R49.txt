@@ -1,0 +1,1369 @@
+
+
+===== PAGE 1 =====
+
+ 
+ 
+714  Vol. 11, October 2013 
+  
+ 
+ 
+A Survey of Intelligent Car Parking System 
+ 
+Faheem1*, S.A. Mahmud1, G.M. Khan1, M. Rahman1 and H. Zafar2 
+ 
+1 Center for Intelligent Systems and Networks Research, 
+University of Engineering and Technology, Peshawar, Pakistan 
+2 Department of Computer Systems Engineering, 
+University of Engineering and Technology, Peshawar, Pakistan 
+* fahim.zafari@nwfpuet.edu.pk 
+ 
+ 
+ABSTRACT 
+The industrialization of the world, increase in population, slow paced city development and mismanagement of the 
+available parking space has resulted in parking related problems. There is a dire need for a secure, intelligent, efficient 
+and reliable system which can be used for searching the unoccupied parking facility, guidance towards the parking 
+facility, negotiation of the parking fee, along with the pr oper management of the parking facility. Intelligent Parking 
+Service is a part of Intelligent Transportation Systems (ITS ). This paper reviews different Intelligent Parking Services 
+used for parking guidance, parking facility management and gives an insight into the economic analysis of such projects. 
+The discussed systems will be able to reduce the problems which are arising due to unavailability of a reliable, efficient 
+and modern parking system, while the economic analysis technique will help in analyzing the projects' feasibility. 
+ 
+Keywords: Intelligent Transportation Systems, Fuzzy Logic, Wireless Networks. 
+ 
+RESUMEN 
+ 
+La industrialización del mundo, el aumento de población, el desarrollo de la ciudad de ritmo lento y la mala gestión 
+del espacio de aparcamiento disponible ha dado lugar a problemas relacionados con el aparcamiento. Hay una gran 
+necesidad de un sistema seguro, inteligent e, eficiente y confiable que se puede utilizar para buscar el aparcamiento 
+desocupada, la orientación hacia el aparca miento, la negociación de la tarifa de aparcamiento, así como la correcta 
+gestión de las instalaciones de aparcamiento. Servicio de Estacionamiento Inteligente es una parte de los Sistemas 
+Inteligentes de Transporte (ITS). Este artículo revisa lo s diferentes Servicios de estacionamiento inteligentes 
+utilizados para la guía, Aparcamiento ge stión de instalaciones y da una idea del análisis económico de este tipo de 
+proyectos. Los sistemas descritos podrán reducir los prob lemas que están surgiendo debido a la falta de un sistema 
+de aparcamiento fiable, eficiente y moderna, mientras que la técnica de análisis económico nos ayudará en el análisis 
+de viabilidad de los proyectos. 
+ 
+ 
+1. Introduction 
+ 
+The industrial growth of the world is reflected by 
+the increase in the number of automobiles on the 
+streets throughout the world [1], which has caused 
+a lot of parking related problems. The slow paced 
+city planning has increased the problem even more 
+[2]. The search for the parking space is a time 
+consuming process which not only affects the 
+economic activities’ efficiency, but also the social 
+interactions and cost [3]. Network companies 
+cannot provide updated information of the parking 
+facilities on the internet as the parking facilities do 
+not cooperate with the companies. Certain big cars 
+are not able to fit into the normally available 
+parking spaces. Hence there is a need for a 
+system; which can take all relevant information into 
+consideration, for finding the parking vacancy.  
+ 
+ 
+Human errors are the major source of traffic 
+accidents, therefore building in-car technologies for 
+checking the parking lot, avoiding accidents and 
+guidance to the parking fac ility is turning out to be 
+an integral area for research. The objective of such 
+technologies is the reduction of the burden on 
+driver, improvement of the traffic capacity, and 
+provision of reliable and secure car functions [4].  
+ 
+The parking meters which rely on coins or tokens is 
+an inefficient system as it requires man power for 
+management of the parking and exact change for 
+paying the parking charges [2]. Parking control and 
+enforcement systems provide efficient and effective 
+monitoring of meter and it also keeps a check on 
+any violations of the parking lot. This results in best 
+
+===== PAGE 2 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 715
+possible use of the parking space for increasing the 
+revenue. However, it requires man power which 
+needs some capital [5]. Currently used parking 
+system is not an efficient  one; as the drivers are 
+allowed to park without any restriction [6], and the 
+parking facility cannot be used to its full extent. 
+ 
+The Intelligent Parking service, a part of Intelligent 
+Transportation System (ITS), gives rise to different 
+parking facilities on the basis of new functions they 
+provide. This service not only manages the internal 
+operations of the parking fa cility, but it is also 
+designed to work with different aspects related to 
+the parking facility.  
+ 
+The services which the Intelligent Parking System 
+should provide in the future are  
+ 
+ The parking availability information system and 
+parking reservation system should provide 
+advanced navigation services. 
+ 
+ The mobile electric commerce system and a 
+continuously working gate system should collect 
+the toll charges electrically.  
+ 
+ An automated navigation system should assist in 
+safe driving. 
+ 
+ An in-facility navigat ion system should provide 
+the best possible traffic management. 
+ 
+ Provision of effective security for the safety of cars. 
+ 
+ Provision of strong functions for facilitating 
+administrators and managers in management of 
+the parking facility.  
+ 
+The information related to the availability of 
+unoccupied lot; before the driver enters the facility 
+is provided by the parkin g availability information 
+system. An empty parking lot can be reserved by 
+the driver through the park ing reservation system. 
+The continuous entry and exit system facilitates a 
+driver by getting rid of time consuming processes 
+such as getting a ticket, and the freedom of 
+selecting any payment method. The in-facility 
+navigation system is used for finding the vacant lot 
+and then guiding the driver to that parking space.  
+ 
+Further modifications result in even better systems, 
+such as reserving the parking space online and 
+using a smart card with it will help the driver find 
+the destination quickly, safely and easily. Despite 
+the system requiring no man power, it will still be 
+able to know about the entrance and exit of the 
+vehicles as well as the occupancy rate of the 
+facility. These systems will also decrease the traffic 
+congestion as the number of vehicles parked on 
+the street will decrease. These new systems will 
+boost the parking business by the increase in the 
+number of customers [7].  
+ 
+The modern development in technology has also 
+resulted in In-vehicle advanced information 
+systems, which is the standard equipment in the 
+expensive and luxurious cars. These systems 
+consist of cell phones, electronic maps and 
+satellites for navigating the real time situations of 
+road through wireless technologies.  
+ 
+The latest advancement in intelligent parking 
+service is the parking space negotiation system 
+which is much different than the parking information 
+system. Parking space negotiation system uses the 
+linking and integration of the parking facilities which 
+results in negotiation and coordinates between the 
+in-vehicle information sy stem and parking facility. 
+This system initializes the negotiation process for 
+the parking charges, the advance reservation of the 
+parking lot, search for the best possible path from 
+the current position to the parking facility and then to 
+the destination. Coordination work is an important 
+task for the negotiation corporation. Negotiation is 
+just like a business where both sellers and buyers 
+decide the terms of business, for getting the best 
+possible deal for both parties.  
+ 
+The parking information system along with the 
+parking space negotiation system laid the 
+foundation for the intelligent parking service and it 
+can counter all the traffic related issues working 
+hand in hand with each other. 
+ 
+The rest of paper comprises of various methods 
+used for designing an intelligent parking service 
+and will provide an insight into the methodology of 
+economic analysis for such system. 
+ 
+2. Various techniques proposed for an 
+intelligent car parking system 
+ 
+Some of the most relevant techniques for realizing an 
+effective Intelligent Parking System are summarized 
+in this section.  
+
+===== PAGE 3 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 716 
+2.1 Expert systems 
+ 
+Expert Systems or Agent based technologies can 
+solve the problems associated with distributed and 
+complex traffic environment. They are also 
+considered to be the main weapon for laying the 
+foundation of automation mechanism for the 
+Parking Negotiation and Guidance System [8].  
+Agent has beneficial traits like autonomy, reactivity, 
+adaptability, proactivity and social ability which can 
+be used for solving problems having highly dynamic 
+and interactive behaviors [9]. 
+ 
+Multi-Agent system is a modeling technique. It is 
+used for representation of system with elements 
+which show intelligence, autonomy, and degree of 
+interaction either with each other or with 
+environment [10]. Mobile agents can move within 
+the nodes of a network and are made dynamically 
+during the runtime. They are sent to destination 
+systems for performing different tasks with the up 
+to date code and algorithm. Mobile agents also 
+result in reduction of data transmission over the 
+networks. It enhances t he system ductility, 
+adjustability and perdurability [11]. 
+ 
+Some systems do not provide the best possible 
+parking facility as they do not take the parking fee 
+into consideration. In the absence of the negotiation 
+on the parking fee, the consumers loose the 
+opportunity of finding a cheaper and better parking 
+place [8]. So the negotiable margin on the parking 
+price has to be taken into consideration for making a 
+decision, through the Intelligent Agent System which 
+has to select the best possible parking facility for the 
+driver as described in [3]. The agents are able to 
+plan, move, perform, check and coordinate for 
+performing their tasks. For the provision of a 
+bargaining platform for the user; an intelligent parking 
+negotiation and guidance system, which integrates 
+the mobile agent with multi-system is proposed in [9]. 
+Mobile agent can be used for an active, stable and 
+quick negotiation between cars and parking facilities. 
+The movement of the agent helps in shorter 
+negotiation time and decreases the amount of data to 
+be transmitted over the wireless network. They also 
+present an algorithm for negotiation, which is similar 
+to the negotiations of humans. 
+ 
+A multi-agent system called agent-based intelligent 
+parking negotiation and guidance system 
+(ABIPNGS) combines mobile agent technology 
+with multi-agent systems and utilizes both 
+stationary and mobile ag ents. The utilization of 
+agents in transportation systems are discussed in 
+details in the literature [8, 12-15]. 
+ 
+A multi-phase navigation technique which relies 
+on two-layer traffic map is used for parking routes 
+negotiation and direction in [16]. The system 
+implementation takes place on an extended FIPA 
+architecture through mobile agent, message 
+queue, agent container and agent execution 
+environment. It utilizes the interoperability of FIPA 
+standards and ductility of mobile agents. Through 
+the brilliance, adjustability, and co-action of 
+agents, the entire service environment can 
+automatically perform the search for the park, 
+bargain the parking fee, book the parking lot, 
+negotiate the parking rout and direct to the facility. 
+Distributed active parking guidance information 
+system (APGIS) is discussed in [16]. It supports 
+both the stationary and mobile agent along with 
+automatic execution of searching for park, 
+negotiating the parking fee, booking of the 
+parking lot and directions of the parking route 
+without intervening the drivers and parks  
+ 
+The distributed intelligent motion control of 
+mobile robots is discussed in [17]. It also 
+presents a multi-functio nal agent system called 
+intelligent system for au tonomous robots, which 
+deals with modeling, planning and coordination 
+functions of a mobile robot.  The system is made 
+up of main control kernel agent, a learning 
+navigation agent for safe trajectory generation, 
+and allowing the robot to move towards a 
+restricted environment goal. For learning and 
+keeping successful motion of the robot, an 
+adaptive neutral algorithm is utilized. The third 
+agent is concerned with positioning of the robot 
+as well as updating the map for the robot. The 
+fourth agent deals with communication, handling 
+and coordination tasks. Fuzzy maneuvering and 
+Parking Agent, deals with the tasks of parking 
+and movement. A fuzzy maneuvering and 
+Parking agent is concerned with the movement 
+and parking tasks. For outdoor mobile robot 
+navigation, a multi-agent system with event-
+driven control approach was adapted in [18]. For 
+the sake of fusion of information and mapping of 
+environment, [19,20] propose a distributed multi-
+agent system. Figure 1 shows the ABIPNGS 
+organization model. 
+
+===== PAGE 4 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 717
+2.2 Fuzzy logic based systems 
+ 
+If there is a process resulting from the human 
+error, then a system which supports the operator; 
+safely and efficiently is presented in [21]. The 
+system works by 
+ 
+ Detecting 
+ 
+ Motion Planning, and 
+ 
+ Supplying information 
+ 
+Fuzzy theory is used for building the support 
+knowledge and heuristics of the high-level expert 
+human. The method discussed in [4] gives a car 
+the capability to independent ly drive on different 
+types of roads. It also envisions movements like 
+reverse, parallel parking and three point turns.  For 
+automatically getting a functioning car control 
+system, this approach uses  a self-training system 
+which benefits from human skills. 
+ 
+For the sake of training and testing, a car driving 
+simulator is combined with the GenSoYager Fuzzy 
+Neural Network.  For replicating the built in 
+vagueness of the availabl e information, a Fuzzy 
+Control System is chosen. Then the implementation 
+of the Fuzzy rule-based system takes place upon 
+the neural network architecture. It is the main 
+reason for learning, recalling, generalizing and 
+adapting from the training data. The Neuro-fuzzy 
+system has the ability to reason like human beings 
+as well as it has expert knowledge.  
+ 
+For reduction of the calculation time, an FPGA 
+based fuzzy logic controller (FLC) is presented in 
+[22]. FLC can be utilized for designing an automatic 
+car back parallel which has FPGA based controller.  
+[23] gives a fuzzy approach for control of backward 
+movement of truck and trailer in dynamic 
+environment. This method is then broadened to 
+condition in which truck’s pathway has obstacles. In 
+the first case, we assume stationary obstacles. The 
+second condition is mobile obstacles which can 
+make the truck directed to the parking facility. 
+Ultrasonic and 3D vision sensors can be used for 
+identifying proper parking space for parallel parking. 
+The parking is completed due to the intelligence of 
+fuzzy logic, after the driv er confirms it. Ultrasonic 
+sensor identifies objects and obstacles longitudinally. 
+A two-stage scenario called longitudinal and lateral 
+movements is used in [24] for finding the proper 
+parking lot. 
+ 
+ 
+ 
+Figure 1. Agent based parking assistance system. 
+ 
+2.3 Wireless sensor based systems 
+ 
+A number of low cost sensor nodes make up a 
+Wireless Sensor Network (WSN). They arrange 
+themselves for making an ad hoc network through 
+the wireless communication module present on 
+nodes. Different types of sensors, computation units 
+and storage devices are present on each node.  For 
+collecting, processing and transmitting information, 
+the functional parts let the sensors to be installed 
+quickly and easily. They have a bright future since 
+WSNs are easily installed in the normal environment 
+and they provide the data for positioning and 
+
+
+===== PAGE 5 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 718 
+surveillance. There are two disadvantages 
+associated with the video sensors. The first one is 
+that video sensors are expensive. Secondly, 
+sensors generate huge data at times; whose 
+transmission via the Wireless Network is hectic. 
+ 
+[25] discusses a WSN-based intelligent car parking 
+system. The system consists of low-cost wireless 
+sensors which are installed in a car parking facility. 
+Each parking space has a sensor node for detecting 
+and checking the occupation of the parking facility. 
+Sensor node is used for detecting the status of the 
+parking field, which is forwarded regularly to the 
+database through the installed wireless sensor and 
+its gateway. For performing various management 
+functions such as, finding unoccupied parking lot, 
+auto-toll, management of security and statistic 
+report; the data base is accessed by the upper layer 
+management system. The prot otype of the system 
+was implemented using crossbow mote. Nodes are 
+loaded with light, sound and acoustic sensors for 
+the WSN-based car park management system. A 
+wide-area architecture used for pervasive sensing 
+networks is proposed in Irisnet
+1 [26]. This will allow 
+the users for getting the information of available 
+parking vacancies on their ways, through distributed 
+accessing methods. For the detection and 
+recognition of the automob iles, this system uses 
+video cameras, microphones and motion detectors. 
+All the data of the sensors is processed in 
+networking environment, which is then posted on 
+web. This information can then be retrieved by the 
+user from internet.  As the data generated by the 
+video camera is huge, a great amount of resources 
+such as communication bandwidth, processing 
+cycles and energy is required for transferring and 
+processing the data.  But the mentioned resources 
+are limited in a wireless network. 
+ 
+Wireless network based transportation applications 
+are discussed in Traffic Plus Technology [27] and 
+MIT intelligent transportation system [28,29]. 
+Automobile sensors are inst alled on both sides of 
+the road and onto the road bed for retrieving the 
+required information of the vehicles. These 
+systems are not architected for car parking 
+management, though they are effective for 
+checking traffic and road condition. The used 
+                                                     
+ 
+1
+http://www.intel.com/technology/techresearch/research/ 
+rs11031.htm 
+ 
+hardware in these systems is also expensive and 
+complex. For accurate and reliable detection of 
+vehicles in parking facility, the use of magnetic and 
+ultrasonic sensors is proposed in [30]. The 
+modified version of min-max algorithm is used to 
+detect the cars through magnetometers while an 
+algorithm for ultrasonic sensors is also utilized.  
+ 
+There are other solutions as well that focuses on 
+the use of sensor tech nologies (magnetometers 
+and video cameras, etc) for parking lot 
+applications. However, magnetometers are 
+sensitive to environmental issues; which results in 
+an inaccurate detections at times. We also have to 
+place the magnetometers close to the cars since it 
+measures the change in magnitude and direction 
+of Earth’s magnetic field resulting from the 
+presence of the car. Though it’s possible in the 
+proximity of the parking lo t’s entrance; but it’s not 
+possible in upper floors as there is no entrance 
+marking and the vehicles also move at a higher 
+speed.  The solutions based on video cameras are 
+very expensive and the huge amount of data 
+generated is difficult to be transmitted over multiple 
+hops in a wireless network. These discrepancies 
+and the movement of other objects in a parking 
+space including human beings, reduce the 
+applicability of either magnetometers or video 
+cameras alone for parking lot management. The 
+traffic surveillance syst em of [31] utilizes 
+magnetometers for detecting the presence of 
+vehicles along with the estimation of the speed of 
+vehicles in the proximity of street intersections and 
+parking facilities. These magnetic signatures help 
+the system classify and re-identify vehicles.  
+ 
+The design and implementation problems of a 
+reliable WSN system usin g magnetic sensors are 
+proposed in [32].The magnetic sensors in the 
+parking lots transfers the parking information to the 
+APs on the road sides. The system can find out the 
+unoccupied parking places in real time and then 
+forwards that information to the user. A detection 
+scheme relying on magnet ometer signature 
+measurements is proposed in [32] and 
+implemented on Mica2 motes. The use of tiered 
+architecture for the implementation of the car-park 
+management system using the DSYS25z [33] 
+magnetic sensor boards developed by Tyndall [30] 
+is proposed in [34] as part of D-Systems Project 
+[35]. The problems associated with wireless 
+communications in parking lot environment are 
+
+===== PAGE 6 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 719
+highlighted, and recommendations of dynamic and 
+robust routing, delayed retransmissions are 
+proposed on the basis of experimental results for 
+overcoming the problems. For multi storied parking 
+lots where ultrasonic sensors are connected 
+through a bus style network for distribution of 
+power and transmission of sensing reports, Sipark 
+PMA [36] is one of the prominent parking guidance 
+systems. The driver, after entering the parking 
+facility, is directed to pa rking vacancy through the 
+shortest route by the guidance system.  
+ 
+The serious problem of hard installation and power 
+wastage in existing roadside parking system of ITS 
+is solved by a smart roadside parking management 
+system based on sensor network presented in [9]. 
+The sensors present at the nodes are small and 
+they consume low power. They sense the 
+disturbances in Earth’s magnetic field for identifying 
+the vehicle. The nodes sleep at regular intervals and 
+are woken up by the internal microcontroller for 
+gathering parking related information and 
+communicating with other sensors. This periodic 
+sleeping also helps in saving power. A general case 
+of implementation is shown in Figure 2. 
+ 
+ 
+ 
+Figure 2. WSN system with magnetic sensor. 
+ 
+2.4 GPS based systems 
+ 
+The information about the location and availability 
+of a parking space near the destination is provided 
+to the drivers by the current GPS-based vehicle 
+navigation system. The information of the current 
+state of the parking facilit y is provided. That’s why 
+they can’t guarantee a parking lot when the driver 
+reaches the facility. A scie ntific solution based on 
+utilization of the past and current status of the 
+parking lot is proposed in [37]. Poisson process is 
+used for modeling the availability of a parking lot. 
+An intelligent algorithm which helps the driver in 
+choosing the slot with maximum probability of 
+being vacant is presented in [37] as well. Cerreo 
+[38] had a yearlong study on street parking, which 
+focused on different issues concerned with on-
+street parking namely policy, planning, 
+management and operations. Various methods 
+and different cities were used for demonstrating 
+these issues. It also highlighted different 
+challenges of on-street parking such as peer-to-
+peer exchange and storage of parking information.  
+ 
+Arnott and Rowse [39] modeled parking into spatial 
+structure, trip generation technology, technology of 
+parking and travel, and stat ionary-state conditions. 
+The problem with this modeling is that it doesn’t 
+take traffic congestion into consideration.  
+ 
+Chon et al. [40] presented a location based system 
+called NAPA (Nearest Available Parking lot 
+Application) (Figure 3). This system helps in 
+locating the parking lots on campus or areas like 
+airports, but it doesn’t provide any information 
+about the availability of vacancy. 
+ 
+ 
+ 
+Figure 3. NAPA architecture. 
+ 
+2.5 Vehicular communication systems 
+ 
+[41] proposes a new smart parking technique based 
+on vehicular communication for large parking lots. 
+This scheme provides the real-time parking 
+navigation service, intell igent antitheft protection, 
+and friendly parking information dissemination to the 
+
+
+===== PAGE 7 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 720 
+driver. The scheme is called SPARK and is defined 
+by using parking lot RSUs for closely observing and 
+managing the whole parking facility using VANET 
+communication technology. A general 
+implementation can be seen in Figure 4. SPARK 
+scheme makes the following contributions. 
+ 
+ It provides real time parking navigation to the 
+drivers for finding the vacant parking space, 
+saving fuel and time. 
+ 
+ It provides VANET-based intelligent anti-theft 
+protection. Due to this, all the parked cars at the 
+parking facility are guarded by the parking facility’s 
+RSUs. Any car which tries to leave the parking 
+facility illegally will be detected by the RSU. 
+ 
+ It arranges friendly parking information distribution 
+service to all the mobile cars.  
+ 
+ 
+ 
+Figure 4. Vehicular communication-based 
+smart parking technique. 
+ 
+2.6 Vision based systems 
+ 
+The parking control and revenue system in big cities 
+are relying on devices such as coins or token based 
+parking meters, which requires exact change and 
+man power for monitoring the parking lots, making it 
+unfavorable. So a more efficient design for 
+automated parking meter and driver assistance is 
+presented in [13]. It is linked to a centralized traffic 
+control authority, which collects all the charges, and 
+also maintains the implementation of parking rules.  
+This system has a number of subsystems namely an 
+Ad-hoc subsystem, a parking gateway subsystem, a 
+vehicle detection subsystem and a video image 
+processor sensor subsystem. There are two classes 
+of cars which are considered by this architecture. 
+ 
+ Class 1 vehicles  are those vehicles which do 
+not have any embedded wireless system 
+ 
+ Class 2 vehicles are those vehicles which have 
+an embedded wireless device with Ad-hoc 
+networking capability.  
+ 
+Every car has a unique Vehicle Identification 
+Number (VID) associated with it. For overcoming 
+the common discrepancies of the existing vision 
+based target parking position labeled methods in 
+dark indoor parking sites, [42] proposes a light stripe 
+projection based free parking space recognition 
+method. For recognition of the 3D information of 
+parking site, light stripe projection method is used. 
+System is able to recognize discontinue points, pivot 
+and opposite site reference points, once the 
+analysis of 3D information takes place. For 
+automatic steering movement during parking 
+operation; a kind of driver  assistant system known 
+as intelligent parking assist  system is used, which 
+has the following six parts [43]:  
+ 
+ Target position designation 
+ 
+ Deciding the path 
+ 
+ Finding the path 
+ 
+ Active steering 
+ 
+ Active braking 
+ 
+ Human Machine Interface (HMI)   
+ 
+The 3D information of the final position of the car is 
+recognized by the target position designation. 
+Parallel Parking is achieved through the use of 
+range sensors like ultrasonic sensors [44-46] and 
+SRRs (Short Range Radars) [47,48], for finding the 
+free space. Vision based approach is mostly used 
+for perpendicular parking. The high price of scan 
+type laser makes it less favorable for mass 
+production. The low cost ultrasonic and SRR’s 
+aren’t efficient for finding the slanted free space. 
+Backward monitoring camera has become an 
+
+
+===== PAGE 8 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 721
+essential component of par king assist system for 
+the drivers to monitor on-going parking operation 
+visually [49]. Different methods are used for finding 
+the free space. For finding the 3D information of 
+nearby vehicles, Nico Kaempchen has used 
+binocular stereo [50]. Vision algorithm for 
+designating the vacant lot through parking slot 
+markings’ recognition has been developed by Jin Xu 
+[51] and Yu Tanaka [52], and [53-55]. For finding 
+the 3D information of the nearby vehicle, C. Vestri 
+[56] used motion stereo. [57] and [58] have 
+combined HMI based manual designation methods 
+with vision based system by using such automatic 
+recognition algorithms. Un supervised vision based 
+system for detecting the availability of a lot is 
+proposed in [59]. This approach uses only few 
+frames per second. It is also not very complex to 
+compute. This method has 3 main processing stages.  
+ 
+ The pre-processing of raw images 
+captured by camera takes place.  
+ The shadows present in the image are 
+properly attenuated or completely removed 
+while the distortion is also taken care of.  
+ The establishment of correspondence 
+between the stationary cameras and visible 
+parking places takes place. This process takes 
+occlusions into consideration as well.  
+ 
+Then the evaluation of parking place status takes 
+place. An intelligent car searching technique for 
+large parking facilities is proposed in [60]. 
+Cameras are installed on the roads. The 
+recognition of vision related information of car like 
+color, license plate takes place and are then stored 
+in database. Since the license number plate 
+recognition system is not reliable, so for sorting the 
+retrieved results; an intelligent car searching 
+algorithm which relies on the probability of 
+classification of color and recognition of license 
+plate is used. This method was also applied to a 
+large outdoor car parking facility.  
+ 
+In [61] a new system based on image processing 
+is proposed for provision of parking information 
+and guidance. This system has the ability to count 
+the number of parked cars and identify the free lots 
+available. The system uses images for detection of 
+the vehicles. A camera for capturing the reference 
+image is present at the entrance. After the 
+reference image is captured, a sequence of 
+images is captured as well which is then compared 
+with reference image for image matching with the 
+help of edge detection performed through Prewitt 
+Edge Detection operator. On the basis of the 
+percentage of matching, guidance and information 
+is provided to the driver.  
+ 
+2.7 Other miscellaneous techniques 
+ 
+A parking reservation service for reserving a 
+vacant parking spot via the internet is proposed in 
+[62]. This system utilizes the internet for a quick 
+and easy search for the vacant lot. By using it 
+together with a smart card, the system also 
+provides recognition and payments services to the 
+driver. In [63], a multilevel driver assistance system 
+for assisting in the parking process is proposed. A 
+parking assistance syst em along with parking 
+administration system, and employed sensor 
+systems are mentioned as well. A general 
+architecture of a driver assistance system which 
+relies on path planning and Human-Machine 
+interface (HMI) modules is  presented as well. [63] 
+also describes both the design of the system’s HMI 
+and the parking possibility region-based path 
+planning method proposed for implementation of 
+the presented architecture. A four-wheeled vehicle 
+or welfare vehicle is proposed in [64]. It is a self-
+propelled, four wheeled electric chair which steers 
+through the steering wheel control. [65] considers 
+a parking method for an independent car in an 
+underground parking facility. This implemented 
+method is decomposed into:  
+ 
+ Motion control of the vehicle from the resident 
+to the parking facility on the basis of 
+configuration given by the vehicle owner.  
+ 
+  After the car joins the underground parking 
+facility, the searching and examining of a free 
+space in the car park which is followed by 
+operations used for parking movement takes 
+place. 
+ 
+ The positioning mechanism which allows the 
+car for keeping the perfect position in the global 
+frame during the whole displacement.  
+ 
+In [66], assistance of a vehicle with mobile guidance 
+system, by measuring the position and heading of a 
+guided vehicle to instruct the steering and velocity of 
+its target, is presented. An intelligent organizer of 
+objects using Genetic Algorithms (GA) and Hill 
+
+===== PAGE 9 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 722 
+Climbing (HC) for solving the space allocation 
+problem in warehouse, parking facility and the 
+cultivation land is presented in [67]. [67] also 
+implements an organizing technique; which randomly 
+organizes the space, for comparing the results with 
+the intelligent techniques.   
+ 
+The problems of independent parking and obstacle 
+avoidance have been address by the increasing 
+number of carlike mobile robot (CLMR) studies. 
+Convenience can be provided to a novice driver by 
+an autonomous parking controller. However, an 
+inadequately designed controller puts the drive and 
+car in jeopardy. [68] presents a novel multifunctional 
+intelligent autonomous parking controller. It is able 
+to effectively park the CLMR in an appropriate place 
+by using the data of integrated sensor, which has 
+the ability to get the surrounding data of the robot.  
+ 
+An ultrasonic sensor array system which has group-
+sensor firing intervals is developed as well. A 
+complete contactless sensory coverage of the 
+whole workspace can be provided by using a 
+binaural approach to the CLMR. The posture of the 
+mobile robot in the parking facility can be obtained 
+through proposed heuristic controller.  
+ 
+A wireless based parking service is presented in [6]. 
+It will not only provide intelligent parking services, 
+but it will also eliminate misparking. To provide an 
+intelligent and automatic parking service, the 
+presented system will use sensor technologies 
+along with wireless network. The analysis of the 
+occurrence of misparking in a traditional parking 
+facility is given through the probability model. 
+ 
+3. Economic Analysis of Intelligent Car Parking 
+Systems 
+ 
+Economic analysis is the core study for assessing 
+and exploring the project's feasibility. It plays an 
+important role in deciding whether to start the project 
+or not. Economic Analysis can be used to minimize 
+risks and improve investment efficiency. The role of 
+economic analysis is minimizing the risks and 
+improving the investment efficiency. As intelligent 
+parking service is a part of ITS, it can decrease the 
+impact of uneven distribution of parking in different 
+parking facilities.  [7] uses the concepts of traffic 
+impact analysis TIA for utilizing the engineering 
+economy to analyze the advantages of regional 
+parking guidance system. According to [67], the 
+economic analysis aims at:  
+ 
+ Reduction of negative impacts of parking services. 
+ 
+ Reduction of investment. 
+ 
+ Increasing the social, economic and 
+environmental benefits of the parking facility. 
+ 
+One of the widely used economic analysis technique 
+is Cost-Benefit analysis, which relies on discounted 
+value benefits and cost for determination and 
+evaluation of the resource allocation for both public 
+and non-profit sector projects. However, for parking 
+guidance system; we cannot use traditional Cost-
+Benefit analysis, as it’s hard to define and measure 
+the costs and benefits. Also, there are certain 
+assumptions required for cost-benefit analysis which 
+may not exit for PGS. Therefore, for more accurate 
+result; the legitimacy of the estimates must be on the 
+basis of large number of basic data and information.  
+ 
+Table 1 gives a summary of the various approaches 
+that have been discussed and highlights their key 
+features. 
+ 
+4. Conclusion 
+ 
+In this paper, various systems that provide 
+intelligent parking services are discussed. These 
+systems can counter the parking problems that arise 
+due to the unavailability of a reliable, efficient and 
+modern Parking system.  The use of different 
+modern techniques such as Expert Systems, 
+wireless sensor based, fuzzy based, GPS based, 
+Vehicular communication based and Vision based 
+can reduce the parking related issues. Such system 
+can help the economic, social and safety based 
+aspects of the society. It also helps in preserving the 
+environment, fuel and time. The economic analysis 
+can help us find the feasible project so that we can 
+have a better parking system without making the 
+economy suffer. Future work should be done for 
+integrating different technologies together in order to 
+achieve a system which is the most efficient, 
+reliable, secure and inexpensive. The economic 
+analysis should be done both quantitatively and 
+qualitatively. After the ec onomic analysis is done, 
+then the project can be finalized. 
+ 
+ 
+
+===== PAGE 10 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 723
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+References 
+ 
+[1] L. Wenghong, X.Fanghua, L. Fasheng, “Design of 
+Inner Intelligent Car Parking System”, International 
+Conference on Information Management, Innovation 
+Management and Industrial Engineering 2008. 
+ 
+[2] C. Wenzhi, L. Bai, "A Smart Roadside Parking 
+Navigation System Based On Sensor Networks For ITS”, 
+IET International Conference on Wireless, Mobile and 
+Multimedia Networks, 2006, pp.1-4, 6-9 Nov. 2006. 
+ 
+[3] C.C. Li, S.Y. Chou, S. W. Lin, "An agent-based 
+platform for drivers and car parks negotiation", 2004 
+IEEE International Conferenc e on Networking, Sensing 
+and Control, pp. 1038- 1043, 2004. 
+ 
+[4] R.J. Oyentaryo, M. Pas quier, "Self-trained automated 
+parking system", Control, Automation, Robotics and 
+Vision Conference, 8th ICARCV, pp. 1005- 1010, 6-9 
+Dec. 2004. 
+ 
+[5] S. Shankar, S.M. Mehmood, "An intelligent 
+architecture for metropolitan area parking control and toll 
+collection", IEEE Intelligent Vehicles Symposium, 2005., 
+pp. 723- 728, 6-8 June 2005. 
+ 
+[6] Y.Gongjan, M.C. Weigle, S.  Olariu, "A Novel Parking 
+Service Using Wireless Networks", IEEE/INFORMS 
+International Conference on Service Operations, Logistics 
+and Informatics, 2009,  pp.406-411, 22-24 July 2009. 
+ 
+[7] X. Zhang, D. Wan, "Economic Analysis Of Regional 
+Parking Guidance System Based On TIA", 2010 WASE 
+International Conference on Information Engineering 
+(ICIE),, pp.401-404, 14-15 Aug. 2010. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+[8] S.Y. Chou, S.W. Lin, C.C. Li, “Dynamic Parking 
+Negotiation And Guidance Using An Agent-Based 
+Platform”, Expert Systems With Applications, vol. 35, no. 
+3, pp. 805-817, 2008. 
+ 
+[9] W. Longfei, C. Hong, L. Yang, "Integrating Mobile 
+Agent with Multi-Agent System for Intelligent Parking 
+Negotiation and Guidance”,  4th IEEE Conference on 
+Industrial Electronics and Applications, pp.1704-1707, 
+25-27 May 2009. 
+ 
+[10] R.J.F. Rossetti, R.H. Bo rdinia, A.L.C Bazanna, S. 
+Bampi, R. Liu, D.V. Vliet, ”Using DBI Agents To Improve 
+Modeling In A Computer Scenario”, Transportation 
+Research Part C, 10C(5, 6), pp 373–398, 2002 . 
+ 
+[11] B. Chen, H.C.  Harry, J. Palen, “Integrating Mobile 
+Agent Technology With Multi-Agent Systems For 
+Distributed Traffic Detection And management 
+Systems”, Transportation Research Part C. 
+ 
+[12] H. Dia, “An Agent-Based Approach To Modelling 
+Driver Route Choice Behaviour Under The Influence Of 
+Real-Time Information”, Transportation Research Part C: 
+Emerging Technologies , vol.10, pp 331–349, 2002. 
+ 
+[13] C. C. Min, D. Srinivas an, R.L. Cheu”, Cooperative, 
+Hybrid Agent Architecture For Real-Time Traffic Signal 
+Control”, IEEE Transaction s on Systems, Man and 
+Cybernetics, Part A: Systems and Humans, , vol.33, 
+no.5, pp. 597- 607, Sept. 2003. 
+ 
+[14] J.L. Addler, G. Sathapathy, V. Manikonda, B. Bowles, 
+V.J. Blue, “A Multi-Agent Approach To Cooperative Traffic 
+Management And Route Guidance”, Transportation 
+Research Part B 39 (4), pp 297–318, 2005. 
+S. No. Different Technologies Features Services Provided
+1. Agent Based Dynamic Distribution and Complex 
+Traffic Environments 
+Bargaining, parking guidance and route 
+negotiation etc. 
+2. Fuzzy Based Human-like intelligence and expertise Intelligent parking methods e.g. parallel 
+parking and perpendicular parking etc. 
+3. Wireless Sensor Based Low cost implementation with lower 
+power consumption 
+Detection and monitoring of the parking 
+facility etc. 
+4. GPS Based Real time location based information 
+and guidance towards destination 
+Provides information about the locality 
+and availability of parking facility 
+5. Vehicular Communication Provision of parking information 
+distribution service for mobile vehicles 
+Antitheft protection, real time parking 
+navigation service etc. 
+6. Vision Based Good for car searching in large 
+parking lots 
+Lot occupancy detection, parking space 
+recognition, parking charges collection 
+etc. 
+ 
+Table 1. Summary of relevant techniques for intelligent parking systems. 
+ 
+
+===== PAGE 11 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 724 
+[15] F. Balboa, S. Pinsona, “Dynamic Modeling Of A 
+Disturbance In A Multi-Agent System For Traffic 
+Regulation” Decision Support Systems, vol.41, no.1, pp 
+131 – 146, 2005. 
+ 
+[16] Y. Li, R. Ma, L. Wang, “Intelligent Parking 
+Negotiation Based On Agent Technology”, WASE 
+International Conference on Information Engineering, 
+pp.265-268, 10-11 July 2009. 
+ 
+[17] A. Khoukhi, “An Intelligent Multi-Agent System For 
+Mobile Robots Navigation And Parking”, IEEE 
+International Workshop on Robotic and Sensors 
+Environments (ROSE), pp.1-6, 15-16 Oct. 2010. 
+ 
+[18] H. Zhang, M. Zhou, “' Self-Organized Architecture 
+For Outdoor Mobile Robot Navigation'', Journal Of 
+Zhejiang University Science A. Springer, vol. 6, no.6, pp. 
+583-590, June 2005. 
+ 
+[19] R. Abielmona, E.M.  Petriu, T.E. Whalen, 
+“Distributed Intelligent Se nsor Agent System For 
+Environment Mapping”, Journal Of Ambient Intelligence 
+And Humanized Computing.  Springer, vol.1, no.2, 
+pp.95-110, 2010. 
+ 
+[20] J. Takahashi, K. Sekiyama, T. Fukuda”, Cooperative 
+Object Tracking With Mobile Robotic Sensor Network.” 
+Distributed Autonomous Robotic Systems. Springer, 
+Berlin, pp 51–62, 2009.  
+ 
+[21] K. Kinoshita, S. Ya sunobu, “Intelligent Parking 
+Support System For Four-Wheeled Vehicles In 
+Consideration Of Human's Operation Error”, 2004 IEEE 
+International Conferenc e on Systems, Man and 
+Cybernetics, pp. 3938- 3943, 10-13 Oct. 2004. 
+ 
+[22] S. Insop, K. Gowan, J. Nery, H. Han, T.  Sheng, H. Li, 
+F. Karray, “Intelligent Parking System Design Using 
+FPGA”, International Conference on Field Programmable 
+Logic and Applications, pp.1-6, 28-30 Aug. 2006. 
+ 
+[23] M. Sharafi, A.  Zare, S. Nikpoor, "Intelligent Parking 
+Method For Truck In Presence Of Fixed And Moving 
+Obstacles And Trailer In Presence Of Fixed Obstacles: 
+Advanced Fuzzy Logic Technologies In Industrial 
+Applications”, 2010 International Conference On 
+Electronics And Information Engineering (ICEIE), 
+pp.268-272, 1-3 Aug. 2010. 
+ 
+[24] S. Mohammadi, M. Tavassoli, A. Rajabi, 
+"Authoritative Intelligent Perfect Parallel Parking Based 
+On Fuzzy Logic Controller For Car-Type Mobile Robot”, 
+2011 Eighth International Conference on Information 
+Technology: New Generations (ITNG), pp.135-138, 11-
+13 April 2011. 
+ 
+[25] V.W.S. Tang, Y. Zheng, J. Cao, “An Intelligent Car 
+Park Management System Based On Wireless Sensor 
+Networks”, 2006 1st International Symposium On 
+Pervasive Computing And Applications, pp.65-70, 3-5 
+Aug, 2006.  
+ 
+[26] Moog Crossbow, http://www.xbow.com/. 
+ 
+[27] Corporative Traffic Logi stics, http://www.corporate-
+traffic.com/. 
+ 
+[28] MIT, http://web.mit.edu/newsoffice/topic/micros 
+ystems-technology-laboratories.html 
+ 
+[29] MIT Media Lab: http://www.media.mit.edu/. 
+ 
+[30] S. Lee, D. Yoon, A. G hosh, “Intelligent Parking Lot 
+Application Using Wireless Sensor Networks”, 2008. 
+CTS 2008. International Symposium on Collaborative 
+Technologies and Systems, pp.48-57, 19-23 May 2008. 
+ 
+[31] S.Y. Cheung, S.C. Erg en,  P. Varaiya, “Traffic 
+Surveillance With Wireless Magnetic Sensors”, 
+Proceedings of the 12th World Congress On Intelligent 
+Transport Systems, San Francisco, CA, Nov 2005.  
+ 
+[32] V.K. Boda,  A. Na sipuri,  I. Howitt, “Design 
+Considerations for a Wireless Sensor Network for 
+Locating Parking S paces”, IEEE Sout heastCon, pp.698-
+703, 22-25 March 200.7 
+ 
+[33] B. O’Flynn, S. Bellis, K. Mahmood, M. Morris, G. 
+Duffy, K. Delaney, C. O’Mathuna, “A 3-D Miniaturised 
+Programmable Transceiver”, Microelectronics 
+International, Emerald Group, vol. 22, no2, pp 8–12, 2005. 
+ 
+[34] J.P. Benson, T. O’Donovan, P. O’Sullivan, U. Roedig, 
+C. Sreenan, J. Barton, A. Mu rphy, B. O’Flynn, “Car-Park 
+Management Usingwireless Sensor Networks”, 
+Proceedings Of The 31st IEEE Conference On Local 
+Computer Networks , Tampa, FL, pp 588–595, Nov 2006. 
+ 
+[35] J. Barton,  J. Buckley, B. O’Flynn, S.C. O’Mathuna, 
+J.P. Benson, T. O’Donovan, U. Roedig, C. Sreenan, 
+“The D-Systems Project - Wireless Sensor Networks For 
+Car- Park Management”, Proceedings Of The 65th IEEE 
+Vehicular Technology Conference, Dublin, Ireland, 
+pp170-173, Apr 2007.  
+ 
+[36] Siemens, http://www.mobility.siemens.com/mobility/ 
+global/en/urban-mobility/road-solutions/Pages/road-solu 
+tions.aspx  
+ 
+[37] S. Pullola, P.K.  Atrey,  A. El Saddik, “Towards An 
+Intelligent GPS-Based Vehicle Navigation System For 
+Finding Street Parking Lo ts”, IEEE International 
+Conference on Signal Processing And Communications, 
+pp1251-1254, 24-27 Nov, 2007. 
+ 
+
+===== PAGE 12 =====
+
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Journal of Applied Research and Technology 725
+[38] A. L. C. De Cerreo, "The Dynamics Of On-Street 
+Parking In Large Central Cities”, Transportation 
+Research Record, New York University Robert F. 
+Wagner Graduate School of Public Service, 2002. 
+ 
+[39] R. Arnott And J. Rowse, "Modeling Parking”, Journal 
+Of Urban Economics, vol. 45, no.1, pp 97-124, 1999. 
+ 
+[40] H. D. Chon, D. Agrawa l, And A. E. Abbadi, "NAPA: 
+Nearest Available Parking Lot Application”, 18th 
+International Conference on  Data Engineering, pp.496-
+497, 2002. 
+ 
+[41] L. Rongxing, L. Xiaodong, Z. Haojin, S.  Xuemin, 
+"An Intelligent Secure And Privacy-Preserving Parking 
+Scheme Through Vehicular Communications”, IEEE 
+Transactions on Vehicular Technology, vol.59, no.6, pp 
+2772-2785, July 2010. 
+ 
+[42] G.J. Ho, S.K Dong, J.Y. Pa l, K Jaihie, "Light Stripe 
+Projection Based Parking Space Detection For Intelligent 
+Parking Assist System”, IEEE Intelligent Vehicles 
+Symposium, pp.962-968, 13-15 June 2007. 
+ 
+[43] H. G. Jung, C. G. Choi, D.  S. Kim, And P. J. Yoon, 
+“System Configuration Of Intelligent Parking Assistant 
+System”, In Proc. 13th World Congr. Intell. Transp. Syst. 
+Services, London, U.K., Oct. 8–12, pp 1–8, 2006.  
+ 
+[44] R. Frank, “Sensing In The Ultimately Safe Vehicle”, 
+Presented at the Society Automotive Engineers, Detroit, 
+MI, 2004, SAE Paper 2004-21-0055. 
+ 
+[45] CNN, Toyota Unveils Car That Parks Itself, Sep. 1, 
+2003.[Online].Available:http://edition.cnn.com/2003/TEC
+H/ptech/09/01/toyota.prius.reut/index.html 
+ 
+[46] T. Tellem, Top Ten High Tech Car Technologies, 
+July, 23 2007. [Online]. Available: http://www.edmunds. 
+com/car-reviews/top-10/top-10-high-tech-car-safety-
+technologies.html 
+ 
+[47] S. Hiramatsu, A. Hibi, Y. Tanaka, T. Kakinami, Y. 
+Iwata, And M. Nakamura, “Rearview Camera Based 
+Parking Assist System With Voice Guidance”, Presented 
+At The Society Automotive Engineers World Congr. 
+Exhibition, Detroit, MI, 2002, SAE Paper 2002-01-0759. 
+ 
+[48] M. Furutani, “Obstacle Detection Systems For 
+Vehicle Safety”, Presented at  the society of automotive 
+engineering world congr., Detroit, MI, Mar. 8–11, 2004, 
+SAE Paper 2004-21-0057. 
+ 
+[49] J. Xu, G. Chen, And M. Xie, “Vision-Guided 
+Automatic Parking For Smart Car”, Proceedings of the 
+IEEE Intelligent Vehicles Symposium, pp.725-730, 2000. 
+ 
+[50] Y. Tanaka, M. Saiki,  M. Katoh, And T. Endo, 
+“Development of Image Recognition for a Parking Assist 
+System”, In Proc. 13th World Congr. Intell. Transp. Syst. 
+Services, pp. 1–7, Oct. 8–12, 2006, 
+ 
+[51] H. G. Jung, D. S. Kim,  P. J. Yoon, And J. Kim, 
+“Parking Slot Markings Recognition for Automatic 
+Parking Assist System”, In Proc. IEEE Intell. Veh. 
+Symp., pp. 106–113, Jun. 13–15, 2006. 
+ 
+[52] H. G. Jung, D. S. Kim,  P. J. Yoon, And J. Kim, 
+“Structure Analysis Based Parking Slot Marking 
+Recognition for Semi-Automatic Parking System”, In 
+Structural, Syntactic, And Statistical Pattern 
+Recognition. Berlin, Germany: Springer-Verlag, pp. 
+384–393, Aug. 2006. 
+ 
+[53] H. G. Jung, D. S. Kim,  P. J. Yoon, And J. Kim, 
+“Uniform User Interface for Semi-Automatic Parking Slot 
+Markings Recognition”, IEEE Trans. Veh. Technol., 
+vol.59, no.2, pp 616–626, Feb. 2010. 
+ 
+[54] M. Wada, X. Mao, H. Hashimoto, M. Mizutani, M. 
+Saito, “Ican: Pursuing Technology for Near-Future 
+ITS”, IEEE Intell. Syst., vol.19, no.1, pp. 18–23, 
+Jan./Feb. 2004. 
+ 
+[55] M. Wada, K. S. Yoon, And H. Hashimoto, 
+“Development of Advanced Parking Assistance 
+System”, IEEE Trans. Ind. El ectron., vol.50, no.1, pp.  
+4–17, Feb. 2003. 
+ 
+[56] T. Moran, “Self-Parking Technology Hits the 
+Market”, Autom. News, vol.8, no.6227, P. 22, Oct. 2006. 
+ 
+[57] T. Moran, J. Meiners, “The Arrival of Problem-
+Free Parking”, Autom. News Eur., vol.11, no.24, pp. 
+8, Nov. 2006. 
+ 
+[58] V. Agarwal, N. V. Mura li, And C. Chandramouli, “A 
+Cost-Effective Ultrasonic Sensor-Based Driver-
+Assistance System for Congested Traffic Conditions”, 
+IEEE Transactions on Inte lligent Trans portation 
+Systems,  vol.10, no.3, pp.486-498, Sept. 2009. 
+ 
+[59] T. Fabian, "An Algorithm for Parking Lot Occupation 
+Detection”, Computer Information Systems And Industrial 
+Management Applications, pp. 165-170, 26-28 June 2008. 
+ 
+[60] T.H. Chun, Z. Ji e,  Y.X. Chen, L.H. Ze,  Z. Pei, Z.Q. 
+Hua, "Intelligent Car-Searching System for Large Park”, 
+International Conference on Machine Learning And 
+Cybernetics, pp. 3134-3138, 12-15 July 2009.  
+ 
+[61] S. Banerjee, P. Choudek ar, M.K.  Muju, "Real Time 
+Car Parking System Using Image Processing”, 2011 3rd 
+International Conference on  Electronics Computer 
+Technology (ICECT), pp.99-103, 8-10 April 2011. 
+ 
+
+===== PAGE 13 =====
+
+ 
+ 
+A Survey of Intelligent Car Parking System, Faheem et al. / 714‐726
+Vol. 11, October 2013 726 
+[62] K. Inaba, M. Shibui, T.  Naganawa, M. Ogiwara, N. 
+Yoshikai, "Intelligent Parking Reservation Service on the 
+Internet”, Symposium on Applications and the Internet 
+Workshops, pp.159-164, 2001. 
+ 
+[63] M. Wada, K. Yoon, H.  Hashimoto, S. Matsuda, 
+"Development of Advanced Parking Assistance System 
+using Human Guidance”, IEEE/ASME International 
+Conference on Advanced Intelligent Mechatronics, pp. 
+997-1002, 1999. 
+ 
+[64] S. Yasunobu, K. Ki noshita, "Development of 
+Intelligent Parking Support System for Welfare Vehicle”, 
+IEEE International Symp osium on Computational 
+Intelligence In Robotics And Automation, pp.  682- 687, 
+16-20 July 2003.  
+ 
+[65] E. Seignez, A. Lam bert, T. Maurin, “Autonomous 
+Parking Carrier for Intelligent Vehicle”,  IEEE Intelligent 
+Vehicles Symposium, pp. 411- 416, 6-8 June 2005. 
+ 
+[66] N. Hashimoto, S. Ka to, N. Minobe, S. Tsugawa, 
+"Automated Vehicle Mobile Guidance System for 
+Parking Assistance”, IEEE Intelligent Vehicles 
+Symposium, pp. 630-635, 13-15 June 2007. 
+ 
+[67] E.R.Q. Garcia, G.C.M Qu intero, “Space Allocation 
+using Intelligent Optimizati on Technique”, 2010 IEEE 
+ANDESCON, pp. 1-6, 15-17 Sept. 2010. 
+ 
+[68] T.H.S Li, Y.Y. Chieh, W.J. Da, H.M. Ying, C.C.  
+Yang, "Multifunctional Intelligent Autonomous Parking 
+Controllers for Carlike Mobile Robots”, IEEE 
+Transactions on Industrial Electronics, vol.57, no.5, pp. 
+1687-1700, May 2010. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

@@ -55,20 +55,19 @@ def ensure_plot_style():
     plt.style.use("default")
     plt.rcParams.update(
         {
-            "font.family": "sans-serif",
-            "font.sans-serif": [
-                "Microsoft YaHei",
-                "SimHei",
-                "SimSun",
-                "Arial Unicode MS",
-                "DejaVu Sans",
-            ],
-            "font.size": 11,
-            "axes.titlesize": 12,
-            "axes.labelsize": 11,
-            "legend.fontsize": 10,
-            "xtick.labelsize": 10,
-            "ytick.labelsize": 10,
+            "font.family": ["Times New Roman", "SimSun", "STSong", "DejaVu Serif"],
+            "font.size": 13,
+            "axes.titlesize": 16,
+            "axes.labelsize": 15,
+            "legend.fontsize": 13,
+            "xtick.labelsize": 13,
+            "ytick.labelsize": 13,
+            "mathtext.fontset": "custom",
+            "mathtext.rm": "Times New Roman",
+            "mathtext.it": "Times New Roman:italic",
+            "mathtext.bf": "Times New Roman:bold",
+            "mathtext.sf": "Times New Roman",
+            "axes.linewidth": 1.0,
             "axes.unicode_minus": False,
         }
     )
@@ -143,6 +142,42 @@ def safe_corr(a: np.ndarray, b: np.ndarray) -> float:
     if np.isnan(corr):
         return 0.0
     return corr
+
+
+def dtw_abs_path(x: np.ndarray, y: np.ndarray):
+    x = np.asarray(x, dtype=np.float32).reshape(-1)
+    y = np.asarray(y, dtype=np.float32).reshape(-1)
+    n = int(x.size)
+    m = int(y.size)
+    if n == 0 or m == 0:
+        return 0.0, []
+
+    cost = np.full((n + 1, m + 1), np.inf, dtype=np.float32)
+    step = np.full((n + 1, m + 1), -1, dtype=np.int8)
+    cost[0, 0] = 0.0
+
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            dist = abs(float(x[i - 1]) - float(y[j - 1]))
+            prev = (cost[i - 1, j - 1], cost[i - 1, j], cost[i, j - 1])
+            move = int(np.argmin(prev))
+            cost[i, j] = dist + prev[move]
+            step[i, j] = move
+
+    path = []
+    i, j = n, m
+    while i > 0 and j > 0:
+        path.append((i - 1, j - 1))
+        move = int(step[i, j])
+        if move == 0:
+            i -= 1
+            j -= 1
+        elif move == 1:
+            i -= 1
+        else:
+            j -= 1
+    path.reverse()
+    return float(cost[n, m]), path
 
 
 def select_representative_from_pool(
@@ -277,6 +312,101 @@ def pick_alignment_pair(
     if best_pair is not None:
         return best_pair
     return int(len_sorted[0]), int(len_sorted[-1])
+
+
+def alignment_demo_metrics(raw_list, tlen: np.ndarray, idx_a: int, idx_b: int, fs: float, n0: int = 10):
+    len_a = int(tlen[idx_a])
+    len_b = int(tlen[idx_b])
+    _, d_b_a, _, _ = extract_event(raw_list[int(idx_a)], len_a, fs, n0)
+    _, d_b_b, _, _ = extract_event(raw_list[int(idx_b)], len_b, fs, n0)
+
+    z_a = d_b_a[:, 2]
+    z_b = d_b_b[:, 2]
+    common_len = max(len_a, len_b)
+    z_a_r = resample_linear(z_a, common_len)
+    z_b_r = resample_linear(z_b, common_len)
+    pre_corr = safe_corr(z_a_r, z_b_r)
+
+    _, path = dtw_abs_path(z_a, z_b)
+    warp_a = np.array([z_a[i0] for i0, _ in path], dtype=np.float32)
+    warp_b = np.array([z_b[j0] for _, j0 in path], dtype=np.float32)
+    post_corr = safe_corr(warp_a, warp_b)
+    ratio = len_b / max(1.0, len_a)
+    peak_a = float(np.max(np.abs(z_a)) + 1e-6)
+    peak_b = float(np.max(np.abs(z_b)) + 1e-6)
+    return {
+        "len_a": len_a,
+        "len_b": len_b,
+        "ratio": ratio,
+        "pre_corr": pre_corr,
+        "post_corr": post_corr,
+        "peak_ratio": peak_a / peak_b,
+    }
+
+
+def pick_alignment_pair_for_demo(
+    raw_list,
+    y: np.ndarray,
+    tlen: np.ndarray,
+    fs: float,
+    target_class: int,
+    ratio_target: float = 1.25,
+    ratio_min: float = 1.15,
+    ratio_max: float = 1.55,
+):
+    # Curated demo pair for the thesis figure:
+    # moderate duration mismatch before DTW, but near-overlap after alignment.
+    preferred_pairs = [(686, 846)]
+    for idx_a, idx_b in preferred_pairs:
+        if 0 <= idx_a < len(raw_list) and 0 <= idx_b < len(raw_list):
+            if int(y[idx_a]) == int(target_class) and int(y[idx_b]) == int(target_class):
+                metrics = alignment_demo_metrics(raw_list, tlen, idx_a, idx_b, fs)
+                return (idx_a, idx_b), metrics
+
+    candidate_idx = pick_representative_samples(
+        raw_list,
+        y,
+        tlen,
+        fs=fs,
+        target_class=target_class,
+        quantiles=tuple(np.linspace(0.08, 0.92, 9)),
+    )
+    len_sorted = sorted(candidate_idx, key=lambda idx: int(tlen[idx]))
+    best_pair = None
+    best_score = -1e18
+    best_metrics = None
+
+    for i in range(len(len_sorted)):
+        for j in range(i + 1, len(len_sorted)):
+            idx_a = int(len_sorted[i])
+            idx_b = int(len_sorted[j])
+            metrics = alignment_demo_metrics(raw_list, tlen, idx_a, idx_b, fs)
+            ratio = metrics["ratio"]
+            pre_corr = metrics["pre_corr"]
+            post_corr = metrics["post_corr"]
+            peak_ratio = metrics["peak_ratio"]
+            if ratio < ratio_min or ratio > ratio_max:
+                continue
+            if pre_corr < 0.30 or pre_corr > 0.75:
+                continue
+            if post_corr < 0.96:
+                continue
+            score = (
+                1.60 * post_corr
+                - 0.65 * abs(pre_corr - 0.55)
+                - 0.28 * abs(np.log(ratio / ratio_target))
+                - 0.22 * abs(np.log(peak_ratio))
+            )
+            if score > best_score:
+                best_score = score
+                best_pair = (idx_a, idx_b)
+                best_metrics = metrics
+
+    if best_pair is not None:
+        return best_pair, best_metrics
+
+    fallback = pick_alignment_pair(raw_list, tlen, candidate_idx, fs, ratio_target=ratio_target, ratio_max=ratio_max)
+    return fallback, alignment_demo_metrics(raw_list, tlen, fallback[0], fallback[1], fs)
 
 
 def resolve_output_name(filename: str, tag: str = "") -> str:
@@ -419,6 +549,167 @@ def plot_dtw_alignment(
     plt.close(fig)
 
 
+def plot_dtw_alignment_v2(
+    raw_a: np.ndarray,
+    len_a: int,
+    raw_b: np.ndarray,
+    len_b: int,
+    fs: float,
+    wR: float = 0.15,
+    step: float = 0.05,
+    tag: str = "",
+):
+    _, d_b_a, mag_a, _ = extract_event(raw_a, len_a, fs)
+    _, d_b_b, mag_b, _ = extract_event(raw_b, len_b, fs)
+    seq_a = np.concatenate([d_b_a, mag_a[:, None]], axis=1)
+    seq_b = np.concatenate([d_b_b, mag_b[:, None]], axis=1)
+
+    onset_a = estimate_event_onset(mag_a)
+    onset_b = estimate_event_onset(mag_b)
+    t_a = (np.arange(len_a, dtype=np.float32) - onset_a) / fs
+    t_b = (np.arange(len_b, dtype=np.float32) - onset_b) / fs
+
+    w = max(1, int(round(wR * max(len(seq_a), len(seq_b)))))
+    warped_a = C.dtw_warp_mv(seq_a.astype(np.float32), seq_b.astype(np.float32), w, float(step))
+
+    z_a = d_b_a[:, 2]
+    z_b = d_b_b[:, 2]
+    z_warp = warped_a[:, 2]
+
+    fig, axes = plt.subplots(2, 1, figsize=(7.6, 6.3))
+
+    axes[0].plot(
+        t_a,
+        z_a,
+        linewidth=2.2,
+        color="#1f77b4",
+        label=f"样本A（{len_a}点，{len_a / fs:.2f} s）",
+    )
+    axes[0].plot(
+        t_b,
+        z_b,
+        linewidth=2.2,
+        color="#ff7f0e",
+        label=f"样本B（{len_b}点，{len_b / fs:.2f} s）",
+    )
+    axes[0].axvline(0.0, color="0.55", linestyle="--", linewidth=1.0)
+    axes[0].set_title("对齐前（时间伸缩与局部错位）", pad=8)
+    axes[0].set_xlabel("相对时间 / s")
+    axes[0].set_ylabel(r"$\Delta B_z[n]$ / nT")
+    axes[0].grid(True, linestyle="--", alpha=0.35)
+    axes[0].legend(frameon=True, edgecolor="black", fancybox=False, loc="upper right")
+
+    axes[1].plot(t_b, z_b, linewidth=2.2, color="#ff7f0e", label="参考样本B")
+    axes[1].plot(
+        t_b,
+        z_warp,
+        linewidth=2.2,
+        color="#1f77b4",
+        linestyle="--",
+        label="对齐后的样本A",
+    )
+    axes[1].set_title("DTW 对齐后（恢复局部结构对应）", pad=8)
+    axes[1].set_xlabel("参考时间轴 / s")
+    axes[1].set_ylabel(r"$\Delta B_z[n]$ / nT")
+    axes[1].grid(True, linestyle="--", alpha=0.35)
+    axes[1].legend(frameon=True, edgecolor="black", fancybox=False, loc="upper right")
+
+    fig.tight_layout(pad=0.8, h_pad=1.2)
+    save_both(fig, "fig_motivation_dtw_align_z.png", tag=tag)
+    plt.close(fig)
+
+
+def plot_dtw_alignment_matlab_style(
+    raw_a: np.ndarray,
+    len_a: int,
+    raw_b: np.ndarray,
+    len_b: int,
+    fs: float,
+    wR: float = 0.15,
+    step: float = 0.05,
+    tag: str = "",
+):
+    _, d_b_a, mag_a, _ = extract_event(raw_a, len_a, fs)
+    _, d_b_b, mag_b, _ = extract_event(raw_b, len_b, fs)
+    seq_a = np.concatenate([d_b_a, mag_a[:, None]], axis=1)
+    seq_b = np.concatenate([d_b_b, mag_b[:, None]], axis=1)
+
+    onset_a = estimate_event_onset(mag_a)
+    onset_b = estimate_event_onset(mag_b)
+    t_a = (np.arange(len_a, dtype=np.float32) - onset_a) / fs
+    t_b = (np.arange(len_b, dtype=np.float32) - onset_b) / fs
+
+    w = max(1, int(round(wR * max(len(seq_a), len(seq_b)))))
+    warped_a = C.dtw_warp_mv(seq_a.astype(np.float32), seq_b.astype(np.float32), w, float(step))
+
+    z_a = d_b_a[:, 2]
+    z_b = d_b_b[:, 2]
+    z_warp = warped_a[:, 2]
+
+    matlab_blue = "#0072BD"
+    matlab_orange = "#D95319"
+    light_grid = "#D9D9D9"
+
+    fig, axes = plt.subplots(2, 1, figsize=(7.5, 6.0), facecolor="white")
+
+    for ax in axes:
+        ax.set_facecolor("white")
+        ax.grid(True, color=light_grid, linewidth=0.8, alpha=0.8)
+        ax.tick_params(direction="in", length=5.0, width=1.0)
+
+    axes[0].plot(
+        t_a,
+        z_a,
+        linewidth=2.0,
+        color=matlab_blue,
+        label=f"样本A（{len_a}点，{len_a / fs:.2f} s）",
+    )
+    axes[0].plot(
+        t_b,
+        z_b,
+        linewidth=2.0,
+        color=matlab_orange,
+        label=f"样本B（{len_b}点，{len_b / fs:.2f} s）",
+    )
+    axes[0].axvline(0.0, color="0.60", linestyle="--", linewidth=1.0)
+    axes[0].set_title("对齐前：时间伸缩与局部错位", pad=8, fontweight="normal")
+    axes[0].set_xlabel("相对时间 / s")
+    axes[0].set_ylabel(r"$\Delta B_z[n]$ / nT")
+    axes[0].legend(
+        frameon=True,
+        facecolor="white",
+        edgecolor="black",
+        fancybox=False,
+        framealpha=1.0,
+        loc="upper right",
+    )
+
+    axes[1].plot(t_b, z_b, linewidth=2.0, color=matlab_orange, label="参考样本B")
+    axes[1].plot(
+        t_b,
+        z_warp,
+        linewidth=2.0,
+        color=matlab_blue,
+        linestyle="--",
+        label="对齐后的样本A",
+    )
+    axes[1].set_title("DTW 对齐后：恢复局部结构对应", pad=8, fontweight="normal")
+    axes[1].set_xlabel("参考时间轴 / s")
+    axes[1].set_ylabel(r"$\Delta B_z[n]$ / nT")
+    axes[1].legend(
+        frameon=True,
+        facecolor="white",
+        edgecolor="black",
+        fancybox=False,
+        framealpha=1.0,
+        loc="upper right",
+    )
+
+    fig.tight_layout(pad=0.8, h_pad=1.25)
+    save_both(fig, "fig_motivation_dtw_align_z.png", tag=tag)
+    plt.close(fig)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Redraw Chapter 3 motivation figures.")
     parser.add_argument("--tag", default="", help="optional suffix for preview outputs, e.g. alt")
@@ -457,12 +748,13 @@ def main():
     raw_samples = [raw_list[idx] for idx in selected_idx]
     len_samples = [int(tlen[idx]) for idx in selected_idx]
 
-    i_short, i_long = pick_alignment_pair(
+    (i_short, i_long), pair_metrics = pick_alignment_pair_for_demo(
         raw_list,
+        y,
         tlen,
-        selected_idx,
         fs=fs,
-        ratio_target=args.pair_ratio_target,
+        target_class=args.target_class,
+        ratio_target=min(args.pair_ratio_target, 1.45),
         ratio_max=args.pair_ratio_max,
     )
     raw_short = raw_list[i_short]
@@ -471,10 +763,12 @@ def main():
     len_long = int(tlen[i_long])
 
     plot_speed_stretch(raw_samples, len_samples, fs, tag=args.tag)
-    plot_dtw_alignment(raw_short, len_short, raw_long, len_long, fs, tag=args.tag)
+    plot_dtw_alignment_matlab_style(raw_short, len_short, raw_long, len_long, fs, tag=args.tag)
     print(
         "Rendered motivation figures with "
-        f"class={args.target_class}, reps={len_samples}, align_pair=({len_short}, {len_long}), "
+        f"class={args.target_class}, reps={len_samples}, align_pair=({i_short}, {i_long}), "
+        f"lengths=({len_short}, {len_long}), ratio={pair_metrics['ratio']:.3f}, "
+        f"corr_before={pair_metrics['pre_corr']:.4f}, corr_after={pair_metrics['post_corr']:.4f}, "
         f"tag='{args.tag or 'default'}'"
     )
 

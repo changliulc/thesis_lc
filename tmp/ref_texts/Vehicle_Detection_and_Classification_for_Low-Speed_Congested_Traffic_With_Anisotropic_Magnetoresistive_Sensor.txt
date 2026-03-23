@@ -1,0 +1,598 @@
+
+
+===== PAGE 1 =====
+
+1132 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+Vehicle Detection and Classiﬁcation for Low-Speed
+Congested Trafﬁc With Anisotropic
+Magnetoresistive Sensor
+Bo Yang and Yiqun Lei
+Abstract— A vehicle detection and classiﬁcation system has
+been developed based on a low-cost triaxial anisotropic mag-
+netoresistive sensor. Considering the characteristics of vehicle
+magnetic detection signals, especially the signals for low-speed
+congested trafﬁc in large cities, a novel ﬁxed threshold state
+machine algorithm based on signal variance is proposed to detect
+vehicles within a single lane and segment the vehicle signals
+effectively according to the time information of vehicles entering
+and leaving the sensor monitoring area. In our experiments, ﬁve
+signal features are extracted, including the signal duration, signal
+energy, average energy of the signal, ratio of positive and negative
+energy of x-axis signal, and ratio of positive and negative energy
+of y-axis signal. Furthermore, the detected vehicles are classiﬁed
+into motorcycles, two-box cars, saloon cars, buses, and Sport
+Utility Vehicle commercial vehicles based on a classiﬁcation tree
+model. The experimental results have shown that the detection
+accuracy of the proposed algorithm can reach up to 99.05% and
+the average classiﬁcation accuracy is 93.66%, which verify the
+effectiveness of our algorithm for low-speed congested trafﬁc.
+Index Terms — Anisotropic magnetoresistive sensor (AMR),
+low-speed congested trafﬁc, vehicle detection, vehicle
+classiﬁcation.
+I. I NTRODUCTION
+V
+EHICLE detection and classiﬁcation technologies play
+an important role in the Intelligent Transportation
+Systems (ITS). Most conventional trafﬁc surveillance systems
+use inductive loop detectors and video cameras [1], [2]. For
+maximizing the beneﬁts from these detection technologies,
+there must be a large scale deployment of trafﬁc surveillance
+on all the major streets and freeways. As intrusive sensors,
+however, the installation and maintenance of the inductive loop
+detectors lead to a relative high cost. The video camera is also
+expensive for a large-scale deployment, and they are greatly
+affected by the environmental factors, such as shadow, snow
+and rain [3].
+Magnetoresistive sensor has recently been utilized for vehi-
+cle surveillance owing to its advantages of easy installation,
+Manuscript received August 16, 2014; revised September 9, 2014; accepted
+September 12, 2014. Date of publicatio n September 18, 2014; date of current
+version November 26, 2014. This work was supported by the Aviation Science
+Foundation of China under Grant 2011ZD51051. The associate editor coor-
+dinating the review of this paper and approving it for publication was
+Dr. Stoyan Nihtianov.
+The authors are with the School of Automation Science and
+Electrical Engineering, Beihang University, Beijing 100191, China (e-mail:
+boyang@buaa.edu.cn; leiyiqun@foxmail.com).
+Color versions of one or more of the ﬁgures in this paper are available
+online at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/JSEN.2014.2359014
+low cost, small size, strong anti-jamming capability [4], [5],
+etc. Scholars worldwide have investigated the application of
+magnetic sensor and wireless sensor network for vehicle detec-
+tion and classiﬁcation. They offer a very attractive alternative
+to inductive loops and video cameras. Currently, the most com-
+monly used vehicle detection algorithms based on magnetic
+sensor are ﬁxed threshold algorithm, the state machine algo-
+rithm and adaptive threshold algorithm [6]. Sing Y . C. et al. [7]
+proposed an efﬁcient vehicle detection algorithm, Adaptive
+Threshold Detection Algorithm (ATDA), based on 3-axis
+Anisotropic Magnetoresistive (AMR) sensor with high preci-
+sion of 99%. However the classiﬁcation scheme was not good
+enough and overall detection rate was below 60%. Wireless
+sensor network based on AMR can detect and track moving
+vehicles to obtain more trafﬁc information [8], [9]. Many
+classiﬁcation algorithms using AMR sensors were proposed,
+including the Hill-Patterns algorithm, the Average-Bar
+algorithm, the BP Neural Network algorithm and the Support
+Vector Machine, etc. Most of them have conducted experimen-
+tal tests and comprehensive study in normal driving situation
+and achieved good results. For example, a vehicle detection
+and classiﬁcation system was proposed based on a wireless
+sensor network using the adaptive threshold algorithm and
+intelligent neuron classiﬁer giving the promising classiﬁcation
+rate at 90% [10].
+However, little attention has been given to the vehicle
+detection and classiﬁcation for low-speed congested trafﬁc,
+which is prevalent in big cities. When vehicles driving at a
+low speed on a congested road, there will be serious waveform
+distortion in sensor signal out put, and because vehicles are
+close to each other, the front and rear of the vehicle signals will
+interfere mutually. All these factors will have a negative impact
+on the vehicle detection and classiﬁcation. Trafﬁc surveillance
+for low speed congested vehicles will be a new direction for
+future research.
+This paper focuses on the investigation of anisotropic
+magnetic sensor to detect the vehicle in a slow-moving
+and congested trafﬁc zone. A simple and effective vehicle
+detection and classiﬁcation system is developed based on low-
+cost three-axis AMR sensors. T he characteristics of the vehi-
+cle magnetic detection signals are particularly analyzed and
+processed. A novel ﬁxed threshold state machine algorithm is
+proposed based on variance weighting to detect vehicles within
+a single lane. The signal featur es are extracted accurately and
+the vehicles are classiﬁed by using a classiﬁcation tree model.
+1530-437X © 2014 I EEE. Personal u se is perm itted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+Y ANG AND LEI: VEHICLE DETECTION AND CLASSIFICATION FOR LOW-SPEED CONGESTED TRAFFIC 1133
+Fig. 1. The disturbance of of Earth’s magnetic ﬂux lines by a moving vehicle.
+Fig. 2. Sensor node.
+The experimental result has shown that the proposed algo-
+rithms can effectively detect th e vehicles in the slow-moving
+and congested trafﬁc zone and the accuracy of classiﬁcation
+is improved correspondingly.
+This paper is organized as follows. Section II introduces the
+foundation of vehicle detection using AMR sensor. Section III
+describes the principle of our novel signal variance based ﬁxed
+threshold state machine algorithm. The algorithm for vehicle
+classiﬁcation is given in Sec tion IV . Section V presents the
+experimental results of vehicle detection and vehicle classi-
+ﬁcation for low-speed congested trafﬁc. Finally, Section VI
+contains some conclusions.
+II. F OUNDATION OF VEHICLE DETECTION
+USING AMR S ENSOR
+The geomagnetic ﬁeld provides a uniform magnetic ﬁeld
+over a wide area and the magnetic sensor can detect the
+disturbances of the Earth’s ﬁeld caused by a large ferrous
+object like a vehicle. The disturbance depends on the ferrous
+material, its size and orientation (Figure 1).
+The magnetic sensor is made of a nickel-iron (Permalloy)
+thin ﬁlm deposited on a silicon wafer and patterned as a
+resistive strip. Typically, four resistors are connected in a
+Wheatstone bridge conﬁguration to generate a differential
+output voltage [11].
+Fig. 2 shows the sensor node we designed, which is
+composed of a CC2430 processor and an AMR sensor, etc.
+The AMR sensor we used is Honeywell triaxial HMC5883L,
+a fully digital sensor with built-in multiplexed ADC. The
+sensor has 12 bits ADC coupled with low noise AMR sensors
+and achieves 5 milli-gauss resolution in ±8 Gauss Fields.
+There are also 4 infrared sensors and a sound sensor in the
+sensor node to complete other measurement tasks. Only the
+AMR sensor is used in our experiment for the vehicle detection
+and classiﬁcation with low power consumption. The average
+Fig. 3. Magnetic signals of a two-box vehicle: (a) original signal and
+(b) signal after ﬁltering.
+current drain of the sensor node is only about 100 µA at
+work. The AMR sensor senses d isturbance of the Earth’s
+magnetic ﬁeld caused by a moving vehicle. This sensor can
+achieve magnetic ﬁeld measur ement for X, Y , and Z axis
+simultaneously with high accuracy and efﬁciency. Choosing
+a triaxial AMR sensor can obtain c omprehensive information
+of magnetic ﬁeld with high accuracy.
+III. V
+EHICLE DETECTION
+When a vehicle passes over an AMR sensor, the sensor
+will detect the dipole moments of various parts of the vehicle,
+and the related ﬁeld variation will reveal a very detailed
+magnetic signature of the vehicle. Figures 3(a) shows a 3-axis
+magnetometer output for a two-box vehicle passing directly
+over it. The three curves represent the X, Y , and Z-axis of the
+variation in the geomagnetic ﬁeld respectively for the moving
+vehicle.
+In order to facilitate the analysis for signals of the vehicle, a
+series of equally spaced sampling points are used to represent
+the three axis magnetic signals of vehicle. The sample rate of
+sensor is 75 Sa/s, so the horizontal axis is in Counts, and the
+vertical axis is in milli-gauss, which we mark as Mgauss in
+the following ﬁgures.
+⎧
+⎪⎨
+⎪⎩
+X ={ X (1), X (2), X (3) ,..., X (n)}
+Y ={ Y (1), Y (2), Y (3) ,..., Y (n)}
+Z ={ Z (1), Z (2), Z (3) ,..., Z (n)}
+(1)
+To get a smoother sensor signal, we use a digital ﬁltering
+algorithm to eliminate noise. The ﬁlter combines fast Fourier
+transform and median ﬁlter, which can not only ﬁlter out
+background random noise well but also be able to suppress
+the big impulse noise. The ﬁltering result are listed as follows
+and shown in Figure 3(b).
+⎧
+⎪⎨
+⎪⎩
+fil te re d_X (k) = fftfi l t (hn, medf ilt 1(X
+(k), N))
+fil te re d_Y (k) = fftfi l t (hn, medf ilt 1(Y (k), N))
+fil te re d_Z (k) = fftfi l t (hn, medf ilt 1(Z (k), N))
+(2)
+where hn is the ideal low-pass ﬁlter window function and N is
+median ﬁltering parameter.
+The function medﬁlt1 implements one-dimensional median
+ﬁltering and the function fftﬁlt is a frequency domain ﬁl-
+tering technique works on FIR ﬁlter using the efﬁcient
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+1134 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+Fig. 4. Sensor installation diagram.
+Fig. 5. Original magnetic signals of vehicles.
+FFT-based method of overlap-add. {ﬁltered_X(k), ﬁltered_Y(k),
+ﬁltered_Z(k)} are 3-axis vehicle magnetic signals after the
+ﬁltering processing.
+The vehicle density in most developed cities is centralized
+and huge, which cause a small amount of amplitude attenua-
+tion of output magnetic signal as the vehicles are driving at
+slow speed. Signals of adjacent vehicles will interfere with
+each other as two vehicles are crawling bumper to bumper.
+Furthermore, the output magnetic signal of sensor will drift
+when environment temperature changes [12]. All these factors
+will have a serious impact on the detection and segmentation
+of the vehicle signals.
+An experiment is performed to analyze the signal charac-
+teristics of the vehicles. An AMR sensor node is placed on
+the side of lane and is about 1.5 m away from the vehicle.
+The system layout is illustrated in Fig. 4. X-axis is the
+direction parallel to the moving vehicle. Y-axis is the direction
+perpendicular to the direction of moving vehicle. Z-axis is the
+direction perpendicular to the ground.
+Fig. 5 shows the sensor signal of 13 vehicles driving at about
+10km/h. There is a slight drift in background signal over time.
+We deﬁne F(k) as the magnetic ﬁeld intensity of measured
+signal.
+F(k) =
+√
+X (k)2 + Y (k)2 + Z (k)2 (3)
+A new variance-based multi-state machine adaptive thresh-
+old detection algorithm was proposed in Ref. [10]. The algo-
+rithm calculated the real-time data ﬂuctuation using historical
+data variance and then predict ed average signal threshold
+in future. This algorithm is an efﬁcient vehicle detection
+algorithm with high precision of 97% when the vehicle is
+driving normally. But for the vehicles crawling bumper to
+Fig. 6. Adaptive threshold detection algorithm [10].
+bumper with low speed in congested urban trafﬁc, the detection
+result is not satisfactory.
+Fig. 6 shows that the geomagnetic disturbances will be
+weakened when the vehicle is traveling at a low speed, i.e.
+the 5th, 11th, 12th vehicles in the ﬁgure. On the one hand, the
+interval between two vehicles is so short that the variance of
+the history signal does not reduce and the adaptive threshold
+increases, on the other hand, the amplitude of signal is small
+due to low-speed. Therefore, the algorithm cannot detect all
+these vehicles correctly. In addition, the adaptive threshold
+algorithm is not conducive to accurately determine the time
+information of vehicles entering and leaving the monitored
+area, which will increase the difﬁculty of effectively separating
+the vehicle signal.
+In order to detect the low-speed congested vehicles, this
+paper presents an effective ﬁxed threshold state machine
+algorithm based on the signal variance weighting. Firstly, we
+calculate the variance of magnetic ﬁeld intensity signal, and
+then multiply it by the original signal value as a weighting
+factor. This operation can retain the characteristics of the mag-
+netic ﬁeld intensity signal; meanwhile it can also suppress the
+signal drift by the property of signal variance. The algorithm
+is given by
+Processed _F(k) = fi l t e re d_F(k) × variance_F(k) (4)
+where fil te re d_F(k) is the ﬁltered magnetic ﬁeld intensity
+signal and variance _F(k) is the variance of the magnetic ﬁeld
+intensity signal.
+fi l t e re d_F(k) = fftfil t (hn, medf ilt 1(F(k), N)) (5)
+In this paper, the variance of the signal value is calculated
+by the forward and backward 15 points. In the absence of
+a passing vehicle, the variance of signal will still be very
+low. The vehicle signals become more signiﬁcant and easier to
+identify because of the obvious increase of the signal variance
+when the vehicle is passing.
+When the vehicle is driving a t a low speed and the vehicle-
+to-vehicle distance is relative small, the reference value will
+generate a large deviation due to the signal interference
+between certain vehicles. To improve the stability of the
+proposed algorithm, a state machine is introduced to judge
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+Y ANG AND LEI: VEHICLE DETECTION AND CLASSIFICATION FOR LOW-SPEED CONGESTED TRAFFIC 1135
+Fig. 7. Scheme of state machine algorithm.
+Fig. 8. The effect of vehicle identiﬁcation.
+the vehicles using two thresholds { H-value, L-value }which
+divided the input signal to three cases.
+The vehicle detection algorithm uses the deviation of
+processed_F(k) from a baseline to drive a state machine, which
+makes the vehicle counting decisions (Fig. 7). The input of the
+decision state machine is deﬁned as
+Ip =
+⎧
+⎪⎨
+⎪⎩
+0, i f processed _F(k) ⩽ L-value
+2, i f processed _F(k) ⩾ H-value
+1, other wise
+(6)
+where {H-value, L-value} are the high threshold and the low
+threshold.
+At the initial state, reset all parameter to the initial value
+and the state machine to an Un-triggered state. Duration_count
+denotes the duration of vehicle signal and vehicle_count is
+the number of vehicles. If Ip changes to 2 ( processed_F(k) ≥
+H-value), the state machine will turn to a Half-triggered state
+and we consider the vehicle may enter the sensor monitoring
+area.
+Normally, processed_F(k) increases ﬁrst and then decreases.
+If it has exceeded the L-value for a long time, the algorithm
+will return to INIT. Otherwise, Ip will turn to 0, and the state
+machine will turn to a Triggered state. Then, we consider
+the vehicle is leaving the sensor monitoring area. Let the
+vehicle_count plus 1 and retu rn to INIT waiting for another
+vehicle arriving.
+The vehicle detection result is shown in Fig. 8. The variance
+of the signal can effectively prevent the reference value
+from drifting caused by the mutual interference between two
+Fig. 9. Vehicle signal seg mentation. (a) Original vehicle signal. (b) Vehicle
+identiﬁcation. (c) Vehicle signal segmentation.
+adjacent vehicles. The processe d signal can be distinguished
+more clearly even though the vehicles are driving bumper to
+bumper. It can be concluded that our algorithm has higher
+detection rate both for low speed and congested vehicles.
+IV . VEHICLE CLASSIFICATION
+We perform a simple classiﬁcation based on a hierarchical
+tree methodology as in Ref. [13], which uses the above vehicle
+information to classify the vehicles into ﬁve types: Motorcycle,
+Two-box, Saloon, Bus and S port Utility Vehicle (SUV).
+A. Signal Segmentation
+The ﬁrst step of vehicle classiﬁcation is to extract the
+vehicle signal from sensor signal. The selection of entering
+and leaving points of vehicles will have a great inﬂuence on
+vehicle classiﬁcation. We assume the vehicle entering if the
+signal is just above H-value, and the vehicle leaving if lower
+than L-value in the above-mentioned detection algorithm. Then
+we segment the vehicle signals effectively according to the
+time information of vehicles entering and leaving the sensor
+monitoring area. There is slight loss about signal interception
+portions due to the high threshold, so that we compensate the
+time when the vehicle enters the sensor detection zone. In this
+paper, we extend 10 forward measuring points of the signal
+expansion to solve this problem (Figure 9).
+Fig. 10 shows a schematic view of signal segmentation
+for above 13 vehicles in Section III. This result illustrates
+that vehicle X-axis signal and Y-axis signal have signiﬁcant
+characteristics compared with Z-axis signal. The Z-axis signal
+is a single peak wave because the geomagnetic disturbances
+are consistent in this direction when vehicle passes over the
+AMR sensor.
+B. Feature Extraction
+In order to identify the vehicle type, some quantitative
+indices are required to extr act the features of the magnetic
+signal. These indices should have high correlations with the
+signal waveform and can be easily computed. As above
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+1136 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+Fig. 10. The effect of vehicle signal segmentation.
+Fig. 11. Magnetic signals generated b y different types of vehicles.
+mentioned, the Z-axis signal characteristic of the vehicle has
+less inﬂuence in classiﬁcation process. Thus, only X-axis and
+Y-axis vehicle signals are analyzed in the following process
+of feature extraction.
+There are ﬁve types of vehicles to be analyzed. Each
+type of vehicle signal has its own unique characteristics due
+to the different structure of vehicle. In this paper, we will
+extract features through the time-domain waveform structure
+after data analysis. It should be noted that, the same type
+of vehicle signal waveform may be slightly different due to
+the impact of vehicle speed, vehicle equipment and other
+factors. But this does not have much impact for identifying
+the characteristics of vehicle signal. These ﬁve types vehicles
+signal characteristics are shown in Fig. 11.
+We deﬁne that L is the vehicle signal duration; E and
+EV are the signal energy and the average energy of the
+signal.
+E =
+∑
+(X
+2(k) + Y 2(k) + Z2(k)) (7)
+EV = E
+L (8)
+VX is the ratio of positive and negative energy of X-axis
+signal; VY is the ratio of positive and negative energy of Y-axis
+signal.
+VX =
+∑
+X (k)>0
+X2(k)
+∑
+X (k)<0
+X2(k) VY =
+∑
+Y (k)>0
+Y 2(k)
+∑
+Y (k)<0
+Y 2(k) (9)
+TABLE I
+DIFFERENT TYPES OF VEHICLES SIGNAL CHARACTERISTICS
+A total of 100 vehicle signals (20 vehicles for each type)
+were collected for analysis of their characteristics under the
+same test condition. The speed of vehicles in our experiment
+is about 10km/h ∼ 30km/h. The analysis result is shown
+in Table I.
+The number of vehicle sampling points is deﬁned as the
+vehicle signal duration. The bus signals are sampled at about
+200 to 400 points with a sampling frequency of 75 Hz, while
+sampling points of other types are generally between 50 and
+100 and can even exceed 150 in particularly low speeds.
+The average speeds of vehicle we concerned in experiments
+are in a limited range (10 ∼ 15km/h for the low-speed
+congested trafﬁc and 30 ∼ 40km/h for the normal trafﬁc).
+Within this speed range, even if a bus drives faster and other
+vehicles drive slower, the signal duration of the bus is still
+signiﬁcantly longer than others. Therefore, we can distinguish
+the bus from the other smaller cars by using the signal
+duration L.
+The volume of vehicles is reﬂected in vehicle signal
+energy so that we can distinguish the motorcycles and
+SUV commercial vehicle according to the signal energy
+E and EV. In order to increase the stability of the pro-
+posed algorithm, the average energy of vehicle signal EV
+is extracted as an auxiliary characteristic value for vehicle
+classiﬁcation.
+Two-box car and saloon car are relatively similar in terms
+of signal length and energy, but the structure of the vehicle
+signal has more obvious characteristics. The value of
+X-axis signal of two-box car is essentially negative while
+value of X-axis signal of saloon car is positive. The ratio
+of positive and negative energy of X-axis signal is extracted
+as a characteristic for identiﬁcation. In order to increase
+the stability of the proposed algorithm, the ratio of positive
+and negative energy of Y-axis signal is also extracted as
+an auxiliary characteristic to distinguish two-box car from
+saloon car.
+C. Vehicle Classiﬁcation Algorithm
+The above features are used here to construct the hierar-
+chical classiﬁcation tree for cl assifying vehicles. The speciﬁc
+classiﬁcation process is based on hierarchical tree shown in
+Fig. 12.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+Y ANG AND LEI: VEHICLE DETECTION AND CLASSIFICATION FOR LOW-SPEED CONGESTED TRAFFIC 1137
+Vehicle Classiﬁcation Algorithm
+① if(L≥L0); {bus}count, else
+② if(E≤Ea&&EV≤EVa); {moto}count, else
+③ if(E≥Eb&&EV≥EVb); {suv}count, else
+④ if(VX≤VX0&&VY≤VY0); {two-box}count
+else
+⑤ {saloon}count, return ① cycle until the end of all
+vehicles judgment
+Fig. 12. Schematic of classiﬁcation algorithm.
+The classiﬁcation tree model has three layers: the ﬁrst layer
+of the classiﬁcation criteria is the vehicle signal duration L;
+the second layer is the vehicle signal energy, including energy
+E and average energy EV; the third layer is the ratio of positive
+and negative energy of X-axis signal VX and Y-axis signal VY .
+The vehicle will be considered as a saloon car only when its
+characteristics do not meet any of the given conditions.
+{L
+0, Ea,E V a , Eb,E V b,V X 0,V Y 0}i sas e to fﬁ x e d
+threshold algorithm parameters. The thresholds are chosen as
+follows: L 0 = 200, Ea = 500, EVa = 10, Eb = 10000,
+EVb = 300, VX0 = 1, VY0 = 0.7. Various types of vehicles
+can be distinguished effectively using the vehicle classiﬁcation
+algorithm. The advantage of this algorithm has small amount
+of calculation and high classiﬁcation accuracy.
+V. E XPERIMENTAL RESULTS AND ANALYSIS
+In this paper, the congested trafﬁc condition is our main
+concern. The experimental test is performed for normal trafﬁc
+and low speed congested trafﬁc respectively at temperature
+about 21 ∼ 25 °C. The vehicle speed we tested is about
+30 ∼ 40km/h for normal trafﬁc, and 10 ∼ 15 km/h for low-
+speed congested trafﬁc respectively. The sensor node is placed
+7 cm above the ground and about 1.5 m away from the vehicle
+(Figure 13).
+We focus on the vehicle detection and classiﬁcation on a
+single lane in experiments. The AMR magnetic sensors work
+well for normal curbside sensing ranges of one to ﬁve feet
+(about 1.5m), while the width of lane is about 3.5m in the
+urban road of Beijing and the width of the vehicle is more
+than 2m in normal conditions, so the effect caused by the
+other lanes could be neglected.
+Vehicle detection results are listed in Table II. For normal
+trafﬁc, there are 147 vehicles being detected and all vehicles
+Fig. 13. Experimental scene.
+TABLE II
+RESULTS OF VEHICLE DETECTION
+TABLE III
+RESULTS OF VEHICLE CLASSIFICATION
+are identiﬁed correctly. For low-speed congested trafﬁc, there
+are 105 vehicles being observed. But one of the vehicles is not
+detected as it approaching another one too close. Two vehicles
+are misjudged as four due to the low speed. Therefore, the total
+number of vehicle detection result is 106 and the detection
+accuracy is still over 99% for low speed congested trafﬁc.
+Vehicle classiﬁcation results are listed in Table III.
+The vehicles are tested on the main and side roads because
+the motorcycles and the buses cannot drive in the same lane.
+Most vehicles on the congested roads are small cars and SUV
+vehicles. During the rush hours, bus lanes are travel lanes
+restricted to buses. Therefore, the classiﬁcation process in low-
+speed driving is given only for these three types of vehicles.
+The classiﬁcation accuracy is over 90% for low-speed con-
+gested trafﬁc. Although it is slightly lower than the accuracy
+for normal trafﬁc due to the amplitude attenuation of vehicle
+signal and the interference between adjacent vehicles, it is still
+good and promising.
+VI. C
+ONCLUSION
+This paper presents the vehicle detection and classiﬁca-
+tion methods for low-speed congested trafﬁc with anisotropic
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+1138 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+magnetoresistive sensor. A novel ﬁxed threshold state machine
+algorithm based on signal variance is proposed to detect low-
+speed congested vehicles within a single lane. Five signal
+features are extracted to cla ssify the detected vehicles into
+ﬁve types using the model classiﬁcation algorithm based
+on hierarchical tree methodology. The experimental results
+obtained from the low-speed congested trafﬁc have shown that
+the proposed algorithm has a high detection and classiﬁcation
+accuracy.
+The average speeds of vehicle we concern in the experi-
+ments are in a limited range (10 ∼ 15km/h for the low-speed
+congested trafﬁc and 30 ∼ 40km/h for the normal trafﬁc).
+Once the vehicle speed change exceeds the range, it should be
+introduced as a correction factor for the signal characteristics,
+which will be investigated in our future research.
+R
+EFERENCES
+[1] R. Wang, L. Zhang, K. Xiao, R. Sun, and L. Cui, “EasiSee: Real-time
+vehicle classiﬁcation and counting via low-cost collaborative sensing,”
+IEEE Trans. Intell. Transp. Syst., vol. 15, no. 1, pp. 414–424, Feb. 2014.
+[2] Y . Iwasaki, S. Kawata, and T. Nakamiya, “Robust vehicle detection
+even in poor visibility conditions using infrared thermal images and its
+application to road trafﬁc ﬂow monitoring,” Meas. Sci. Technol., vol. 22,
+no. 8, p. 085501, Aug. 2011.
+[3] E. Sifuentes, O. Casas, and R. Pallas-Areny, “Wireless magnetic sensor
+node for vehicle detection with optical wake-up,” IEEE Sensors J. ,
+vol. 11, no. 8, pp. 1669–1676, Aug. 2011.
+[4] S. Taghvaeeyan and R. Rajamani, “The development of vehicle position
+estimation algorithms based on the use of AMR sensors,” IEEE Trans.
+Intell. Transp. Syst. , vol. 13, no. 4, pp. 1845–1854, Dec. 2012.
+[ 5 ]M .H .K a n g ,B .W .C h o i ,K .C .K o h ,J .H .L e e ,a n dG .T .P a r k ,
+“Experimental study of a vehicle detector with an AMR sensor,” Sens.
+Actuators A, Phys. , vol. 118, no 2, pp. 278–284, Feb. 2005.
+[6] P. Ni, L. Le, and W. Yu, “Review of vehicle detection algorithms
+based on magnetoresistive sensors,” Comput. Eng. Appl., vol. 45, no. 19,
+pp. 245–248, 2009.
+[7] S. Y . Cheung, S. Coleri, B. Dunda r, S. Ganesh, C.-W. Tan, and
+P. Varaiya, “Trafﬁc measurement and vehicle classiﬁcation with sin-
+gle magnetic sensor,” J. Transp. Res. Board , vol. 1917, no. 1,
+pp. 173–181, Dec. 2005.
+[8] B.-G. Lee and J.-H. Kim, “Algorithm for ﬁnding the moving direction of
+a vehicle using magnetic sensor,” in Proc. IEEE Symp. CICA, Apr. 2011,
+pp. 74–79.
+[9] S. Marshall, “Vehicle detection using a magnetic ﬁeld sensor,” IEEE
+Trans. Veh. Technol., vol. 27, no. 2, pp. 65–68, May 1978.
+[10] B. Yang and W. Nin, “Vehicle detection and classiﬁcation algorithm
+based on anisotropic magnetoresistive sensor,” C h i n .J .S c i .I n s t r u m .,
+vol. 34, no. 3, pp. 537–544, Mar. 2013.
+[11] X. S. Li, R. Q. Kang, Y . X. Liu, Z. H. Wang, and X. Y . Shu, “High
+accuracy AMR magnetometer and its application to vehicle detection,”
+Adv. Mater. Res., vols. 443–444, pp. 150–155, Jan. 2012.
+[12] P. Ripka, M. Butta, and A. Platil, “Temperature stability of AMR
+sensors,” Sensor Lett., vol. 11, no. 1, pp. 74–77, Jan. 2013.
+[13] S. Kaewkamnerd, R. Pongthornseri, J. Chinrungrueng, and T. Silawan,
+“Automatic vehicle classiﬁcation using wireless magnetic sensor,” in
+Proc. IEEE Int. Workshop IDAACS , Sep. 2009, pp. 420–424.
+Bo Yang was born in Sichuan, China, in 1972. She
+received the B.S. and M.S. degrees from Beihang
+University, Beijing, China, in 1993 and 1996, respec-
+tively, and the Ph.D. degree from the University
+of Paderborn, Paderborn, Germany, in 2004, all in
+electrical engineering.
+She has been with the School of Automation Sci-
+ence and Electrical Engineering, Beihang University,
+since 2004, where she is currently an Associate Pro-
+fessor. Her main research interests include intelligent
+measurement and control.
+Yiqun Lei was born in Shaanxi, China, in 1991.
+She received the B.S. degree in automation science
+and electric engineering from Beihang University,
+Beijing, China, in 2013, where she is currently pur-
+suing the M.S. degree at the School of Automation
+Science and Electrical Engineering. Her research
+interest includes wireless sensor networks.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:18:37 UTC from IEEE Xplore.  Restrictions apply. 

@@ -1,0 +1,1135 @@
+
+
+===== PAGE 1 =====
+
+Citation: Sarcevic, P .; Pletl, S.; Odry,
+A. Real-Time Vehicle Classiﬁcation
+System Using a Single Magnetometer.
+Sensors 2022, 22, 9299. https://
+doi.org/10.3390/s22239299
+Academic Editor: Felipe Jiménez
+Received: 12 November 2022
+Accepted: 26 November 2022
+Published: 29 November 2022
+Publisher’s Note: MDPI stays neutral
+with regard to jurisdictional claims in
+published maps and institutional afﬁl-
+iations.
+Copyright: © 2022 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license (https://
+creativecommons.org/licenses/by/
+4.0/).
+sensors
+Article
+Real-Time Vehicle Classiﬁcation System Using a
+Single Magnetometer
+Peter Sarcevic 1,*
+ , Szilveszter Pletl 2 and Akos Odry 1
+1 Department of Mechatronics and Automation, Faculty of Engineering, University of Szeged, Moszkvai Krt. 9,
+6725 Szeged, Hungary
+2 Department of Technical Informatics, Faculty of Science and Informatics, University of Szeged, Arpad Ter 2,
+6720 Szeged, Hungary
+* Correspondence: sarcevic@mk.u-szeged.hu
+Abstract: Vehicle count and classiﬁcation data are very important inputs for intelligent transporta-
+tion systems (ITS). Magnetic sensor-based technology provides a very promising solution for the
+measurement of different trafﬁc parameters. In this work, a novel, real-time vehicle detection and
+classiﬁcation system is presented using a single magnetometer. The detection, feature extraction,
+and classiﬁcation are performed online, so there is no need for external equipment to conduct the
+necessary computation. Data acquisition was performed in a real environment using a unit installed
+into the surface of the pavement. A very large number of samples were collected containing mea-
+surements of various vehicle classes, which were applied for the training and the validation of the
+proposed algorithm. To explore the capabilities of magnetometers, nine deﬁned vehicle classes were
+applied, which is much higher than in relevant methods. The classiﬁcation is performed using
+three-layer feedforward artiﬁcial neural networks (ANN). Only time-domain analysis was performed
+on the waveforms using multiple novel feature extraction approaches. The applied time-domain
+features require low computation and memory resources, which enables easier implementation and
+real-time operation. Various combinations of used sensor axes were also examined to reduce the
+size of the classiﬁer and to increase efﬁciency. The effect of the detection length, which is a widely
+used feature, but also speed-dependent, on the proposed system was also investigated to explore
+the suitability of the applied feature set. The results show that the highest achieved classiﬁcation
+efﬁciencies on unknown samples are 74.67% with, and 73.73% without applying the detection length
+in the feature set.
+Keywords: feature extraction; magnetic sensor; time-domain analysis; vehicle classification;
+vehicle detection
+1. Introduction
+Automatic vehicle detection technologies provide presence detection, trafﬁc counting,
+speed monitoring, vehicle classiﬁcation, and weigh-in-motion data. Thus, they constitute a
+very important part of intelligent transportation systems (ITS). Vehicle count and classiﬁca-
+tion data are very important during trafﬁc modelling, transportation planning, pavement
+design, trafﬁc control, and emission/pollution estimation. Vehicle detection systems are
+also commonly used in parking lots and toll systems.
+Vehicle detection systems can be classiﬁed into intrusive and non-intrusive technolo-
+gies [1]. Intrusive detection systems are mounted directly into the pavement surface, in
+saw-cuts or holes in the road surface, or by tunneling under the surface, and they include
+inductive loops, piezoelectric detectors, and pneumatic road tubes. Non-intrusive technolo-
+gies are installed above the roads or on the side of a roadway and include microwave radar,
+ultrasonic, passive acoustic, active and passive infrared, and video image processing (VIP)-
+based technologies. Some of these systems are able to monitor multiple lanes. Magnetic
+Sensors 2022, 22, 9299. https://doi.org/10.3390/s22239299 https://www.mdpi.com/journal/sensors
+
+===== PAGE 2 =====
+
+Sensors 2022, 22, 9299 2 of 19
+sensor-based units can be mounted into the pavement surface or on the side of the roads,
+so they can be included in both technologies.
+Cameras and inductive loops are the most commonly used systems. The advantages of
+VIP technologies are that they are easily conﬁgurable and they can monitor multiple lanes,
+but their performance is affected by many factors, such as vehicle shadows, day to night
+transition, fog, rain, snow, etc., and their installation and maintenance are costly. Inductive
+loop-based systems detect vehicles when they are passing above the sensor based on their
+metallic content [2]. Speed measurement, vehicle classiﬁcation, and heading direction esti-
+mation in these technologies can be achieved by applying two loops. Vehicle classiﬁcation
+is usually realized using the estimated vehicle length and axle-count. Vehicle length is
+computed using the detection length and the measured speed [3], while the number of axles
+is estimated by analyzing the waveforms. Some methods were also proposed which apply
+only a single loop for vehicle classiﬁcation [4,5]. The main disadvantages of inductive loops
+are that their mounting and maintenance requires lane closure, their installation requires
+pavement cutting, and deformations of the road surface largely affect their performance.
+Magnetic sensor-based vehicle detection systems are based on the measured changes
+in the Earth’s magnetic ﬁeld and can be used as an alternative technology to inductive
+loops. Similar to inductive loops, they are immune to environmental factors, such as rain,
+snow, or fog. The main advantages of these systems compared to loops are that they require
+less pavement cut, and they are less susceptible to stresses of trafﬁc. The use of batteries
+can further decrease the pavement damage and the installation cost, because there is no
+need to install cables to the detector. These models can form wireless sensor networks
+(WSNs) [1,6,7]. Magnetometer-based vehicle detection systems can also effectively work
+when they are mounted on the side of the roads [8,9].
+Another advantage of the magnetic sensor-based technology is that even a single
+sensor unit can effectively estimate the heading direction, which can be used for detecting
+vehicles driving in the wrong lane, e.g., while overtaking. This can be achieved by analyzing
+the measurements in the axis pointing in the direction of movement, or for more precise
+results, by using a two-axis sensor, where the axes are parallel with the ground [10–12].
+Classiﬁcation of vehicles using the magnetic sensor technology can be done using two
+sensors by measuring vehicle length and/or by processing the magnetic signature of the
+vehicle, which is much more detailed than an inductive loop-based signature. Counter to
+the inductive loops, vehicle axles cannot be detected so easily in the waveforms.
+Magnetic sensors can be used fused together with other sensor types. Accelerometers
+mounted on the pavement surface can measure vibrations caused by vehicles passing
+near the sensor. The use of accelerometers alone was also reported in the literature [ 13],
+but they were mainly utilized together with magnetic sensors [14–17]. In these systems,
+accelerometer data are applied to identify axle locations using peak detection algorithms,
+while the magnetometers are used to determine vehicle arrival, departure, and speed.
+Magnetometer measurements are affected by temperature drifts, which is a compli-
+cating factor in trafﬁc monitoring systems, due to the many changes in the temperature of
+the pavement [1]. This effect can make parking occupancy detection very hard, since the
+vehicles are standing above the sensor for a long time, but with proper algorithms these
+systems can be effectively used for this purpose too [18–20].
+This paper studies the online classiﬁcation of vehicles into multiple classes using mea-
+surements from only a single magnetic sensor mounted into the surface of the pavement.
+The rest of the paper is organized as follows. Section 2 presents related research
+results and the contributions of the proposed work. The measurement system and the data
+acquisition are presented in Section 3. The proposed classiﬁcation algorithm is described in
+Section 4. The experimental results are discussed in Section 5, while Section 6 summarizes
+the results of the paper.
+
+===== PAGE 3 =====
+
+Sensors 2022, 22, 9299 3 of 19
+2. Related Work and Contributions
+2.1. Vehicle Detection Using Magnetic Sensors
+Various algorithms exist to detect vehicle presence using magnetometer-based sys-
+tems, and reported results show that almost 100% detection efﬁciency can be achieved.
+Both in-pavement and roadside technologies were applied in these works. In the case of
+in-pavement systems, the incorrect detections are mainly caused by vehicles passing in
+the neighboring lanes. Most of the algorithms apply ﬁxed or adaptive thresholds. The
+problem with ﬁxed thresholds is that they cannot deal with the variations of the environ-
+ment. Adaptive thresholds solve this difﬁculty by following the drifts during time. Many
+algorithms require a sequence of measurements to exceed the range deﬁned by the thresh-
+olds to declare the arrival or the departure of the vehicle, since this can ﬁlter some false
+detections. Some authors applied only one sensor axis in their algorithm [ 21–23], which
+proved to be sufﬁcient for efﬁcient vehicle detection. Other works utilized multiple axes
+in the detection algorithm [1,24]. Beside the measurement values on the sensor axes, the
+computed magnetic ﬁeld magnitude [6,24–28] and the magnetic ﬁeld angle between sensor
+axes [29] can be also effectively used for detection purposes. Threshold-based algorithms
+were used in [6,25,29–31], while the authors of [26,27] utilized signal variances.
+2.2. Vehicle Classiﬁcation Using Magnetic Sensors
+The waveforms depend on the vehicle’s position from the sensor and exhibit a large
+variability even among vehicles of the same class. Thus, the classiﬁcation of vehicles based
+on magnetic signatures is a very challenging task [32].
+Many works applied two or more measurement units [21,24,33–35], which enables the
+computation of vehicle speed and length. These methods mostly rely on measured vehicle
+length during classiﬁcation.
+Other approaches utilize only a single unit, which can decrease the cost of the system.
+Table 1 summarizes the placement of the sensors, the number of applied vehicle classes and
+samples, the used classiﬁcation methods, and the achieved efﬁciencies in related research
+dealing with vehicle classiﬁcation utilizing only a single unit, while Table 2 shows the used
+data types and features during feature extraction.
+Table 1. Summary of relevant works.
+Related Work Sensor Placement Vehicle Classes Sample Number Classiﬁer Efﬁciency
+[10] side of the road
+3 (heavy tracked vehicle; light
+tracked vehicle; light
+wheeled vehicle)
+93 SVM 86.27%
+[26] side of the road 5 (motorcycle; hatchback; sedan;
+SUV; bus) 100 CT 97%
+[36] side of the road 4 (hatchback; sedan; bus;
+multi-purpose vehicle) 300 k-NN 95.46%
+[37] side of the road 3 (truck; saloon and SUV; bus) 2346 SVM 95.36%
+[38] side of the road 5 (sedan; van; truck; bus;
+non-vehicle) 412 DTW + VQ 94.6%
+[39] side of the road 7 (motorcycle; car; SUV; truck;
+crane; medium truck; bus) 6042 CNN 97.09%
+[1] middle of the lane 5 (passenger vehicle; SUV; van;
+pickup; bus) 37
+Direct
+Hill-Pattern
+Matching
+63%
+[40] middle of the lane 2 (car; bus) 542 CT
+97.0% on training
+data, 88.9% on
+validation data
+[25] middle of the lane 4 (car; minibus; bus; truck) 100 CT 95%
+
+===== PAGE 4 =====
+
+Sensors 2022, 22, 9299 4 of 19
+Table 1. Cont.
+Related Work Sensor Placement Vehicle Classes Sample Number Classiﬁer Efﬁciency
+[27] middle of the lane
+4 (sedan and SUV; van and
+seven-seat; light and medium
+truck; heavy truck and
+semi-trailer)
+4507 CT 80.55% on
+validation data
+[41] middle of the lane 4 (sedan; SUV and van;
+bus; truck) 115 SVM 87%
+[42]
+middle of the lane
+(1 board with
+2 sensors)
+4 (motorcycle; car; van; pickup) 130 CT 81.69%
+[43]
+middle of the lane
+(1 board with
+2 sensors)
+3 (bus; small and medium truck;
+large truck) 460 SVM 92.8%
+[32] atop of
+the roadway
+3 (passenger car, 2-axle
+single-unit vehicles; 2-axle and
+3-axle single-unit trucks; 5-axle
+single-trailer trucks)
+1985 SVM 86.85%
+Table 2. Used feature types in related works.
+Related Work Data Type Features
+[10] X concavity area, convexity area, the angle of concave part, the angle of convex part of
+the waveform
+[26] X, Y vehicle signal duration, signal energy, average energy, ratio of positive and negative energy
+[36] X, Y, Z, F
+position of the maximum, position of the minimum, detection length, peak-to-peak value, mean
+value, standard deviation, number of extremes, the sign of the ﬁrst extreme, the number of
+zero-crossings, energy of the detected signal, average energy, ratio of the energy of the signals on
+the sensor’s axis to the energy of the F signal, ﬁrst non-zero samples of the frequency spectrum
+[1] X, Z Hill-patterns
+[40] F
+number of peaks, maximum peak time ratio, minimum trough time ratio, mean value, the
+standard deviation, the maximum peak amplitude, the minimum trough amplitude, maximum
+peak/trough amplitude ratio
+[25] F magnetic signature length
+[27] Z
+statistical features: magnetic length, mean, variance, maximum and minimum, position of the
+maximum and minimum, number of local maxima and minima, crossing mean counts;
+energy features: energy, mean energy;
+short-term features: mean, variance and energy computed in intra-frames of the
+detection window
+[42] Z signal length, relative vehicle length, Hill-pattern peaks, three differential energy parameters
+[43] F
+structural features: number of local maxima, local minima, extreme points, and negative local
+minima, relative time of minimum and maximum, penultimate minimum/minimum;
+spectrum features: highest spectrum power and the corresponding frequency;
+numerical features: maximum value, minimum value, sum of value, average value, max
+value/min value, max average value/average value, standard deviation, on-time speed
+[37] X, Y, Z
+maximum, range, relative position of maximum, relative position of minimum, mean, ratio of
+positive and negative energy, number of local maxima, number of local minima, variance,
+approximate entropy, crossing mean counts, average energy
+[38] F MFCC, energy
+[41] X, Y, Z HOG features using image processing
+[39] X, Y, Z 224× 244 grayscale images containing the waveforms
+[32] F FFT + PCA
+
+===== PAGE 5 =====
+
+Sensors 2022, 22, 9299 5 of 19
+As can be seen in Table 1, both roadside [10,26,36–39] and in-pavement [1,25,27,40–43]
+installation were considered in relevant works, and even the usage of a unit ﬁxed atop of
+the roadway was proposed in [32]. The proposed methods in [42,43] utilized single units
+with two magnetic sensors, which were used to estimate vehicle speed and length. The
+other methods determine the class of the passing vehicle by only using different features
+extracted from the time-series.
+As shown in Table 2, mostly the waveforms measured on one or more sensor axes
+were applied during feature extraction (the orientation of the X, Y, and Z axes is the same
+as described in Section 3.2), but the magnetic ﬁeld magnitude (F) was also widely used. The
+methods mostly utilized various time- and frequency-domain features. In [32], principal
+component analysis (PCA)-based dimension reduction was used on fast Fourier transform
+(FFT)-based components to construct the applied feature set. In [38], mel frequency cepstral
+coefﬁcients (MFCC) were extracted from the magnetic signals after the discrete Fourier
+transform (DFT) was performed. Feng et al. applied histogram of oriented gradients (HOG)
+features extracted from the images containing the waveforms [ 41]. In [ 39], such images
+were directly used as the inputs on the convolutional neural network (CNN). In related
+research, vehicles were classiﬁed into 2–5 classes, but most of the works applied a very
+small number of samples for classiﬁcation. Most algorithms utilized the classiﬁcation trees
+(CT) and the support vector machines (SVM) for classiﬁcation, but the k-nearest neighbor
+(k-NN) algorithm, the vector quantization (VQ), and the direct hill-pattern matching
+classiﬁer were also applied. In [37], four classiﬁers, i.e., the CT, the SVM, the k-NN, and the
+random forest (RF), were compared, of which the SVM provided the highest classiﬁcation
+accuracies. In [38], the dynamic time warping (DTW) was utilized to improve the selection
+of training samples.
+2.3. Motivation and Contributions
+The goal of this research was to develop an online vehicle classiﬁcation method
+utilizing a single magnetometer-based unit. A unit mounted into the pavement surface
+was used, because the measurement signals are more detailed and carry more information
+than when the sensor is installed on the side of the roads (described in Section 3.1). The
+contributions of the work can be summarized as follows:
+• In this study, nine vehicle classes were deﬁned and utilized to explore the capabilities
+of the magnetometer-based technology. This number is much higher compared to
+relevant methods, where, as described in Section 2.2, vehicles were classiﬁed into two
+to ﬁve classes.
+• Drawbacks of reported studies are, that most works applied only a small number
+of collected samples, and many do not consider unknown data to validate their
+developed algorithms. In this work, a very high number of samples were used to
+construct training and validation datasets.
+• Related works mainly do not deal with the implementation of the algorithms. In the
+proposed system, all parts of the vehicle classiﬁcation algorithm are realized on the
+used microcontroller-based hardware. To achieve online and real-time operation, the
+feature set consists of only time-domain features, which require less computation and
+memory resources than necessary for frequency-domain analysis, which were also
+widely used in other studies.
+• Different novel feature extraction modes are proposed to minimize the number of used
+features and the possible cost of the system. Various combinations of applied sensor
+axes were also compared using the proposed feature set to ﬁnd the optimal setup.
+• Other disadvantages of many works include the utilization of the length of the de-
+tection as one of the inputs in the classiﬁcation stage. This feature provides valuable
+information about the length of the vehicle, but it obviously has a negative effect on
+recognition efﬁciency if the unit is placed in a location where the speed is different to
+the location where the training samples were collected. The effect of this feature in
+
+===== PAGE 6 =====
+
+Sensors 2022, 22, 9299 6 of 19
+the proposed system was also investigated to explore the suitability of the applied
+feature set.
+Previously, an initial investigation with a smaller feature set was presented in [ 44],
+where six vehicle classes were used: motorcycles, cars, vans, trucks, buses, and other. The
+highest recognition rate was 88.44% on training samples and 70.83% on validation data.
+The main results proposed in this study are based on [45].
+3. Measurement
+Magnetometers are passive sensors that measure the strength of the Earth’s magnetic
+field at a given point. Metallic objects such as vehicles cause local distortions, which can be
+measured by these sensors. V ehicle presence can be determined based on these distortions.
+V ehicles have different magnetic fingerprints due to their different ferromagnetic composition.
+Magnetic sensor-based systems, as described earlier, can be installed both in the
+pavement surface and on the roadside, but the distortions are much stronger when the
+sensors are mounted below the passing vehicles. The signals are also more uniform
+in the case of roadside sensors, since many different ferromagnetic parts pass near the
+sensors when they are mounted into the pavement [21]. Another disadvantage of roadside
+installation is that these units can only detect vehicles in the adjacent lane. Vehicles with
+high metallic content passing in the neighboring lane can cause false detections in the
+case of in-pavement mounting. Using a three-axis magnetometer, the axis pointing to the
+neighboring lane can be utilized to ﬁlter these false detections [44,46].
+3.1. Measurement Unit
+The used hardware is based on a Honeywell HMC5843 magnetometer, which is a
+small (4 mm× 4 mm× 1.3 mm), surface mount, multi-chip module designed for low ﬁeld
+magnetic sensing in three axes. The sensor utilizes anisotropic magnetoresistive (AMR)
+technology and features precision in-axis sensitivity and linearity, and very low cross-axis
+sensitivity. The ASIC also contains an I2C serial bus interface. It can measure up to±650 µT
+in 12-bit resolution, and the highest sampling frequency is 50 Hz.
+The unit also contains a microcontroller, which is used to set up the sensor, to read
+the measurements via an I2C interface, and to forward the data via RS-485 interface to a
+central unit, which is a PC. The supply and the communication are realized using a cable.
+3.2. Data Acquisition
+A single measurement unit was installed into the pavement surface in a plastic box
+for data acquisition. The chosen location was between two intersections (150–200 m from
+both) on one of the main roads of Subotica, Serbia. The vehicles were moving with nearly
+constant speed when they were passing above the sensor, since they had enough time from
+the intersection to accelerate and reach their desired speed. The speed limit is 50 km/h,
+but the speed of the passing vehicles varied greatly, and many drivers even exceeded the
+limitation. The location was very advantageous, since it is a frequented road with various
+vehicle classes passing.
+In-pavement mounting was chosen, since the measurement signals are more detailed
+and carry more information than when the sensors are mounted on the side of the roads.
+The unit was mounted into the middle of the outer lane, as shown in Figure 1. The sensor’s
+X axis pointed in the movement direction, the Y axis pointed to the neighboring lane,
+and Z was orthogonal with the pavement surface. The sensor unit was installed into the
+pavement, 5 cm beneath the surface.
+The developed vehicle detection algorithm (described in Section 4) was implemented
+on the installed measurement unit. The applied sampling frequency was 50 Hz. The
+software of the device sent the measurement data and the value of the detection ﬂag to a
+central unit via the RS-485 interface. Data acquisition software on the server side received
+and stored the measurement data. To validate the detections, and to determine the class
+
+===== PAGE 7 =====
+
+Sensors 2022, 22, 9299 7 of 19
+for each recorded sample, a camera was installed beside the road. The data acquisition
+software saved camera images at every falling edge of the detection ﬂag.
+Sensors 2022, 22, x FOR PEER REVIEW 7 of 20 
+ 
+ 
+exceeded the limitation. The location was very advantageous, since it is a frequented road 
+with various vehicle classes passing. 
+In-pavement mounting was chosen, since the measurement signals are more detailed 
+and carry more information than when the sensors are mounted on the side of the roads. 
+The unit was mounted into the middle of the outer lane, as shown in Figure 1. The sensor’s 
+X axis pointed in the movement direction, the Y axis pointed to the neighboring lane, and 
+Z was orthogonal with the pavement surface. The sensor unit was installed into the pave-
+ment, 5 cm beneath the surface. 
+ 
+Figure 1. Sensor placement for data acquisition. 
+The developed vehicle detection algorithm (described in Section 4) was implemented 
+on the installed measurement unit. The applied sampling frequency was 50 Hz. The soft-
+ware of the device sent the measurement data  and the value of the detection flag to a 
+central unit via the RS-485 interface. Data acquisition software on the server side received 
+and stored the measurement data. To validate  the detections, and to determine the class 
+for each recorded sample, a camera was installed beside the road. The data acquisition 
+software saved camera images at every falling edge of the detection flag. 
+Data acquisition was performed during multiple months in various weather condi-
+tions, and altogether more than 30,000 samples were collected. Figure 2 shows the meas-
+urement signals on the three axes and the co rresponding vehicle images when a car and 
+a bus pass above the sensor. It can be seen in Figure 2 that the signals generated by a bus 
+are much more complex than the disturbances caused by a passing car, i.e., it has more 
+direction changes, local minima/maxima, zero crossings, etc. 
+Figure 1. Sensor placement for data acquisition.
+Data acquisition was performed during multiple months in various weather con-
+ditions, and altogether more than 30,000 samples were collected. Figure 2 shows the
+measurement signals on the three axes and the corresponding vehicle images when a car
+and a bus pass above the sensor. It can be seen in Figure 2 that the signals generated by a
+bus are much more complex than the disturbances caused by a passing car, i.e., it has more
+direction changes, local minima/maxima, zero crossings, etc.
+Sensors 2022, 22, x FOR PEER REVIEW 8 of 20 
+ 
+ 
+ 
+Figure 2. Measured signals on the three sensor axes when a car ( a) and a bus (b) are passing above 
+the sensor, and the corresponding images of the vehicles (c,d). 
+4. Vehicle Classification Algorithm 
+The used vehicle classification algorithm consists of three main parts: vehicle detec-
+tion algorithm, feature extraction, and classification. To perform real-time and online ve-
+hicle detection and classification, all parts sh ould be easily implementable on the micro-
+controller of the used hardware. 
+The flow chart of the vehicle classificatio n algorithm for one measurement cycle is 
+shown in Figure 3. 
+ 
+Figure 3. The flowchart of the proposed vehicle classification algorithm. 
+Figure 2. Measured signals on the three sensor axes when a car (a) and a bus (b) are passing above
+the sensor, and the corresponding images of the vehicles (c,d).
+4. Vehicle Classiﬁcation Algorithm
+The used vehicle classiﬁcation algorithm consists of three main parts: vehicle detection
+algorithm, feature extraction, and classiﬁcation. To perform real-time and online vehicle
+
+===== PAGE 8 =====
+
+Sensors 2022, 22, 9299 8 of 19
+detection and classiﬁcation, all parts should be easily implementable on the microcontroller
+of the used hardware.
+The ﬂow chart of the vehicle classiﬁcation algorithm for one measurement cycle is
+shown in Figure 3.
+Sensors 2022, 22, x FOR PEER REVIEW 8 of 20 
+ 
+ 
+ 
+Figure 2. Measured signals on the three sensor axes when a car ( a) and a bus (b) are passing above 
+the sensor, and the corresponding images of the vehicles (c,d). 
+4. Vehicle Classification Algorithm 
+The used vehicle classification algorithm consists of three main parts: vehicle detec-
+tion algorithm, feature extraction, and classification. To perform real-time and online ve-
+hicle detection and classification, all parts sh ould be easily implementable on the micro-
+controller of the used hardware. 
+The flow chart of the vehicle classificatio n algorithm for one measurement cycle is 
+shown in Figure 3. 
+ 
+Figure 3. The flowchart of the proposed vehicle classification algorithm. 
+Figure 3. The ﬂowchart of the proposed vehicle classiﬁcation algorithm.
+4.1. Vehicle Detection Algorithm
+Vehicle detection is a very important part of the classiﬁcation process, since it should
+follow the environmental changes, and act the same way for different vehicles. These
+environmental changes cause slow variations in the offsets on the three sensor axes.
+The used algorithm was designed and optimized for classiﬁcation applications and
+was previously proposed in [44]. The basic parts of the algorithm are the following:
+• When the unit is turned on, the calibration process is run. This process uses a cali-
+bration range size, which must be slightly larger than the peak-to-peak noise level,
+because it should follow the slow changes in the environment. This noise level should
+be estimated after the installation of the unit in the current location, when no vehicles
+are near to the sensor. During calibration, the highest and lowest measurement values
+are monitored in a measurement window for all three axes. The difference between the
+highest and lowest values must be smaller than the calibration range size. The calibra-
+tion is restarted if the difference exceeds the range size at any time in the window at
+any of the axes. This ﬁlters the factors which affect the magnetic ﬁeld near the sensor.
+The size of the measurement window should be at least 1 s based on experience. If the
+calibration is successful, the upper and lower calibration and detection thresholds are
+calculated for all axes. This is done by equally stretching the range determined by the
+highest and lowest values to the width deﬁned by the range sizes.
+• Vehicle presence is declared if the measurement values exceed the detection threshold
+at both X and Z axes.
+• The detection ﬂag is cleared if the measurement values on both X and Z axes are
+between the calibration thresholds for a previously deﬁned number of measurements.
+The algorithm should be suitable for detecting vehicles with trailers, so the used
+length should be calculated using the potential speed on the location and the possible
+distance between the vehicle and the trailer.
+• A recalibration is attempted always when vehicle presence is not declared. The process
+is the same as during calibration, but the measured highest and lowest measurements
+
+===== PAGE 9 =====
+
+Sensors 2022, 22, 9299 9 of 19
+must ﬁt into the previous calibration range. This enables the following of the environ-
+mental changes.
+The overall efﬁciency of the detection algorithm is 94.15% [44]. The algorithm detects
+all vehicles passing above the sensor, and only motorcycles can cause failures if they are
+not passing near to the detector. False detections cause the rest of the failures. These are
+generated by vehicles with high metallic content passing in the neighboring lane. The
+detection range size is set to be as small as possible to achieve fast reaction when the
+vehicles are approaching the sensor. This enables the processing of the entire magnetic
+signature of the vehicle in the feature extraction stage. The number of false detections
+could be decreased with raising the thresholds, but this could also lower the detection
+rate of motorcycles, and important parts of the magnetic signature could also be lost.
+Approximately 97% of the false detections can be ﬁltered out when the detection ﬂag is
+cleared using a properly set up rule-based algorithm [46], which can further improve the
+efﬁciency of the classiﬁcation process.
+4.2. Feature Extraction
+The inputs in the classification stage are formed by the extracted features on
+the time-series data. Features are extracted in the detection window, but the last
+measurements, which are used for clearing the detection flag, are not utilized. The
+chosen feature types are based on only time domain analysis because they need little
+computation, and they also do not require the storage of all measurements in the
+window. This speeds up the processing time and decreases the necessary memory. The
+feature values are updated after every new measurement, so they can be immediately
+passed to the classifier when the detection is cleared.
+4.2.1. Feature Types
+Feature types were chosen based on their potential ability to detect vehicle axles
+and overall metallic content. It is also important that the features should be immune to
+speed variations. Some features were previously not applied in related works for vehicle
+classiﬁcation purposes but are very popular in other pattern recognition applications, such
+as human movement classiﬁcation [47]. The used feature types were the following:
+• Detection length (DL): The number of measurements in the detection window.
+• Highest value (MAX) and lowest value (MIN): The highest and lowest measurement
+values in the detection window.
+• Place of the highest and lowest values (PlaceMax, PlaceMin): The indexes of the
+measurements where the MAX and MIN points were found, both divided with the
+detection length.
+• Range changes (RCH): The calibration thresholds deﬁne three ranges in the signal
+values, one above the upper threshold, one under the lower, and one between them.
+This feature measures how many times has the signal switched ranges.
+• Number of local maxima and minima (NumLocMax, NumLocMin): The number of
+local maxima in the range above the upper threshold, and the number of local minima
+in the range under the lower threshold. A point is considered as a local maximum
+(minimum) if it has local minima (maxima) before and after it, and the differences in
+the amplitude are higher than the peak-to-peak noise value.
+• Mean absolute value (MAV): The mean absolute amplitude value, which can be
+calculated as
+MAV = 1
+N
+N
+∑
+i=1
+|xi| (1)
+where N is the number of samples in the detection window and xi are the signal
+amplitudes at the given index.
+• Mean value (MV): The mean amplitude value.
+
+===== PAGE 10 =====
+
+Sensors 2022, 22, 9299 10 of 19
+• Number of slope sign changes (NSSC): The number of direction changes, where among
+the three consecutive values the ﬁrst or the last changes are larger than a predeﬁnedth
+threshold, which is the peak-to-peak noise level (2).
+NSSC =
+N−1
+∑
+i=2
+[ f [(xi− xi−1)·(xi− xi+1)]], f (x) =
+{1, if (x≥ th)
+0, otherwise (2)
+• Number of zero crossings (NZC): The number of times when the amplitude values
+cross the zero-amplitude level and the difference between the values with opposite
+signs is larger than the threshold:
+NZC =
+N−1
+∑
+i=1
+[sgn(xi·xi+1)∩|xi− xi+1|≥ th], sgn (x) =
+{1, i f(x≥ 0)
+0, otherwise . (3)
+• Average waveform length (AWL): The length of the waveform over the detection
+window divided by the number of samples in the window:
+AWL = 1
+DL ∑DL−1
+i=1 |xi+1− xi| (4)
+• Root mean square (RMS): The calculation of the RMS can be performed as given in (5).
+RMS =
+√ 1
+N
+N
+∑
+i=1
+x2
+i (5)
+• Willison amplitude (WAMP): The number of amplitude changes in the window, which
+are higher than the given threshold level (6).
+WAMP =
+N−1
+∑
+i=1
+[ f (xi− xi+1)], f (x) =
+{1, if (x≥ th)
+0, otherwise (6)
+4.2.2. Extraction Modes
+In related works, the raw signal values on the X, Y, and Z axes and the F magnetic
+ﬁeld magnitude were utilized for feature computation. In this work, various novel ex-
+traction modes were tested, which can possibly increase efﬁciency and/or decrease the
+required feature number. Feature extraction is performed using raw sensor measurements
+and aggregated data, which are computed using the raw measurement data. The tested
+aggregation modes were motivated by the fact that both the strength and the direction
+of the magnetic ﬁeld at the sensor will change when a vehicle passes by. A lower input
+number in the classiﬁcation process can decrease the necessary computation time and the
+required memory space for the implementation of the classiﬁer. The following extraction
+modes were applied:
+• Measurement axes (X, Y, Z): The features were computed using the raw measurement
+values on each axis. The calibrated offsets were subtracted from the measured values.
+• Absolute values (Xabs, Yabs, Zabs): The computed absolute values were applied on each
+measurement axis, which were calculated after the offsets were subtracted from the
+measurement values.
+• Magnitude from the origin (XYO, XZO, YZO, XYZO): Magnitude values were com-
+puted in three dimensions and in two dimensions using different combination of the
+axes. The magnitude of the calibration point was subtracted from computed magni-
+tudes. These data provide information about the changes in magnitude in different
+
+===== PAGE 11 =====
+
+Sensors 2022, 22, 9299 11 of 19
+planes and in 3D based on the sensor frame compared to the magnitudes given by the
+calibration point.
+XYO =
+√
+X2 + Y2−
+√
+X2
+cal + Y2
+cal (7)
+XZO =
+√
+X2 + Z2−
+√
+X2
+cal + Z2
+cal (8)
+YZO =
+√
+Y2 + Z2−
+√
+Y2
+cal + Z2
+cal (9)
+XYZO =
+√
+X2 + Y2 + Z2−
+√
+X2
+cal + Y2
+cal + Z2
+cal (10)
+where Xcal, Ycal, and Zcal deﬁne the calibration point, which are the middle points
+between the upper and lower calibration thresholds on each sensor axis.
+• Angles (XYA, XZA, YZA): The difference between the angle computed for a measure-
+ment point and the angle of the calibration point. The angles were determined for all
+three planes deﬁned by the sensor axes using (11)–(13).
+XYA = tan−1(Y/X)− tan−1(Ycal /Xcal ) (11)
+XZ A = tan−1(Z/X)− tan−1(Zcal /Xcal ) (12)
+YZA = tan−1(Z/Y)− tan−1(Zcal /Ycal ) (13)
+• Magnitude from the calibration point ( XYC, XZ C, YZ C, XYZ C): Magnitudes were
+computed using the differences between the measurement points and the calibration
+point. The computation was also conducted for two and three dimensions, as given in
+(14)–(17).
+XYC =
+√
+(X− Xcal )2 + (Y− Ycal )2 (14)
+XZC =
+√
+(X− Xcal )2 + (Z− Zcal )2 (15)
+YZC =
+√
+(Y− Ycal )2 + (Z− Zcal )2 (16)
+XYZC =
+√
+(X− Xcal )2 + (Y− Ycal )2 + (Z− Zcal )2 (17)
+Since the extraction modes based on the absolute values and the magnitudes calculated
+from the calibration point always provide positive values, the following feature types were
+not computed in these cases: MIN, PlaceMin, NumLocMin, NZC, and MAV .
+4.3. Classiﬁcation
+The multilayer perceptron (MLP) neural network was used for classiﬁcation in the
+proposed algorithm. Due to its high recognition efﬁciency and easy implementation on
+microcontroller-based systems, this classiﬁer proved to be a good solution for online
+classiﬁcation purposes compared to other well-known classiﬁers [47].
+Artiﬁcial neural networks (ANN) are motivated by biological neural systems and
+used to approximate target functions. The MLP is a feedforward ANN, where neurons
+are organized into three or more layers (an input and an output layer with one or more
+hidden layers), with each layer fully connected to the next one using weighted connections.
+A neuron has an activation function that maps the sum of its weighted inputs to the output.
+Usually, ANNs are trained using the backpropagation algorithm, which uses gradient
+descent to tune network parameters to best ﬁt a training set of input-output pairs.
+In this work, three-layer networks were applied. The hyperparameters of the network
+structure can be seen in Table 3. The number of input neurons was equal to the size of the
+feature vector, while in the output layer a neuron was assigned to each class. To achieve
+easy implementation, it is important to minimize the number of neurons in the hidden layer.
+Various configurations were tested based on the number of hidden layer neurons to find the
+optimal setup. Hyperbolic tangent sigmoid transfer function was used in the hidden layer,
+
+===== PAGE 12 =====
+
+Sensors 2022, 22, 9299 12 of 19
+while the neurons in the output layer were created using the linear transfer function. The
+output neuron with the largest output was assigned as the class of the given sample.
+Table 3. Hyperparameters of the MLP structure.
+Hyperparameter Value
+number of layers 3 (1 input, 1 hidden, 1 output)
+number of neurons in the input layer the size of the feature vector
+number of hidden layer neurons optimal number given by the best results
+transfer function in the hidden layer tangent sigmoid
+number of neurons in the output layer the number of deﬁned classes
+transfer function in the output layer linear
+The training of the MLPs was conducted ofﬂine. This procedure is time consuming
+since various conﬁgurations must be tested and even one training can require multiple
+hours, which is much more than in the case of other well-known classiﬁers [ 47]. The
+training time depends on various factors, e.g., the number of neurons in different layers,
+the number of samples, the hyperparameters used during training, the initial weights, etc.
+Although it is a complex and time-consuming process to ﬁnd the optimal network for a
+given task, it does not affect its real-time operation after implementation.
+5. Experimental Results
+5.1. Vehicle Classes
+Considering the capabilities of magnetic sensors, nine possibly separable vehicle
+classes were deﬁned. The vehicle types and the number of axles for each class are shown in
+Table 4.
+Table 4. Used vehicle classes.
+Class Number Vehicle Types Number of Axles
+1 motorcycle 2
+2 car 2
+3 car with trailer 2 + 1
+4 van, mini bus 2
+5 truck 2–3
+6 truck with trailer 2–3 + 2–3
+7 tractor trailer 2 + 3
+8 bus 2
+9 articulated bus 3
+Some vehicle classes (e.g., cars) passed frequently at the location. An equal number of
+samples (130 per class) was utilized for all classes during the training of the MLP networks
+to obtain better evaluation. The training of the MLPs was done using 80 (61.54%) samples,
+while the remaining 50 (38.46%) were used as unknown inputs for the validation of the
+trained classiﬁers. In the training process, 70% of the training data were used as training
+inputs and 30% as validation inputs.
+5.2. Datasets
+Since the classiﬁcation algorithm should be implemented on the microcontroller-based
+system, it is important to minimize the number of inputs. The waveforms on the X and Z
+axes should carry most of the useful information. The Y axis can give valuable information
+about the position of passing vehicle, but it can also be largely affected by vehicles passing
+in the neighboring lane. The aggregation of the measurement data can further decrease the
+number of features, and possibly increase the classiﬁcation efﬁciency. To ﬁnd the optimal
+conﬁguration, it was necessary to test different combinations of used axes. Using the
+described ﬁve feature extraction modes, altogether, 18 different combinations were deﬁned:
+
+===== PAGE 13 =====
+
+Sensors 2022, 22, 9299 13 of 19
+• Measurement axes:
+1. X, Y, and Z;
+2. X;
+3. Z;
+4. X and Z.
+• Absolute values:
+5. Xabs, Yabs, and Zabs;
+6. Xabs;
+7. Zabs;
+8. Xabs and Zabs.
+• Magnitudes from the origin:
+9. XYO, XZO, YZO, and XYZO;
+10. XZO;
+11. XYO, XZO, YZO;
+12. XYZO.
+• Angles:
+13. XYA, XZA, YZA;
+14. XZA.
+• Magnitude from the calibration point:
+15. XYC, XZC, YZC, and XYZC;
+16. XZC;
+17. XYC, XZC, YZC;
+18. XYZC.
+The detection length feature provides vehicle length information, but it depends on
+the vehicle speed. Since other chosen features should be potentially immune to speed
+differences, it was reasonable to explore the effect of this feature on classiﬁcation efﬁciency.
+This is important because not using the detection length in the feature set could enable
+the system to work efﬁciently on other locations where the potential speed of the vehicles
+is different. By adding this feature to all deﬁned combinations, altogether, 36 different
+datasets were tested.
+5.3. Performance Evaluation
+To provide more valid results, ﬁve different training and validation sets were generated
+for all dataset types by randomly distributing the 130 samples. All ﬁve datasets for the
+36 input combinations were tested with ﬁve, 10, 15, 20, 25, and 30 neurons in the hidden
+layer. For all setups, ﬁve sets of training were performed since the training of the neural
+networks largely depends on the initial weights. In the further comparison, the results
+with the highest efﬁciency on validation data from the ﬁve training sets were utilized. The
+training of the MLPs was realized in MATLAB environment. The hyperparameters of the
+training process are summarized in Table 5.
+Table 5. Hyperparameters of the MLP training process.
+Hyperparameter Value
+training function Levenberg-Marquardt backpropagation
+performance function mean squared error (MSE)
+maximum number of epochs to train 5000
+performance goal 0
+maximum validation failures 15
+minimum performance gradient 10−7
+maximum time to train in seconds inf
+
+===== PAGE 14 =====
+
+Sensors 2022, 22, 9299 14 of 19
+Table 6 summarizes the required feature numbers and the average classiﬁcation efﬁ-
+ciencies on training and validation samples for each of the 36 datasets. The computation
+of the average efﬁciencies was performed using the efﬁciencies when the best results on
+unknown samples were obtained for each of the ﬁve random sets. It can be observed that
+the highest efﬁciencies can be achieved using the feature extraction mode where the magni-
+tudes from the origin were utilized. The highest recognition rate on validation data, 74.67%,
+was obtained using the magnitude changes in three dimensions (XYZO) together with the
+DL feature. The number of features in this dataset is 15, which is also acceptable compared
+to other setups. Without applying the information about the length of the detection, the
+highest result was 73.73%, achieved using features extracted in the XZ-plane (XZO), which
+is a signiﬁcant result taking into account the number of classes and achieved classiﬁcation
+efﬁciencies in related works. The number of features in this dataset is 14. This feature
+set with the DL provided 74.44%, which is only 0.23% lower than with the XYZO-based
+extraction. This shows that the Y axis does not carry any additional information if the X
+and Z axes are used. The extraction mode applying the magnitudes from the calibration
+point requires a smaller number of features compared to the other magnitude-based mode,
+but the classiﬁcation efﬁciencies are also lower. The differences are mostly higher than
+3%. Recognition rates between 70% and 72% can be achieved using the features extracted
+from the waveforms of the measurement axes. Applying only the X or the Z axis provides
+very similar results, 71.33% and 71.24% without the detection length, and 72.22% and
+72.36% with the DL, respectively. This shows that notable results can be achieved using
+even a single axis sensor, which can largely decrease the cost of the system. Utilizing the
+features from the two axes together even decreases the average recognition rate, although it
+requires double number of features. The average efﬁciencies are 70.13% without and 71.64%
+with the DL. The extraction mode utilizing the absolute values requires less features, but
+the recognition rates are smaller for 1–3% for the same axis combinations. Applying the
+changes in angles for feature computation can also provide high classiﬁcation rates. Using
+only the signals in the XZ-plane can result in 71–72% efﬁciency on validation samples. The
+highest classiﬁcation accuracies on training data can be achieved using the datasets with
+the highest feature numbers. In more datasets, approximately 82–84% can be reached, but
+the efﬁciencies on unknown data are smaller in these cases than when the setups with
+lower feature numbers are utilized. In case of the datasets which provide the best results
+on unknown data (above 72%), approximately 80–81% efﬁciency was obtained on training
+samples. Analyzing the effect of adding the DL feature to the feature vector, it can be stated
+that it does not increase the classiﬁcation efﬁciencies signiﬁcantly. The recognition rates are
+increased in average by 1.28%±1.63% for training data and 0.80%±1.37% for unknown
+samples. This shows that the used speed independent feature types are sufﬁcient to extract
+the necessary information from the waveforms.
+The average misclassiﬁcation rates on the ﬁve random validation sets utilizing the
+XZO-based features with and without the DL feature are presented in Table 7. This ex-
+traction mode provided the highest results on unknown data. It can be observed that
+the motorcycles can be recognized with more than 96% in both cases. Cars are correctly
+classiﬁed for 90.0% of the samples with, and 87.6% without the DL feature. Most of the im-
+properly classiﬁed samples are assigned as vans (4.8% and 6.8%). Buses can be recognized
+with misclassiﬁcation rates of 11.2% and 13.6%. Articulated buses have lower classiﬁcation
+rates, and the DL feature even lowers the efﬁciency. The recognition rates are 76.4% with
+and 83.2% without the DL. Most of the misclassiﬁcations occur as trucks with trailer (8.8%
+and 6.8%) and buses (11.6% and 5.6%). The most positive effect of the added DL feature can
+be noticed at vans, which are classiﬁed with the highest misclassiﬁcation rates (44.8% and
+52%). Further, 24.0% of the samples are classiﬁed as trucks for both datasets, and 7.6% and
+8.4% as cars with trailer. The improvements between the two sets can be noticed in cars,
+since using the DL, the misclassiﬁcation rates decrease from 17.6% to 10.4%. This result
+is reasonable, since both classes have two axles and do not differ signiﬁcantly in metallic
+content. The rest of the vehicle classes, trucks, trucks with trailer, and tractor trailers, can
+
+===== PAGE 15 =====
+
+Sensors 2022, 22, 9299 15 of 19
+be recognized with similar rates, around 55–60%. Trucks are mostly misclassiﬁed as vans
+(10.8% and 8.4%) and buses (12.4% and 18.0%), trucks with trailers as tractor trailers (16.8%
+and 21.6%) and articulated buses (13.2% and 11.6%), while tractor trailers as trucks with
+trailers (13.6% and 10.8%), buses (12.8% and 10.8%), and articulated buses (8.4% and 9.6%).
+Table 6. Feature numbers and average recognition efﬁciencies (%) on training and validation data for
+different setups.
+Used Axes
+Feature Number
+Efﬁciency on Training Data Efﬁciency on Validation Data
+X, Y, Z X , Y, Z, DL X X , DL Z Z , DL
+42 43 14 15 14 15
+82.11 67.69 81.50 66.58 78.83 71.33 80.11 72.22 77.92 71.24 81.36 72.36
+X, Z X , Z, DL Xabs, Yabs, Zabs Xabs, Yabs, Zabs, DL Xabs Xabs, DL
+28 29 27 28 9 10
+81.61 70.13 81.97 71.64 81.00 71.20 81.81 69.73 73.86 68.18 76.14 70.04
+Zabs Zabs, DL Xabs, Zabs Xabs, Zabs, DL XYO, XZO, YZO, XYZO XYO, XZO, YZO, XYZO, DL
+9 10 18 19 56 57
+74.31 69.07 75.56 69.82 78.97 69.96 80.08 71.38 82.20 70.18 82.81 68.18
+XZO XZO, DL XYO, XZO, YZO XYO, XZO, YZO, DL XYZO XYZO, DL
+14 15 42 43 14 15
+80.75 73.73 80.14 74.44 81.03 69.82 84.06 71.51 77.97 72.76 81.39 74.67
+XYA, XZA, YZA XYA, XZA, YZA, DL XZA XZA, DL XYC, XZC, YZC, XYZC XYC, XZC, YZC, XYZC, DL
+42 43 14 15 36 37
+79.00 66.53 79.97 65.78 80.92 71.20 79.69 71.87 79.08 66.36 81.75 69.11
+XZC XZC, DL XYC, XZC, YZC XYC, XZC, YZC, DL XYZC XYZC, DL
+9 10 27 28 9 10
+72.78 68.49 76.53 70.53 80.83 68.36 79.28 68.27 73.61 68.93 75.69 71.38
+Table 7. Average misclassiﬁcation rates (%) on validation data using the XZO-based features with
+(upper row) and without (lower row) using the detection length feature.
+Output Class Sum
+1 2 3 4 5 6 7 8 9
+Target class
+1 1.6 0.4 1.2 3.2
+2.8 0.4 3.2
+2 2.0 2.8 4.8 0.4 10.0
+2.0 2.4 6.8 1.2 12.4
+3 4.8 7.2 10.8 1.2 1.2 25.2
+7.2 10.0 10.8 0.4 0.4 1.2 30.0
+4 0.8 10.4 7.6 24.0 0.4 1.6 44.8
+0.8 17.6 8.0 24.0 1.6 52.0
+5 0.8 6.0 10.8 0.8 2.8 12.4 1.2 34.8
+1.2 4.8 8.4 0.8 2.8 18.0 0.4 36.4
+6 0.8 0.4 2.4 16.8 4.4 13.2 38.0
+2.0 1.6 21.6 4.0 11.6 40.8
+7 1.6 0.4 2.4 13.6 12.8 8.4 39.2
+0.4 2.0 16.4 10.8 9.6 39.2
+8 0.8 3.2 1.2 3.6 2.4 11.2
+0.4 4.0 0.8 4.0 4.4 13.6
+9 0.4 8.8 2.8 11.6 23.6
+0.4 6.8 4.0 5.6 16.8
+The required number of hidden layer neurons for achieving 97% convergence in
+efﬁciency using the mean values from the ﬁve random sets can be seen in Table 8. Analyzing
+the results, it can be observed that mostly 10 (58.33%) and 15 (30.56%) neurons are required
+
+===== PAGE 16 =====
+
+Sensors 2022, 22, 9299 16 of 19
+for validation samples. To reach convergence on training data, more, between 15 and
+25 neurons are necessary. This analysis shows that the tested range in the number of hidden
+layer neurons is sufﬁcient for solving the given task.
+Table 8. Required number of hidden layer neurons for reaching 97% convergence on the 36 datasets.
+Hidden Layer Neuron Number 5 10 15 20 25 30
+Percentage of Convergence For Training Data 0.00% 2.78% 19.44% 30.56% 38.89% 8.33%
+Percentage of Convergence For Validation Data 0.00% 58.33% 30.56% 8.33% 2.78% 0.00%
+5.4. Implementation
+The implementation of MLPs requires the storage of three parameter types: input
+ranges, weights, and biases. Input ranges are used for the normalization of input values,
+and the matrices consist of the highest and lowest values for all inputs. Two weight
+matrices are required, one connecting the input layer with the hidden layer, and the second
+connecting the hidden layer and the output layer. The dimensions of the matrices can be
+given using the sizes of the layers. Bias values are used in all neurons of the hidden and
+the output layer.
+The necessary memory for different features and hidden layer neuron numbers can be
+seen in Figure 4. The required memory spaces are given in bytes. Since all parameter types
+are ﬂoating-point numbers, during computation, 4 bytes were counted for each parameter.
+It can be observed from Figure 4 that even with the largest examined feature numbers and
+hidden layer neuron numbers, which are 40 and 30, respectively, the required memory for
+storing the weights of the MLP is approximately 6 kB. This is much lower than the usual
+memory capacity of microcontrollers, which shows that the classiﬁer is implementable on
+such embedded systems.
+Sensors 2022, 22, x FOR PEER REVIEW 17 of 20 
+ 
+ 
+The required number of hidden layer neurons for achieving 97% convergence in ef-
+ficiency using the mean values from the five random sets can be seen in Table 8. Analyzing 
+the results, it can be observed that mostly 10 (58.33%) and 15 (30.56%) neurons are re-
+quired for validation samples. To reach convergence on training data, more, between 15 
+and 25 neurons are necessary. This analysis shows that the tested range in the number of 
+hidden layer neurons is sufficient for solving the given task. 
+Table 8. Required number of hidden layer neurons for reaching 97% convergence on the 36 datasets. 
+Hidden Layer Neuron Num-
+ber 5 10 15 20 25 30 
+Percentage of Convergence 
+For Training Data 0.00% 2.78% 19.44% 30.56% 38.89% 8.33% 
+Percentage of Convergence 
+For Validation Data 0.00% 58.33% 30.56% 8.33% 2.78% 0.00% 
+5.4. Implementation 
+The implementation of MLPs requires the storage of three parameter types: input 
+ranges, weights, and biases. Input ranges are used for the normalization of input values, 
+and the matrices consist of the highest and lo west values for all inputs. Two weight ma-
+trices are required, one connecting the input layer with the hidden layer, and the second 
+connecting the hidden layer and the output layer. The dimensions of the matrices can be 
+given using the sizes of the layers. Bias valu es are used in all neur ons of the hidden and 
+the output layer. 
+The necessary memory for different featur es and hidden layer neuron numbers can 
+be seen in Figure 4. The required memory spaces are given in bytes. Since all parameter 
+types are floating-point numbers, during computation, 4 bytes were counted for each pa-
+rameter. It can be observed from Figure 4 that even with the largest examined feature 
+numbers and hidden layer neuron numbers, which are 40 and 30, respectively, the re-
+quired memory for storing the weights of the MLP is approximately 6 kB. This is much 
+lower than the usual memory capacity of microcontrollers, which shows that the classifier 
+is implementable on such embedded systems. 
+The testing shows that after the detection is  cleared, the vehicle class can be deter-
+mined in 1–2 measurement cycles (20–40 ms), without affecting the other parts of the al-
+gorithm. The required time depends on the size of the network. 
+ 
+Figure 4. Memory requirements for the implementation of MLP networks. 
+6. Conclusions 
+Figure 4. Memory requirements for the implementation of MLP networks.
+The testing shows that after the detection is cleared, the vehicle class can be determined
+in 1–2 measurement cycles (20–40 ms), without affecting the other parts of the algorithm.
+The required time depends on the size of the network.
+6. Conclusions
+In this study, a novel, real-time online vehicle classiﬁcation system was presented,
+which utilizes only a single tri-axial magnetic sensor. Data acquisition was performed
+during multiple months in a real environment using a unit mounted into the pavement.
+Vehicle detection was performed using an adaptive threshold-based algorithm, which can
+follow the environmental changes. A camera was also installed beside the road, and images
+were saved for every detection to determine the vehicle class for each sample.
+Nine vehicle classes were deﬁned, and 130 samples per class were used for the training
+and validation of the classiﬁers. The utilized features for classiﬁcation were extracted in
+
+===== PAGE 17 =====
+
+Sensors 2022, 22, 9299 17 of 19
+the detection windows. The chosen feature types are based on only time domain analysis
+and have low computation and memory requirements.
+Since the classiﬁcation algorithm should be implemented on the microcontroller-based
+system, it is important to minimize the applied feature number. Various novel feature
+extraction modes and used sensor axes were tested to ﬁnd the optimal conﬁguration. The
+effect of the detection length was also investigated, since it depends on the speed of the
+vehicle. Altogether, 36 different datasets were constructed and compared. The classiﬁcation
+was performed using three-layer MLP networks.
+The obtained results show that using aggregated data in the form of angles or mag-
+nitudes can even increase the classiﬁcation efﬁciencies besides decreasing the number of
+inputs. The highest recognition rates on validation data were achieved using magnitudes
+computed from the origin in the XZ-plane, 74.67% with, and 73.73% without applying the
+detection length. Using only the X or the Z axis can provide 71–72%, which shows that
+even a single axis sensor can effectively classify vehicles into multiple classes. The length
+of the detection on average increases the classiﬁcation efﬁciencies only by 1.28%±1.63%
+for training data, and 0.80%±1.37% for unknown samples, which shows that the used
+features can effectively extract the information from the waveforms. The necessary feature
+number in the best sets was 14–15, while convergence on unknown samples can be noticed
+with 10–15 neurons.
+The testing shows that the proposed algorithm can be implemented on the micro-
+controller of the unit, and the vehicle class can be determined in 1–2 measurement cycles
+(20–40 ms) after the detection is cleared. The solution could also be effectively used in WSN
+applications, since the classiﬁcation algorithm runs online, and there is no need to transmit
+measurement data to a central unit.
+The future goals of this research include improving the recognition efficiency,
+adding more features which could discriminate different trucks and buses, and finding
+the features with most influence using different feature selection algorithms to reduce
+the required number of inputs in the classification stage. To deal with the diversity of
+various locations, data should be collected from further locations and applied together
+during the training process.
+Author Contributions: Conceptualization, P .S.; methodology, P .S.; software, P .S. and A.O.; validation,
+P .S.; formal analysis, P .S.; investigation, P .S.; resources, P .S.; data curation, P .S.; writing—original draft
+preparation, P .S.; writing—review and editing, S.P . and A.O.; visualization, P .S. and A.O.; supervision,
+P .S.; project administration, P .S. and S.P .; funding acquisition, A.O. and P .S. All authors have read and
+agreed to the published version of the manuscript.
+Funding: The work was supported by the National Research, Development, and Innovation Fund of
+Hungary through project no. 142790 under the FK_22 funding scheme.
+Institutional Review Board Statement: Not applicable.
+Informed Consent Statement: Not applicable.
+Data Availability Statement: Not applicable.
+Acknowledgments: The authors would like to thank Selma Ltd., Subotica, Serbia for the technical
+resources and support.
+Conﬂicts of Interest: The authors declare no conﬂict of interest.
+References
+1. Cheung, S.; Varaiya, P . Trafﬁc Surveillance by Wireless Sensor Networks: Final Report ; University of California: Berkeley, CA,
+USA, 2007.
+2. Gheorghiu, R.A.; Iordache, V .; Stan, V .A. Urban trafﬁc detectors—Comparison between inductive loop and magnetic sensors. In
+Proceedings of the International Conference on Electronics, Computers and Artiﬁcial Intelligence (ECAI), Pitesti, Romania, 29–30
+June 2021. [CrossRef]
+3. Gajda, J.; Stencel, M. A highly selective vehicle classiﬁcation utilizing dual-loop inductive detector.Metrol. Meas. Syst. 2014, 21,
+473–484. [CrossRef]
+
+===== PAGE 18 =====
+
+Sensors 2022, 22, 9299 18 of 19
+4. Meta, S.; Cinsdikici, M. Vehicle-classiﬁcation algorithm based on component analysis for single-loop inductive detector.IEEE
+Trans. Veh. Technol.2010, 59, 2795–2805. [CrossRef]
+5. Gajda, J.; Mielczarek, M. Automatic vehicle classiﬁcation in systems with single inductive loop detector.Metrol. Meas. Syst. 2014,
+21, 619–630. [CrossRef]
+6. Balid, W.; Taﬁsh, H.; Refai, H. Intelligent vehicle counting and classiﬁcation sensor for real-time trafﬁc surveillance.IEEE Trans.
+Intell. Transp. Syst. 2018, 19, 1784–1794. [CrossRef]
+7. Fimbombaya, H.S.; Mvungi, N.H.; Hamisi, N.Y.; Iddi, H.U. Enhanced magnetic wireless sensor network algorithm for trafﬁc ﬂow
+monitoring in low-speed congested trafﬁc. J. Electr. Comput. Eng. 2020, 2020, 5875398. [CrossRef]
+8. Feng, Y.; Zhang, J.A.; Cheng, B.; He, X.; Chen, J. Magnetic sensor-based multi-vehicle data association. IEEE Sens. J. 2021, 21,
+24709–24719. [CrossRef]
+9. Valenti, G.; Biral, F.; Fontanelli, D. Vehicle Localisation using asphalt embedded magnetometer sensors. In Proceedings of the
+IEEE International Workshop on Metrology for Automotive (MetroAutomotive), Bologna, Italy, 2–3 July 2021. [CrossRef]
+10. Lan, J.; Xiang, Y.; Wang, L.; Shi, Y. Vehicle detection and classiﬁcation by measuring and processing magnetic signal.Measurement
+2011, 44, 174–180. [CrossRef]
+11. Wahlström, N.; Hostettler, R.; Gustafsson, F.; Birk, W. Classiﬁcation of driving direction in trafﬁc surveillance using magnetometers.
+IEEE Trans. Intell. Transp. Syst. 2014, 15, 1405–1418. [CrossRef]
+12. Zhu, Q.; Tong, G.; Li, B.; Yuan, X. A practicable method for ferromagnetic object moving direction identiﬁcation. IEEE Trans.
+Magn. 2012, 48, 2340–2345. [CrossRef]
+13. Smidla, J.; Simon, G. Accelerometer-based event detector for low-power applications. Sensors 2013, 13, 13978–13997. [CrossRef]
+[PubMed]
+14. Hostettler, R.; Djuri´ c, P . Vehicle tracking based on fusion of magnetometer and accelerometer sensor measurements with particle
+ﬁltering. IEEE Trans. Veh. Technol.2015, 64, 4917–4928. [CrossRef]
+15. Ma, W.; Xing, D.; McKee, A.; Bajwa, R.; Flores, C.; Fuller, B.; Varaiya, P . A wireless accelerometer-based automatic vehicle
+classiﬁcation prototype system. IEEE Trans. Intell. Transp. Syst. 2014, 15, 104–111. [CrossRef]
+16. Kleyko, D.; Hostettler, R.; Birk, W.; Osipov, E. Comparison of machine learning techniques for vehicle classiﬁcation using road
+side sensors. In Proceedings of the IEEE International Conference on Intelligent Transportation Systems (ITSC), Gran Canaria,
+Spain, 15–18 September 2015. [CrossRef]
+17. Miklusis, D.; Markevicius, V .; Navikas, D.; Cepenas, M.; Balamutas, J.; Valinevicius, A.; Zilys, M.; Cuinas, I.; Klimenta, D.;
+Andriukaitis, D. Research of distorted vehicle magnetic signatures recognitions, for length estimation in real trafﬁc conditions.
+Sensors 2021, 21, 7872. [CrossRef]
+18. Zhang, Z.; Tao, M.; Yuan, H. A parking occupancy detection algorithm based on AMR sensor.IEEE Sens. J. 2015, 15, 1261–1269.
+[CrossRef]
+19. Zhu, H.; Yu, F. A vehicle parking detection method based on correlation of magnetic signals. Int. J. Distrib. Sens. Netw. 2015, 2015,
+361242. [CrossRef]
+20. Zhu, H.; Yu, F. A cross-correlation technique for vehicle detections in wireless magnetic sensor network.IEEE Sens. J. 2016, 16,
+4484–4494. [CrossRef]
+21. Taghvaeeyan, S.; Rajamani, R. Portable roadside sensors for vehicle counting, classiﬁcation, and speed measurement.IEEE Trans.
+Intell. Transp. Syst. 2014, 15, 73–83. [CrossRef]
+22. Sifuentes, E.; Casas, O.; Pallas-Areny, R. Wireless magnetic sensor node for vehicle detection with optical wake-up.IEEE Sens. J.
+2011, 11, 1669–1676. [CrossRef]
+23. Markevicius, V .; Navikas, D.; Zilys, M.; Andriukaitis, D.; Valinevicius, A.; Cepenas, M. Dynamic vehicle detection via the use of
+magnetic ﬁeld sensors. Sensors 2016, 16, 78. [CrossRef]
+24. Burresi, G.; Giorgi, R. A ﬁeld experience for a vehicle recognition system using magnetic sensors. In Proceedings of the
+Mediterranean Conference on Embedded Computing (MECO), Budva, Montenegro, 14–18 June 2015. [CrossRef]
+25. Vancin, S.; Erdem, E. Implementation of the vehicle recognition systems using wireless magnetic sensors. Sadhana 2017, 42,
+841–854. [CrossRef]
+26. Yang, B.; Lei, Y. Vehicle detection and classiﬁcation for low-speed congested trafﬁc with anisotropic magnetoresistive sensor.
+IEEE Sens. J. 2015, 15, 1132–1138. [CrossRef]
+27. Dong, H.; Wang, X.; Zhang, C.; He, R.; Jia, L.; Qin, Y. Improved robust vehicle detection and identiﬁcation based on single
+magnetic sensor. IEEE Access 2018, 6, 5247–5255. [CrossRef]
+28. Markevicius, V .; Navikas, D.; Idzkowski, A.; Andriukaitis, D.; Valinevicius, A.; Zilys, M. Practical methods for vehicle speed
+estimation using a microprocessor-embedded system with AMR sensors. Sensors 2018, 18, 2225. [CrossRef]
+29. Wang, Q.; Zheng, J.; Xu, H.; Xu, B.; Chen, R. Roadside magnetic sensor system for vehicle detection in urban environments. IEEE
+Trans. Intell. Transp. Syst. 2018, 19, 1365–1374. [CrossRef]
+30. Hodon, M.; Karpis, O.; Sevcik, P .; Kocianova, A. Which digital-output MEMS magnetometer meets the requirements of modern
+road trafﬁc survey? Sensors 2021, 21, 266. [CrossRef] [PubMed]
+31. Spandonidis, C.; Giannopoulos, F.; Sedikos, E.; Reppas, D.; Theodoropoulos, P . Development of a MEMS-based IoV system for
+augmenting road trafﬁc survey.IEEE Trans. Instrum. Meas. 2022, 71, 9510908. [CrossRef]
+
+===== PAGE 19 =====
+
+Sensors 2022, 22, 9299 19 of 19
+32. Taﬁsh, H.; Balid, W.; Refai, H. Cost effective vehicle classiﬁcation using a single wireless magnetometer. In Proceedings of the
+International Wireless Communications and Mobile Computing Conference (IWCMC), Paphos, Cyprus, 5–9 September 2016.
+[CrossRef]
+33. Zhang, W.; Tan, G.; Ding, N.; Shang, Y.; Lin, M. Vehicle classiﬁcation algorithm based on binary proximity magnetic sensors and
+neural network. In Proceedings of the IEEE International Conference on Intelligent Transportation Systems (ITSC), Beijing, China,
+12–15 October 2008. [CrossRef]
+34. Velisavljevic, V .; Cano, E.; Dyo, V .; Allen, B. Wireless magnetic sensor network for road trafﬁc monitoring and vehicle classiﬁcation.
+Transp. Telecommun. 2016, 17, 274–288. [CrossRef]
+35. Wang, K.; Xiong, H.; Zhang, J.; Chen, H.; Dou, D.; Xu, C.-Z. SenseMag: Enabling low-cost trafﬁc monitoring using non-invasive
+magnetic sensing. IEEE Internet Things J. 2021, 8, 16666–16679. [CrossRef]
+36. Xu, C.; Wang, Y.; Bao, X.; Li, F. Vehicle classiﬁcation using an imbalanced dataset based on a single magnetic sensor.Sensors 2018,
+18, 1690. [CrossRef]
+37. Zhang, X.; Huang, H. Vehicle classiﬁcation based on feature selection with anisotropic magnetoresistive sensor.IEEE Sens. J. 2019,
+19, 9976–9982. [CrossRef]
+38. Chen, X.; Kong, X.; Xu, M.; Sandrasegaran, K.; Zheng, J. Road vehicle detection and classiﬁcation using magnetic ﬁeld measure-
+ment. IEEE Access 2019, 7, 52622–52633. [CrossRef]
+39. Li, W.; Liu, Z.; Hui, Y.; Yang, L.; Chen, R.; Xiao, X. Vehicle classiﬁcation and speed estimation based on a single magnetic sensor.
+IEEE Access 2020, 8, 126814–126824. [CrossRef]
+40. Li, H.; Dong, H.; Jia, L.; Ren, M. Vehicle classiﬁcation with single multi-functional magnetic sensor and optimal MNS-based
+CART. Measurement 2014, 55, 142–152. [CrossRef]
+41. Feng, Y.; Mao, G.; Cheng, B.; Li, C.; Hui, Y.; Xu, Z.; Chen, J. MagMonitor: Vehicle speed estimation and vehicle classiﬁcation
+through a magnetic sensor. IEEE Trans. Intell. Transp. Syst. 2022, 23, 1311–1322. [CrossRef]
+42. Kaewkamnerd, S.; Chinrungrueng, J.; Pongthornseri, R.; Dumnin, S. Vehicle classiﬁcation based on magnetic sensor signal. In
+Proceedings of the International Conference on Information and Automation (ICIA), Harbin, China, 20–23 June 2010. [CrossRef]
+43. He, Y.; Du, Y.; Sun, L.; Wang, Y. Improved waveform-feature-based vehicle classiﬁcation using a single-point magnetic sensor.
+J. Adv. Transp. 2015, 49, 663–682. [CrossRef]
+44. Sarcevic, P .; Pletl, S. Vehicle classiﬁcation and false detection ﬁltering using a single magnetic detector based intelligent sensor. In
+Proceedings of the International Conference on Information Society and Technology (ICIST), Kopaonik, Serbia, 9–13 March 2014.
+45. Sarcevic, P . New Methods in the Application of Inertial and Magnetic Sensors in Online Pattern Recognition Problems. Ph.D.
+Thesis, University of Szeged, Szeged, Hungary, 2019.
+46. Sarcevic, P .; Pletl, S. False detection ﬁltering method for magnetic sensor-based vehicle detection systems. In Proceedings of the
+IEEE International Symposium on Intelligent Systems and Informatics (SISY), Subotica, Serbia, 13–15 September 2018. [CrossRef]
+47. Sarcevic, P .; Kincses, Z.; Pletl, S. Online human movement classiﬁcation using wrist-worn wireless sensors. J. Ambient Intell.
+Humaniz. Comput. 2019, 10, 89–106. [CrossRef]

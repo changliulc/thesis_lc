@@ -1,0 +1,655 @@
+
+
+===== PAGE 1 =====
+
+UNCORRECTED
+PROOF
+1
+2 Wireless magnetic sensors for traﬃc surveillance
+3 Amine Haoui, Robert Kavaler, Pravin Varaiya *
+4 Sensys Networks Inc., 2560 Ninth Street, Suite 211, Berkeley, CA 94710, USA
+5 Received 11 February 2007; received in revised form 9 August 2007; accepted 6 October 2007
+6
+7 Abstract
+8 Sensys Networks’ VDS240 vehicle detection system is a wireless sensor network composed of a collection of 3 00 by 300 by
+9 200 sensor nodes put in the center of a lane and a 6 00 by 4 00 by 4 00 access point (AP) box placed 15 0 high on the side of the
+10 road. A node measures changes in the earth’s magnetic ﬁeld induced by a vehicle, processes the measurements to detect the
+11 vehicle, and transfers the processed data via radio to the AP. The AP combines data from the nodes into information for
+12 the local controller or the Traﬃc Management Center (TMC). An AP communicates via radio directly with up to 96 nodes
+13 within a range of 150 0; a Repeater extends the range to 1000 0. This range makes it suitable to deploy VDS240 networks for
+14 traﬃc counts, stop-bar and advance detection, and measurement of queue lengths on ramps and at intersections, as well as
+15 parking guidance and enforcement. VDS240 is self-calibrating, IP-addressable and remotely monitored. Data are not lost
+16 because unacknowledged data packets are retransmitted. The accuracy of VDS240 for vehicle counts, speed and occu-
+17 pancy is comparable to that of well-tuned loops. Because the nodes report individual vehicle events, the AP also calculates
+18 individual vehicle lengths, speeds and inter-vehicle headways—measurements that can be used for new traﬃc applications.
+19 In July 2007, VDS240 systems were deployed in arterials and freeways in several cities and states, and 30 customer trials
+20 were underway in the US, Australia, Europe and South Africa.
+21 /C211 2007 Elsevier Ltd. All rights reserved.
+22 Keywords: Traﬃc surveillance; Vehicle detection; Wireless sensors; Advanced traﬃc management systems
+23
+24 1. Introduction
+25 Strategies for eﬃcient road transportation management rely on a dense system of sensors that can quickly
+26 and accurately measure traﬃc. Adaptive signal control requires direct measurement or estimation of link free-
+27 ﬂow speeds, queue discharge rates and intersection queue lengths ( Mirchandani and Head, 2001 ). Freeway
+28 ramp control is much improved by algorithms that use ramp queue measurements ( Sun and Horowitz, in
+29 press). An empirical analysis of California freeway data concludes that detectors should be placed every
+30 one-third of a mile to accurately measure congestion ( Kwon et al., 2007 ). Solutions to the ‘parking problem’
+0968-090X/$ - see front matter /C211 2007 Elsevier Ltd. All rights reserved.
+doi:10.1016/j.trc.2007.10.004
+* Corresponding author. Tel.: +1 510 642 5270; fax: +1 510 642 7815.
+E-mail addresses: haoui@sensysnetworks.com (A. Haoui), kavaler@sensysnetworks.com (R. Kavaler), varaiya@eecs.berkeley.edu (P.
+Varaiya).
+Available online at www.sciencedirect.com
+Transportation Research Part C xxx (2007) xxx–xxx
+www.elsevier.com/locate/trc
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 2 =====
+
+UNCORRECTED PROOF
+31 in the US ( Woodyard, 2006) and in Europe, where the search for parking constitutes 60% of the traﬃc in some
+32 cities ( City Parking in Europe, 2006 ), depend on an accurate, real-time inventory of available parking places.
+33 The tiny circles in Fig. 1 show the deployment of vehicle detection sensors for these applications. One con-
+34 clusion is immediate from the ﬁgure. It would be impractical to use wires either to supply power to all the
+35 sensors or to communicate with them, because of their very high installation and maintenance costs. The only
+36 feasible approach is to use sensors that are battery-powered and communicate via radio. Wireless sensor net-
+37 working is a breakthrough technology that combines sophisticated networking software with ultra low-power
+38 sensor and radio chips to enable sensing applications on a density and scale and at a cost that were unthink-
+39 able ﬁve years ago ( Huang, 2003 ). This technology heralds a new era of traﬃc surveillance.
+40 Sensys Networks, Inc. is a company that designs, manufactures and markets wireless magnetic sensor net-
+41 works to accurately detect the presence and movement of vehicles in real time for the applications depicted in
+42 Fig. 1. Encouraged by the success of an initial prototype ( Cheung et al., 2005 ), the co-authors founded Sensys
+43 in July 2003, and secured venture funding in mid-2004. In November 2005 Sensys began shipping systems for
+44 freeway count stations and arterial advance detection and count stations. Stop-bar presence detection systems
+45 were released in April 2007. In July 2007, VDS240 systems were deployed in streets and freeways in several
+46 cities and states, and 30 customer trials were underway in the US, Australia, Europe and South Africa.
+47 Section 2 describes the VDS240 family of vehicle detector stations. Section 3 describes the basic signal pro-
+48 cessing algorithm for vehicle detection and summarizes experimental results comparing the performance of
+49 VDS240 with loops. Section 4 summarizes the case for the suitability of VDS240 for a pervasive traﬃc sur-
+50 veillance system.
+51 2. VDS240 vehicle detection station
+52 VDS240 is a local area wireless sensor network composed of a collection of sensor nodes (VSN240), an
+53 access point (AP240) and, possibly, a repeater (RP240) to extend the range of the access point; see Fig. 2. Data
+54 sheets for VDS240 and independently conducted product performance evaluations are available at
+55 www.sensysnetworks.com.
+56 2.1. VSN240 vehicle sensor node
+57 A node has electronic circuits that incorporate into a system a magneto-resistive sensor measuring the
+58 earth’s magnetic ﬁeld, a radio transceiver, an antenna, a microprocessor, memory and a battery with a 10 year
+Stop-Bar
+Detection
+170
+Traffic Signal 
+Control
+Freeway Ramp
+Metering
+Advance 
+Detection 
+Parking
+Guidance
+Parking
+Enforcement 
+Freeway Traffic
+Data
+System
+Counts
+Fig. 1. The tiny circles denote vehicle detection sensor node locations for freeway traﬃc count stations, ramp metering, signal control, and
+parking guidance and enforcement. The small squares denote access points that communicate via radio with the sensor nodes.
+2 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 3 =====
+
+UNCORRECTED
+PROOF
+59 lifetime. A node is packaged in a 3 00 by 300 by 200 plastic case that is placed in the center of a lane in a 2 1/2 00 deep
+60 cored hole, which is then ﬁlled by epoxy. The installation eliminates loop saw cuts and the circular holes pro-
+61 duce the least amount of stress on the roadway. A node is installed in less than 10 min.
+62 A node samples the three axes of the magnetic ﬁeld at 128 Hz. A node operates in one of 6 modes: A. Raw-
+63 Z; B. Event; D. Raw-XYZ; E. Idle; F. Gated Raw-XYZ; and G. Parking. In mode A (respectively, D) the raw
+64 z axis (respectively, x, y, z axes) samples are sent to the AP. Mode F is like D, except that samples are sent only
+65 while a vehicle is present. The raw modes measure a vehicle’s ‘magnetic signature’, which can be used for test-
+66 ing the node or to develop new applications, e.g., real-time vehicle classiﬁcation and re-identiﬁcation ( Cheung,
+67 2006).
+68 Mode B is the normal mode. The microprocessor in the node processes the samples to determine when a
+69 vehicle arrives at, and departs from, the sensor node. The arrival and departure events of each vehicle are sent
+70 to the AP. All events are timestamped and synchronized across all nodes with a 1 ms resolution.
+71 To determine vehicle arrival and departure events, the microprocessor uses a detection algorithm described
+72 in Section 3.1. The algorithm depends on several parameters. A database of vehicle signatures is used to select
+73 these parameters. The algorithm tracks the ambient magnetic ﬁeld. Consequently, VSN240 is self-calibrating,
+74 eliminating the initial tuning and periodic re-calibration required by inductive loop, radar and video detectors.
+75 In order to calculate speed, two nodes are placed in the same lane at a ﬁxed distance, creating a speed trap.
+76 Each node has a unique network address included in every 50-byte data packet that it transmits to the AP.
+77 The AP acknowledges the data packets; unacknowledged packets may be retransmitted by the node. A node’s
+78 operational mode can be changed at any time by the AP. The AP can also download new software to the node.
+79 The communication protocol between AP and a node is described in the Section 2.3.
+80 The access point routinely measures and reports radio performance (received signal strength indicator or
+81 RSSI, packet loss, and link quality indicator or LQI) of each VSN240 in its local area. This permits remote
+82 diagnosis of the communications network. The performance of sensors and signal processing algorithms can
+83 be remotely monitored by using the raw mode. Lastly, VSN240 ﬁrmware can be updated ‘over the air’ to
+84 ensure that the installed base beneﬁts from software feature enhancements and software bug ﬁxes. This dras-
+85 tically reduces maintenance and upgrade costs.
+86 2.2. AP240 access point
+87 The AP is DC-powered and can support input voltages from 9 V to 24 V or from 36 V to 58 V allowing
+88 solar or line powering with battery backup, or standard POE (power over Ethernet) powering. Its host pro-
+89 cessor runs Linux, which allows sophisticated user applications to run directly on AP240. Its external commu-
+90 nication is TCP-based, so that software development can take place elsewhere and ported to the host
+91 processor. Like VSN240, it is self-calibrating, requires no adjustment, and installs in minutes.
+Fig. 2. The VDS240 product family consists of sensor nodes (VSN240), access point (AP240) and a repeater (RP240).
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 3
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 4 =====
+
+UNCORRECTED PROOF
+92 The AP is the ‘base station’ of the local area wireless network with up to 96 nodes. Its algorithms extract
+93 useful information from the data it receives from these nodes. For example, in freeway traﬃc applications, the
+94 30-s count is just the number of vehicle arrivals at a node during 30 s; the 30-s occupancy is the fraction of
+95 vehicle ‘on-time’ (diﬀerence between vehicle departure and arrival times) during 30 s; a vehicle’s speed is
+96 the distance between the two nodes in the speed trap divided by the diﬀerence between the vehicle arrival
+97 times; and a vehicle’s ‘magnetic’ length is its on-time multiplied by its speed.
+98 The measurement of individual vehicle arrival, departure and speed permit new applications. As one exam-
+99 ple, Coifman and Cassidy (2002) use sequences of individual vehicle lengths measured at two locations to esti-
+100 mate the travel time between those locations. As another application, Cheung et al. (2005) report an
+101 experiment in which the pattern of successive headways downstream of a traﬃc signal indicates whether
+102 the queue behind the signal is cleared during the green phase. Lastly, measurements of individual vehicle
+103 speed, platoon speed, and speed in adjacent lanes, can be combined with crash data to shed more light on
+104 the unsettled and important relationship between crash rate and speed ( Kockelman and Ma, 2004 ).
+105 The AP is enclosed in a 6 00 by 600 by 400 box, and mounted between 12 0 and 20 0 high on a pole on the side of
+106 the road. It communicates via radio with nodes on the ground at a range of between 90 0 and 175 0. Using a
+107 RP240 repeater extends the communication range to 1000 0. The radio transceivers in VSN240, RP240 and
+108 AP240 conform to the IEEE 802.15.4 PHY standard. The radio operates in one of sixteen 5 MHz channels
+109 in the 2.4–2.48 GHz band. Sensors and repeaters connected to the same AP operate on the same channel. Sen-
+110 sors connected to a repeater operate on a diﬀerent channel. A repeater listens to the AP on the ﬁrst channel
+111 and to its sensors on the second channel, and relays packets between the two channels.
+112 2.3. Communication protocol
+113 Communication in the local area network is governed by the Sensys Nanopower Protocol (SNP). SNP is a
+114 TDMA (time-division multiple-access) protocol, summarized in Fig. 3. Time is divided into 125 ms-long sub-
+115 frames, each subdivided into 64 time slots. Each sensor node is assigned a slot in which it can transmit 50 bytes
+116 of data. The ﬁgure shows slot 1 assigned to VSN A and slot 3 to VSN B. (A node that needs to transmit more
+117 data, for example in raw mode, is assigned more than one slot.)
+118 Four slots are special. Slot 0 is used by the AP to synchronize the node clocks and to send global param-
+119 eters for detection, transmit interval, etc. Slot 2 is used for software download. Slots 4 and 34 are used for
+120 acknowledgement of sensor data packets by the AP. If a node’s data packet is not acknowledged, it retrans-
+121 mits the packet (up to a limit), which protects against data loss even when some transmitted packets are lost.
+122 SNP’s tight time synchronization permits the radio in the node to be in ‘sleep’ mode during slots when it is
+123 not transmitting or receiving. As a result the radio is awake less than 1% of the time, which enables the long
+124 battery lifetime. A detailed study ( Coleri and Varaiya, 2006 ) explains why TDMA consumes a tiny fraction of
+125 the energy consumed by the more common CSMA (carrier sense multiple-access) protocol in multi-hop wire-
+126 less sensor networks.
+125 msec frame
+Sync 
+TS0 TS1 TS2 TS3 TS62 TS63
+TX
+VSN A 
+Time slot 
+VSN B 
+Time slot 
+TX
+Fig. 3. VDS240 TDMA protocol for communication within the local area wireless network uses a 125 ms subframe divided into 64 slots.
+Each sensor node is assigned a ﬁxed slot in which it can transmit 50 bytes of data.
+4 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 5 =====
+
+UNCORRECTED
+PROOF
+127 2.4. Local and wide-area interfaces
+128 AP240 can activate contact closures to interface to standard 170, NEMA TS-1 and TS-2 and 2070 traﬃc
+129 controllers. For this purpose, Sensys provides standard form factor interface cards for connecting AP240 to
+130 the controller input ﬁle shelves. AP240 is connected to these interface cards via an RS-485 cable, which can
+131 also power the AP. This makes VDS240 backward ‘loop compatible’. As illustrated in Fig. 4 , a failed loop
+132 can be replaced by a sensor node, and the AP interface makes the node appear to the controller as a function-
+133 ing loop. No change in the controller is needed. This makes the VDS240 a suitable loop retroﬁt system.
+134 AP240 provides several other interfaces for data backhaul. A 10/100 Base T Ethernet interface accepts a
+135 DHCP or static IP address. (AP240 can be powered over the Ethernet.) Serial Port A interfaces to a cellular
+136 GPRS or 1 · RTT CDMA modem or 115.2 kbps RS232C cable. Serial Port B interfaces to an optional GPS
+137 receiver, 115.2 kbps RS232C or RS485 cable.
+138 AP240’s TCP/IP support includes these protocols: telnet, ftp, http, ppp, pptp; tunneling to VPN allows
+139 connection to AP240 without a static address, and data can be encrypted. Acting as a SNP-TCP/IP gateway,
+140 AP240 supports TCP streams to applications, providing transparent access to sensor data. Multiple applica-
+141 tions can ask for SNP packets based on packet type. The gateway can supply synchronization to applications.
+142 As noted earlier, third-party custom applications may be developed over IP (Ethernet or GPRS) and then
+143 ported to AP240. A ‘C’ API is available.
+144 2.5. SNAPS
+145 Large-scale deployment is assisted by the Sensys SNAPS server, which provides connectivity to APs over a
+146 wide area, data archiving, performance reports, and network element management. SNAPS computes counts,
+147 speed, occupancy, vehicle length and other statistics over various time intervals, as well as real-time individual
+148 vehicle speed, length and headway. Data can be pulled via telnet/ftp or pushed via the PeMS Interface. ( PeMS
+149 (2006) is the California Freeway Performance Measurement System. PeMS archives freeway traﬃc data and
+150 computes numerous performance measures, including congestion and productivity.) On-board storage of data
+151 eliminates the problem of dropped data. Users may connect to SNAPS over the web; the TraﬃcDot applica-
+Lane 1 
+Lane 4 
+Lane 3 
+Lane 2 
+AP240
+RS485 Data 
+& Power 
+FailedVSN24
+Fig. 4. VDS240 is ‘loop compatible’. The failed loop in lane 1 is replaced by a sensor node and the AP240 interface provides the same
+input to the controller as a functioning loop.
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 5
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 6 =====
+
+UNCORRECTED PROOF
+152 tion displays node events in real time. Fig. 5 depicts a deployment along a freeway encompassing several APs.
+153 Traﬃc data are brought via the internet to the customer desktop as soon as the VDS240 systems are installed.
+154 3. Performance
+155 The most fundamental decision made by a traﬃc surveillance system is vehicle detection: the decision
+156 whether a vehicle is present or not and, if it is present, the determination of the time instants of the vehicle’s
+157 arrival and departure. The quality of all other measurements, such as counts, occupancy and speed, depends
+158 on the accuracy of vehicle detection.
+159 3.1. Vehicle detection
+160 Fig. 6 shows the vertical or z axis of the earth’s magnetic ﬁeld measured by a VSN240 sensor as a truck
+161 moves over the node. (This is the vehicle’s z axis magnetic signature.) Because the vehicle causes a rapid
+162 change in the magnetic ﬁeld, the vehicle can be detected by a threshold rule: a vehicle arrives when the mag-
+163 netic ﬁeld crosses a threshold, say a, from below and it departs when the ﬁeld crosses a slightly lower thresh-
+164 old, say b, from above. (The earth’s z axis magnetic ﬁeld strength varies between 0.3 and 0.6 gauss over North
+165 America; the default threshold values recommended for VSN240 in North America are a = 40 milligauss,
+166 b = 23 milligauss. These values indicate the large ﬂuctuation in the magnetic ﬁeld caused by a vehicle.)
+167 Two modiﬁcations are needed to make the threshold rule work in practice.
+168 First, the ambient magnetic ﬁeld drifts over time and space. Hence in order to keep ﬁxed thresholds, the
+169 ambient ﬁeld must be tracked and the measurements must be centered at the tracked value, as is the case with
+170 the plot in Fig. 6 . Tracking is achieved by a ﬁrst-order ﬁlter using sample values only when a vehicle is not
+171 present and when the magnetic ﬁeld is not ﬂuctuating signiﬁcantly. Tracking the ambient ﬁeld automates cal-
+172 ibration and permits use of a ﬁxed threshold. One consequence is that diﬀerent copies of the VSN240 give the
+173 same measurements and inter-sensor node diﬀerences are virtually non-existent. By contrast, inductive loop
+174 measurements depend on how the loops were installed and how they are aﬀected by pavement stress over time.
+175 Moreover, calibration of loop-based systems in the ﬁeld is almost never done because it is prohibitively expen-
+176 sive, requiring expensive video processing to obtain ground truth. As a result, loop-based occupancy and
+177 speed measurements suﬀer from an unknown bias, making direct inter-loop comparison of these quantities
+178 meaningless ( Jia et al., 2001 ).
+AP240
+GPRS/CDMA/IP
+VSN240
+SNAPS Server
+• Connectivity to APs 
+• Data archiving 
+• Performance reports 
+• Element management
+Internet
+Traffic 
+Management 
+Center
+Traffic data
+Providers 
+Users
+•SNAPS web 
+•TrafficDot
+Fig. 5. The SNAPS server collects information from many AP’s distributed over a wide area.
+6 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 7 =====
+
+UNCORRECTED
+PROOF
+179 Second, as seen in Fig. 6, the magnetic ﬁeld may cross the threshold several times during the passage of the
+180 same vehicle, so a naı¨ve implementation of the threshold rule will declare multiple vehicles in place of one vehi-
+181 cle. The ﬁgure also suggests the remedy: if a threshold up-crossing occurs very quickly after a down-crossing, it
+182 is likely that they are associated with the same vehicle. That is, if a down-crossing is followed by an up-cross-
+183 ing within a short time interval, say d, the two ‘spurious’ crossings should be ignored. The correct choice of d is
+184 a little tricky. Observe that the interval between the spurious crossings depends on the vehicle speed: if the
+185 vehicle is going at half the speed, the interval will be twice as long. Thus d must be adapted (inversely) to
+186 the speed. Furthermore, as the magnetic signature depends on the spatial distribution of ferrous material in
+187 the vehicle, the number of spurious crossings and their location in the signature will vary. So the proper choice
+188 of d (as well as a, b) is ﬁnally based on tests with a vehicle signature database. Lastly, the longitudinal or x axis
+189 magnetic ﬁeld is also used in detection to reduce the spurious crossings.
+190 A vehicle detection system makes two kinds of errors: it overcounts vehicles by mistaking more than one
+191 vehicle for a single vehicle; and it undercounts vehicles either by not detecting a vehicle or by ‘merging’ two
+192 vehicles into one. Experimental results assessing VD240 performance are given in Section 3.3.
+193 3.2. Traﬃc statistics
+194 Let a(i)a n dd(i) denote the arrival and departure times of the ith vehicle detected by a VSN240 sensor node.
+195 These times are sent to its AP240 access point. It is then straightforward to calculate the standard traﬃc sta-
+196 tistics of 30-s counts and occupancy. The access point can also calculate the time headway a(i) /C0 d(i /C0 1). In
+197 order to calculate speed in a particular lane, two nodes are placed at a distance D apart, and the access point
+198 estimates the speed of the ith vehicle as m(i)= D/[ad(i) /C0 au(i). Here au(i) is the arrival of the vehicle in the
+199 upstream node and ad(i) is the arrival at the downstream node. The 1magnetic’ length of the ith vehicle is esti-
+200 mated as l(i)=[ d(i) /C0 a(i)] · v(i).
+201 3.3. Experimental results
+202 Sensys customers have commissioned several independent studies to determine the accuracy of VDS240 and
+203 other characteristics of the product, such as battery life, radio performance, eﬀect of temperature, snow, rain,
+204 etc. The ﬁndings discussed below are from the study ( Margulici et al., 2006 ) prepared for Caltrans by the Cal-
+205 ifornia Center for Innovative Transportation (CCIT). Other studies are available at
+206 www.sensysnetworks.com.
+Fig. 6. Raw z axis measurement of earth’s magnetic ﬁeld as a truck moves over the sensor; threshold; and vehicle arrival and departure
+events.
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 7
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 8 =====
+
+UNCORRECTED PROOF
+207 The objective of the CCIT study was to evaluate VDS240 as a possible replacement for inductive loops for
+208 the measurement of freeway traﬃc parameters. The study focused on data quality measures of timeliness,
+209 completeness, validity, and accuracy as deﬁned in the ( FHWA, 2004) report. The FHWA report recommends
+210 two additional measures, coverage and accessibility or usability, which are not meaningful in the context of the
+211 CCIT study.
+212 Data from two inductive loop pairs in lanes 1 and 2 (the two lanes closest to the median) on I-80, near
+213 Berkeley, are compared with data from four VSN240 nodes placed in the center of the loops. The loops
+214 are maintained by the Berkeley Highway Lab (BHL), which is operated by CCIT. Loop outputs are sampled
+215 at 60 Hz. In addition to the loops, video footage served as a ground truth to evaluate count accuracy of the
+216 VDS240. Data were collected from 5 AM to 10 PM daily for two full weeks, during June and July, 2006.
+217 3.3.1. Timeliness
+218 This refers to the time lag between sensed events and the availability of the event data. Two time lags are
+219 relevant. The ﬁrst is the delay between a VSN240 radio transmission of the data packet containing vehicle
+220 arrival and departure timestamps and the reception of the packet by the AP240 radio. The second is the delay
+221 between the access point’s transmission of a data packet via the GPRS cellular system and its reception at the
+222 TMC which, in the study, is represented by the SNAPS server (see Fig. 5). This second time lag is independent
+223 of the Sensys VDS240. Of course, if the access point is connected via a serial port to a local controller, the
+224 second time lag would be absent.
+225 Table 1 displays statistics of the time lag between the sensor node and access point: the mean packet deliv-
+226 ery time is 0.13 s and 99% of packets are delivered within 0.40 s; the corresponding numbers for the GPRS
+227 delay between the access point and the SNAPS server are 1.00 s and 7.06 s.
+228 3.3.2. Completeness
+229 This refers to the availability to a TMC application of the event data generated at the source, and is mea-
+230 sured by the ratio of the number of records received by the application to the expected number of records gen-
+231 erated by the source (sensor node). Data incompleteness is caused by sensor failure, failure of the link between
+232 sensor node and access point or a GPRS outage between the latter and the SNAPS server. If there is such a
+233 failure no detection event will be reported. However, there may also be no detection event. In the absence of
+234 ground truth concerning the number of source events, the completeness ratio cannot be calculated, and an
+235 alternative test was constructed. It was determined that between 5AM and 10 PM on weekdays it was extre-
+236 mely likely that at least one vehicle would pass over each sensor within a 90-s ‘activity interval’. Thus the test
+237 compared the fraction of 90-s activity intervals during which the VSN240 nodes and the associated loop detec-
+238 tors report events.
+239 According to Table 5.2 in ( Margulici et al., 2006 ), the nodes and loop detectors reported events in more
+240 than 99% of the 450,000+ activity intervals. This means that there was no 90-s interval during the two week
+241 experiment during which either the VSN240 node failed or data were lost by the node-to-access point link fail-
+242 ure or by the GPRS link failure. Since we know that both radio links do fail, the absence of data loss implies
+243 that both the acknowledgement scheme in the SNP protocol over the VSN240-AP240 link and the TCP imple-
+244 mentation over the GPRS link work well.
+Table 1
+Timeliness
+Statistic Time from node to access point (s) Time from access point to SNAPS server (s)
+Mean 0.13 1.21
+Median 0.12 1.00
+Std Dev 0.27 4.44
+96 percentile 0.25 N/A
+99 percentile 0.40 7.06
+Source (Table 5.1 and Appendix B, Margulici et al. (2006) ).
+8 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 9 =====
+
+UNCORRECTED
+PROOF
+245 3.3.3. Validity
+246 This refers to the plausibility of the reported measurements, and can be measured by the fraction of records
+247 that lie within a pre-speciﬁed expected range. Validity does not measure accuracy; rather it measures the frac-
+248 tion of measurements that are outliers. The CCIT study examines the validity of vehicle detection, speed, occu-
+249 pancy, volume (ﬂow), and volume-occupancy pairs.
+250 3.3.3.1. Vehicle detection. Let d(i) /C0 a(i) denote the on-time associated with the passage of a vehicle reported by
+251 a sensor node (see Fig. 6) or a loop detector. Selecting the minimum plausible on-time as 8/60 s and the max-
+252 imum on-time as 10 s, leads to 95–100% valid VSN240 on-time records, as seen in Table 2 . (Since the ‘mag-
+253 netic’ on-time is shorter than the ‘induction’ on-time measured by a loop, the VSN240 is expected to report
+254 more on-times below 6/80 s.) Vehicle speed Taking a range of 3–99 mph as a valid speed estimate, the study
+255 ﬁnds that 99.8% of 25,000+ VSN240 30-s average speed estimates fall within this range, see ( Margulici et al.,
+256 2006, Appendix B ).
+257 3.3.3.2. Valid occupancy. The valid range of 30-s average occupancy was taken as 0–47%, as recommended by
+258 FHWA, and conﬁrmed by loop detector occupancy measurements, 99% of which were within this range. The
+259 study found that more than 99% of 25,000+ estimates made by each of the four VSN240 sensors were within
+260 this range ( Margulici et al., 2006, Appendix B ).
+261 3.3.3.3. Valid volume. The study found that more than 99% of 25,000+ estimates of 30-s volume averages made
+262 by each of the four VSN240 sensors were within the range 0–2600 vehicles per hour per lane (Appendix B,
+263 Margulici et al., 2006 ).
+264 3.3.3.4. Valid volume-occupancy. To determine the validity of the pair (volume, occupancy) 30-s estimates, the
+265 study constructs a region in volume-occupancy space that includes 99% of loop detector-based estimates, and
+266 found that between 95% and 97% of each of the four VSN240 estimates and 98% of the four loop-based esti-
+267 mates belonged to the region (Appendix B, Margulici et al., 2006 ).
+268 3.3.3.5. Summary. The study concludes that VSN240 traﬃc measurements were in ranges considered valid 95%
+269 of the time—almost the same proportion as for the loops.
+270 3.3.4. Accuracy
+271 Estimating the accuracy of the VDS240 system or any traﬃc surveillance system is a multi-dimensional
+272 problem, because it is not possible to obtain ground truth for all measurements. This is obvious for occupancy
+273 and speed measurements and so all studies, including the CCIT study, take measurements provided by a well-
+274 calibrated loop-based system as ground truth. Unlike other studies, however, the CCIT study also tries to
+275 account for bias in the loop based ‘ground truth’, using measurements from matching loop pairs.
+276 3.3.4.1. Counts. In principle, video recordings can provide ground truth for counts (but not speed or occu-
+277 pancy) and the study does that. However, even here one needs to be careful for two reasons. First, it is diﬃcult
+278 to synchronize the independent clocks that generate the timestamps for the video frames, VDS240 and loop
+Table 2
+On-time validity
+Percent on-time above 6/80 s Percent on-time below 10 s
+VSN240 Loop VSN240 Loop
+Dn_Ln1 94.6 97.3 100.0 100.0
+Up_Ln1 94.4 98.1 100.0 100.0
+Dn_Ln2 95.3 99.0 100.0 99.9
+Up_Ln2 95.5 98.9 99.9 99.9
+Dn_Ln = Downstream lane, Up_Ln = Upstream lane. Source (Appendix B, Margulici et al. (2006) ).
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 9
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 10 =====
+
+UNCORRECTED PROOF
+279 events. To minimize the impact of synchronization error, the study compares video counts with VDS240 and
+280 loop counts over 5-min intervals. Second, when a vehicle is changing lanes, diﬀerences in vehicle counts are
+281 inevitable. (Because lane 1 is a high-occupancy vehicle or HOV lane, there are many lane changes.) Table 3
+282 gives the ratio of (manual) video counts to each of four loop detector and VDS240 counts over six 5-min sam-
+283 ples in light, medium and heavy traﬃc. Averaged across the six samples the ratio is 1.00 for loops and between
+284 0.98 and 1.01 for VDS240.
+285 3.3.4.2. Occupancy, volume, speed. The study compares 30-s average occupancy, volume, and speed calculated
+286 by loop detectors and the wireless sensors. The results are summarized in Table 4, reproduced from the study.
+287 The ‘range’ refers to the 10th and 90th percentile values of the 50,000+ 30-s average samples. Construction of
+288 the table requires matching the samples between loops (upstream and downstream in the same lane), between
+289 sensors, and between loops and sensors.
+290 The correlation coeﬃcient is between 0.96 and 0.99 between matched loop and sensor values, suggesting an
+291 almost perfect match between loop and sensor estimates of standard traﬃc statistics. The correlation coeﬃ-
+292 cients are between 0.99 and 1.00 for 5-min averages, (Table 5.5, Margulici et al., 2006 ).
+293 Table 4 also gives the bias or mean and standard deviation of the diﬀerence between matched samples. The
+294 numbers in the table are in units of the variables. The occupancy bias between loops and sensors is between
+295 0.14% and 0.32%; the vehicle count bias is between 0.10 and 0.24 vehicles; and the speed bias is between 0.35
+296 and 0.98 mph. Further, in the words of the report, ‘‘the bias between two wireless sensors in the same lane is
+297 almost non-existent [0.01 vehicle for counts and 0.07% for occupancy], suggesting that there are no noticeable
+298 diﬀerences due to manufacturing or calibration between two independent sensors [..] both the bias and stan-
+299 dard deviation are less in the case of the wireless sensors self-comparison as they are for the loops self-com-
+300 parison. This suggests that the wireless sensors produce more consistent results ( Margulici et al., 2006, pp. 40–
+301 41).’’ (( Coﬁman, 2004 ) compares radar detectors with loops at the same BHL test site and ﬁnds large lane-
+302 dependent bias and errors in radar count, occupancy and speed).
+Table 3
+Ratio of video count to sensor count over 5-min samples
+6–15% occupancy light–medium
+congestion
+>15% occupancy heavy
+congestion
+<5% occupancy light
+congestion
+Average
+Sample 1 Sample 2 Sample 3 Sample 4 Sample 5 Sample 6 All
+LD ws LD WS LD WS LD WS LD WS LD WS LD WS
+Dn_Ln1 1.00 0.98 1.00 1.00 0.99 0.98 1.00 0.99 1.00 0.95 1.00 0.95 1.00 0.98
+Up_Ln1 1.00 1.02 1.00 1.00 0.99 0.98 1.00 0.97 1.00 0.99 1.00 0.99 1.00 0.98
+Dn Ln2 1.00 1.00 0.99 1.01 1.01 1.04 1.00 1.02 1.01 1.00 1.00 1.00 1.00 1.01
+Up Ln2 1.00 1.00 1.02 1.01 1.07 1.04 1.04 1.02 1.00 1.00 1.00 1.01 1.00 1.01
+LD = loop detector, WS = wireless sensor, Dn_Ln = Downstream lane, Up_Ln = Upstream lane. Source (Appendix B, Margulici et al.
+(2006)).
+Table 4
+Comparison of loop-based and VDS240 estimates of 30-s averages of occupancy, counts and speed
+Variable Range Loop-Loop Sensor–sensor Loop–sensor
+Bias StdDev cc Bias StdDev CC Bias StdDev CC
+Occ (%) 1–24 0.06–0.28 1.04–1.30 1.00 0.06–0.07 0.72–1.13 1.00 0.14–0.32 1.10–1.74 0.98–0.99
+Volume (#) 3–16 0.01–0.14 0.31–0.55 1.00 0.00–0.01 0.37–0.50 1.00 0.10–0.24 0.99–1.22 0.96–0.98
+Speed (mph) 19–77 – – – – – 0.35–0.98 2.25–2.33 0.99
+Bias = mean diﬀerence, StdDev = standard deviation of diﬀerence, and CC = correlation coeﬃcient, of matched samples. Source (Table
+5.6, Margulici et al. (2006) ).
+10 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 11 =====
+
+UNCORRECTED
+PROOF
+303 Finally, Fig. 7, reproduced from the study, compares the 5-min average speed estimates over one day. The
+304 ﬁgure conﬁrms the virtually perfect correlation in the measurements made by a well-calibrated loop-based sys-
+305 tem and VDS240.
+306 3.3.5. Failures
+307 As seen above, VDS240 systems installed directly ‘out of the box’ with no tuning or calibration, work with
+308 the accuracy of well-calibrated inductive loop detector systems. Typical loop-based systems in the ﬁeld work
+309 very poorly by comparison. For example, 23% of 24,000 loops deployed in California freeways suﬀer large
+Fig. 7. 5-min average speed estimated by loop detector and VDS240 over one day, 5 AM–10 PM. Source (Fig. 5.3, Margulici et al., 2006 ).
+Fig. 8. Installing a loop-based system (above) vs. VDS240 (below).
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 11
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 12 =====
+
+UNCORRECTED PROOF
+310 data loss ( PeMS, 2006 ); moreover the reasons for the loss are impossible to ascertain remotely. By contrast,
+311 the communication protocols and data buﬀering in VDS240 eliminate data loss; and the remote monitoring of
+312 the communication links can diagnose the cause of malfunction. Fig. 8 shows pictorially that it is much easier
+313 to install a VDS240 system than a loop-based system.
+314 Vehicle detection systems fail and it is important to quickly and remotely detect the failure. Some loop fail-
+315 ures, such as chattering, are quickly detected by statistical tests. But crosstalk—in which the detector in one
+316 lane reports the presence of vehicles in an adjacent lane—cannot be detected because the reported faulty mea-
+317 surements look normal. Similarly, misalignment, which causes radar detectors to incorrectly report measure-
+318 ments in an adjacent lane, is diﬃcult to detect. Crosstalk and misalignment can occur because of the poor
+319 quality of installation or because of changes over time. VDS240 provides both qualitative and quantitative
+320 diagnostic information in the form of RSSI and LQI, both of which can readily be understood and adjusted
+321 very simply. As a result VDS240 never confuses traﬃc from one channel to another. At the same time, a sensor
+322 failure is quickly detected.
+323 In summary, loop-based systems are failure-prone and inaccurate; moreover, their cost of installation and
+324 maintenance will grow over time because they require large labor time. Making new investments in obsolete
+325 loop technology is ill-advised. Radar-based systems may not provide the accuracy needed for applications like
+326 ramp metering; and they cannot be used for traﬃc signal control or stop-bar presence detection or queue mea-
+327 surements. They, too, require skilled labor for calibration and maintenance. The VDS240 requires no calibra-
+328 tion, uses little labor time during installation, and is remotely maintained. Moreover, it serves all traﬃc
+329 surveillance applications depicted in Fig. 1. The lifecycle cost of a VDS240 system is a fraction of a loop-based
+330 system. Furthermore, most of the cost of VDS240 is due to electronics manufacture and assembly, both of
+331 which will decline with volume. This makes VDS240 the preferred choice for pervasive traﬃc surveillance.
+332 4. Conclusion
+333 It is a commonplace among professionals that eﬀective implementation of standard ITS schemes of ramp
+334 metering and signal control can dramatically reduce congestion. For example, it is estimated that ramp meter-
+335 ing could have eliminated 37% of the PM peak congestion in California freeways during October–December,
+336 2005 ( PeMS, 2006 ). Congestion reduction also provides large beneﬁts from improved travel time reliability
+337 (Cambridge Systematics, 2001 ). Caltrans has recently begun to measure the impact of congestion by lost pro-
+338 ductivity—deﬁned as the number of lane–mile–hours of capacity lost due to congestion. The lost productivity
+339 of California freeways during October 2006 is estimated at 14,000 lane–mile–hours per day ( PeMS, 2006 ).
+340 Because of lack of data, we have no way of estimating congestion loss on streets.
+341 Despite the consensus about the eﬃcacy of ITS schemes, they are rarely implemented, even in a progressive
+342 state like California. More sophisticated schemes for co-ordinated ramp and signal control, rapid transit, trav-
+343 eler information, incident detection and management, parking guidance and demand management, remain
+344 conﬁned to research journals with no plans for real-world testing. One reason for this poor implementation
+345 record is the lack of adequate detection, in terms of coverage and accuracy. The quality of loop detector data
+346 is widely perceived as being so poor that engineers often do not trust the data.
+347 Thus implementation of ITS schemes requires a pervasive system of accurate traﬃc sensors. With its high
+348 cost, inadequate accuracy and diﬃculty of deployment, loop detector technology—the loops, detector cards,
+349 wiring for power and communication, and controllers—is incapable of serving this function. Wireless sensor
+350 network technology appears ideally suited. It requires no wires, so that it can be deployed wherever necessary.
+351 It is as accurate as well-calibrated loops. It provides individual vehicle measurements, permitting the develop-
+352 ment of new applications.
+353 VDS240’s low cost, ease of installation and maintenance, ﬂexibility of deployment, accuracy, IP networking
+354 and data integrity make it suitable for pervasive traﬃc surveillance. VDS240 is backward ‘loop compatible’: a
+355 defective loop, when replaced by a node, appears to the controller like a functioning loop. VDS240 is ‘future
+356 proof’. First, as new applications are developed, the software can be downloaded to existing systems. In the
+357 future, road system surveillance will include other sensing modalities, such as temperature, pressure, humidity,
+358 light, and pollutants, for which low-power, miniature sensors are becoming available. These sensors can be
+359 deployed in nodes alongside the magnetic sensor nodes described here, while communicating with the same
+12 A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004
+
+===== PAGE 13 =====
+
+UNCORRECTED
+PROOF
+360 access points. Alternatively, the sensors could be incorporated within an enhanced version of VSN240. Lastly,
+361 the addition of a 802.1 1 · transceiver to the AP240 can make it serve as a gateway or as a node in the future
+362 vehicle-infrastructure integration (VII) network, in which data can be collected and transferred between vehi-
+363 cles and the roadside ( Misener, 2005 ).
+364 Acknowledgement
+365 This article was written while one author (Varaiya) was visiting the Department of Electronic and Electrical
+366 Engineering, University of Hong Kong, whose hospitality is gratefully acknowledged.
+367 References
+368 Cambridge Systematics, Inc, 2001. Twin Cities Ramp Meter Evaluation. Final Report.
+369 Cheung, S.-Y., Coleri, S., Dundar, B., Ganesh, S., Tan, C.-W., Varaiya, P., 2005. Traﬃc measurement and vehicle classiﬁcation with a
+370 single magnetic sensor. Transportation Research Record (1917), 173–181.
+371 Cheung, S.-Y., 2006. Traﬃc Surveillance by Wireless Sensor Networks. Ph.D dissertation, Department of Mechanical Engineering,
+372 University of California, Berkeley, CA.
+373 City Parking in Europe. <http://www.city-parking-in-europe.net/> (accessed 12.26.06).
+374 Coifman, B., Cassidy, M., 2002. Vehicle reidentiﬁcation and travel time measurement on congested freeways. Transportation Research:
+375 Part A 36 (10), 899–917.
+376 Coﬁman,B., 2004. An Assessment of Loop Detector and RTMS Performance. California PATH Research Report UCB-ITS-PRR-2004-
+377 30. Online at <http://www.path.berkeley.edu/PATH/Publications/>.
+378 Coleri, S., Varaiya, P., 2006. PEDAMACS: Power eﬃcient and delay aware medium access protocol for sensor networks. IEEE
+379 Transactions on Mobile Computing 5 (7), 920–930.
+380 Federal Highway Administration, 2004. Traﬃc Data Quality Measurement: Final Report. Online: <http://knowledge.fhwa.dot.gov/cops/
+381 hcx.nsf/All+Documents/DEDC37CA356402F185256F9B00595E89/$FILE/Traﬃc%20Data%20Quality%20Measurement%20-
+382 Final.pdf> (accessed 02.08.07).
+383 Huang, G.T., 2003. Casting the Wireless Sensor Net. MIT Technology Review. Online: <http://www.technologyreview.com/InfoTech/
+384 13235/> (accessed 12.26.2006).
+385 Jia, Z., Chen, C., Coifman, B., Varaiya, P., 2001. The PeMS algorithm for accurate, real-time estimates of g-factors and speeds from single
+386 loop detectors. In: Proceedings 2001 IEEE Intelligent Transportation Systems Conference, Oakland, pp. 527–532.
+387 Kockelman, K., Ma, J., 2004. Freeway speeds and speed variations preceding crashes, within and across lanes. In: Proceedings of 83rd
+388 Transportation Research Board Annual Meeting, Washington, DC.
+389 Kwon, J., Petty, K., Varaiya, P., 2007. Probe vehicle runs or loop detectors? Eﬀect of detector spacing and sample size on the accuracy of
+390 freeway congestion monitoring. In: Proceedings of 86th Transportation Research Board Annual Meeting, Washington, DC.
+391 Margulici, J.D., Yang, S., Tan, C.-W., Grover, P., Markarian, A., 2006. Evaluation of Wireless Traﬃc Sensors by Sensys Networks: Final
+392 Report. California Center for Innovative Transportation. Online: <http://www.calccit.org/resources/2006%20PDF/CCIT%20Tas-
+393 k%20Order%205%20-%20Final%20Report.pdf> (accessed 12.28.06).
+394 Misener, J., 2005. Vehicle-Infrastructure Integration (VII) and safety: rubber and radio meet the road in California. Intellimotion 11 (2),
+395 1–3, Online: <http://www.path.berkeley.edu/PATH/Intellimotion/IM11-3_high.pdf> (accessed 01.02.07)..
+396 Mirchandani, P., Head, L., 2001. A real-time traﬃc signal control system: architecture, algorithms and analysis. Transportation Research
+397 Part C 9, 415–432.
+398 PeMS. California Freeway Performance Measurement System. <http://pems.eecs.berkeley.edu> (accessed 12.28.06).
+399 Sun, X., Horowitz, R., in press. A set of new traﬃc-responsive ramp-metering algorithms and microscopic simulation results. In:
+400 Proceedings of 85th Transportation Research Board Annual Meeting, Washington, DC. Transportation Research Record.Q1
+401 Woodyard, C, 2006. Need a parking place? Good luck. USA Today, 12/11/2006. Online: <http://www.usatoday.com/money/autos/2006-
+402 12-11-parking-usat_x.htm> (accessed 12.26.06).
+403
+A. Haoui et al. / Transportation Research Part C xxx (2007) xxx–xxx 13
+TRC 361 No. of Pages 13, Model 3+
+15 November 2007 Disk Used
+ARTICLE IN PRESS
+Please cite this article in press as: Haoui, A. et al., Wireless magnetic sensors for traﬃc surveillance, Transport. Res.
+Part C (2007), doi:10.1016/j.trc.2007.10.004

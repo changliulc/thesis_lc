@@ -1,0 +1,858 @@
+
+
+===== PAGE 1 =====
+
+Hindawi Publishing Corporation
+InternationalJournalofDistributedSensorNetworks
+Volume2013,ArticleID107975, 10pages
+http://dx.doi.org/10.1155/2013/107975
+Research Article
+A Street Parking System Using Wireless Sensor Networks
+Zusheng Zhang,1 Xiaoyun Li,2 Huaqiang Yuan,1 and Fengqi Yu2
+1Dongguan University of Technology, No. 1 University Road, Songshan Lake Sci.&Tech. Industry Park,
+Dongguan, Guangdong 523808, China
+2ShenzhenInstituteofAdvancedTechnology,ChineseAcademyofSciences/TheChineseUniversityofHongKong,
+1068XueyuanAvenue,ShenzhenUniversityTown,NanshanDistrict,Shenzhen518055,China
+CorrespondenceshouldbeaddressedtoZushengZhang;zushengzhang@gmail.com
+Received18April2013;Accepted4June2013
+AcademicEditor:SabahMohammed
+Copyright © 2013 ZushengZhangetal.ThisisanopenaccessarticledistributedundertheCreativeCommonsAttributionLicense,
+whichpermitsunrestricteduse,distribution,andreproductio ninanymedium,providedtheoriginalworkisproperlycited.
+Recently, with the explosive increase of automobiles in cities, parking problems are serious and even worsen in many cities. This
+paperproposesastreetparkingsystem(SPS)basedonwirelesssensornetworks.Thesystemcanmonitorthestateofeveryparking
+space by deploying a magnetic sensor node on the space. For accurately detecting a parking car, a vehicle detection algorithm is
+proposed.Andanadaptivesamplingmechanismisusedtoreducetheenergyconsumption.Eighty-twosensornodesaredeployed
+on the street parking spaces to evaluate the performance of SPS. By running the system for more than one year, we observed that
+thevehicledetectionaccuracyoftheSPSisbetterthan98%,andthelifetimeofthesensornodeismorethan5yearswithapairof
+2500mAhLiba tteries.
+1. Introduction
+Due to the explosive growth of automobiles, parking near
+the center of the city gradually becomes one of the most
+annoying things to carowners. In most cases, they find the
+indoor parking spaces nearby are always full, and they have
+todrivearoundtosearchavailableparkingspaceonthestreet.
+Thenatrafficjammayoccur.Withthecontinuousgrowthof
+automobiles, the situation becomes worse and worse [1]. So
+thedemandforstreetparkingguidanceserviceisexpectedto
+growrapidlyinthenearfuture.Wirelesssensornetworks[ 2]
+have lots of potential toward providing an ideal solution for
+streetparkingservice,suchastheirlowpower,smallsize,and
+lowcost.
+Almost all road vehicles have significant amounts of
+f e rr o u sm e tal si nth e i rc h a s s i sa n de n gi n e( i r o n ,s t ee l ,n i c k e l ,
+cobalt,etc.),soAMRsensorisagoodcandidatefordetecting
+vehicles [3–5]. It determines whether a space is occupied or
+not by detecting the presence of a vehicle based on a change
+in the environment’s magnetic field. Some algorithms [6–8]
+have been proposed for parking vehicle detection by AMR
+sensor. However, these algorithms have the following pro-
+blems.
+(a) A whole parking period of a vehicle can be divided
+intothreephases:entering,parkingstopandleaving.
+Most existing algorithms [6–8] only consider the
+signal’ scharacteristicoftheparkingstop,phase.These
+algorithms perform well when the interferences are
+relatively low. However, if the low SNR (signal-to-
+n o i s er a t i o )i sl o w ,t h e yw i l ll e a dt oi n c r e a s e df a l s e
+detectionrate.
+(b) Existing algorithms typically sample the magnetic
+field at a fixed interval. This interval poses a basic
+t r a d e o ff .As m a l li n t e r v a lc a no b t a i nm o r ed e t a i l so f
+magnetic signals, but with higher energy consump-
+tion.Alargerintervaluseslessenergybutreducesthe
+fidelityofthemagneticsignalandmayresultinafalse
+detection.
+This paper proposes a street parking system based on
+WSN.Ourmaincontributionsaregivenasfollows(a)Avehi-
+cle detection algorithm is proposed based on the integrated
+magneticsignalcharacteristicsofavehicle’sentering,parking
+stop,andleavingphases.(b)Tobalancetheenergyconsump-
+t i o na n da c c u r a c yo ft h ea l g o r i t h m ,w ed e s i g na na d a p t i v e
+sampling mechanism. (c) We deployed a street parking
+
+
+===== PAGE 2 =====
+
+2 InternationalJournalofDistributedSensor Networks
+system which includes eighty-two sensor nodes. The system
+hasbeenrunningreliablyformorethanoneyear.Experiment
+resultsshowthatthesystemdetectionaccuracyisbetterthan
+98%,anditisenergyefficient.
+The remainder of this paper is organized as follows.
+Section2 introduces the related works.Section3 describes
+the overview of SPS.Section4 proposes the vehicle algo-
+rithm.Section5 describestheadaptivesamplingandanalyzes
+the energy consumption.Section6 conducts experiments to
+provetheperformanceofSPS.Finally, Section7 makesabrief
+conclusion.
+2. Related Works
+At present, the sensors used in vehicle information acqui-
+sition mainly include the following types: inductive loop
+detector [9], image (camera) sensor [10, 11], acoustic sensor
+[12, 13], infrared sensor [14], and ultrasonic sensor [15], The
+image sensor acquires an abundance of information, but
+it is vulnerable to bad weather and nighttime operation.
+The acoustic sensor and infrared sensor are vulnerable to
+noise in deployed environments. Magnetic sensors based on
+magnetoresistors have recently been proposed for vehicle
+detection [16,17] because they are quite sensitive, small, and
+more immune to environmental factors such as rain, wind,
+snow, or fog than sensing systems based on video cameras,
+ultrasound,orinfraredradiation.
+Many algorithms have been proposed for moving vehi-
+cle monitoring. The PATH program of the University of
+California, Cheung and Varaiya [4], had first extensively
+explored magnetic sensor network based vehicle detection
+system.CheungandVaraiya[ 4]hadexploredtheapplications
+for vehicle detection, speed estimation, and classification.
+Experiment results show that the vehicle detection accuracy
+rate is more than 99%, and the accuracy rate to estimate
+lengthandspeedofvehicleismorethan90%.
+Zhang et al. [16] proposed a Similarity Based Vehicle
+Detection (SBVD) algorithm to detect vehicles in low SNR
+conditions by calculating the similarity between on-road
+signalsandareferentialsignal.Besides,datafusionalgorithm
+b a s e do nf u z z yl o g i ct h e o ryh a sa l s ob e e np r o p o s e dt om o n -
+itor parking space in the parking lot using magnetic sensor
+[17].Bothkindsofalgorithmshavehighcomputationalcom-
+plexity.
+The research for parking vehicle detection mainly based
+on ultrasonic technology. Kim et al. [18]i n t r o d u c e dw i r e l e s s
+sensor networks based parking management system. They
+used an ultrasonic sensor as vehicle detection module and
+adopted a clustered network topology. The system provides
+monitoring information through individual sensor nodes
+installedateachparkingspace.
+The works of [15, 19] also used ultrasonic sensors to
+implement a parking system. Additionally, the work of [15]
+implemented the shortest path algorithm to calculate the
+shortest distance from the parking berth to the nearest pre-
+ferred entrance. In [19], Lee et al. implement and deploy a
+solarpoweredwirelesssensornetworkinanoutdoorcarpark
+toprovideparkingguidance.Althoughtheultrasonicsensor
+hasahighaccuraterateofvehicledetection,itsperformance
+LED
+Sensor node
+Router
+Base station
+Figure1:Diagramofstreetparkingsystem.
+is affected by environment, such as air turbulence and
+temperaturechange,especiallytheshieldingofleavesorsoil.
+The work of [6] discussed the effect of detecting vehicles
+bycomparingtheacoustic,visuallight,infrared,temperature,
+ultrasonic,andmagneticsensors.Theirexperimentsverified
+that ultrasonic and magnetic sensors have better accuracy
+and reliability in parking space. Commercial sensors, such
+as SENSIT system [20], can detect parking occupancy. Each
+nodewasequippedwithtwosensors:infraredandmagnetic,
+anditsvehicledetectionaccuracyrateisnearly100%.
+3. Overview of the Street Parking System
+3.1.SystemIntroduction. TheproposedSPSconsistsofabase
+station, routers, sensor nodes, and a remote server. The dia-
+gramofSPSisshownin Figure1.Sensornodesaredeployed
+alongside the roadside and each node is mounted on the
+centerfloorofaparkingspace.Eachsensornodedetectsthe
+earth’s magnetic field periodically. When a node detected a
+car entering or leaving, it transmits a message to the router.
+Therouterforwardsthepackettoabasestationthatisoneor
+morehopsaway.Inthebasestation,informationfromdiffer-
+entnodeswillbemerged,andparkingguidanceinformation
+willbetransmittedtoLEDboardandremoteserver.
+3.2. Hardware Design.We adopt ZigBee [21]a st h ew i r e l e s s
+communication stack. Sensor node consists of HMC5883L
+[22] magnetic sensor. When deploying the sensor nodes in
+thecomplicatedrealisticenvironment,wefacedseveralprob-
+lems. One is the crush-resistant issue. Using high-strength
+PVC-steelmaterialasnodeshellisagoodchoiceforresisting
+thecrushoftheparkingvehicles. Figure2(a) showsthenodes
+withhigh-strengthPVC-steelmaterial.Anotherproblemisto
+protect against the permeating rainwater through our node
+s h e l li nb a dw e a t h e r s ,w ei n c i s e dac i r c l e dl i n e sa r o u n dt h e
+chip location and fill with waterproof adhesive. As shown
+in Figure2(b), considering the power issue, routers are
+equippedwithsolarpanelforfrequentdataforwarding.
+3.3.TestFieldSetup. Intheexperiments,weplacethesensor
+node in the middle of the parking space. HMC5883L is a 3-
+axis magnetic sensor.Figure3 describes the deployment of
+sensornodes:the 𝑍-axisisvertical,the 𝑌-axisisparallelwith
+the direction of vehicle entering, and the𝑋-axis is pointing
+
+===== PAGE 3 =====
+
+InternationalJournalofDistributedSensorNetworks 3
+(a)
+ (b)
+Figure2:Hardwaredevices.(a)Sensornode.(b)Router.
+Z
+X
+Y
+Z
+X
+Y
+Z
+X
+Y
+Figure 3: Thecoordinate position of thesensor.
+toadjacentspace. HMC5883Lhastemperaturedrift,andthe
+method of temperature compensation refers to its datasheet
+[22].
+4. Vehicle Detection Algorithm
+Sensor nodes have limited computing power and memory.
+Therefore the data processing algorithm must be simple. By
+referring to the prior work [4], an algorithm based on the
+thresholdandstatemachinewasdesignedforparkingvehicle
+detection. The threshold detection mechanism is used to
+reduce the computational requirement of the algorithm so
+thatitcanbeimplementedonthesensornode’sprocessorand
+generatedetectionresultsinrealtime.
+4.1. Characterization of Magnetic Signal.As shown in Figure
+4, it is the three-axis magnetic signature of a vehicle parking
+process. A whole parking period includes three phases:
+entering, parking stop, and leaving. Initially, the parking
+spaceisvacant,andthevaluesof 𝑥,𝑦,𝑧aretheenvironment’s
+magneticfields.Thenacarenterstheparkingspaceandcre-
+ates a fluctuation of the magnetic field. After the car parking
+stop,thecarcreatesastabledisturbanceontheenvironment’s
+magneticfield.Theparkingspaceisoccupied.Thenthecaris
+leavingtheparkingspaceandalsohasafluctuationsignature.
+Finally, the parking space is vacant, and the values of𝑥,𝑦,𝑧
+recover to theenvironment’smagneticfield.
+4.2. Signal Preprocessing.For vehicle presence applications,
+t h ea m p l i t u d ea n dd i r e c t i o no ft h em a g n e t i cfi e l da r en o t
+important,butthedetectionofasignificantshiftinthemag-
+netic field is the key factor. The vector magnitude shift from
+the environment’s magnetic field would be the most reliable
+method. Using digitized measurements of three-axis sensor
+outputsafteramplification,thevectormagnitudewouldbe:
+𝐺(𝑖)=√
+𝑋2
+𝑖+𝑌2
+𝑖+𝑍2
+𝑖. (1)
+A smoothing filter, which takes a running average of the
+signal, is used to smooth the signal. The running average is
+givenby
+𝐴(𝑖)=
+{{
+{
+{{
+{
+{
+𝐺(𝑖)+𝐺(𝑖−1)+⋅⋅⋅+𝐺(1)
+𝑖 for𝑖<𝐿,
+𝐺(𝑖)+𝐺(𝑖−1)+⋅⋅⋅+𝐺(𝑖−𝐿+1)
+𝐿 for𝑖≥𝐿.
+(2)
+𝐺(𝑖)isthevectormagnitudeand 𝐿isthepredefinedrunning
+average buffer size. For implementation, we use𝐺buf to store
+thevaluesof [𝐺(𝑖),𝐺(𝑖−1),...,𝐺(𝑖−𝐿+1)].
+4.3. Fluctuation Detection.Since the fluctuation of the mag-
+neticsignalisakeycharacteristicofthevehicleenteringand
+
+===== PAGE 4 =====
+
+4 InternationalJournalofDistributedSensor Networks
+4.05 4.1 4.15 4.2 4.25 4.3 4.35
+−220
+−200
+−180
+−160
+−140
+−120
+X
+−150
+−100
+−50
+0
+4
+50
+Y
+−200
+−150
+−100
+−50
+0
+Z
+ Parking stop  VacantEntering Vacant  Leaving
+×104
+4.05 4.1 4.15 4.2 4.25 4.3 4.354
+×104
+4.05 4.1 4.15 4.2 4.25 4.3 4.354
+×104
+Time/10 ms
+Time/10 ms
+Time/10 ms
+Figure4:Three-axismagneticsignatureofaparkingspace.
+00:00 06:00 12:00 18:00 00:00 06:00 12:00 18:00 00:00−150
+−100
+−50
+0
+50
+100
+Time
+Value
+X
+Y
+Z
+Figure5:Driftinthemagneticsignalofaparkingspace.
+leaving.Exactdetectionofthefluctuationsignatureisimpor-
+tant for the vehicle detection algorithm.𝐶(𝑖)is the stable
+states of the magnetic signal. If there has one up-or-down
+fluctuation sample of the magnetic signal in the𝐺
+buf,t h e
+signalisunstableand 𝐶(𝑖)=1,o therwise ,thesignalissta b le
+and𝐶(𝑖)=0.𝐶(𝑖)canbedescribedas( 3).𝐹(𝑖)isusedtotrack
+the singular point.𝑇1 and𝑇2 are thresholds,𝑇2 >𝑇1.Th e
+vehicle entering and leaving fluctuation can be detected by
+thepseudocodeprogram,asshowninPseudocode 1.Onehas
+𝐶(𝑖)=
+{{
+{{
+{
+1 if ∀𝑘∈(𝑖,𝑖−1,...,𝑖−𝐿+1):
+|𝐺(𝑘)−𝐴(𝑖)| ≥𝑇
+1,
+0 otherwise,
+(3)
+𝐹(𝑖)=
+{
+{
+{
+1 if |𝐺(𝑖)−𝐴(𝑖)| ≥𝑇2,
+0 otherwise.
+(4)
+4.4.StableDisturbanceDetection. There is an uncontrollable
+drift in the magnetic signal, which is mainly caused by the
+interferenceofadjacentparkingspaces’vehicles.Asshownin
+Figure5, it is the magnetic signal of a parking space which
+is vacant in consecutive two days. All the three axes have
+different drift in two days. The drift has a negative effect on
+the detection of a vehicle in parking duration. In order to
+accountforthedriftinthelongterm,anadaptivebaselineis
+usedtotrackthebackgroundmagneticreading.Theadaptive
+baselineisgivenbythefollowingequations:
+𝐵(𝑖)=
+{{
+{
+{
+{
+{
+{{
+{
+{
+{
+{
+{
+𝐵(𝑖−1)×(1−𝛼)+𝐴(𝑖)×𝛼 ifthestate
+machineisin
+vacantstate,
+𝐵(𝑖−1) otherwise.
+(5)
+𝐵(𝑖)i st h ea d a p t i v eb a s e l i n e ,𝛼is the forgetting factor, and
+𝐴(𝑖)is the smoothed magnetic data. The adaptive baseline is
+onlyupdatedbythemagneticreadingwhenthereisnosignal
+fl u c t u a t i o na n dn ov e h i c l ei sd e t e c t e d .W i t ht h i sa d a p t i v e
+baseline, two over threshold Boolean flags𝑅(𝑖)and𝐿(𝑖)are
+generated according to following equations.𝑇
+up and𝑇down
+are the correspondingthresholdlevels, and𝑇up >𝑇down.Th e
+main reason of using two thresholds is to detect the stable
+
+===== PAGE 5 =====
+
+InternationalJournalofDistributedSensorNetworks 5
+Init
+Vacant
+Occupied
+CO v e rTup CB e l o wTdown
+R(i) = 0
+R(i) = 1
+L(i) = 1
+L(i) = 1R(i) = 0
+R(i) = 0
+R(i) = 1
+L(i) = 0
+If Count[R(i) = 0 ] > N
+If Count[R(i) = 1 ] > N
+If Count[L(i) = 0 ] > N
+CB e l o wTup
+Leaving ﬂuctuation
+&& L(i) = 0
+Entering ﬂuctuation
+&& R(i) = 1
+Figure6:Detectionstatemachine.
+disturbance which is incurred by a vehicle parking stop on
+thespace.Onehas
+𝑅(𝑖)={ 1 if |𝐴(𝑖)−𝐵(𝑖−1)|≥𝑇up,
+0 otherwise,
+𝐿(𝑖)={ 1 if |𝐴(𝑖)−𝐵(𝑖−1)|≥𝑇down,
+0 otherwise.
+(6)
+4.5. State Machine. Figure6 shows the block diagram of
+a state machine which is designed for detecting parking
+vehiclesinSPS.Thestatemachineconsistsof
+State:{Init,Vacant,C
+Over𝑇up,C Below𝑇up,Occu-
+pied, CBelow𝑇down}
+Input[𝑅(𝑖),𝐿(𝑖),fluctuation]:{0,1,Entering fluctua-
+tion,Leaving fluctuation}
+Output[𝐷(𝑖)]:{0,1}.
+TheBooleanflags 𝑅(𝑖)and𝐿(𝑖)a r epas sedt oth es ta t emac h-
+ine. Their main objective is to filter out spurious signals that
+are not caused by a parking stop and to output binary detec-
+tion flag.𝐷(𝑖)is the output of the detection state machine.
+Only when the state machine is in “Occupied” or
+“C
+Below𝑇down”,𝐷(𝑖)=1,o t h e rw i s e ,𝐷(𝑖)=0.Th ef o l l o w -
+ing section is a walkthrough of the state machine’s logical
+flow.
+S1:“Init”
+A s s u m i n gt h e r ei sn ov e h i c l ei nt h ep a r k i n gs p a c ew h e n
+thesensornodeisbeingdeployed.ItwillgointostateS1and
+start initializing the baseline with the environmental mag-
+neticfield.
+S2:“Vacant”
+Afterapredefinedinitializingtime,itwilljumptostateS2
+wherethebaselineisupdatedadaptively.Itwilljumptostate
+S3 that has an Enter
+fluctuation and a stable disturbance is
+over threshold𝑇up.
+S3:“C Over𝑇up”
+Itwasfoundthatavehiclesignatureproducesasuccessive
+sequence of “1” in𝑅(𝑖)and this state is used to track such
+a sequence. If there is any “0” reading from𝑅(𝑖),i tw i l l
+immediately jump to state S4. Otherwise, if the number of
+successive𝑅(𝑖)=1hasreachedacriticalvalue 𝑁,itwilljump
+tostateS5.
+S4:“C
+Below𝑇up”
+Within this state, it will jump back to state S2 after the
+numberofsuccessive 𝑅(𝑖)=0hasreachedacriticalvalue 𝑁.
+Inordernottoloseapotentialvehicledetection,itwilljump
+backtostateS3againincasethereisany 𝑅(𝑖)=1reading.
+S5:“Occupied”
+Stayinginthisstateimpliesthemagneticchangeisstrong
+as the vehicle is on the sensor node, and the parking space
+i so c c u p i e d .I tw i l lj u m pt oS 6w h e nt h es e n s o rd e t e c t e da
+Leaving
+fluctuationandthestabledisturbanceisbelowthre-
+shold𝑇down.
+S6:“C Below𝑇down”
+Within this state, it will jump back to state S2 after the
+number of successive𝐿(𝑖)=0hasreachedacriticalvalue 𝑁.
+In order to filter out spurious signals that are not caused by
+a car leave, it will jump back to state S5 again in case there is
+any𝐿(𝑖)=1reading.
+5. Adaptive Sampling and
+Energy Consumption
+5.1.AdaptiveSampling. Usually, the time cost of the phase of
+a vehicle entering or leaving is between 0s and 60s. So the
+sensor requires a much higher sampling frequency to obtain
+the fluctuation signature. For example, a vehicle traveling at
+1 0m p hw i l lt r a v e l1 0f e e tb e f o r ei tc o m e st oap a r k i n gs t o p .
+This entering phase will take less than one second. If the
+sampling frequency is 50HZ, the sensor can sample about
+50 numbers of magnetic data about the entering phase. On
+the other hand, if there is no a moving vehicle interference,
+the magnetic signal is stable and the drift in the magnetic
+field is smaller than 5. To balance the energy consumption
+and accuracy of the vehicle detection algorithm, we design
+an adaptive sampling mechanism. When there is one up-or-
+down fluctuation sample of the magnetic signal,if 𝐶(𝑖)=1,
+it samples the magnetic field faster until the biggest value
+(50HZ). Otherwise, if 𝐶(𝑖) = 0,i td e c r e a s e st h es a m p l i n g
+rate exponentially until less than the smallest value (5HZ).
+Thus, the sensor can quickly respond to the magnetic signal
+dynamicswhileincurringlo wo verheadinthelo ngterm.
+5.2. Analysis of Energy Consumption.For battery powered
+wireless sensor networks, the network lifetime is a critical
+factor because replacing batteries for sensor nodes is a
+laborioustask.Thesensornodehasnospecificresponsibility
+for maintaining the network infrastructure because it is an
+enddevice[21].Sothesensornodedoesnotexchangepacket
+fornetworkmaintainingwhenithasbeenjoinedthenetwork.
+Sensornodesamplesthemagneticsignalperiodically.When
+
+===== PAGE 6 =====
+
+6 InternationalJournalofDistributedSensor Networks
+Sleep
+Sampling
+(a)
+Sleep
+Transmitting
+(b)
+Figure7:Energyconsumption(a)samplingand(b)transmitting.
+it detected a car arrival or leave, it transmits one binary
+detection flag to base station. And it goes to sleep when no
+task.Ignoringtheenergyconsumptioninjoiningorrejoining
+the network, the energy consumption of a sensor node
+consists of energy consumed by detection flag transmission
+(𝐸
+tran),magneticfieldsampling( 𝐸sample),andsleep( 𝐸sleep).
+In energy consumption experiments, a sensor node and
+a1 0Ωresistor are in series connection. So the sensor node’s
+currentcanbeobtainedbymeasuringthevoltageoftheresis-
+tor (𝐼=𝑉/10). We found the greatest contribution of power
+consumption is sampling unit. As shown in Figure7(a),
+the energy consumption of a sensor node whose sampling
+interval is 50ms. We can see that the measurement period
+of magnetic sensor is𝑆
+period =6 ms, the average current of
+sample is about𝐼sample =1 0mA, and the current of sleep is
+𝐼sleep =2 uA.Accordingtotheadaptivesamplingmechanism,
+theenergyconsumptionofsamplingcan bedescribedas
+𝐸sample =𝐼sample∗𝑇sample per second ∗𝑉,
+𝑇fast sample =𝑁inter∗𝑇inter∗𝐹biggest∗𝑆period,
+𝑇slow sample =(𝑇one day−𝑁inter∗𝑇inter)∗𝐹smallest ∗𝑆period,
+𝑇sample per second =
+(𝑇fast sample+𝑇slow sample)
+𝑇one day
+.
+(7)
+𝑇fast sample and𝑇slow sample arethetotaltimeinonedayofsam-
+pling using the biggest and smallest frequency, respectively.
+𝑁
+inter isthein terferencetimesinoneday . 𝑇inter istheaverage
+durationofonceinterference .𝐹biggest and𝐹smallest arethebig-
+gest and smallest frequency, respectively.𝑇one day is the total
+secondsofoneday.
+As shown in Figure7(b), the period of one packet’s
+transmission is about𝑇tran =6 ms, and the average current
+of transmission is about𝐼tran =3 0mA. So the energy con-
+sumptionoftransmissioncan be described as𝐸tran:
+𝐸tran =𝐼tran ∗𝑇tran per second ∗𝑉,
+𝑇tran per second = 𝑁tran ∗𝑇tran
+𝑇one day
+.
+(8)
+𝑁tran istheaveragenumberoftransmissionsinoneday.And
+𝑇tran per second is the proportion of transmission per second.
+Theenergyconsumptionforsleepcanbedescribedas 𝐸sleep:
+𝐸sleep =𝐼sleep ∗𝑇sleep per second ∗𝑉, (9)
+𝑇sleep per second =1−𝑇sample per second −𝑇tran per second, (10)
+𝐿= 𝐸
+(𝐸sample+𝐸tran +𝐸sleep)
+. (11)
+Usingapairof2500mAhAALibatteriesparallelconnected,
+with the voltage of each battery being 3V, the lifetime of the
+sensor node is calculated by (11). Given the parameters in
+Table 1, we can draw a conclusion that the sensor node can
+continuouslyworkfor5yearswithoutchangingbattery.
+6. Experiments
+To test the proposed system, we deploy eighty-two sensor
+nodes in the street parking of SIAT (Shenzhen Institute of
+Advanced Technology). As shown in Figures8(a) and 9(b).
+Deviceswithmagneticsensorsarenailedinthecenterofthe
+parking spaces. The routers which are equipped with a solar
+panel for forwarding parking message are fixed on the street
+light,asshownin Figure8(c).
+We developed a server system using Java language and
+MySQL database. As shown inFigure9, using the graphical
+clientinterface,userscanknowwhichparkingspaceisvacant
+oroccupiedandtheoccupieddurationofeachparkingspace.
+As shown in Figure9(a), the nodes which ID signed as
+
+===== PAGE 7 =====
+
+InternationalJournalofDistributedSensorNetworks 7
+(a)
+ (b)
+ (c)
+Figure8:Devicesaredeployedinroadsideparkingspaces.(a)-(b)Senornodesinparkingspaces.(c)Asolarpoweredrouterismountedon
+theroadsidelight.
+Table 1: Related parameters.
+Notation Description Value
+𝐼tran Transmissioncurrent 30mA
+𝐼sample Samplingcurrent 10mA
+𝐼sleep Sleepcurrent 2uA
+𝑁inter Interferencetimes 100
+𝑁tran Numberoftransmission 100
+𝐹biggest Biggestfrequency 50HZ
+𝐹smallest Smallestfrequency 5HZ
+𝑇inter Durationofonceinterference 30s
+𝑆period Samplingtime 6ms
+𝑇tran Transmissiontime 6ms
+𝑇one day Total seconds of one day 86400s
+𝑉 Voltage 3 V
+𝐸 Batterycapacity 5000mAh
+integer, such as 6, 3, and 5, are router nodes. The nodes are
+sensornodeswhoseIDstartedwith“B,”suchasB27andB26.
+The sensor node to be colored as a green dot indicates the
+according parking space is vacant; on the other hand, a red
+dotmeanstheparkingspaceisoccupied.In Figure9(b),these
+bluelineswitharrowdescribethewirelessnetworktopology.
+In our experiments, parameters related to the vehicle
+detectionalgorithmaregivenin Table 2.Figure10 showsthe
+detectionresultsofaparkingspaceB19forsuccessive8days.
+𝑋,𝑌,𝑍aretherawmagneticfield,andtheirvaluerefertothe
+rightcoordinateaxis. 𝐷(𝑖)isthedetectionresultwhosevalue
+refer to the left coordinate axis, where value 0 indicates the
+parking is “vacant,” and 1 stands for “occupied.” As shown in
+Table2:Experimentparameters.
+Parameter Description Value
+𝐿 Smoothbufferlength 30
+𝛼 Forgettingfactor 0.1
+𝑇1 Athresholdfor C(i)1 0
+𝑇2 Athresholdfor F(i)5 0
+𝑇up Athresholdfor R(i)2 0
+𝑇down Athresholdfor L(i)1 0
+𝑁 Thesuccessivecountnumber 10
+Count Thethresholdforfluctuationdetection 5
+T able3:Carparkingdetectio nr esul t.
+Thenumberoftimes
+ofvehicleparking
+Thedetectednumberof
+vehicleparkingofSPS
+Accuracy
+of SPS
+32896 32402 0.985
+Figure11,itdescribesthedailyoccupancytimeoftheparking
+spaceB19forsuccessive8days.
+OurSPShasbeendeployedinSI A Tandworkedformore
+than one year.Table 3shows the average accuracy of our
+vehicle detecting algorithm is about 98.5%. The prior work
+[4]p r o p o s e da nA d a p t i v eTh r e s h o l dD e t e c t i o nA l g o r i t h m
+(ATDA for short). Using the magnetic signal collected from
+sensor nodes, we run our algorithm and ATDA on PC,
+respectively.Table 4shows the test results of our algorithm
+and ATDA. The experiment results show that in the first
+case two algorithms have best performance. In the case 1–3,
+interference signal caused by vehicles on neighbor parking
+spaces has a negative impact on the detection performance.
+
+===== PAGE 8 =====
+
+8 InternationalJournalofDistributedSensor Networks
+(a)
+(b)
+Figure9:Picturesofthemanagementsystem.(a)Sensornodesdeployedontheparkingspaces.(b)Topologyofthenetwork.
+0 1 2 3 4 5 6 7
+−1
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14Detection result
+Time (s)
+0 1 2 3 4 5 6 7
+−600
+−540
+−480
+−420
+−360
+−300
+−240
+−180
+−120
+−60
+0
+60
+120
+180
+240
+300
+Signal value
+Y
+Z
+X
+D(i)
+×105
+Figure10:Thedetectionresultsofaparkingspaceforsuccessive8days.
+Table 4: Car parking detection result: group 2.
+Case Situation Thenumberofvehicleparking AccuracyofSPS AccuracyofATDA
+1 Nocaronleftorright 720 0.997 0.96
+2 Acarontheleft 720 0.985 0.95
+3 Acarontheright 720 0.986 0.95
+4 Twocarsonbothleftandright 720 0.980 0.94
+And our algorithm is more accurate for vehicle detection
+than ATDA. ATDA smooths out the entering and leaving
+fluctuation of the magnetic signal, and it is only considers
+thesignal’scharacteristicoftheparkingstopphase.Asshown
+in Figure12, there is no exit a threshold to distinguish the
+characteristic between parking stop and interference. In the
+low SNR (signal-to-noise ratio) situation, the frequent up-
+and-downfluctuationofthemagneticsignalisakeycharac-
+teristic for the vehicle detection algorithm. With the feature
+beingdesigned,ouralgorithmhasabetterperformancethan
+ATDA.
+7. Conclusions
+In this paper, a street parking system based on wireless
+sensor networks is presented. It focuses on the accuracy of
+the parking system. A parking algorithm and an adaptive
+sampling mechanism are proposed. Our SPS has been in
+operation in SIAT for more than one year. The experiment
+resultsshowthatthesystemdetectionaccuracyisbetterthan
+98%, and it is energy efficient. However, there is a tradeoff
+between sensitivity and specificity of magnetic signal that
+may result in the detection of vehicles in adjacent parking
+
+===== PAGE 9 =====
+
+InternationalJournalofDistributedSensorNetworks 9
+//F count counts the number ofF(𝑖)=1
+//Entering fluctuation is a flag of detection of the entering fluctuation
+//Leaving fluctuationisaflagofdetectionoftheleavingfluctuation
+//COUNTisathreshold
+if(C(𝑖)=l)
+{if(F(𝑖)=l)F count++;}
+elseif(C(𝑖)=0)
+{F count=0; }
+if(Thespacestatusisvacant&&F count>COUNT)
+{Entering fluctuation = 1;}
+Elseif(Thespacestatusisoccupied&&F count>COUNT)
+{Leaving fluctuation = 1;}
+Pseudocode1:Pseudocodeforvehicleenteringorleavingdetection.
+0
+4
+8
+12
+16
+20
+24
+Vacant
+Occupied
+Jan 24, 2013
+Jan 25, 2013
+Jan 26, 2013
+Jan 27, 2013
+Jan 28, 2013
+Jan 29, 2013
+Jan 30, 2013
+Jan 31, 2013
+Figure11:The occupied time of aparking space.
+06:00 09:00 12:00
+0
+25
+50
+75
+100
+125
+150
+175
+200
+225
+Time
+Value
+Entering fluctuation Leaving fluctuation
+Parking stop
+(a)
+09:00 10:00 11:00 12:00 13:00
+−325
+−300
+−275
+−250
+−225
+−200
+−175
+−150
+−125
+−100
+Time
+Value
+Interference signal
+(b)
+Figure12:Thesignalcomparisonofparkingandinterference.(a)Thesignalofacarparking.(b)Thesignalofinterference.
+
+===== PAGE 10 =====
+
+10 InternationalJournalofDistributedSensorNetworks
+places.Inthefuture,wewillconcentrateonthecharacteristic
+of the interference signal caused by adjacent vehicles and
+developmoreaccuratealgorithmtoimprovethesystemper-
+formance.
+Acknowledgments
+This work was supported by the National Natural Sci-
+ence Foundation of China (Grant no. 61271005), the Key
+L a b o r a t o r yP r o j e c t( G r a n tn o .C X B 2 0 1 1 0 4 2 2 0 0 3 3 A ) ,t h e
+Technology Research and Development Project of Shen-
+zhen (CXZZ20120831173053551), and the research Projects
+KQC201109050096AandJC201005270368AofShenzhen.
+References
+[1] D. Schrank, T. Lomax, and B. Eisele,Urban Mobility Report
+2011,TexasTransportationInstitute,TheTexasA&MUniversity
+System,CollegeStation,Tex,USA,2011.
+[ 2 ]P .B a r o n t i ,P .P i l l a i ,V .W .C .C h o o k ,S .C h e s s a ,A .G o t t a ,a n d
+Y. F. Hu, “Wireless sensor networks: a survey on the state of
+theartandthe802.15.4andZigBeestandards,” ComputerCom-
+munications,vol.30,no .7 ,p p .1655–1695,2007 .
+[3] A.Haoui,R.Kavaler,andP.Varaiya,“Wirelessmagneticsensors
+fortrafficsurveillance,”TransportationResearchC,vol.16,no.3,
+p p .294–306,2008.
+[4] S. Y. Cheung and P. Varaiya, “Traffic surveillance by wireless
+sensor networks: final report,” Tech. Rep., California PATH,
+UniversityofCalifornia,Berkeley,Calif,USA,2007.
+[5] R. Wang, L. Zhang, R. Sun, J. Gong, and L. Cui, “EasiTia:
+a pervasive traffic information acquisition system based on
+wireless sensor networks,” IEEE Transactions on Intelligent
+Transportation Systems,vol.12,no.2,pp.615–621,2011.
+[6] S. Lee, D. Yoon, and A. Ghosh, “Intelligent parking lot appli-
+cation using wireless sensor networks,” inProceedings of the
+International Symposium on Collaborative Technologies and
+Systems (CTS ’08),p p .48–57 ,M a y2008.
+[7] S.-E. Yoo, P. K. Chong, T. Kim et al., “PGS: parking guidance
+systembasedonwirelesssensornetwork,”in Proceedings of the
+3rd International Symposium on Wireless Pervasive Computing
+(ISWPC’08),pp.218–222,May2008.
+[8] J.Chinrungrueng,S.Dumnin,andR.Pongthornseri,“IParking:
+a parking management framework,” inProceedings of the 11th
+International Conference on ITS Telecommunications (ITST ’11),
+p p .63–68,A ugust2011.
+[9] Q.-J. Kong, Z. Li, Y. Chen, and Y. Liu, “An approach to Urban
+trafficstateestimationbyfusingmultisourceinformation,” IEEE
+TransactionsonIntelligentTransportationSystems ,vol.10,no.3,
+pp.499–511,2009.
+[10] G.Alessandretti,A.Broggi,andP.Cerri,“Vehicleandguardrail
+detectionusingradarandvisiondatafusion,” IEEETransactions
+on Intelligent Transportation Systems,v o l .8 ,n o .1 ,p p .9 5 – 1 0 5 ,
+2007.
+[11] P. N. Pathirana, A. E. K. Lim, A. V. Savkin, and P. D. Hodgson,
+“Robust video/ultrasonic fusion-based estimation for automo-
+tive applications,”IEEE Transactions on Vehicular Technology,
+vol.56,no .4,p p .163 1 –1639 ,2007 .
+[12] J.Ding,Vehicledetectionbysensornetworknodes[Ph.D.thesis] ,
+UniversityofCalifornia,Berkeley,Calif,USA,2003.
+[ 1 3 ]V .C e v h e r ,R .C h e l l a p p a ,a n dJ .H .M c C l e l l a n ,“ V e h i c l es p e e d
+estimationusingacousticwavepatterns,” IEEETransactionson
+Signal Processing,vol.57 ,no .1,p p .30–47 ,2009 .
+[ 1 4 ]T .M .H u s s a i n ,A .M .B a i g ,T .N .S a a d a w i ,a n dS .A .A h m e d ,
+“Infrared pyroelectric sensor for detection of vehicular traffic
+using digital signal processing techniques,”IEEE Transactions
+on Vehicular Technology,vol.44,no .3,p p .68 3–68 9 ,1 995.
+[15] M.Y .I.Idris,E.M.T amil,N.M.Noor,Z.Razak,andK.W .Fong,
+“Parkingguidancesystemutilizingwirelesssensornetworkand
+ultrasonicsensor,”InformationTechnologyJournal,vol.8,no .2,
+p p .138–1 46,2009 .
+[16] L. Zhang, R. Wang, and L. Cui, “Real-time traffic monitoring
+with magneticsensornetworks,”JournalofInformationScience
+and Engineering,vol.27 ,no .4,p p .1 47 3–1 486,2011.
+[17] J. Zhu, H. Cao, J. Shen, and H. Liu, “Data fusion for magnetic
+sensor based on fuzzy logic theory,” inProceedings of the 4th
+I n terna tionalConfer enceonI n te ll igen tCom pu ta tionT ech nology
+andAutomation(ICICTA’11),pp.87–92,March2011.
+[18] J.Kim,H.Kim,J.Jeong,Y.Seo,andP.Mah,“Fielddeployment
+of a large-scale WSN for parking management system,” in
+Proceedings of the 7th Annual IEEE Communications Society
+Conference on Sensor, Mesh and Ad Hoc Communications and
+Networks(SECON’10),p p .1 –3,J une2010.
+[19] P.Lee,H.-P.Tan,andM.Han,“Demo:asolar-poweredwireless
+parkingguidancesystemforoutdoorcarparks,”in Proceedings
+of the 9th ACM Conference on Embedded Networked Sensor
+Systems(SenSys’11),pp.423–424,November2011.
+[20] SENSIT, December 2012,http://www.nedapavi.com/products/
+sensit/.
+[21] ZigBee Alliance, “ZigBee PRO specification,” November 2012,
+http://www.zigbee.org/Specifications.aspx.
+[22] Three-axis magnetic sensor HMC5883L, December 2012,
+http://www.magneticsensors.com/three-axis-digital-compass
+.php.

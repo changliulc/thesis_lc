@@ -1,0 +1,1286 @@
+
+
+===== PAGE 1 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 1
+ 
+Abstract—Real-time traffic surveillance is essential in today’s 
+intelligent transportation systems and will surely play a vital  role 
+in tomorrow’s smart cities. The work detailed in this paper 
+reports on the development and im plementation of a novel smart 
+w i r e l e s s  s e n s o r  f o r  t r a f f i c  m o n i toring. Computationally efficie nt 
+and reliable algorithms for vehicle detection, speed and length  
+estimation, classification, and time-synchronization were fully  
+developed, integrated, and evaluated. Comprehensive system 
+evaluation and extensive data analysis were performed to tune 
+and validate the system for a reliable and robust operation. 
+Several field studies conducted on highway and urban roads for 
+different scenarios and under vario us traffic conditions result ed 
+in 99.98% detection accuracy, 97.11% speed estimation accuracy, 
+and 97% length-based vehicle classification accuracy. The 
+developed system is portable, reliable, and cost-effective. The  
+system can also be used for short-term or long-term installment  
+on surface of highway, roadway,  and roadside. Implementation 
+cost of a single node including enclosure is US $50. 
+ 
+Index Terms—Intelligent Transportation System (ITS), WSN, 
+Magnetometer Sensors, Vehicles Detection and Classification, 
+Traffic Surveillance, Smart Cities 
+I. INTRODUCTION 
+RAFFIC surveillance is an integral part of the intelligent 
+transportation system (ITS) network. Providing a reliable, 
+real-time traffic monitoring ha s a major influence on the 
+efficiency and safety of highw ays and roadways. Increasing 
+demand on surface transportation—driven by an ever-growing 
+population—and its impact on traffic safety has been a major 
+concern for transportation agencies. The U.S. federal highway 
+administration (FHWA) predicts a 23% increase in vehicle 
+miles traveled by 2032 (i.e., 1.04% annual growth) [1]. 
+Statistical studies by the World Health Organization (WHO) 
+reported 1.25 million people die and up to 50 million injuries 
+occur every year on the world’s roads [2]. The U.S. National 
+Highway Traffic Safety Admin istration (NHTSA) reported 
+32,719 fatalities and 2.313 million injuries in 2013, 28% of 
+which are speed-related [3]. Annual traffic fatalities caused b y 
+trucks reportedly cause 4,000 deaths and 100,000 injuries to 
+travelers. Vehicular fatalities on U.S. roadways have an annual 
+direct economic cost of $242 billion, resulting from 24 million 
+ 
+Manuscript received ---------- xx, xxxx; revised ----------- xx , xxxx; 
+accepted ---------- xx, xxxx. Dat e of publication ---------- xx , xxxx; date of 
+current version ---------- xx, xxxx;. This work has been suppor ted by the U.S. 
+Department of Transportation in  Oklahoma under Grant ODOT SPR I TEM 
+NUMBER 2250. 
+Walid Balid, Hasan Tafish, and Hazem H. Refai are with the Univ ersity of 
+Oklahoma, Graduate College, Electrical and Computer Engineering  
+Department, OK 74135 USA (e-mail: walid@ou.edu; hasan.tafish@ou .edu, 
+hazem@ou.edu). 
+crashes. This figure represents 1.6% of the $14.96 trillion U.S. 
+Gross Domestic Product (GDP) reported in 2010 [4]. This 
+total increases to $836 billion when considering societal harm 
+from vehicle crashes. Furthermore, 44% of the U.S. roadways 
+are congested. According to the 2015 Urban Mobility 
+Scorecard report [5], traffic congestion costs $160 billion each 
+year in the U.S. as a result of seven billion lost hours and three 
+billion gallons fuel wasted. Additionally, 31% of CO2 
+emissions come from vehicles tailpipes [6]. 
+Without assertive, proactive solutions, traffic crashes are 
+predicted to rise, and roadways congestion is estimated to 
+worsen. The annual delay in the U.S. will grow to 8.3 billion 
+hours, resulting in an increasing cost of $192 billion [5]. 
+Although vehicle travel on U.S. highways increased by 39% 
+from 1990 to 2013, new road mileage increased by only 4%. 
+Hence, to mitigate the impact of continued growing demand 
+on transportation and to prevent worsening levels of roadways 
+congestion, it has been suggested that the U.S. FHWA would 
+be required to expand current transportation infrastructure 
+capacity by 23%. One option to achieve this goal is adding 
+4,200 miles of new roadway each  year [7]. Another option is 
+developing technologies that maximize existing transportation 
+infrastructure capacity and improve efficiency, making 
+transportation systems safe, efficient, and more reliable for the 
+rapidly approaching era of smart cities. One essential 
+requirement for needed ITSs is the reliable and real-time 
+execution and data exchange among various ITS infrastructure 
+components to facilitate instantaneous decision-making. 
+Vehicle detection and traffic surveillance technologies are a 
+core component of ITS. Current technologies can be classified 
+into three types of sensors: 1) Intrusive, 2) Non-intrusive, an d 
+3) Off-roadway. Intrusive sensors include magnetic detectors, 
+pneumatic road tubes, piezoelectric, and inductive loop (IDL) 
+that are embedded in the road surface using a saw-cut or hole. 
+Non-intrusive sensors include vision systems, microwave 
+radar, and infrared and ultrasonic detectors in which sensors 
+are mounted overhead on roadways or roadsides. Off-roadway 
+sensors are mobile sensors that enable sensing via aircraft or 
+satellite, as well as probe vehicles equipped with Global 
+Positioning System (GPS) receiver. A detailed description of 
+these technologies can be found in [7], [8]. 
+Intrusive sensors are large, expensive, power-hungry, and 
+require lane closure and traffic disruption for installation or  
+regular maintenance. Additionally, these sensors rely on 
+pavement geometry, meaning that a deterioration in pavement 
+will result unreliable data. Moreover, resurfacing or repairing  
+roadways require reinstalling the sensors. Worker safety for 
+those deploying intrusive system has been a concern. 
+Intelligent Vehicle Counting and Classification 
+Sensor for Real-Time Traffic Surveillance 
+Walid Balid, Member, IEEE, Hasan Tafish, and Hazem H. Refai, Member, IEEE 
+T
+
+===== PAGE 2 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 2
+Although vision and radar systems are widely considered 
+accurate and typically do not disrupt traffic, performance is 
+effected by weather conditions. Off-roadway sensors provide 
+limited traffic statistics at fixed location, as well as limite d 
+coverage dependent upon the number of probe vehicle [7], [8]. 
+The high cost associated with the aforementioned technologies 
+limits the special distribution and large-scale integration of 
+these sensors, and they work independently of each other. The 
+scalability and availability of traffic monitoring systems are 
+essential for efficient and reliable, real-time ITSs [9].  
+Inexpensive, nonintrusive, portable, and easy-to-install 
+technologies are critically needed to supplement current ITS. 
+Magnetometer (MAG) sensors have been found to serve as an 
+alternative to IDLs. They are sensitive, inexpensive, and 
+immune to weather conditions or environmental factors [10]. 
+Wireless sensor networks (WSN) are emerging and a key 
+enabler for enormous number of sensing applications. WSNs 
+have demonstrated exceptional features, such as flexibility, 
+scalability, reliability, and power efficiency [11]. Integratin g 
+MAG and WSN has enabled autonomous methods for real-
+time traffic surveillance application, such as vehicle detectio n 
+on roadways [12]–[15], vehicle detection in parking lots [16]–
+[18], speed estimation [19]–[28], and vehicle classification 
+[19], [29]–[34]. Many credit th e PATH program at University 
+of California [8] for initiating the use of MAG sensors in 
+traffic monitoring applications. 
+The essential principle in the MAG method is recognizing 
+t h a t  v e h i c l e s  h a v e  a  l a r g e  m a s s  o f  h i g h l y - p e r m e a b l e  f e r r o u s  
+materials (e.g., nickel, iron, s teel) that cause local disturba nce 
+in the Earth’s magnetic field flux lines. As vehicles pass 
+through this magnetic field, magnetic flux lines are absorbed 
+in a non-uniform manner and creates a non-uniformity in flux 
+lines, as shown in Fig. 1. Disturbance magnitude and direction 
+depends on several factors, inclu ding speed, size, density, and  
+permeability of vehicle structure. Disturbance represents 
+vehicle magnetic signature (VMS), which can be sampled via 
+passive magnetic sensors (i.e., MAG). 
+ 
+Fig. 1. Earth’s magnetic field lines distorted by passing vehicle 
+A. Contributions 
+This paper describes a complete hardware design, 
+computational algorithms development, real world extended 
+field deployments, extensive and comprehensive testing, and 
+large-scale evaluation of a non -intrusive, inexpensive, and 
+portable intelligent vehicle counting and classification sensor  
+(iVCCS). The sensor integrates state-of-the-art embedded 
+components, managed by distinctive algorithms for the 
+implementation of various traffic monitoring applications. The 
+sensor can accurately detect, count, estimate speed and length, 
+and classify vehicles in real-time. iVCCS is similar to Sensys 
+[35] in concept, but differ in practice including cost, 
+installation, real-time data accessibility, design and algorith m 
+availability. iVCCS could be easily integrated in a 
+comprehensive IoT framework, given its aforementioned 
+characteristics. Furthermore, unlike commercially available 
+solutions [35], iVCCS is installed on atop of roadways or 
+roadside which required development of specific algorithms to 
+counteract for physical contacts.  The paper also identifies rea l 
+field disturbance factors that i nfluence the accuracy of vehicl e 
+detection and implements calibration algorithms to 
+successfully compensate for thei r impacts. All design aspects 
+and implementations are addressed including the repeatability 
+of VMS and the consistency of MAG sensor output. 
+The balance of this paper is organized as follows. Related 
+works is presented in Section II. A description of iVCCS 
+system is provided in Section III. Algorithms development and 
+system integration are discussed in Section IV. A field study 
+and data analysis are reported in Section V. Further research 
+and conclusion are provided in Section VI. 
+II. E
+ARLIER STUDIES 
+Recently, several studies have been published about traffic 
+surveillance using MAG sensors. For example, authors in [36] 
+proposed a 2-axis MAG for detecting vehicle driving 
+direction. A high detection rate of 99% was observed when 
+traveling vehicles pass closel y to the sensor. Performance 
+degraded to 89% as the signal-t o-noise ratio (SNR) decreased. 
+A two-threshold, four-state machine algorithm was introduced 
+in [12] for vehicle detection using 3-axis MAG. Authors in 
+[13] proposed a short-time transform detection and recognition 
+algorithm using a MAG sampled at 2KHz. A 3-axis MAG was 
+used in [16] used for vehicle detection in parking lots. In [17 ], 
+a street parking system using a MAG was introduced, and in 
+[18], researchers proposed a vehicle parking detection method 
+using a normalized cross-correlation of a 3-axis MAG signal. 
+Authors in [37] proposed a scheme for identifying the heading 
+direction of a moving vehicle using a 2-axis MAG. 
+A speed estimation algorithm using magnetic sensors was 
+proposed in [19]–[21]. In these studies, a cross-correlation 
+factor R is calculated via FFT by a master node from raw data 
+received from two roadside sensor nodes. Time delay is 
+obtained by R when the resulting signal is maximized. 
+Although this method achieved relatively accurate estimates, it 
+proved computationally expensive. A region-based speed 
+estimation is proposed in [22]. In this work, the first order 
+derivative is calculated on each sensor node, and a region of 
+each signal is selected based on a threshold sent to the server  
+for processing. Study [23] claims 90% average speed 
+estimation accuracy by analyzing magnetic length using a 
+single roadside node composed of an accelerometer and MAG. 
+Two magnetic sensor nodes are used in [24] to estimate speed, 
+and a third node is used for data fusion. Actual speed was 
+under-estimated at an error rate of 20%. Authors in [25] 
+proposed using four MAG nodes per lane—two on each side 
+of the lane. A 10% error in speed estimation under low speed 
+test (e.g., 6–13m/s) was reported. Studies in [26], [27] 
+
+
+===== PAGE 3 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 3
+proposed algorithms for speed estimation using a single MAG. 
+Notably, this method was designed to estimate average speed 
+only for the number of passing vehicles over time. 
+Four roadside MAG nodes were used in [19] for detection, 
+speed estimation, and vehicle classification into four groups 
+based on length and height ratio. Acceptable accuracy was 
+reported. However, the proposed method works for only single 
+lane urban roads. Furthermore, the major dataset was 
+composed of small vehicles reco rds; only a few trucks were 
+included. Thus, results would prove inconclusive. Vehicle 
+classification and detection using an improved support vector 
+machine classifier was propose d in [29], using a single-axis 
+MAG. The proposed algorithm  uses concavity and convexity 
+of magnetic signatures to distinguish among heavy tracked, 
+tracked, and light-wheeled vehicles. A limited dataset of 93 
+vehicles resulted in 90% classi fication accuracy. In [31], a 3-
+axis MAG was used for a detection and classification in low-
+speed congested traffic. A fi xed-threshold state machine 
+algorithm was employed for v ehicle detection, and a tree-
+based algorithm was implemented for classification. Vehicles 
+were divided into four-groups, namely motorcycles, saloon, 
+buses, and SUVs. Five features were extracted to distinguish 
+between the groups, namely the duration, energy, average 
+energy of vehicle signature, and ratio of positive to negative 
+energy on both X and Y axis. The dataset included only 253 
+vehicles. Although high detection and classification rates were  
+reported, the dataset was limited to a small number of 
+samples, and trucks and pickups were not considered. Authors 
+in [33] proposed a vehicle classification system using two 
+nodes installed on roadside, e ach combining an accelerometer 
+and MAG. Three features, namely the integral of each of 
+MAG magnitude, accelerometer m agnitude and magnitude 
+distribution, were extracted and normalized to vehicle speed. 
+Several machine learning (ML) methods were tested. A 93.4% 
+classification accuracy was rep orted for distinguishing 
+between three groups: motorcycles, passenger cars and 
+pickups, and heavy trucks. However, more than 90% of the 
+dataset was composed of passenger cars. In [34], an array of 
+MAG and accelerometers sensors was proposed for vehicle 
+detection, speed estimation, and classification. Three MAG 
+nodes positioned longitudinally report vehicle arrivals and 
+departures, and six accelerometers spaced 6-inch apart were 
+positioned over half the lane to detect vehicle axles via a pea k 
+detection algorithm. Although the method showed promising 
+results, it was deemed expensive and required an enormous 
+amount of intrusive work and high processing capability. 
+Authors in [38] developed a features selection model for 
+vehicle classification using a single MAG in which 17 features 
+were initially identified and extracted, but only 10 optimal 
+features were eventually select ed. A limited dataset of 460 
+vehicles— mostly small cars—resulted in 92.8% average 
+classification accuracy among fou r-groups, including buses, 
+small-medium cars, and large trucks. 
+In each of the aforementioned solutions, a single MAG was 
+used for vehicle detection. Sp eed was estimated using either 
+o n e  o r  t w o  M A G ;  a n d  c l a s s i f i c a t i o n  w a s  a c h i e v e d  b y  
+employing multiple MAG or accelerometers, or a combination 
+of both. In all cases, a standardized wireless protocol (e.g., 
+I E E E  8 0 2 . 1 5 . 4 )  w a s  u s e d .  N o n e t h e l e s s ,  i n  m o s t  s o l u t i o n s ,  i t  
+was necessary to embed the sensors into the pavement. Hence, 
+such solutions cannot be used for temporary studies or 
+portable traffic surveillance applications (e.g., work zone 
+safety, roadway design studies, and traffic management in 
+atypical situation, like evacuations). Although a variety of 
+methods were proposed, very limited evaluation was 
+performed over a full range of vehicle classes or speeds 
+considered in our solution. Furthermore, presented results do 
+not reflect actual performance, as testing datasets were 
+limited. Semi-trailer and mul ti-trailer trucks were highly 
+underrepresented. Additionally, some proposed methods are 
+energy-inefficient and require transmission of big chunks of 
+data to access point for processing. This is a fundamental 
+limitation of WSNs, as they are battery-powered and their 
+network operates in unlicensed spectrum where bandwidth is 
+shared among a vast number of various technologies and 
+devices. Data loss is highly probable as a consequence of 
+unstable wireless link due to either interference or heavy 
+trucks traveling over the detection zone. Other methods rely 
+on an assumption that vehicles of the same class moving at the 
+same speed have almost identical signatures. Such an 
+assumption is misleading for the following reasons: 1) 
+Magnetic length does not represent actual vehicle length; 2) 
+Lateral distance might change for the same type of vehicle; 
+and 3) Magnetic length estimation accuracy depends on the 
+sensor's sampling rate tolerance, which typically has an error 
+rate of ±5% and is sensitive to  temperature variation. More 
+importantly, to the best of our knowledge, no study reported 
+detection error types, how to optimize MAG sensors for ideal 
+performance, or consistency of MAG sensors output. 
+Furthermore, limited information is provided in literature on 
+system design, algorithm development, and comprehensive 
+analysis in various realistic scenarios. 
+III. S
+YSTEM DESCRIPTION 
+The multi-disciplinary, innovative integration of embedded 
+system, WSN, and state-of-th e-art sensors—coupled with 
+intelligent algorithms—addresses components composition of 
+the developed platform purposefully designed to support 
+various traffic surveillance studies or applications. The syste m 
+is primarily composed of iVCCS, iAP, and a cloud server. Fig. 
+2 illustrates a conceptual diagram of various system elements. 
+ 
+Fig. 2. Conceptual diagram of the developed system 
+The iVCCS are installed into enclosures. Two nodes are 
+deployed in each lane at a distance d, and iVCCS nodes 
+communicate with an iAP over ZigBee wireless network. An 
+
+
+===== PAGE 4 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 4
+iAP connects with a cloud server over a cellular network. The 
+iVCCS system block diagram is shown in Fig. 3; the iVCCS 
+physical board is illustrated in Fig. 4. 
+ 
+Fig. 3. The iVCCS block diagram 
+iVCCS is a battery-powered, smart-sensing node. Its core is 
+an 8-bit pico-power, high-performance microcontroller made 
+by ATMEL—ATxmega128A4. FXOS8700 is a 6-axis MAG 
+and accelerometer. The MAG measures disturbance in the 
+Earth’s magnetic field; the accelerometer measures road 
+surface acceleration. FXOS8700 is highly reliable and features 
+a 16-bit ADC resolution and 0.1μT/LSB sensitivity over a 
+dynamic range of ±1200μT.  
+ 
+Fig. 4. The iVCCS physical board 
+Highly accurate time-synchronization (T-sync) is enabled 
+by Gms-g6, which is a low power, dual-system, embedded 
+GPS receiver module with built-in patch antenna [39]. Gms-g6 
+is also used to enable auto-localization and self-organization 
+for a scalable WSN deployment. 
+The MCU’s internal RTC is adaptively calibrated using 
+Gms-g6 and is coupled with highly accurate external crystal 
+for time-stamping of vehicle arrival and departure instants. 
+The wireless intercommunication between various network 
+devices is facilitated via Synapse SM200P81 RF Engine [40] 
+wi t h S y na ps e ' s  S N AP  [ 4 1]  o n t o p.  S N AP  i s  a  m e s h ne t w or k  
+operating system facilitates self-healing, multi-hop, instant-on, 
+and internet-enabled mesh netw orking over the network. The 
+system is powered by a 3.7V/2000mAh Li-Po battery. Li-Po 
+batteries are a best-fit for powering handheld and portable 
+devices. They are small, lightweight, and durable. However, a 
+deep discharging could render the battery unusable. 
+MAX17043 [42] was added to prevent this. The chip uses 
+sophisticated algorithms to detect battery state, including 
+voltage, current, capacity, alarm, and other datasets. The data  
+acquisition unit facilitates data storage on a micro-SD card. 
+The unit is connected and m anaged directly by the MCU 
+through a 10Mbps serial peripheral interface (SPI). The micro-
+SD card supports auto-sleep mode to conserve power. Road 
+surface condition monitoring sensors (i.e., wet/dry and 
+temperature) were added for pavement temperature analysis.  
+IV. A
+LGORITHMS DEVELOPMENT AND INTEGRATION 
+Providing reliable traffic-monitoring data requires precise 
+vehicle detection and highly  accurate speed estimation. 
+Precise detection demands a consistent baseline and coherent 
+sampling rate. Speed estimation relies on precise time-
+stamping of vehicle arrival and departure instants, which is 
+dependent on T-sync algorith m accuracy. In the following 
+section, the development and integration of various distinctive  
+algorithms for real-time traffic surveillance are discussed in 
+detail. Fig. 5 illustrates a block diagram for the relationship s 
+among various developed algorithms and associated 
+interconnection with system’s hardware interfaces and 
+physical components. 
+ 
+Fig. 5. The integration of hardware and software in the iVCCS system 
+B. Vehicle Detection and Counting 
+A five-state machine process algorithm was developed for 
+real-time vehicle detection and counting, using a single 
+iVCCS node. The algorithm processes the Earth’s magnetic 
+field flux magnitude ( F
+M), which is calculated as the square-
+root of the three geomagneti c field components (i.e., BX, BY, 
+and BZ). Localized flux lines are pulled away from the sensor 
+as a vehicle passes the sensor zone and pushed back toward 
+the sensor as the vehicle driv es away (see Fig. 1), creating 
+fluctuations in F
+M. The five-state machine process analyzes 
+these fluctuations for valid v ehicle detection by means of 
+three-adaptive thresholds and t hree-adaptive debounce-timers, 
+as shown in Fig. 6. 
+ 
+Fig. 6. Vehicle magnetic magnitude (left) - five-state machine process (right) 
+Upon system power up, an initialization process triggers a 
+Calibration state where MAG samples the localized magnetic 
+field for a period T S in absence of any vehicles. T S is subject 
+
+
+===== PAGE 5 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 5
+to the sensor’s output data rate (ODR) and number of samples. 
+Ten samples at ODR>100Hz was found sufficient for the 
+calibration process. During this  time, the reference magnetic 
+field flux magnitude F
+Mref(k) is calculated using (1), where 
+BXref(k), B Yref(k) ,  a n d  B Zref(k) serve as the localized 
+geomagnetic field reference components. 
+ሻ ൌටሻଶ (1)
+FMref(k) is normally distributed with a mean µ and standard 
+deviation ߪsuch that ሻ. Hence, the baseline 
+threshold ( RTH) that defines a recalibration is estimated as 
+shown in (2). Consequently, onset threshold  ( OTH), which 
+defines vehicle arrival, and holdover threshold (HTH), which 
+defines vehicle departure, are calculated according to (3) and 
+(4), respectively, where ߙa n d  ߚa r e  e x p e r i m e n t a l l y  d e f i n e d  
+coefficients for an optimal det ection (See Section IV.D) and 
+ߚprovides a hysteresis property in detection. ெ௥௘௙ 
+should unilaterally be adaptivel y tracked and compensated, as 
+described next in section IV.C. 
+R	ߪ 2)
+	ߪ 3)
+	ߪ 4)
+The node remains in Idle state until condition FM(k) ≥ OTH 
+(i.e., vehicle in detection zone) is true; FM(k) is found in (5).  
+௑௥௘௙൯
+ଶ
+௒௥௘௙൯
+ଶ
+௓௥௘௙൯
+ଶ (5)
+To eliminate misdetection errors as a result of a glitch or 
+transient state and to filter out false events, an onset debounce-
+timer (ODT) is used. A transition into Detect state o c c u r s  i f  
+ODT is elapsed and the condition FM(k) ≥ OTH is still true. 
+To eliminate double-detection errors due to fluctuations in 
+FM that could possibly occur between O TH and HTH given that 
+part of the vehicle has relatively small magnetic flux density 
+(e.g., long combination trucks), a holdover debounce-timer  
+(H
+DT) is used. H DT plays a significant role in reducing 
+detection errors. A transition from Detect state into HDT state 
+occurs if FM(k) < HTH becomes true (i.e., vehicle departed the 
+detection zone). A transition into Idle state occurs after HDT is 
+elapsed and FM(k) < HTH is true. Vehicle counter will then be 
+incremented by one, and vehicle arrival time (T A) and 
+departure time (T D) will be logged. A detection period-timer 
+(PDT) is implemented for stationary detection applications. 
+For detection when iVCCS nodes are installed in a roadside 
+setup adjacent to the lane, instead of a roadway setup, in the 
+center of a lane, a moving average filter (MAF) with a gain w 
+must be employed to reduce signal fluctuations and increase 
+MAG SNR. ሻ in (6) is the detection algorithm input. 
+ݓ
+ܰሻ
+ேିଵ
+௜ୀ଴
+ൌ 5 (6)
+C. Adaptive Compensation of Baseline Drift  
+Variations in temperature, vibrations, and aging will cause a 
+considerable drift in the mean value of FMref(k), which causes 
+detection errors. Tracking FMref(k) is achieved using a MAF 
+when FM(k) < O TH condition is true. The algorithm computes 
+new BXref, BYref, and BZref values as in (7) if (8) is satisfied. M, 
+the number of samples, was set experimentally equal to 10. 
+௥௘௙
+ሺఊሻൌ 1
+ܯሻ
+ெିଵ
+௜ୀ଴
+ሽ∈Թଷ (7)
+1
+ܯ்ு
+ெିଵ
+௜ୀ଴
+(8)
+F i g .  7  s h o w s  a  d r i f t  i n  FMref over 240 minutes without (in 
+yellow) and with (in blue) the adaptive compensation 
+algorithm. The right figure shows FMref distribution with 
+compensation (µ=1.79μT, σ=0.7μT) and without (µ=7.67μT, 
+σ=1.6319μT). A high-level description is illustrated in Alg. 1. 
+   
+Fig. 7. The drift in FMref  with and without adaptive compensation 
+Inputs: BX(k), BY(k), BZ(k) 
+Outputs: BXref, BYref, BZref 
+1: WHILE FM (k) < OTH 
+2: WAITFOR Magnetometer Data-Ready INT 
+3: BUFFER  COMPUTE FM(k)  READ BX(k),BY(k), BZ(k) 
+4: Idx  Idx + 1 
+5: IF Idx = M THEN 
+6: ெ.஺௩௚	
+ଵ
+ெெିଵ
+ሿ 
+7: IF OTH >FM-Avg ≥ RTH THEN 
+8: 	Bଡ଼௥௘௙,B ଢ଼௥௘௙,B ୞௥௘௙	
+ଵ
+୑ሿெିଵ
+௜ୀ଴  
+9: ENDIF 
+10: Idx  0 : BUFFER  0 
+11: ENDIF 
+12: LOOP 
+13: Idx  0 : BUFFER  0 
+Alg. 1. Adaptive Baseline Drift Compensation Pseudocode 
+D. Defining Optimal Detection Thresholds 
+The FM measurements of 12,000 vehicles of various FHWA 
+F scheme classes [43] collected using iVCCS on highway and 
+urban roads were statistically analyzed to determine the O TH, 
+HTH, and RTH values guarantying best performance. 
+FM measurements can be represented as two Gaussians of a 
+single dimension dataset. One Gaussian represents noise, and 
+the other represents vehicle signatures. Since no information is 
+given about which points belong to which distribution, a 
+Gaus sian Mixt ure  Model (G MM) is use d t o se pa rate the  two 
+distributions, assuming both are normally distributed. 
+GMM is a parametric probability density function of 
+continuous measurements represented as a weighted sum of M 
+component Gaussian densities (CGD), where x is a data vector 
+of d-dimensional continuous measurements such thatൌ
+ݔ
+ௗሿ்; Σ is the covariance matr ix of the Gaussian; J 
+is the number of Gaussians; ௜ i s  t h e  w e i g h t  o f  G a u s s i a n݅ 
+such that ௜൒0, and ௜,Σ ௜ሻ; andܬ 
+is the CGD. GMM parameters are estimated from training 
+dataset by maximum likelihood using expectation-
+maximization. 
+02468 1 0 1 2
+Vector Magnitude [uT]
+0
+0.01
+0.02
+0.03
+0.04
+0.05
+with compensation
+without compensation
+
+===== PAGE 6 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 6
+Since d=1 and J=2, CGD can be rewritten as given in (9) 
+and (10), where ௜ is a vector of F M readings (32,905,300), 
+and ௡,σ ௡
+ଶ	and ௦,σ ௦
+ଶ	are mean and variance of noise and 
+vehicle signature, respectively. 
+௦,σ ௦ଶሻൌ 1
+σ௦ଶexp ቊെ
+௦ሻଶ
+2σ௦ଶ ቋ	 (9)
+௡,σ ௡ଶሻൌ 1
+σ௡ଶexp ቊെ
+௡ሻଶ
+2σ௡ଶ ቋ	 (10)
+These can be solved using Bayesian’s role by calculating 
+the likelihood to which Gaussian each value of F M belongs 
+using (11) and (12). The result is two distributions, as shown 
+in Fig. 8, where ௡=18.6; σ௡=8.24; ௦=153.5; and σ௦=153.3. 
+By substituting ௡,σ ௡	in (2), (3), and (4), and considering β=5 
+and	α=6 (i.e., ߪrepresents 99.999% confidence level), we 
+find R୘ୌ=35; O୘ୌ=68; and H୘ୌ=60 are the optimal 
+thresholds. The obtained values are universal and can be used 
+other field deployments.  
+௦,σ ௦ଶሻ
+௡,σ ௡ଶሻ(11)
+௜ሻ	 (12)
+ 
+Fig. 8. Distribution of magnetic noise and signature separated using GMM  
+E. Defining Optimal Values for HDT 
+Three detection errors can be observed if MAG is used for 
+vehicle detection, namely mis-, double-, and false-detection. 
+Mis-detection occurs when two vehicles driving at close 
+proximity are grouped as one when the condition g T < HDT is 
+true (See Fig. 9), where g T is the gap time between departure 
+of vehicle i and arrival of vehicle i+1 at a detection point x. 
+ 
+Fig. 9. Miss-detection caused by two vehicle driving at close proximity  
+Double-detection is observed with combination trucks (See 
+Fig. 10), as their structure can be magnetically divided into 
+three sections: lead, center, a nd tail. The central section S
+(2) 
+has a small magnetic flux density, making FM(k) < HTH true 
+for duration S (2)T > H DT if truck speed is relatively slow. This 
+phenomenon is referred to in literature as pulse break-up [44]. 
+False-detection is typically caused by a vehicle with high 
+magnetic flux density that is passing in the adjacent lane or a t 
+the edge of designated lane. This creates a disturbance that 
+will be detected by sensors in both lanes. 
+ 
+Fig. 10. Double detection caused by class 9 vehicle  
+ 
+Fig. 11. False detection caused by class 5 vehicle passing in the adjacent lane 
+To minimize mis- and double-detection errors, H DT v a l u e  
+should satisfy the condition gT > HDT > S2T. 
+1) Minimizing miss-detection error 
+Minimizing mis-detection errors was achieved by 
+statistically analyzing g T,  c o m p u t e d  u s i n g  ( 1 3 )  f r o m  d a t a  
+collected using iVCCS. The dataset included 13,400 records 
+collected from highway conditions, in addition to 17,180 
+records collected on urban roads. Probability density function 
+(PDF) and cumulative distri bution function (CDF) were 
+subsequently found. CDF showed that setting H
+DT to 370ms 
+for highway setup and 430ms for urban road setup can reduce 
+mis-detection error to 0.1865% and 0.5065%, respectively. 
+ሻ	 (13)
+2) Minimizing double-detection error 
+PDF and CDF of S (2)T for 1770 vehicle of class 8, 9, and 10 
+were found from data collected using iVCCS on highway and 
+urban roads for a speed range of 25 to 88mph. The 
+computation process for S 2T is depicted in Fig. 12. CDF 
+showed that the longest S2T is 500ms. 
+ 
+Fig. 12. S2
+T extraction and computation process 
+The error probability distribution showed a 0.004% and 
+0.005% probability of double-detection error when setting 
+H
+DT≥400ms and HDT≥370ms, respectively. 
+3) Minimizing false-detection error 
+C h a n g i n g  M A G  s e n s o r  s e n s i t i v i t y  i s  n o t  a  v a l i d  a p p r o a c h  
+for minimizing false-detection, as this would cause mis-
+detecting motorcycles and delayed detection of other vehicles. 
+To solve this issue, variations in BX, BY, and BZ were analyzed 
+to measure the effect of ve hicles on an adjacent lane 
+interfering on each component. Analysis showed insignificant 
+interfering effect on B
+Z. Hence, by using 10-tap MAF, 
+calculating B Z(k) mean, as in (14), and comparing ௓ f o r  
+each detected vehicle (௡) with a threshold ITH, a decision can 
+be made whether ௡ is a real detection or an interfering signal. 
+ITH =8µT was statistically found from the dataset.  
+௡ሻൌ1
+N ෍൭ 1
+ܯሻ
+ெିଵ
+௜ୀ଴
+൱
+ே
+௞ୀଵ
+௓௥௘௙൯
+ଶ
+(14)
+2.2445 2.245 2.2455 2.246 2.24
+0
+50
+100
+150
+200
+250
+300
+Vehicle#64 -- Arrival: 10:54:4.329 -- Departure: 10:54:4.415 -- Occupancy: 0.085388 -- Samples: 156
+Magnitude
+Detection Flag
+Threshold
+Extract
+Class 8,9,10
+Compute 
+Magnitude
+FM(k) 
+MAF
+(5-tap window)
+Extract 
+Section 2
+HDT,ODT,RDT
+Compute 
+Section 2 
+Duration
+PDF/CDF
+Durations
+Vehicle 
+Signatures 
+Dataset
+
+===== PAGE 7 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 7
+Obtained HDT and ITH are universal optimal values and can 
+be used in other field deployments. 
+F. Vehicle Speed Estimation  
+The most accurate and computa tionally efficient method to 
+estimate vehicle speed is calcu lating travel time between two 
+longitudinally positioned nodes ( NANB) separated by a 
+distance d using (15), as shown in Fig. 13. The following 
+assumptions are made when estimating speed using (15): 1) 
+Sensors A and B are precisely installed at a distance d; 2) No 
+lane changing occurs between sensors A and B. 
+ሺேಲ→ேಳሻ
+஺
+஺
+ሺேಲሻሺேಲ→ேಳሻ
+஽
+஽
+ሺேಲሻሺேಲ→ேಳሻ
+஺
+஺
+஽
+஽
+ሺேಲሻ(15)
+ 
+Fig. 13. Speed estimation deployment setup	
+G. Time Synchronization using GPS 
+Each sensor node relies on an onboard GPS module and 
+RTC unit to maintain an independent local globally 
+synchronized to the GPS’s pulse-pre-second (PPS) signal. 
+Therefore, wireless sync packets are not necessary for accurate 
+functioning of iVCCS nodes. A detailed description on the 
+development and implementation of system network 
+architecture, time synchronization, and drift compensation can 
+be reviewed in [45].
+ 
+H. Vehicle Magnetic Length Estimation 
+Vehicle magnetic length (VML) is defined as a disturbance 
+in the Earth’s magnetic field caused by a vehicle structure. 
+VML is estimated from the product of vehicle speed and 
+sensor occupancy time ை௖௖
+ሺே೔ሻ, as in (16). A ை௖௖
+ሺே೔ሻ is defined as 
+the difference between vehicle de parture and arrival times at a  
+designated detection point. 
+ܮܯܸതതതതതതை௖௖
+஽
+஺
+஽
+஺
+஽
+஺
+ሺேಳሻ
+2  (16)
+Because disturbance level to the Earth’s magnetic field 
+depends on vehicle composition of ferrous materials, vehicle 
+magnetic length can theoretically be longer than its actual 
+physical length. Nevertheless, under the assumptions 1) 
+symmetrical detection zone and 2) sensor sensitivity are 
+independent of vehicle structure , vehicle physical length can 
+be estimated as in (17), where݈
+஽௓ is the estimated length of 
+sensor’s detection zone (See Fig. 13). 
+஽௓
+஽௓
+஽
+஺
+ேಲ→ேಳ (17)
+I. Magnetic Length-based Vehicle Classification 
+Information on vehicle class is crucial for all aspects of a 
+transportation agency’s design, p lanning, safety, analysis, and  
+management. Most traffic engineering and planning processes 
+require information only about car vs. truck volume, as trucks 
+have a major impact on reducing road service life. The FHWA 
+Traffic Monitoring Guide [43] provides a length-based vehicle 
+classification (LBVC) based on nationwide IDL data. The 
+proposed scheme bins vehicles into four groups, including 
+passenger vehicles,  single-unit trucks, combination trucks, and 
+multi-trailer trucks. Several U.S. states have started defining  
+LBVC boundaries that fit vehicl e characteristics, which vary 
+among U.S. states. 
+U n l i k e  I D L ,  M A G  i s  a  p a s s i v e  s e n s o r .  T h e  a m o u n t  o f  
+ferrous materials in a vehicle structure plays a major role in 
+defining detection range. A vehicle with a large amount of 
+steel can be detected from a long  distance, making the use of 
+MAG for LBVC challenging. Furthermore, VMS sampled 
+using MAG have an inconsistent peak magnitude and shape 
+parameter; Significant fluctuations in signature and variations  
+in magnetic length can be observed in each vehicles class. 
+T o  d e f i n e  b o u n d a r i e s  f o r  a  r e a l - t i m e  L B V C  u s i n g  M A G ,  
+several ML classification methods were investigated (e.g., 
+Decision Trees (DT), Suppor t Vector Machine (SVM), k-
+Nearest Neighbor (kNN), and Naïve Bayes  Classifier (NBC)). 
+All algorithms used a one-vs .-all approach. Predictive 
+accuracy of fitted models was e xamined using 10-fold cross-
+validation. Results are reported in the next section.  
+V. F
+IELD STUDY AND DATA ANALYSIS 
+A. Deployments setup 
+Seven major field tests were conducted—three of which 
+were on highway U.S. 412, Chouteau, OK 74337 USA, one on 
+an urban road at S. Yale Ave., Tulsa, OK 74135 USA, the fifth 
+test took place at Lake Hefner Pkwy, in OKC and the last two 
+deployments were conducted at 536 W State Hwy 152, 
+Mustang, OK, and  Will Rogers Expy, OKC, OK . The data 
+collected from the first four fie ld tests were used for system 
+optimization and data collected in the last three field tests 
+were used for system validation and performance evaluation. 
+Several iVCCS nodes were installed on the left lane center of 
+roadway surfaces and adjacent to the left lane of roadsides 
+surfaces. All nodes were positioned with x-axis along traffic 
+direction; y-axis perpendicular to traffic; and z-axis 
+perpendicular to the ground, pointing upward. All nodes were 
+operated by iAPs installed on the road shoulder. Video camera 
+and Road Runner 3 Kit  [46] from Diamond Traffic were used 
+as ground-truth. Cameras, Road Runner kit, iVCCS nodes, and 
+iAPs were synchronized using a GPS-based clock. Vehicles 
+classes were manually extracted from video images by 
+counting the number of axles for each vehicle. Measured 
+speed was calculated using Road Runner kit  to validate 
+estimated speed by iVCCS. Deployment setup for the first 
+three test is shown in Fig. 14. 
+ 
+ 
+Fig. 14. Highway deployment setup layout on roadway and roadsides 
+
+
+===== PAGE 8 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 8
+B. Vehicle Detection and Counting Accuracy 
+Counting accuracy was evaluated using the mean absolute 
+percent error (MAPE) in (18). Roadway setup in the first four 
+tests showed 99.65% detection accuracy for both highway and 
+urban road tests (See TABLE I). A mis-detection error was 
+observed in class 2 when two vehicles were driving on a 
+highway at 88mph within close proximity. As a result, their 
+magnetic signatures were combined. Double-detection errors 
+were observed in class 9 on the urban road test when trucks 
+measuring 23-meters were driving at 20mph. 
+ൌ1
+n ෍
+|Count୴୧ୢୣ୭െC o u n t௜୚େୌ|
+|Count୴୧ୢୣ୭|
+௡
+ଵ
+ൈ100 (18)
+TABLE I 
+VEHICLES DETECTION AND COUNTING ACCURACY – ROADWAY SETUP 
+Vehicle Class Video Count iVCCS Count MAPE
+F01 22 22 0 
+F02 6949 6947 0.028 
+F03 3989 3989 0 
+F04 16 16 0 
+F05 358 358 0 
+F06 92 92 0 
+F07 1 1 0 
+F08 28 28 0 
+F09 621 623 0.322 
+F10 9 9 0 
+Total 12085 12085 0.35% 
+ 
+In an offline analysis, 113 false-detection errors were 
+caused by interference from an adjacent lane. Also, in the 
+urban road test, 38 class 2 and class 3 vehicles were detected 
+by sensors in both lanes when they were driven in-between the 
+two lanes. Such errors are not reflected in TABLE I. The 
+counting accuracy for all tests is presented in TABLE II. 
+ TABLE II 
+VEHICLES DETECTION AND COUNTING ACCURACY – ALL TESTS 
+Vehicle Class Video Count iVCCS Count MAPE
+Test 1 463 470 1.5% 
+Test 2 2007 2005 0.099% 
+Test 3 2754 2753 0.036% 
+Test 4 6861 6976 1.676% 
+Test 5 3997 3984 0.40705% 
+Test 6 828 815 1.57% 
+Test 7 1252 1260 0.639% 
+ 
+A roadside-setup test confirmed 99.95% detection accuracy. 
+Variations in flux magnitude in roadside scenarios are 
+relatively uniform when compared to roadway, which 
+accounts for slightly better accuracy. However, roadside setup 
+is not applicable for a road with more than two lanes. 
+C. Stationary Detection in Roadway and Roadside Setups 
+The same algorithm was tested  for stop-go scenarios (e.g., 
+at traffic signals and intersections and static state scenarios  
+(e.g., parking lot and garage door). Obtained detection 
+accuracy was 100% in both ro adside- and roadway-setup 
+scenarios. Fig. 15 shows the F
+M for a go-stop-go scenario in 
+both roadside and roadway setups. G A, S S, and G D r e p r e s e n t  
+vehicle arrival section (Go-in),  vehicle in steady state (Stop) ; 
+and vehicle departure section (Go-out). 
+The value of P DT must be configured according to intended 
+application. Moreover, PDT value in stationary detection can be 
+used as a timer for parking duration. 
+ 
+Fig. 15. The FM and detection flag in Go-Stop-Go scenario 
+D. Vehicle Speed Estimation Accuracy  
+Speed accuracy was evaluated against Road Runner 3 kit 
+using a 30.5µs event timestamp resolution [46]. Two statistical 
+measurements were used—MAPE, which measures systematic 
+bias to error such that estimated speed values are consistently  
+high or low (19), and Root Mean Square Error (RMSE), which 
+measures mean deviation of es timated speed values (20). 
+Speed analysis is shown in TABLE III. 
+Three separations between the nodes, namely 6-, 8-, and 
+10meter, where investigated. Separating two nodes by 8 
+meters was found superior. Roadside setup showed a higher 
+speed estimation error when compared to roadway setup. This 
+can be explained by a lower SNR in the roadside scenario. 
+ൌ1
+݊ሺ௜ሻ
+ሺ௜ሻ
+ቤ
+௡
+௜ୀଵ
+ൈ100 (19)
+ൌඩ1
+݊ሺ௜ሻ൯
+ଶ
+௡
+௜ୀଵ
+(20)
+TABLE III 
+VEHICLES DETECTION AND COUNTING ACCURACY – ROADWAY SETUP 
+Setup RMSE MAPE Accuracy
+Roadside (d=6m) 6.4603 mph 6.5001% 93.5012% 
+Roadway (d=6m) 3.2064 mph 2.6585% 97.3415% 
+Roadway (d=8m) 2.9281 mph 2.5773% 97.4227% 
+Roadway (d=10m) 2.9867 mph 2.5218% 97.4782% 
+E. Vehicle Magnetic Length Estimation 
+The per-class histograms of VML estimated using (16) is 
+shown in Fig. 16. Statistical measurements are presented in 
+TABLE IV. An overlap between c lass 2 and class 3, classes 4 
+through 7, and classes 8 through 10 were observed. Classes 11 
+through 13 were not observed d uring the tests. Significant 
+variation in VML per class is attributed to differences in the 
+amount of permeable ferrous materials in per vehicle structure. 
+F. Magnetic LBVC Accuracy 
+By analyzing VML distributions presented in Fig. 16 and 
+their statistical measurements in TABLE IV, several LBVC 
+schemes, namely three-, four-, and five-group, were developed 
+and evaluated by means of ML. The objective of the five-
+group scheme is providing a distinction between Motorcycles 
+(MC), Passenger Vehicles (PV), Single-Unit Trucks (SU), 
+Semi-trailer (ST) Trucks, and Multi-trailer (MT) Trucks. MT 
+vehicles, i.e., F11-F13, are missing in the dataset. Thus, the 
+four-group LBVC scheme (See TABLE V), which lumps ST 
+and MT in one group, will be reported in this work. 
+
+
+===== PAGE 9 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 9
+ 
+Fig. 16. Histograms of VML by FHWA Scheme F – Classes 1 to 10 
+TABLE IV 
+VML STATISTICAL MEASUREMENTS FOR FHWA SCHEME F 
+Class Mean STD VAR Max Min 
+F01 1.7629 0.7156 0.5120 2.9106 0.5370 
+F02 5.9383 0.8190 0.6708 11.0377 2.7606 
+F03 6.6140 1.0713 1.1477 12.5161 3.5516 
+F04 15.2446 1.3782 1.8996 17.9241 13.3784 
+F05 9.2552 1.9270 3.7132 16.3884 6.2894 
+F06 10.9073 1.6149 2.6078 15.4366 6.8855 
+F07 12.4458 0 0 12.4458 12.4458 
+F08 18.8185 3.2396 10.4950 25.0102 12.0606 
+F09 21.3425 2.9298 8.5840 34.6607 13.5164 
+F10 20.3949 3.5930 12.9097 23.3700 12.9307 
+TABLE V 
+VML STATISTICAL MEASUREMENTS FOR FOUR-GROUP SCHEME 
+Class Mean STD VAR Max Min 
+G1 1.6863 0.7899 0.6239 2.9106 0.5370 
+G2 6.1783 0.9720 0.9447 12.5161 2.7606 
+G3 9.7024 1.9890 3.9561 16.3884 6.2894 
+G4 21.0714 3.1055 9.6439 34.6607 12.0606 
+Ten commonly-used performan ce metrics were selected to 
+evaluate classifier performance (i.e., classification rate (C R), 
+MAPE, RMSE, true positive rate (TPR), false positive rate 
+(FPR), F-measure (F1), Matthews’s correlation coefficient 
+(MCC), and the area under RO C curve (AUC)). TABLE VI 
+illustrates that all classification methods showed comparable 
+high performance in assigning vehicles to the correct class.  
+TABLE VI 
+VML STATISTICAL MEASUREMENTS FOR FHWA SCHEME F SCHEME 
+ Classification Method 
+Criteria DT k-NN C-SVM NBC 
+Average CR 97.65% 97.76% 97.83% 97.58% 
+MAE 0.021 0.016 0.010 0.016 
+RMSE 0.105 0.096 0.104 0.100 
+Weighted Average TPR 0.977 0.978 0.978 0.976 
+FPR 0.235 0.202 0.208 0.143 
+Precision 0.972 0.974 0.975 0.976 
+Recall 0.977 0.978 0.978 0.976 
+F1 0.971 0.974 0.974 0.976 
+MCC 0.835 0.843 0.848 0.839 
+AUC 0.882 0.960 0.885 0.987 
+A decision tree model was adopted primarily because it is 
+easy to implement and it is memory efficient. Optimal values 
+for parameters in the aforementioned ML classification 
+methods were found using hyper-parameter optimization 
+algorithms. A probabilistic modeling can also be used to 
+identify decision boundaries among classes [48]. 
+G. Sensor’s Output Consistency 
+Evaluating consistency of VMS sampled using several 
+sensors under similar test conditions is crucial for vehicle 
+classification and re-identification applications. The statisti cal 
+relationship between sampled VMS from first four aligned 
+sensors (i.e., S
+A, S B, S C, and S D) in Fig. 14 was found by 
+means of cross-correlation data analysis. 
+A correlation coefficient R was used to express correlation 
+strength between signals. Pears on’s correlation coefficient is 
+the most common measure of linear dependence between two 
+random variables, A and B, as defined in (21). A μ
+A and σA are 
+mean and STD of A, and μB and σB are mean and STD of B. 
+ሻ
+஻
+ൌ 1
+െ1஻ሻ
+஻
+ே
+௜ୀଵ
+(21)
+Given that our investigation had four sensors, R for pairwise 
+signals was first found using (21), and then the correlation 
+coefficient matrix for all signals was found by combining the 
+Rs of all pairwise variable, as in (22). Diagonal entries are 
+always equal to 1, as all signals are directly correlated to 
+themselves. 
+ൌ
+ۉ
+ۈۈ
+ۇ
+ெ
+ெ
+ெ
+ெ
+ெ
+ெ
+ሺேವሻሻ
+ெ
+ெ
+ெ
+ெ
+ெ
+ெ
+ሺேವሻሻ
+ெ
+ெ
+ெ
+ெ
+ெ
+ெ
+ሺேವሻሻ
+ெ
+ெ
+ெ
+ெ
+ெ
+ெ
+ی
+ۋۋ
+ۊ
+22)
+CDF for all pairwise combinations revealed that most 
+values of R are between 0.9 and 1, indicating high similarity in 
+sensor output across multiple nodes. Furthermore, the p-value 
+matrix returned very small p-values (i.e., 2e-138), which reject 
+the null hypothesis and identify significant correlations. 
+VI. C
+ONCLUSION 
+This study reported the design and development of a novel, 
+intelligent vehicle counting and classification system ( iVCCS) 
+that uses wireless magnetometer sensor for real-time traffic 
+surveillance. Reliable and computationally efficient intelligen t 
+algorithms for vehicle detection, speed and length estimation, 
+LBVC, and baseline drift compensation were fully developed, 
+integrated, and evaluated. Investigations revealed consistent 
+and accurate performance under b oth free flow and congested 
+traffic on highway and urban roadway conditions. A 99.65%, 
+99.95%, 97.42%, and 97.65% accuracy was reported for 
+roadway detection, roadside detection, speed estimation, and 
+LBVC, respectively. The developed platform is portable and 
+cost-effective—a single sensor node costs approximately $40. 
+It can be used for short-term installment (e.g., work zone 
+safety, traffic flow studies, roadways and bridges design, 
+traffic management in atypical situations), as well as long-
+term deployment (e.g., collision avoidance at intersections, 
+traffic monitoring, etc.) on surface of roadways and roadsides. 
+Occurrences
+Occurrences
+Occurrences
+Occurrences
+Occurrences
+
+
+===== PAGE 10 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 10
+VII. ACKNOWLEDGMENT 
+The authors would like to acknowledge Oklahoma 
+Department of Transportation (ODOT) for funding provided 
+to support the research activities of this project. 
+REFERENCES 
+[1] “FHWA Forecasts of Vehicle  Miles Traveled (VMT): May 2014,”  
+Office of Highway Policy Information , 2014. [Online]. Available: 
+http://www.fhwa.dot.gov/policyinformation/tables/vmt/vmt_forecast_s
+um.cfm 
+[2] “WHO | Global status report on road safety 2015.” 
+[3] “National Highway Traffic Safe ty Administration (NHTSA), 20 13 
+Traffic Safety Facts FARS/GES An nual Report.” [Online]. Availab le: 
+http://www-nrd.nhtsa.dot.gov/Pubs/812139.pdf.  
+[4] National Highway Traffic Safe ty Adminstriation, “The Econom ic and 
+Societal Impact Of Motor Vehicle Crashes, 2010,” Washington, DC , 
+2014. 
+[5] “2015 Urban Mobility Scoreca rd and Appendices — Urban Mobil ity 
+Information.” Available: http://mobility.tamu.edu/ums/report/.  
+[6] C. C. D. US EPA, “Carbon Dioxide Emissions.” [Online]. Avai lable: 
+http://www.epa.gov/climatechange/ghgemissions/gases/co2.html. 
+[7]  L .  E.  Y.  M im bela and L .  a K lein,  “A  Sum m ary  of Vehicle D etection 
+and Surveillance Technologies use d in Intelligent Transportatio n 
+Systems.” 
+[8] S. Cheung, “Traffic Surveilla nce by Wireless Sensor Network s : Final 
+Report,” 2007. 
+[9] G. Orosz, R. E. Wilson, and G. Stépán, “Traffic jams: dynam ics and 
+control.,” Philos. Trans. A. Math. Phys. Eng. Sci. , vol. 368, no. 1928, 
+pp. 4455–79, Oct. 2010. 
+[10] A. Haoui, R. Kavaler, and P. Varaiya, “Wireless magnetic s ensors for 
+traffic surveillance,” Transp. Res. Part C Emerg. Technol. , vol. 16, no. 
+3, pp. 294–306, Jun. 2008. 
+[11] F. Losilla, A.-J. Garcia-San chez, F. Garcia-Sanchez, J. Ga rcia-Haro, 
+and Z. J. Haas, “A Comprehensive approach to WSN-based ITS 
+applications: a survey.,” Sensors (Basel). , vol. 11, no. 11, pp. 10220–
+65, Jan. 2011. 
+[12] K. Liu, H. Xiong, and H. He, “New method for detecting tra ffic 
+information based on anisotropi c magnetoresistive technology,” in 
+Proc. SPIE 8783, Fifth Internatio nal Conference on Machine Vision 
+(ICMV 2012): Computer Vision, Image Analysis and Processing, 2013. 
+[13] J. L. J. Lan and Y. S. Y. S hi, “Vehicle detection and recognition based 
+on a MEMS magnetic sensor,” 2009 4th IEEE Int. Conf. Nano/Micro 
+Eng. Mol. Syst., pp. 404–408, 2009. 
+[14] A. Kaadan and H. H. Refai, “iICAS: Intelligent intersectio n collision 
+avoidance system,” in 2012 15th International IEEE Conference on 
+Intelligent Transportation Systems, 2012, pp. 1184–1190. 
+[15] W. Balid, H. Tafish, and H. H. Refai, “Development of Port able 
+Wireless Sensor Network System Fo r Real-time Traffic Surveillan ce,” 
+in 18th IEEE International Conferen ce on Intelligent Transportation 
+Systems, IEEE - ITSC 2015, September 15-18, 2015, 2015. 
+[16] A. Daubaras and M. Zilys, “Vehicle Detection based on Magn eto-
+Resistive Magnetic Field Sensor,” Electron. Electr. Eng. , vol. 118, no. 
+2, pp. 27–32, Feb. 2012. 
+[17] Z. Zhang, X. Li, H. Yuan, and F. Yu, “A Street Parking Sys tem Using 
+Wireless Sensor Networks,” vol. 2013, no. c, 2013. 
+[18] H. Zhu and F. Yu, “A Vehicl e Parking Detection Method Base d on 
+Correlation of Magnetic Signals,” vol. 2015, 2015. 
+[19] S. Taghvaeeyan and R. Rajamani, “Portable roadside sensors  f o r  
+vehicle counting, classification, and speed measurement,” IEEE Trans. 
+Intell. Transp. Syst., vol. 15, no. 1, pp. 73–83, 2014. 
+[20] B. Koszteczky and G. Simon, “Magnetic-based vehicle detect ion with 
+sensor networks,” in 2013 IEEE International Instrumentation and 
+Measurement Technology Conference (I2MTC), 2013, pp. 265–270. 
+[21] W. Zhang, G. Tan, and N. Ding, “Vehicle Speed Estimation B ased on 
+Sensor Networks and Signal Correlation Measurement,” pp.1–12, 2014. 
+[22] D.-H. Kim, K.-H. Choi, K.-J. Li, and Y.-S. Lee, “Performan ce of 
+vehicle speed estimation using wi reless sensor networks: a regi on-
+based approach,” J. Supercomput., vol. 71, no. 6, pp. 2101–2120, 2015. 
+[23] D. Obertov, V. Bardov, and B. Andrievsky, “Vehicle speed e stimation 
+using roadside sensors,” in 2014 6th International Congress on Ultra 
+Modern Telecommunications and Control Systems and Workshops 
+(ICUMT), 2014, pp. 111–117. 
+[24] D. Nan, T. Guozhen, M. Hong lian, L. Mingwen, and S. Yao, “ Low-
+power Vehicle Speed Estimation Algorithm based on WSN,” in 2008 
+11th International IEEE Conference on Intelligent Transportation 
+Systems, 2008, pp. 1015–1020. 
+[25] L. Zhang, R. Wang, and L. Cui, “Real-time traffic monitori ng with 
+magnetic sensor networks,” J. Inf. Sci. Eng. , vol. 27, no. 4, pp. 1473–
+1486, 2011. 
+[26] X. DENG, Z. HU, P. ZHANG, and J. GUO, “Vehicle Class 
+Composition Identification Based Mean Speed Estimation Algorith m 
+Using Single Magnetic Sensor,” J. Transp. Syst. Eng. Inf. Technol., vol. 
+10, no. 5, pp. 35–39, Oct. 2010. 
+[27] H. Li, H. Dong, L. Jia, D. Xu, and Y. Qin, “Some practical  vehicle 
+speed estimation methods by a single traffic magnetic sensor,” in 2011 
+14th International IEEE Conference on Intelligent Transportation 
+Systems (ITSC), 2011, pp. 1566–1573. 
+[28] W. Balid, H. Tafish, and H. H. Refai, “Versatile Real-Time  Traffic 
+Monitoring System Using Wireless Smart Sensors Networks,” in IEEE 
+Wireless Communications and Networking Conference (WCNC), Track 
+4 - Services, Applications, and Business,. 
+[29] J. Lan, Y. Xiang, L. Wang,  and Y. Shi, “Vehicle detection and 
+classification by measuring a nd processing magnetic signal,” 
+Measurement, vol. 44, no. 1, pp. 174–180, Jan. 2011. 
+[30] W. Zhang, G. Z. Tan, H. M. Shi, and M. W. Lin, “A distribu ted 
+threshold algorithm for vehicle classification based on binary proximity 
+sensors and intelligent neuron classifier,” J. Inf. Sci. Eng. , vol. 26, no. 
+3, pp. 769–783, 2010. 
+[31] B. Yang and Y. Lei, “Vehic le Detection and Classification for Low-
+Speed Congested Traffic With Anisotropic Magnetoresistive Senso r,” 
+IEEE Sens. J., vol. 15, no. 2, 2015. 
+[32] E.-H. N. E.-H. Ng, S.-L. T. S.-L. Tan, and J. G. Guzman, “
+Road traffic 
+monitoring using a wireless vehicle sensor network,” 2008 Int. Symp. 
+Intell. Signal Process. Commun. Syst., 2009. 
+[33] D. Kleyko, R. Hostettler, W. Birk, and E. Osipov, “Compari son of 
+Machine Learning Techniques for Vehicle Classification Using Ro ad 
+Side Sensors,” 2015 IEEE 18th Int. Conf. Intell. Transp. Syst. , pp. 572–
+577, 2015. 
+[34] W. Ma, D. Xing, A. McKee, R. Bajwa, C. Flores, S. Member, B. Fuller, 
+P. Varaiya, S. Member, B. Fuller, P. Varaiya, C. Author, D. Xin g, A. 
+McKee, R. Bajwa, C. Flores, and B. Fuller, “A wireless accelero meter-
+based automatic vehicle classification prototype system,” IEEE Trans. 
+Intell. Transp. Syst., vol. 15, no. 1, pp. 1–8, 2014. 
+[35] S. Networks, “VSN240 Wireless Flush Mount Sensor.” [Online ]. 
+Available: http://www.sensysnetworks.com/products/sensor/.  
+[36] N. Wahlstrom, R. Hostettler,  F. Gustafsson, W. Birk, N. Wa hlström, S. 
+Member, R. Hostettler, F. Gustaf sson, W. Birk, N. Wahlstrom, R.  
+Hostettler, F. Gustafsson, and W.  Birk, “Classification of driv ing 
+direction in traffic surveillance using magnetometers,” IEEE Trans. 
+Intell. Transp. Syst., vol. 15, no. 4, pp. 1405–1418, 2014. 
+[37] D. Liu, X. Xu, C. Fei, W. Zhu, X. Liu, G. Yu, and G. Fang,  “Direction 
+identification of a moving ferro magnetic object by magnetic ano maly,” 
+Sensors Actuators A Phys., vol. 229, pp. 147–153, 2015. 
+[38] Y. He, Y. Du, L. Sun, and Y. Wang, “Improved waveform-feat ure-
+based vehicle classification us ing a single-point magnetic sens or,” J. 
+Adv. Transp., vol. 49, no. 5, pp. 663–682, Aug. 2015. 
+[39] “GlobalTop Technology Inc. - Titan 2 (GMS-G6).” http://www .gtop-
+tech.com/en/product/Titan-2-GMS-G6/GPS_Modules_Gms-g6.html. 
+[40] “Synapse SM200P81 RF Engine .” [Online]. https://www.synaps e-
+wireless.com/documents/products/Synapse-SM200P81-Engine-
+Product-Brief.pdf. 
+[41] “Synapse‘s SNAP Network Operating System,” David Ewing. [Online]. 
+http://synapse-wireless.com/documents/white_paper/Synapse-SNAP-
+OS-White-Paper.pdf 
+[42] “Maxim Integrated-MAX17043 Compact, Low-Cost 1S Fuel Gauge s.” 
+http://www.maximintegrated.com/en/products/power/battery-
+management/MAX17043.html 
+[43] F. H. Administration, “Traffic Monitoring Guide,” 2013. 
+[44] H. Lee and B. Coifman, “Identifying and Correcting Pulse-B reakup 
+Errors from Freeway Loop Detectors,” Transp. Res. Rec. J. Transp. 
+Res. Board, vol. 2256, pp. 68–78, 2011. 
+[45] W. Balid, “Fully-Autonomous Self-Powered Intelligent Wirel ess 
+Sensor for Real-Time Traffic Surveillance in Smart Cities,”  Ph.D.  
+dissertation, Electrical and Computer Engineering Dept., Univer sity of 
+Oklahoma, 2016, https://shareok.org/handle/11244/51828. 
+[46] “Road Runner 3 Counter and Classifier Kit | Diamond Traffi c.” 
+[Online]. http://diamondtraffic.com/product/RoadRunner3Kit. 
+
+===== PAGE 11 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. xx, NO. xx, xx xxxx 11
+Walid Balid, PhD  received PhD degree 
+in Electrical & Computer Engineering 
+from the University of Oklahoma in 
+2016, the B.S. and M.Sc. degrees in 
+Electronic Engineering from University 
+of Aleppo in 2006 and 2011. Currently, 
+he is principal research engineer at 
+Panduit Corp. R&D. Between 2006 and 
+2012, he worked as senior elect ronics engineer and later R&D 
+manager at AL-AWAIL Co. In 2013, he was a senior research 
+associate with Qatar University. His research interests include  
+embedded systems, intelligent transportation systems, wireless 
+sensors, industrial electronics, and wireless coexistence. 
+ 
+Hasan Tafish received MSc degree in 
+Electrical & Computer Engineering from 
+the University of Oklahoma in 2015, the 
+BSc. degree in electrical engineering from 
+Damascus University in 2012. Currently 
+he is research engineer at Honda R&D 
+R&D Americas, Inc. His research interests 
+include, digital signal processing, machine 
+learning, deep neural networks, and FPGA based DSP. 
+ 
+Hazem H. Refai,  PhD is the Williams 
+Professor for Telecommunication and 
+Networking at the OU School of electrical 
+and computer engineering (ECE). Dr. 
+Refai’s current transportation research and 
+development efforts focus on wireless 
+sensor networks for vehicle detection, 
+road surface condition evaluation, and 
+auto-collision avoidance. Previously he investigated medium 
+access control for vehicle-to -vehicle communication and 
+developed portable weigh-in-motion systems and a multi-
+element piezoelectric sensor for  the Oklahoma Department of 
+Transportation. Dr. Refai has published more than 160 
+refereed papers for national and international conferences and 
+journal articles. 
+ 

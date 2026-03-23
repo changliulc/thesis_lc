@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-03-21T15:11:49+0800",
+  "total_entries": 94,
+  "status_counts": {
+    "skipped_existing": 25,
+    "paywalled_or_no_public_pdf": 62,
+    "not_found": 5,
+    "manual_review": 1,
+    "downloaded": 1
+  },
+  "metadata_distribution": {
+    "doi_only": 61,
+    "url_only": 7,
+    "both": 3,
+    "none": 23
+  }
+}

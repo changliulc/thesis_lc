@@ -1,0 +1,1170 @@
+
+
+===== PAGE 1 =====
+
+Toward an Easy Deployable Outdoor Parking
+System – Lessons from Long-term Deployment
+Y u Huang∗, Yi-Chao Chen †, Chuang-Wen Y ou∗, Dian-Xuan Wu ∗,‡, Yi-Ling Chen ∗, Kai-Lung Hua ‡,
+Jane Y ung-Jen Hsu∗
+∗National Taiwan University, Taipei, Taiwan
+Email: {b02902084, cwyou }@ntu.edu.tw, yiling@arbor.ee.ntu.edu.tw, yjhsu@csie.n tu.edu.tw
+†Shanghai Jiao Tong University, Shanghai, China
+Email: yichao@cs.utexas.edu
+‡National Taiwan University of Science & Technology, Taipei , Taiwan
+Email: {m10315014, hua }@mail.ntust.edu.tw
+Abstract—Data pertaining to the availability of parking slots
+is crucial to the efﬁcient operation of systems designed to
+monitor the state of parking spaces. Outdoor parking systems
+have been developed using wireless sensors, Internet of Things
+(IoT) technology, and cameras. Unfortunately, interference f rom
+electromagnetic ﬁelds complicates the tuning of parameters for
+detection algorithms and limits accuracy to only 90 percent. In
+this study, we investigated these problems by collecting data from
+magnetic sensors, light sensors, and LoRa wireless modules used
+in the detection transient events (car arrivals and departures)
+over a period of 13 months. This led to the design an adaptive
+occupancy detection system using a variety of sensors, which can
+be deployed with only minimal calibration.
+I. I NTRODUCTION
+Data pertaining to the availability of parking slots is cruc ial
+to the efﬁcient locating of empty parking spaces [1]. Exist-
+ing outdoor parking systems are based on wireless sensors,
+Internet of Things (IoT) technology [12], and cameras [24].
+IoT-based systems developed by Streetline Inc. [17] and in t he
+SFpark project [14] have been deployed in North America and
+European cities. However, interference from electromagne tic
+ﬁelds [12] causes frequent false positives; i.e., degraded accu-
+racy. Discussions with experts in IoT technology revealed t hat
+magnetic sensors are prone to false detections when deploye d
+as parking nodes. Thus, systems tend to be retrained only in
+response to complaints from customers or within a schedule
+wherein updates are conducted more frequently than necessa ry.
+Most existing parking solutions dealing with parking oc-
+cupancy rely on magnetic sensors to identify the arrival
+and/or departure of vehicles. Current state-of-the-art pa rking
+solutions, such as FastPrk [5] and Fastprk2 [20] are reporte d
+to provide accuracy of 95% [6] ∼ 98% [7]; however, these
+estimates are based on short-term data collection often wit hin a
+laboratory environment [6], [13]. Furthermore, administr ators
+replaced a FastPrk system deployed in Moscow with another
+system after the initial trials [15], citing shortcomings i n the
+system. The three main challenges in the design of parking
+solutions based on magnetic devices are (1) environmental
+changes, (2) the spatial characteristics of individual par king
+slots, and (3) time-varying factors, such as variations in t he
+geomagnetic ﬁeld or dwindling battery life. Maintaining th e
+accuracy of such systems requires that the model be retraine d;
+however, existing systems lack a mechanism by which to alert
+operators when retraining is required. Thus, we conducted a n
+empirical study to identify challenges and limitations in t he use
+of magnetic, light-based, and LoRa wireless modules for the
+detection of transient events (including events of car arrivals
+and departures) in a real-world environment. Long-term mul ti-
+slot deployment was conducted to reveal weaknesses in curre nt
+learning-based parking systems. To the best of our knowledg e,
+previous reports on these systems employed learning-based
+methods, and none of them discussed system performance
+over extended durations or in different locations. Our long -
+term assessment of sensors in multiple parking spaces revea led
+the need for an adaptive occupancy detection algorithm to
+complement current state-of-the-art parking solutions.
+In this study, we explored the challenges and limitation to
+understand the potential design considerations of designi ng
+easy-deployable and manageable IoT-based parking systems .
+Through collecting and analyzing the 13-month data collect ed
+from magnetic sensing, light sensing, and LoRa wireless
+modules, we propose a feasible adaptive design to enable
+easy-deployable parking solutions. The goal of this paper i s to
+highlight the need of adaptive machine learning schemes whe n
+designing parking occupancy detection system to encourage
+major outdoor parking solution providers continuing to ena ble
+future easy-deployable solutions.
+The contributions of this study are three-fold. First, we
+elucidated the strengths and weaknesses of three major sens -
+ing modalities in real-world scenarios. Second, to overcom e
+imprecision in the collected data, we developed three adapt ive
+machine learning schemes: model selection, sensor selecti on,
+and failure detection. These machine learning schemes led t o
+the development of an adaptive occupancy detection system
+using three types of sensors in order to eliminate the need fo r
+major calibration. Third, we conducted a series of evaluati ons
+using a variety of metrics (accuracy, precision, recall, an d F1-
+score) to validate the performance of the proposed adaptive
+machine learning schemes in the detection of transient even ts.
+
+===== PAGE 2 =====
+
+>ŽZĂ ^ĞŶĚĞƌηϮ 
+>ŽZĂ ^ĞŶĚĞƌηϭ 
+WĂƌŬŝŶŐĂƌĞĂ 
+;ĂͿĞƉůŽǇĞĚ>ŽZĂ ^ĞŶĚĞƌƐ 
+ĂŶĚƐĞůĞĐƚĞĚƉĂƌŬŝŶŐĂƌĞĂ 
+;ďͿƵƐƚŽŵŝǌĞĚďŽĂƌĚ 
+;ĐͿƉĂƌŬŝŶŐŶŽĚĞŝŶĂƐůŽƚ 
+DĂŐŶĞƚŝĐƐĞŶƐŽƌ 
+ĂƚƚĞƌǇ 
+D^WϰϯϬ 
+>ŽZĂ ŵŽĚƵůĞ DŝĐƌŽ^ 
+>ŝŐŚƚƐĞŶƐŽƌ 
+Fig. 1: LoRa sensors and proposed parking nodes. In (a),
+only Sender #1 (2nd ﬂoor of the building: top) and Sender
+#2 (2nd ﬂoor of another building: bottom) are presented. In
+(c), the node is half-buried in the center of the slot.
+II. R ELATED WORK
+Existing smart parking solutions for outdoor environments
+[17], [14], [22], [5] use magnetic sensors to identify the ar rival
+or departure of cars. In [30], researchers of the pilot SFpar k
+project listed car models and environmental interference a s
+challenges in the use of magnetic sensors to detect vehicle
+arrivals and departures. Streetline [17] uses camera senso rs in
+conjunction with or in lieu of in-ground magnetic sensors to
+reduce the effects of electrical interference [16]. Unfort unately,
+this approach is limited to line-of-sight scenarios and is
+susceptible to changes in lighting conditions, thereby nec essi-
+tating the deployment of a large number of cameras. ADEC
+technologies [2] recently announced a parking occupancy
+detector that incorporates additional sensors; however, t hey
+have released no details of the proposed system. The inclusi on
+of additional sensors no doubt improves detection accuracy ;
+however, it greatly increases power consumption and capita l
+overhead. Worldsensing [23] recently incorporated server -side
+service layers in the development of a new generation parkin g
+system (i.e., Fastprk-2 [20]). This system is based on the
+occupancy sensors used in the Fastprk system in conjunction
+with advanced signal processing algorithms for the detecti on
+of occupancy using information obtained via data mining. It
+is reported to have accuracy of 95% ∼ 98%; however, these
+results are based on short-term evaluations under laborato ry
+conditions [15].
+Researchers have used a variety of alternative sensing
+techniques, such as passive acoustic array sensors, passiv e
+infrared sensor, RFID, ultrasonic and video image processi ng
+[26], [28], [29]. Unfortunately, some of these devises (e.g .,
+RFID, ultrasonic signals, or visual signals) require expen sive
+overhead installations and on-going maintenance. The fact that
+most situations preclude the installation of overhead devi ces
+has led to the development of inductive loops, piezoelectri c
+cables, and weigh-in-motion sensors [26]. This commonly
+requires the cutting of pavement for installation and neces si-
+tates the use of multiple detectors. Other solutions involv e the
+Module Average current Sampling energy (time)
+System Low-power: 22.06uA
+Active: 5.54mA -
+Magnetic 2.40mA 12.68mJ (1.6ms)
+LoRa Receiving: 35.88mA
+Sending: 76.00mA
+Receiving: 1.78J (15ms)
+Sending: 3.16J (12.6ms)
+Light 3.75mA 745.63mJ (250ms)
+TABLE I: Average current and energy drawn by the system,
+magnetic sensing, LoRa wireless, and light sensing module.
+detection of signals reﬂected from vehicles (e.g., microwa ve
+radar or ultrasonic ranging sensors); however, this approa ch
+greatly increases power consumption and the such systems
+are highly susceptible to environmental interference.
+ParkNet [28] uses an ultrasonic rangeﬁnder to detect parkin g
+spot occupancy. Each location is associated with GPS coor-
+dinates, thereby making it possible to pinpoint the locatio n
+of each car and generate an occupancy map of the entire
+city. ParkSense [29] infers unparking events by observing
+changes in the Wi-Fi signatures from the mobile phones
+of drivers. Unfortunately, these crowd-sourcing approach es
+require participation by a substantial proportion of drive rs and
+are generally less reliable than other methods.
+III. E XPERIMENT : L ONG -TERM DATA COLLECTION
+Our aim was to identify the factors that affect accuracy
+in determining the occupancy of parking spaces. Long-term
+readings were obtained from magnetic sensors and other low-
+cost devices.
+A. Experimental Setup
+Customized parking nodes were deployed in four adjacent
+parking lots on the campus of National Taiwan University
+(Fig. 1(a)). To ensure easy deployment and maintenance, we
+opted for the single-point deployment of low-cost, low-pow er
+sensors for the detection of transient events. The parking n odes
+were housed in a rectangular water-proof case containing a
+circuit board powered by four Lithium-ion batteries.
+As shown in Fig. 1(b), each circuit board was equipped with
+a low-power TI MSP430 microcontroller [21], a Honeywell
+HMC5883 3-axis compass sensor [9], a TSL2561 light-to-
+digital converter [19], and an ARCT TM1276 LoRa transceiver
+module [4]. Table I lists the average current and energy
+consumption of the bare system and sensing modules. The
+magnetic sensors and light sensors consume far less energy
+(12.68 and 745.63 milli-joules) than do the LoRa wireless
+modules (3.16 joules for sending and 1.78 joules for receivi ng
+a 4-byte packet). Each parking node was placed in the center
+of the parking lot to reduce interference from vehicles in
+adjacent lots. Note that numerous low-cost sensing alterna tives
+are available; however, we selected a combination of sensor s
+(i.e., a magnetic sensor, a light sensor, and the wireless Lo Ra
+modules) to demonstrate the application of a sensor selecti on
+algorithm to achieve a trade-off between high accuracy and
+low power consumption. In the event that other sensors are
+used in the parking nodes, it should be possible for the
+
+===== PAGE 3 =====
+
+same sensor selection algorithm to switch between any new
+combination of sensors.
+A surveillance camera was mounted on an outside wall on
+the 7th ﬂoor of a nearby building to monitor the parking area.
+This data was used as ground-truth information pertaining
+to parking events. All recorded footage was streamed back
+to a server via a wired link and stored. We envision that
+a few internet-connected gateways (IoT gateways) could be
+scattered throughout the city in the future, thereby ensuri ng
+reliability in the relaying of data to a central network serv er. To
+emulate this situation, we installed a number of IoT gateway s
+around the selected parking area to enable the exchange of
+messages between nodes and the backend. Three LoRa senders
+deployed in two buildings surrounding the area broadcast
+messages every 500ms to be received by LoRa modules on
+the parking nodes. LoRa Senders #1 and #2 were located on
+the 2nd ﬂoor of the two building 15 meters from the closest
+parking node to emulate gateways deployed in positions at th e
+same height as street lights. LoRa Sender #3 was located on
+the 5th ﬂoor of a building at a distance of 40 meters from
+the closest parking node. All readings from the sensing and
+communications modules were recorded on an on-board micro
+SD card and then manually retrieved via a serial interface
+every two days
+B. Characterizing Transient Events
+Between April 2015 and April 2016, we collected 7175
+hours of parking data involving 1276 transient events; i.e. ,
+666 arrivals and 610 departures for an average of 51 arrival
+events and 46 departure events per month. The MSP430 micro-
+controller sampled readings from magnetic sensors and ligh t
+sensors. RSSI values in the header of LoRa packets achieved
+a best-effort sampling rate of 250 ms per second. This was
+limited by the intensity of the light received by the sensor
+[19]. Each transient event was associated with changes in th e
+patterns read from magnetic sensors, light sensors, and LoR a
+wireless modules.
+Magnetic sensor : Magnet-based detection methods can be
+used identify parking events by responding to changes in the
+patterns of signals. Typically, changes in the magnetic ﬁel d
+can be attributed to the movement of a car and the engine
+being shut on/off. The large amount of ferrous materials in a
+car body means that changes in the magnetic ﬁeld are easily
+affected by vehicles entering or leaving, but also by nearby
+cars [3]. In obtaining samples, the sensor decomposes the
+Earth’s magnetic ﬁeld and outputs individual components ov er
+the x, y, and z axes relative to the local coordinate frame of a
+compass. Combining the individual components into a vector
+makes it possible to obtain an aggregate vector.
+Light sensor : Changes in the intensity of incident light at
+parking nodes makes it possible to infer the departure or arr ival
+of a car. This study used a wide light spectrum containing
+visible and infrared light, using digital output signals be tween
+0 ∼ 65535 from the broadband channel of a TSL2561 [19].
+Placement of a light sensor in the center of a slot would mean
+that is intermittently covered by cars entering or leaving t he
+EŽŶͲŶĞŐůŝŐŝďůĞĚƌŽƉ 
+;ĂͿWĂƌŬŝŶŐŝŶĂƐůŽƚĚƵƌŝŶŐϬΕϭϱƐ 
+;ďͿWĂƌŬŝŶŐŝŶĂŶĂĚũĂĐĞŶƚƐůŽƚĚƵƌŝŶŐϱΕϭϴƐ 
+Fig. 2: Readings collected from a magnetic sensor along the
+z axis in two scenarios.
+slot. As indicated by the red line in Fig. 3, the digital outpu t
+decreased by more than 30000 when a car parked at 47 s.
+LoRa module : When a parking node is deployed in the
+center of a parking slot, the transmission path between sur-
+rounding LoRa senders and the parking node is blocked by
+passing cars, resulting in the attenuation of the received s ignal
+strength (RSSI). Thus, the passage of cars can be interprete d
+as transient events. Fig. 4(a) shows RSSI values received by
+LoRa Sender #1 at a distance of 15 meters, when the parking
+slot is occupied, empty, or soon to be occupied by a car (e.g.
+the 12 dBm difference in signal strength at 50s).
+Characterization of changes in the patterns collected from
+the sensors began with a moving average pre-processing step
+to ﬁlter out corrupted samples. We then extracted feature
+segments using a sliding window (empirical-determined 15-
+second duration, with 50% overlap). The presence of a car is
+determined through the extraction of statistical features (mean,
+median, mode, and range). Our aim was to express the central
+tendency and statistical dispersion of the magnetic ﬁeld, l ight
+intensity, and RSSI values as well as all derivatives of the
+individual components (or aggregated vectors) within a dat a
+segment. This included a total of 108 magnetic features, 30
+light features, and 90 LoRa features (i.e., 30 LoRa features
+for each sender). Based on these features, the proposed syst em
+adaptively selects a sub-optimal set of features as an indic ation
+of a transient event, as described in Section V -C.
+IV. I NITIAL OBSERVATIONS : C HALLENGES AND
+LIMITATIONS OF EACH SENSING MODALITY
+An easy-deployable parking system should provide 24/7
+operational coverage and enable the accurate detection of a
+range of vehicle models. The long-term data set described
+in Section III made it possible to identify factors capable o f
+interfering with sensor readings: (1) environmental facto rs, (2)
+deployment factors, and (3) target-vehicle factors.
+A. Interference Cases Caused by Environmental Factors
+Environmental factors, such as weather conditions or nearb y
+vehicles, can affect magnetic sensors, light sensors, and L oRa
+wireless modules.
+
+===== PAGE 4 =====
+
+Ͱ
+;ĂͿ/ŶƚĞƌŵŝƚƚĞŶƚůĞĂĨďůŽĐŬŝŶŐĚƵƌŝŶŐϯϵϬ 
+ΕϰϬϬƐĂŶĚϰϭϴΕϰϯϱƐ 
+;ĂͿ/ŶƚĞŶƐŝƚǇĐŚĂŶŐĞƐĚƵĞƚŽƉĂƌŬŝŶŐ;ƌĞĚͿ 
+ĂŶĚŵŽǀŝŶŐĐůŽƵĚďůŽĐŬŝŶŐ;ďůƵĞůŝŶĞͿ 
+Fig. 3: Readings collected from light sensors when a car was
+parking in a slot (the red line in (a) and (b)), in which
+sunlight is gradually blocked by slow-moving clouds (the
+blue line in (a)), and intermittently blocked by leaves
+moving in a nearby tree (the red line in (b)).
+1) Magnetic sensor: The earth’s magnetic ﬁeld varies with
+location and over time. It is also inﬂuenced by nearby ferrou s-
+metal objects (e.g., bicycles or adjacent vehicles) [3]. Th e
+impact on the magnetic ﬁeld varies according to the amount
+of ferrous metal in vehicles and the distance from the parkin g
+node. Fig. 2(b) illustrates the effects of interference fro m a car
+parking in an adjacent slot. Changes in measurements along
+the z-axis are non-negligible, which means that they could be
+interpreted as a non-normal transient event (Fig. 2(a)).
+2) Light sensor: Outdoor lighting conditions are highly
+variable. The arrival and departure of cars during the day ca n
+result in dramatic changes in lighting intensity over a very brief
+period, as shown by the blue line in Fig. 3(a). As the sun moves
+across the sky, the light can also be blocked by stationary
+objects. Readings collected by light sensors when a car was
+parking in a slot (the red line in Fig. 3(a)), show how sunligh t
+was blocked by slow-moving clouds (the blue line in Fig. 3(a) ),
+or intermittently blocked by leaves moving in a nearby tree
+(the red line in 3(b)). Observations of previous detection f ailure
+demonstrate that existing methods often produce patterns t hat
+do not necessarily correspond to an actual parking event.
+3) LoRa module: Due to multipath effects in the transmis-
+sion of radio signals, any objects (e.g., nearby humans or ca rs)
+within a given environment can have an impact on the received
+signal strength of LoRa modules. The degree to which RSSI
+is altered by vehicles passing nearby (red cross in Fig. 4(b) )
+tends to be less pronounced than that caused by the arrival or
+departure of cars to/from the target slot (blue circles in Fi g.
+4(b)). Conversely, the degree to which RSSI is altered by the
+arrival or departure of target vehicles increases with a hig her
+baseline RSSI (deﬁned as the RSSI measured by a parking
+node that is not covered by vehicles in the target slot).
+Fig. 4(b) shows that the change in RSSI caused by the
+arrival or departure of a car is more pronounced than that
+caused by the arrival or departure of cars in nearby slots whe n
+the baseline RSSI exceeds -90dBm. This is an indication that
+RSSI data could be used to indicate the occurrence of transie nt
+events. The presence of human or other environmental object s
+can also affect the received signal strength. The degree to
+which RSSI changes is determined by the size and location
+&DULQ 
+;ĂͿZ^^/ŝŶƉĂĐŬĞƚƐƐĞŶƚĨƌŽŵ>ŽZĂ ^ĞŶĚĞƌƐ 
+ηϭĂŶĚηϮ ;ďͿĂƐĞůŝŶĞZ^^/ǀƐ͘Z^^/ĐŚĂŶŐĞ 
+Fig. 4: V alues of RSSI in packets collected by LoRa
+modules in a parking node deployed in a target slot under
+the following scenarios: (a) RSSI in packets sent by Sender
+#1 when the slot was empty (green line), occupied (blue
+line), or initially empty and later occupied (red line), and
+RSSI in packets sent by Sender #2 when the slot was empty
+(dotted green line) or occupied (dotted blue line). (b)
+Baseline RSSI vs. change in RSSI of a packet sent from
+senders caused by target vehicles or nearby vehicles.
+of objects, and this commonly leads to false detections. Thi s
+means that a sensor selection algorithm is required to avoid
+the effects of unreliable sensing readings, as outlined in t he
+following section.
+B. Interference Caused by Deployment Factors
+The re-deployment of the parking nodes every two days led
+to slight variations in the orientation of the sensors, and t hese
+effects were particularly pronounced when the devices were
+placed in a new parking area.
+1) Magnetic sensor: Slight differences in the orientation of
+a parking node produces small changes in the magnetic ﬁeld
+projected onto individual components (i.e., x, y, and z axes of
+a compass local coordinate frame). Local changes in the loca l
+environment (e.g., nearby bicycles or parked cars) or globa l
+shifts in the earth’s magnetic ﬁeld can also alter the readin gs.
+A review of the raw data from each deployment revealed slight
+variations in the baseline magnetic ﬁeld readings (i.e., th e
+magnetic ﬁeld changed when the slot was empty).
+2) Light sensor: The light sensors were housed behind a
+transparent acrylic window to protect the parking nodes fro m
+water. Unfortunately, the effects of morning dew or dust on t he
+window altered the transmittance of light. When transmittan ce
+dropped considerably, the intensity of light reaching the s ensor
+was insufﬁcient to differentiate transient from non-trans ient
+events.
+3) LoRa module: A dipole antenna (as shown in Fig.
+1(b)) was placed on the Lora module of the parking node
+to transmit/receive signals. Unfortunately, slight varia tions in
+the orientation of nodes resulted in different baseline RSS I
+values. Even when we used an omni-directional patch antenna
+[18], the location and orientation of the antenna on LoRa
+senders (i.e., LoRa gateways) tended to alter the transmiss ion
+of signals between senders and parking nodes, which had
+a subsequent impact on the RSSI received by the parking
+nodes. Fig. 4(a) shows RSSI values received by Sender #1
+and Sender #3, which were respectively deployed 15 or 40
+
+===== PAGE 5 =====
+
+ĞƉĂƌƚƵƌĞ ĞƉĂƌƚƵƌĞ 
+;ďͿŶŐŝŶĞŽƉĞƌĂƚŝŶŐǁŚĞŶĂĐĂƌŝƐ 
+ƐƚĂƚŝŽŶĂƌǇŝŶƚŚĞƐůŽƚĚƵƌŝŶŐϮϬΕϱϮƐ 
+;ĂͿŶŐŝŶĞŽƉĞƌĂƚŝŶŐǁŚĞŶĂĐĂƌŝƐ 
+ƐƚĂƚŝŽŶĂƌǇŝŶƚŚĞƐůŽƚĚƵƌŝŶŐϮϬΕϰϴƐ 
+Fig. 5: Readings collected from a magnetic sensor along the
+z axis: Two engine-operating scenarios with cars stationary
+in a slot.
+meters from the parking slot. The difference in RSSI values
+received by Sender #1 between occupied and empty states was
+approximately 12 dBm. However, deploying the gateway at a
+greater distance reduced the difference in signals, as indi cated
+by the two dotted lines at the bottom of Fig. 4(a). In all
+such situations, the RSSI values was scattered across a wide r
+range. In this situation, differentiating between parking and
+non-parking events could only be achieved when the baseline
+RSSI value (i.e., the average RSSI value received by a node
+in an empty lot) exceeded -80dBm.
+To elucidate the impact of interference caused by deploy-
+ment factors, we reviewed the distribution of long-term dat a. In
+Section IV -D, we also propose solutions to reduce the impact
+of these effects.
+C. Interference Caused by Target-vehicle Factors
+V ariations in the components used in the manufacture of ve-
+hicles can have a profound impact on readings from magnetic
+sensors and LoRa wireless modules.
+1) Magnetic sensor: Changes in the magnetic ﬁeld caused
+by the arrival and departure of cars varies with the design of
+the vehicle. Fig. 5(a) and (b) present data along the z axis
+collected for two Lexus CT 200H while idling, respectively.
+The magnetic ﬁeld generated by the electric motors caused
+ﬂuctuations in the readings along each of the axes when the
+vehicles were switched off. We also observed a jump in the
+readings when the cars left the parking slot. Nonetheless,
+the readings revealed a number of similarities indicating t he
+need to collect additional data from a variety of vehicles in
+order to identify abnormal ﬂuctuations caused by electrica l
+components.
+2) LoRa module: The bodies of cars with a low-slung
+design are closer to the parking node, which means that
+they are more effective in blocking the signals. Furthermor e,
+vehicles with a greater proportion of ferrous materials blo ck
+signals far more effectively than do vehicles with a greater
+content of other materials, such as aluminum. Cars inducing
+only a small drop in the RSSI value can confuse the system,
+thereby necessitating a sensor selection algorithm to avoi d
+unreliable sensing readings.
+D. Data Accuracy over the Long-term
+Time
+ 0
+ 0.01
+ 0.02
+ 0.03
+ 0.04
+ 0.05
+ 0.06
+ 0.07
+ 50  60  70  80  90  100  110  120
+PDF
+Feature Value
+201504
+201512
+201601
+201604
+(a) FeatureA
+ 0
+ 0.02
+ 0.04
+ 0.06
+ 0.08
+ 0.1
+ 0.12
+ 60  70  80  90  100  110  120
+PDF
+Feature Value
+201504
+201512
+201601
+201604
+(b) FeatureB
+Fig. 6: Distribution of two features collected in different
+months.
+ 0
+ 0.01
+ 0.02
+ 0.03
+ 0.04
+ 0.05
+ 0.06
+ 0.07
+ 50  60  70  80  90  100  110  120
+PDF
+Feature Value
+spot1
+spot2
+spot3
+spot4
+(a) FeatureA
+ 0
+ 0.001
+ 0.002
+ 0.003
+ 0.004
+-800 -500 -200  100  400  700  1000
+PDF
+Feature Value
+spot1
+spot2
+spot3
+spot4
+(b) FeatureB
+Fig. 7: Distribution of two features collected from differe nt
+parking slots.
+Fig. 6 illustrates the distribution of two features collect ed
+in different months. We can see similarities between the
+values of Feature A at 2015.12 and 2016.01 and considerable
+ﬂuctuations in the other two months. The ﬂuctuations in
+Feature B are less pronounced.
+Space
+Fig. 7 presents the distribution of two features in the
+same month but different parking slots, in which similariti es
+were observed in some feature distributions and difference s
+were observed in others. Any difference in data distributio n
+can confuse classiﬁers and thereby undermine prediction
+accuracy. In this situation, increasing the size of trainin g
+data set would not necessarily improve classiﬁcation accur acy.
+In the data collected over a period of 13 months, we
+observed that a few of the features presented consistent
+distributions across space and time. Researchers [31] have
+shown that any difference in data distribution can confuse
+classiﬁers and thereby undermine prediction accuracy. In t his
+situation, increasing the size of training data set would no t
+necessarily improve classiﬁcation accuracy. This conclus ion
+is further validated in Section VI.
+Instead of simply measuring changes in magnitude, the
+system must learn to discern changes in the patterns associa ted
+with actual transient events. The results obtained in the pi lot
+phase of data collection were used to guide the subsequent
+design of the system, as outlined in the following.
+V. M ETHODOLOGY
+We propose three schemes to handle uncertainty in the
+collection of data: model selection, sensor selection, and
+failure detection. Model selection refers to the identiﬁcation
+
+===== PAGE 6 =====
+
+of the most appropriate model (i.e., with feature distribut ion
+similar to the testing data). Failure detection is used to monitor
+changes in the distribution of incoming data in order to
+respond in a timely manner. In the event that a failure is
+detected, the system will select another suitable trained m odel
+to keep providing prediction with high accuracy. Otherwise ,
+the selected model outputs classiﬁcation results as well as a
+corresponding conﬁdence interval. During sensor selection ,
+the conﬁdence value is taken into consideration to facilita te
+optimization of the system for classiﬁcation accuracy and
+minimal power consumption through the switching on/off of
+sensors.
+A. Model Selection
+Despite advances in machine learning technology, there
+remain considerable challenges in the application of these
+tools to real-world systems. For example, large shifts in
+feature distribution can cause even a well-trained model to
+fail, regardless of the machine learning technology that is
+employed. In this section, we present a model selection sche me
+to address this problem.
+The model selection problem is deﬁned as follows: Given a
+set of trained models or a set of training data with a number
+of features, it is necessary to select the model or subset of
+features best suited to the classiﬁcation of incoming testi ng
+data.
+We begin with the collection of sensor data from a variety
+of parking lots at various times (with ground truth parking
+events labeled), for use in training a model for the newly
+deployed system. The fact that data collected from differen t
+spots at different times may differ from the data obtained at
+new parking lots makes it difﬁcult to select a subset of data
+and features capable of maximizing detection accuracy.
+The class of testing data is unknown at the time of pre-
+diction, which means that we need unsupervised methods to
+detect drifts in the predictions; however, it is not always c lear
+what type of distribution these features obey. We adopted th ree
+tests to reveal shifts in feature distribution: the Kruskal -Wallis
+test [11], the Kolmogorov-Smirnov test [10], and Hellinger
+distance [8].
+Kruskal-Wallis (KW) test : KW one-way analysis of variance
+by rank is a non-parametric method for testing the equality
+of population medians among groups. It is not based on
+any assumptions regarding similarities in population vari ables
+among the groups being compared. This test calculates the
+following statistic:
+KW = (N − 1)
+∑g
+i=1 ni( ¯ri − ¯r)2
+∑g
+i=1
+∑ni
+j=1(rij − ¯r)2 (1)
+where N is the total number of samples across classes, ni is
+the number of samples of class i, rij is the rank of sample i
+in class j, ¯ri is the average rank of samples in class i, and
+¯r is the average of all ranks. Calculating the KW distance
+of feature distributions from the trained model and the test ing
+data makes it possible to select a trained model with minimal
+KW distance.
+Kolmogorov-Smirnov (KS) test : The KS test determines
+whether there is divergence between two underlying one-
+dimensional probability distributions. As with the KW test ,
+KS makes no assumptions with regard to the distribution of
+data. The two-sample KS test calculates the following stati stic:
+KS = max|ST 1 − ST 2| (2)
+where ST is the CDF of the samples during period T . A
+smaller KS means that feature distributions from the trained
+model and the testing data are more similar
+Hellinger distance : Hellinger distance, also referred to as
+Bhattacharyya Distance, is a measure of distributional di-
+vergence. In [27], it was concluded that Hellinger distance
+offers a good compromise between linearity and resolution
+for linear ordination. The Hellinger distance has been used
+for clustering and ordination in species abundance data. Th e
+Hellinger distance calculates the following statistic:
+H = 1
+√
+2 ||
+√
+PT 1 −
+√
+PT 2||2 (3)
+where PT is the PDF of the samples during period T , and
+|| · ||2 is used to calculate the two-norm.
+Score of features: Based on statistical tests used to quantify
+the amount of drift in the distributions, we propose six scor ing
+schemes to enable an explicit estimate of the goodness-of-ﬁ t
+between the trained models/features and the testing data. S cor-
+ing is based on the principle that a model/feature is preferr ed
+if it i) has feature distributions similar to the testing dat a,
+and ii) transient and non-transient events have distributi ons
+sufﬁciently distinct that machine learning tools can guara ntee a
+small degree of variance in classiﬁcation error [25]. There fore,
+we deﬁne the following scores as follows:
+Score KW f
+stable = 1
+KW (P f
+T 1, P f
+T 2)
+(4)
+Score KW f
+comb =
+KW (P f
+T 1|+, P f
+T 1|−) + KW (P f
+T 2|+, P f
+T 2|−)
+KW (P f
+T 1, P f
+T 2)
+(5)
+where Score KW f
+stable stable is a score deﬁned using the
+KW test, indicating that feature f presents similar distribution
+across the training data and testing data. Score KW f
+comb
+further evaluates feature f by checking the clarity of the
+distribution of transient events (i.e., P f
+T 1|+) and non-transient
+events (i.e., P f
+T 1|−).
+Similarly, we deﬁne the following scores based on KS test
+and Hellinger distance:
+Score KS f
+stable = 1
+KS (Sf
+T 1, Sf
+T 2)
+(6)
+Score KS f
+comb =
+KS (Sf
+T 1|+, Sf
+T 1|−) + KS (Sf
+T 2|+, Sf
+T 2|−)
+KS (Sf
+T 1, Sf
+T 2)
+(7)
+
+===== PAGE 7 =====
+
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+Apr May Jun Jul Aug Sep Oct Nov Dec Feb Mar Apr
+Accuracy/F1-Score
+Test Month
+Accuracy F1-Score
+(a) Cross-validation in one
+month
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+Apr May Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Apr
+F1-Score
+Test Month
+15.4 15.7 15.10 16.03
+(b) Cross-validation in one
+month and tests in all other
+months
+Fig. 8: (a) Application of ten-fold cross validation illust rating
+the accuracy and F1-score when training and testing data
+were obtained in the same month; (b) Cross-validation in
+one month and testing in other months.
+Score
+H f
+stable = 1
+H(P f
+T 1, P f
+T 2)
+(8)
+Score H f
+comb =
+H(P f
+T 1|+, P f
+T 1|−) + H(P f
+T 2|+, P f
+T 2|−)
+H(P f
+T 1, P f
+T 2)
+(9)
+Score f
+stable indicates that feature f is stable across two periods
+of time T 1 and T 2.
+B. Failure Detection
+We also need a method by which to determine whether
+feature distributions have changed sufﬁciently to necessi tate
+the selection of another trained model.
+This can be achieved by periodically conducting the KW,
+KS, or Hellinger tests and checking whether the correspondi ng
+null hypothesis is rejected. The fact that the sensors perfo rm
+sampling at 4Hz or higher means that it is easy obtain
+a sufﬁcient number of samples to perform the tests. We
+determined that a given feature distribution could be expec ted
+to remain unchanged for weeks at a time and that only 18 hours
+are required to collect enough data to conduct statisticall y
+meaningful tests.
+C. Sensor Selection
+A large number of sensors can facilitate the detection of
+transient events; however, the number of sensors must be
+minimized to save power, extend the lifespan of sensors, and
+reduce management costs.
+The proposed sensor selection scheme seeks an equable
+trade-off between higher accuracy and lower power consump-
+tion. Sensors are turned on and off according to observed
+environmental factors with the aim of achieving the followi ng
+objective:
+Objective: min
+I
+s∑
+i=1
+I(i) ·
+[
+P ow(i) − C · P rob(i|F )
+]
+(10)
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+1 2 3 4 5 6
+F1-Score
+Training Size (Months)
+(a) F-1 Score
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+1 2 3 4 5 6
+Precision
+Training Size (Months)
+(b) Precision
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+1 2 3 4 5 6
+Recall
+Training Size (Months)
+(c) Recall
+Fig. 9: Classiﬁcation performance using training sets of
+various size. We increased the amount of training data to
+include data obtained from 2015.04 to 2015.09 and
+conducted tests using data from 2016.03.
+where I(i) is an indicator that sensor i should be turned on,
+P ow(i) is the power consumption of sensor i obtained from
+Table I, P rob(i|F ) is a conditional probability representing
+the conﬁdence that sensor i will work well under current
+environment factor F .
+VI. E VALUATION
+In this section, we analyze the data collected over a period
+of 13 months and evaluate the proposed schemes for model
+selection, failure detection, and sensor selection. Note t hat
+some tasks resulted in highly skewed data (i.e., many negati ve
+instances are created when a parking space is not occupied,
+but only a few positive instances were created when a car
+was moving into or out of the parking space). In these cases,
+the accuracy is not a representative indicator of detection
+performance. Thus, we conducted a more thorough analysis
+of the proposed system using accuracy, precision, recall, a nd
+F1-score, where accuracy = T P +T N
+P +N , precision = T P
+T P +F P ,
+recall = T P
+T P +F N , and F 1-score is the harmonic mean of
+them (i.e., 2· precision·recall
+precision+recall ), based on the number of positive
+samples P , negative samples N , true (false) positive inference
+T P (F N), and true (false) negative inferences T N (F N).
+A. Model Selection
+We applied ten-fold cross validation to data obtained in a
+given month in order to show that when training data and
+testing data are obtained at close to the same time, their fea ture
+distributions are similar and transient events can be detec ted
+accurately, as shown in Fig. 8(a). Our results are comparabl e to
+those reported for state-of-the-art commercial products [ 5], [2],
+with accuracy close to 1 and F1-scores ranging from 0.96 to
+1. However, when training data and testing data were obtained
+at different times (e.g., separated by one or more months), t he
+distributions were often signiﬁcantly different, which gr eatly
+reduced the accuracy of the trained models.
+As shown in Fig. 8(b), we selected data obtained in four
+months ( 2015.04, 2015.07, 2015.10, and 2016.03). Half of
+the samples from each month were used as training data. We
+
+===== PAGE 8 =====
+
+ 0.85
+ 0.87
+ 0.89
+ 0.91
+ 0.93
+ 0.95
+KS CombKS StableKW CombKW StableH. CombH. Stable
+Avg F1-Score
+Fig. 10: Average F1-scores obtained using the model
+formulated using data collected in 2015.04 to predict
+transient events in the traces in 2015.05, 2015.06, and
+2015.07. In this set of experiments, the characterization of
+the model is based on features with scores ranked in the top
+40%.
+then used four models to detect transient events in the other
+months. In cases where the testing month was the same as
+the training month, we used the other half of the samples for
+testing. Clearly, any temporal gap between training and tes ting
+undermined detection performance.
+One approach to solving this problem would be to use a
+larger dataset. Thus, we expanded the training data from 1
+month to 6 months (from 2015.04 to 2015.09), and tested the
+corresponding models using data from 2016.03, the results of
+which are presented in Fig. 9. This shows that the larger data
+set does not necessary yield a better F1-score because a chan ge
+in the distribution of transient events in one month may be
+matched by the distribution of non-transient events in othe r
+months. Thus, a large dataset can actually reduce precision
+by introducing a larger number of false positive (i.e., trea ting
+non-transient events as transient events.) Moreover, incr easing
+the amount of training data also increases the time required
+for data acquisition and model training.
+As described in Sec. V -A, We addressed these problems by
+developing six scoring schemes to identify the models and/o r
+features best suited to the current testing data. Fig. 10 plo ts
+the average F1-score obtained using the model formulated
+using data collected in 2015.04 to predict transient events
+in the traces in 2015.05, 2015.06, and 2015.07. In this set
+of experiments, we calculated the six scores for each featur e
+related to the magnetic sensor, light sensor, and LoRa modul e.
+In each scoring scheme, the characterization of the model is
+based on top-40% features (features with scores ranked in
+the top 40%). The high F1-scores imply that the six scores
+can efﬁciently identify the drifts in distributions. As sho wn
+in Fig. V -A, all of the scoring methods performed similarly,
+which implies that KS, KW, and Hellinger distance are all
+effective methods by which to address drift in distribution .
+Comparing with Fig. 8(b), Fig. 11 further demonstrates
+the effectiveness of the proposed scoring schemes in which
+features with scores ranked in the top 40% under the
+Score
+KW stable scoring scheme were selected for classiﬁ-
+cation. As shown in Fig.. 11, regardless of the training and
+testing data, most of the F1-Scores were than 90%. Among
+them, the F1-Scores obtained under the model formulated
+using data collected in 2015.08 or 2015.12 to predict transient
+ 0
+ 0.2
+ 0.4
+ 0.6
+ 0.8
+ 1
+Apr May Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Apr
+F1-Score
+Test Month
+15.4 15.7 15.10 16.03
+Fig. 11: Training based on data from one month with testing
+using data from other months. Unlike in Fig. 8, features with
+scores ranked in the top 40% under the Score KW stable
+scoring scheme were selected for classiﬁcation .
+ 0
+ 0.001
+ 0.002
+ 0.003
+ 0.004
+ 0.005
+ 0.006
+ 0.007
+ 0  50  100  150  200  250  300  350  400
+Hellinger
+Time (Minutes)
+(a) Hellinger distance under
+various amount of data
+ 0
+ 5
+ 10
+ 15
+ 20
+Apr May Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Apr
+Detection Time (hour)
+Month
+(b) Time to converge
+Fig. 12: Hellinger distance decreased with an increase in th e
+amount of data used. With sufﬁcient data, the Hellinger
+distance converges, implying that the incoming data
+possesses the same distribution.
+events in the traces in other months were lower than 90%. This
+is due to features with signiﬁcant drift in the distribution s with
+scores ranked in the top 40% under the KWstable scoring
+scheme.
+B. Failure Detection
+Fig. 12(a) calculates the Hellinger distance between the fe a-
+ture distribution obtained from a period of data for the enti re
+month of April. The period, from the starting time of April
+to a speciﬁed end time, of used data is increasing from 0 to
+400 minutes in April 2015. The Hellinger distance converges
+at 220 min, which implies that it takes 220 min to determine
+whether incoming data presents the same distribution as dat a
+from April 2015.
+Fig. 12(a) shows the time required for the Hellinger distanc e
+to converge (i.e., Hellinger ≤ 0.001) in various months.
+Based on the data collected in this study, it appears that
+feature distribution can remain unchanged for several week s.
+Fig. 12(b) indicates that it would take 3 ∼ 13 hours to
+determine whether incoming data has the same distribution.
+Once a change in distribution has been detected, the propose d
+model selection method can be used to identify a suitable
+model for the classiﬁcation of incoming data.
+C. Sensor Selection
+Fig. 13 shows the conﬁdence in the accuracy of clas-
+siﬁcation events is (true positive and true negative), fals e
+
+===== PAGE 9 =====
+
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+ 0.6  0.65  0.7  0.75  0.8  0.85  0.9  0.95  1
+CDF
+Confidence
+TP+TN FP FN
+Fig. 13: CDF of conﬁdence for correctly classiﬁed events
+(true positive and true negative, i.e., the red line), false
+positive events (blue line), and false negative events (gre en
+line).
+ 0.7
+ 0.75
+ 0.8
+ 0.85
+ 0.9
+ 0.95
+ 1
+Sep Oct Nov Dec Jan Feb Mar Apr
+F1-Score
+Test Month
+off on adaptive
+(a) F-1 Score
+106
+107
+108
+109
+Sep Oct Nov Dec Jan Feb Mar Apr
+Avg. Power (J)
+Test Month
+off on adaptive
+(b) Power
+Fig. 14: Detection performance and power consumption with
+sensors switched on (red line), all sensors except magnetic
+sensor switched off (blue line), and the proposed adaptive
+sensor selection scheme (green line).
+positive events, and false negative events. As shown, more
+than 9% of incorrectly classiﬁed events (i.e., F N and F P)
+achieved conﬁdence values equal to or lower than 0.81. These
+conﬁdence values make it possible to predict the probabilit y
+that a prediction is correct. When conﬁdence is lower than
+0.81, additional sensors can be turned on.
+Fig. 14 shows the accuracy and power consumption when all
+of the sensors are turned on, when all of the sensors except
+the magnetic sensor are off, and the results obtained when
+using the proposed adaptive sensor selection scheme. When
+magnetic sensors are used, the average F1-score is 0.93 and
+the power consumption is 5, 114KJ per month. When all of
+the sensors are on, the F1-score increases to 0.98 and power
+consumption increases by 87 times to 447, 790KJ per month.
+The adaptive sensor selection scheme is able to improve the
+F1-score to that achieved using only magnetic sensors, whil e
+maintaining power consumption at only 2% of the power
+consumed when all of the sensors are turned on.
+VII. D ISCUSSION
+In this study, we sought only to differentiate between
+transient and non-transient events; i.e., cars entering pa rking
+spaces cannot be differentiated from cars exiting spaces. O ne
+potential solution would be to use duplicate magnetic senso rs
+and exploit the spatial correlation between them in order to
+determine the direction in which cars are moving; i.e., arri ving
+or departing. We established a prototype parking node with
+two magnetic sensors (i.e., magnetic sensors #1 and #2) on
+both sides of the board, separated by 95.5 millimeters. By
+Fig. 15: Readings along the x axis collected from two
+magnetic sensors located on two sides of the board.
+collecting readings through a serial link, we were able to
+sample magnetic ﬁelds using the two sensors at a sampling
+rate of 100 Hz. Fig. 15 shows the magnetic ﬁeld projected
+on the x axis of two magnetic sensors. Magnetic sensor #1 is
+closer to the incoming vehicle; therefore, the magnetic ﬁel d
+sensed by magnetic sensor #1 is affected by vehicles ﬁrst.
+Locating peaks and/or dips in the magnetic ﬁelds makes it
+possible to calculate the delay between two adjacent peaks
+or dips in order to infer the direction in which vehicles are
+moving. We will continue conducting efforts to incorporate
+this design in our ﬁnal system.
+VIII. C ONCLUSION
+In this study, we collected data from a multi-slot parking
+area over a period of 13 months to elucidate the challenges
+and limitations of three sensing modules used to determine t he
+occupancy of parking spaces. A review of interference patte rns
+and long-term trends in the data led to the development of
+three adaptive machine learning schemes to deal with data of
+uncertain accuracy: model selection, failure detection an d sen-
+sor selection. A series of experiments validated the accura cy of
+the adaptive schemes in the detection of transient events. T he
+proposed system is able to improve accuracy by identifying
+the most appropriate model and features for training, detec ting
+changes in the distribution of incoming data, and identifyi ng
+the most reliable sensing modality. Our ﬁndings highlight t he
+need for an adaptive machine learning scheme in the design
+of parking occupancy detection systems. In future work, we
+will continue the data collection process using other sensi ng
+modalities. We will also continue to improve the accuracy
+of the proposed system and perform ﬁeld studies with actual
+prototypes in additional parking sites.
+IX. A CKNOWLEDGEMENTS
+We would like to thank Seng-Y ong Lau for his contributions
+to the hardware design and prototype of the parking nodes,
+and Min-Jhih Huang and Y ou-Zhi-Jia Hu for their assistance
+in the processing of the collected data. We are grateful to th e
+Computer and Information Networking Center, National Tai-
+wan University for the support of high-performance computi ng
+facilities. This work was supported in part by the Ministry
+of Science and Technology of Taiwan under Grants MOST
+105-2633-E-002-001 and 105-2221-E-002-172, and NSFC No.
+61572324.
+
+===== PAGE 10 =====
+
+REFERENCES
+[1] Accelerating sustainability: Demonstrating the beneﬁt s of transportation
+technology. http://digitalenergysolutions.org/dotAss et/933052fc-0c81-
+43cf-a061-6f76a44459d6.pdf.
+[2] ADEC Technologies. http://www.adec-technologies.ch .
+[3] AN218: V ehicle Detection Using AMR Sensor. http://www5 1.honeyw
+ell.com/aero/common/documents/myaerospacecatalog-documents/Defen
+se Brochures-documents/Magnetic Literature Application notes-doc
+uments/AN218 Vehicle Detection Using AMR Sensors.pdf.
+[4] ARCT TM1276 LoRa Transceiver module. http://www.arct.c om.tw/we
+b/.
+[5] Fastprk. http://www.fastprk.com/.
+[6] Fastprk — Sigfox Partner Network. https://partners.si gfox.com/produc
+ts/fastprk.
+[7] Fastprk — Worldsensing. http://www.worldsensing.com/ solutions/mobil
+ity/technology/fastprk-en.html.
+[8] Hellinger distance. https://www.encyclopediaofmath. org/index.php/Hel
+linger
+distance.
+[9] Honeywell HMC5883 3-Axis Digital Compass IC. https://ww w.seeeds
+tudio.com/wiki/images/4/42/HMC5883.pdf.
+[10] Kolmogorov-Smirnov test. https://www.encyclopediaof math.org/index.p
+hp/Kolmogorov%E2%80%93Smirnov test.
+[11] Kruskal-Wallis H Test using SPSS Statistics. https:// statistics.laerd.com
+/spss-tutorials/kruskal-wallis-h-test-using-spss-st atistics.php.
+[12] The learning curve of smart parking. http://www.nytimes .com/2012/12/
+23/technology/smart-parking-has-a-learning-curve-too .html.
+[13] Periodic Reporting for period 1 - FASTPRK-2. http://co rdis.europa.eu/r
+esult/rcn/186387 en.html.
+[14] SFpark project. http://sfpark.org.
+[15] Smart Parking Should Be High on List of Priorities for Cit y Man-
+agers. https://machinaresearch.com/report/smart-parking -should-be-hig
+h-on-list-of-priorities-for-city-managers/.
+[16] Streetline and Cisco Introduce Camera-Based Smart Parki ng Sensing
+and Integrated Network Solution. http://www.streetline. com/2014/05/st
+reetline-cisco-introduce-camera-based-smart-parking-s ensing-integrat
+ed-network-solution-2/.
+[17] Streetline Inc. http://www.streetline.com.
+[18] Taoglas 915MHz Embedded Ceramic Patch Antenna. https:// www.taog
+las.com/wp-content/uploads/2015/06/ISPC.91A.09.0092E.pdf.
+[19] TAOS TSL2561 Light-to-Digital Converter. https://cd n-shop.adafruit.co
+m/datasheets/TSL2561.pdf.
+[20] The project - FastPrk2. http://www.fastprk2.eu/the- project/.
+[21] TI MSP430 ultra-low-power Microcontrollers. http:// www.ti.com/lsds/ti
+/microcontrollers
+16-bit 32-bit/msp/overview.page.
+[22] Urbiotica. http://www.urbiotica.com/en/.
+[23] Worldsensing starts Fastprk-2 project. http://www.f astprk.com/media-ne
+ws/fp-news.html?wsdetail=%20284.
+[24] K. Blumer, H. R. Halaseh, M. U. Ahsan, et al. Cost-effecti ve single-
+camera multi-car parking monitoring and vacancy detection tow ards real-
+world parking statistics and real-time reporting. In Proc. ICONIP 2012
+- V olume Part V, pages 506–515. Springer-V erlag, 2012.
+[25] D. Brain and G. I. Webb. On the effect of data set size on bi as
+and variance in classiﬁcation learning. In Proc. Australian Knowledge
+Acquisition Workshop (AKAW-99) , pages 117–128. The University of
+New South Wales, 1999.
+[26] M. Y . Idris, Y . Y . Leng, E. M. Tamil, et al. Car Park System: A Review
+of Smart Parking System and its Technology. Information Technology
+Journal, 8(2):101–113, 2009.
+[27] P . Legendre and E. D. Gallagher. Ecologically meaningfu l transforma-
+tions for ordination of species data. Oecologia, 129(2):271–280, 2001.
+[28] S. Mathur, T. Jin, N. Kasturirangan, et al. Parknet: Dri ve-by sensing of
+road-side parking statistics. In Proc. MobiSys ’10 , pages 123–136, New
+Y ork, NY , USA, 2010. ACM.
+[29] S. Nawaz, C. Efstratiou, and C. Mascolo. Parksense: A sma rtphone
+based sensing system for on-street parking. In Proc. MobiCom ’13 ,
+pages 75–86, New Y ork, NY , USA, 2013. ACM.
+[30] San Francisco Municipal Transportation Agency. SFpar k: Putting The-
+ory Into Practice - Post-launch Implementation Summary and Less ons
+Learned. Technical report, August 2011.
+[31] H. Wang, W. Fan, P . S. Y u, et al. Mining concept-drifting data streams
+using ensemble classiﬁers. In Proc.KDD ’03, pages 226–235, New Y ork,
+NY , USA, 2003. ACM.

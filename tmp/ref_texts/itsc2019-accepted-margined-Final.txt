@@ -1,0 +1,801 @@
+
+
+===== PAGE 1 =====
+
+© 2019 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained 
+for all other uses, in any current or future media, including reprinting/republishing this material 
+for advertising or promotional purposes, creating new collective works, for resale or 
+redistribution to servers or lists, or reuse of any copyrighted component of this work in other 
+works. 
+
+===== PAGE 2 =====
+
+MagSpeed: A Novel Method of Vehicle Speed Estimation Through A Single
+Magnetic Sensor
+Yimeng Feng1, Guoqiang Mao 2, Bo Cheng 3, Baoqi Huang 4, Shangbo Wang 5 and Junliang Chen 6
+Abstract— Internet of Things (IoT) is playing an increasingly
+important role in Intelligent Transportation Systems (ITS) for
+real-time sensing and communication. In ITS, the velocity of
+vehicles provides important information for trafﬁc manage-
+ment. However, the present methods for monitoring vehicle
+speed have many shortcomings. In this paper, we propose
+MagSpeed, a novel vehicle speed estimation method based
+on a small magnetic sensor. The developed magnetic sensor
+system is wireless, cost-effective, and environmental-friendly.
+Through modelling of local magnetic ﬁeld perturbations caused
+by a moving vehicle, we extract the characteristics of magnetic
+waveforms for speed estimation. In addition, we compare
+the performance of the models with other speed estimation
+algorithms, which shows the superior accuracy of the proposed
+technique in speed estimation.
+I. I NTRODUCTION
+Intelligent Transportation System (ITS) has developed
+rapidly over the last decade. The main purpose of the ITS
+is to enhance the transportation systems’ safety, efﬁciency,
+and cost effectiveness. Trafﬁc surveillance provides trafﬁc
+ﬂow information for ITS through kinds of trafﬁc sensors.
+And ITS takes the advantage of trafﬁc ﬂow information to
+improve trafﬁc management. In this paper, we target at the
+problem of vehicle speed estimation using a single magnetic
+sensor on the road.
+The ﬁne-grained monitoring of vehicle speed plays an
+important role in ITS. The U.S. National Highway Trafﬁc
+Safety Administration (NHTSA) reported 37,461 trafﬁc fa-
+talities in 2016, 26% of which are speed-related. [1] Many
+trafﬁc surveillance technologies are introduced and have been
+studies for trafﬁc data collection, like inductive loops [2],
+video based image processing methods [3], etc. Urban areas
+have many complex environments, trafﬁc situation estimation
+needs accurate vehicle speed data.
+1Yimeng Feng is with State Key Laboratory of Networking and Switching
+Technology, Beijing University of Posts and Telecommunications, China.
+She is also with School of Electrical and Data Engineering, University of
+Technology, Sydney, Australia. fyimeng@mail.bupt.edu.cn
+2Guoqiang Mao is with School of Electrical and Data Engineering,
+University of Technology, Sydney, Australia. He is also with State Key
+Laboratory of Integrated Services Networks, Xidian University, China.
+Guoqiang.Mao@uts.edu.au
+3Bo Cheng is with State Key Laboratory of Networking and Switching
+Technology, Beijing University of Posts and Telecommunications, China.
+chengbo@mail.bupt.edu.cn
+4Baoqi Huang is with College of Computer Science, Inner Mongolia
+University, China.
+5Shangbo Wang is with Institute of Transport and Logistics Studies, The
+University of Sydney Business School, Australia.
+6Junliang Chen is with State Key Laboratory of Networking and
+Switching Technology, Beijing University of Posts and Telecommunications,
+China.
+Recently, magnetic sensors are considered for vehicle
+speed estimation. [4] Current vehicle speed acquisition meth-
+ods using magnetic sensor often employ more than one mag-
+netic sensors. [5], [6] However, using two or more well sep-
+arated magnetic sensors for speed estimation, requires these
+magnetic sensor units to be very well synchronized, which in
+turn signiﬁcantly increases both the energy consumption and
+communication overheads. Both are main considerations for
+Internet of Things (IoT) devices. Furthermore, the use of two
+or more magnetic sensor units will signiﬁcantly increase the
+size of the IoT device, which also prohibits its widespread
+use.
+In this paper we consider a new approach, which uses a
+single magnetic sensor to estimate vehicle speed. The under-
+lying idea is to measure the local magnetic ﬁeld perturbations
+as vehicles passing by the magnetic sensor. A number of
+challenges arise in the design of the proposed approach. First,
+using only one sensor to estimate the result of vehicle speed
+needs a thorough understanding of metal object’s magnetic
+characteristics. Second, modelling on the local magnetic ﬁeld
+perturbation caused by a moving vehicle is essential. Finally,
+the magnetic sensor readings are noisy and the environment
+noise needs to be considered and removed to obtain precise
+results.
+This paper presents MagSpeed, a novel vehicle speed
+estimation method based on a small magnetic sensor. The
+MagSpeed uses only one magnetic sensor to estimate vehicle
+velocity by modelling a vehicle as a magnetic dipole. We
+ﬁnd that different speeds of a moving magnetic dipole will
+result in different characteristics of the magnetic waveforms.
+The ﬁlter of raw magnetic data is used for reducing the
+environmental noise, thus it can give an accurate magnetic
+output caused by moving vehicle. We give vehicle speed
+estimation using ﬁtting models. MagSpeed is easy and cost
+efﬁcient to implement on road. Experiments are conducted in
+Xi An, China to establish the effectiveness of the proposed
+technique.
+Speciﬁcally, our key contributions are threefold:
+• We propose to conduct accurate vehicle speed estima-
+tion using only one magnetic sensor. The magnetic sen-
+sor is small, cost-effective, and environmental-friendly.
+• We present a motion model which illustrates the local
+magnetic ﬁeld perturbation caused by a moving vehicle
+and we give simulation results for the magnetic pertur-
+bations caused by a car.
+• We develop a vehicle speed estimation technique,
+MagSpeed, which utilizes ﬁltered magnetic waveform
+to measure vehicle speeds. Road experiments are con-
+
+===== PAGE 3 =====
+
+ducted to validate the effectiveness of the proposed
+technique.
+The rest of the paper is organized as follows: Section
+II brieﬂy reviews related works. Section III describes the
+design of vehicle speed estimation technique, MagSpeed.
+Section IV shows the experimental validation of vehicle
+speed estimation. Finally, Section V concludes the paper.
+II. R ELATED WORK
+In this section, we review current methods for vehicle
+speed estimation, which is divided into two sub-sections.
+One is general methods of speed acquisition, the other is
+speed estimation using magnetometers.
+A. General methods of speed acquisition
+Many intrusive techniques are used on highways or main
+roads for speed estimation, such as inductive loops, vision
+based image processing method, and GPS on smartphone.
+Inductive loop detectors that are embedded in the road sur-
+face are considered as intrusive methods. [2] These detectors
+are required to be installed under the road surface, which
+results in very high installation and maintenance costs.
+To reduce installation and maintenance costs, vision based
+trafﬁc camera systems have been adopted. [3] The data
+transmission volume is large and the effect is dependent
+on good weather. In other words, the accuracy of vision
+based system suffers in bad weather conditions and low
+illumination and visibility conditions.
+Using GPS on smartphone can be a simple way to ob-
+tain vehicle speed, it sometimes suffers from urban canyon
+environment and returns low speed precision.
+B. Speed estimation using magnetometers
+Recently, there are a number of researchers considered
+vehicle detection and speed estimation methods with mag-
+netic sensors. Balid [7] deployed multiple sensors on a road
+for trafﬁc surveillance. Their work can successfully detect
+vehicles and estimate various speed of vehicles through a
+set of magnetic sensors along the road.
+x
+y
+z
+Uniform  Highly-Distorted   Slightly-Distorted  Highly-Distorted  Uniform
+Magnetic Sensor
+Fig. 1. Magnetic perturbation caused by a vehicle [7]
+Obertov in [8] achieved the speed estimation with the
+accuracy about 90% through measuring magnetic length
+using a roadside node with an accelerometer and magnetic
+sensor.
+Taghvaeeyan in [4] proposed applying four magnetic
+nodes for vehicle speed measurement and vehicle counting,
+which resulted in good classiﬁcation rate and average speed
+detection.
+The technique in [5] adopted two magnetic sensors for
+vehicle speed estimation and a third magnetic sensor for data
+fusion, which results in speed estimation accurate rate about
+80%.
+Studies in [9] and [10] proposed algorithms for speed
+estimation using two magnetometers. It is worth noting that
+these methods need to estimate average speed based on the
+number of passing vehicles over time.
+Vehicle detection and classiﬁcation through an improved
+support vector machine classiﬁer was proposed in [11]
+using magnetic sensors. They use magnetic signatures to
+distinguish different kinds of vehicles, such as heavy tracked,
+tracked, and light-wheeled vehicles. However, the experiment
+setup is expensive, which required an enormous amount of
+road work as well as it requires high processing capability.
+Marshall in [12] ﬁrst introduced metal’s magnetic effect
+of vehicle body and simulated a scenario to detect a vehicle
+using magnetic sensors. Chueng in [13], [14] developed a
+feature selection model for vehicle classiﬁcation using a
+single magnetic sensor in which 17 features were initially
+identiﬁed and extracted, and 10 optimal features were even-
+tually selected for classiﬁcation.
+There are also work on using combination of magnetic
+sensors for vehicle information acquisition. Studies in [15],
+[16], [17] propose vehicle classiﬁcation based on machine
+learning of the signal waveforms.
+Obtaining the vehicle speed is becoming more and more
+crucial in supporting real-time trafﬁc management. In the
+aforementioned studies, speed was estimated using two or
+more magnetic sensors.
+Our work is different from the previous studies in that
+we investigate a single magnetic sensor approach for vehicle
+speed estimation without damage to the road.
+III. D ESIGN OF MAGSPEED
+In this section, we present the design of our proposed
+system, MagSpeed, which estimates vehicle speed through
+measuring and modelling local magnetic ﬁeld perturbation
+caused by moving vehicles. The deployment of MagSpeed
+only depends on a tiny magnetic sensor. We ﬁrst explain
+MagSpeed from the working mechanism of metal objects’
+magnetic characteristics, then describe the motion process
+of moving vehicle, and ﬁnally illustrate the ﬁlter model for
+removing background noise.
+A. Magnetic dipole Model
+For a vehicle with a certain speed passing on a road,
+it leads to perturbations of the local magnetic ﬁelds. The
+vehicle can be seen as a magnetic dipole [18]. Fig. 1
+illustrates the magnetic distribution of the magnetic ﬂux lines
+when the earth’s magnetic ﬁeld is temp oratory changed by
+
+===== PAGE 4 =====
+
+a vehicle, of which the wheels are distorted highly and the
+body is slightly distorted. For a magnetic dipole, its magnetic
+ﬁeld can be expressed as (1) [19], [20]:
+B =
+
+
+3x2−r2 3xy 3xz
+3xy 3y2−r2 3yz
+3xz 3yz 3z2−r2
+
+• u0m
+4πr5 (1)
+where m is the magnetic moment of a dipole, u0 is mag-
+netic permeability,r is the distance between the measurement
+position and the magnetic dipole, withr2 =x2+y2+z2 . The
+tensor notation of the equation in the orthogonal coordinate
+system will take the following form with the expansion of
+magnetic vector being m =
+( mx my mz
+)
+:
+B =
+
+
+3x2−r2 3xy 3xz
+3xy 3y2−r2 3yz
+3xz 3yz 3z2−r2
+
+•
+
+
+mx
+my
+mz
+
+· u0
+4πr5
+(2)
+where mx is the component of the magnetic moment on
+the x-axis, my is the component of the magnetic moment
+on the y-axis and mz is the component of the magnetic
+moment on the z-axis, respectively,• and means dot product.
+It follows from (2) that:
+Bx =
+((
+3x2−r2)
+·mx + 3xy·my + 3xz·mz
+)
+· u0
+4πr5
+(3)
+By =
+(
+3xy·mx +
+(
+3y2−r2)
+·my + 3yz·mz
+)
+· u0
+4πr5 (4)
+Bz =
+(
+3xz·mx + 3yz·my +
+(
+3z2−r2)
+·mz
+)
+· u0
+4πr5 (5)
+For the magnetic value of x axis, we expand the value of
+r and simplify the expression of Bx as follows:
+Bx =
+((
+2x2−y2−z2)
+·mx + 3xy·my + 3xz·mz
+)
+· u0
+4π (x2 +y2 +z2)
+5
+2
+(6)
+Because the exact movement direction and value of mag-
+netic moment are unknown, we set default m = (1, 1, 1) for
+simulation. [21], [22], [19], [23]. Fig. 2 gives the magnetic
+waveform corresponding to different speed of a magnetic
+dipole on x axis, which varies between 20 km/h to 50 km/h.
+As can be seen from the ﬁgure, with different vehicle speeds,
+the period for detected magnetic distortion is changing over
+time.
+B. Moving V ehicle Motion Model
+Three-dimensional Cartesian coordinate system is set up
+from the view of the magnetic sensor, which is the original
+point (0, 0, 0). For a moving vehicle with a speed ofvx (vx >
+0), and an initial position (x0,y 0,z 0), driving along the x
+axis. The initial value ofx0 < 0, the initial value ofy0 is zero
+and the initial value of z0 is non-negative and is small. After
+0 50 100 150
+t
+-1.5
+-1
+-5
+0
+5
+1
+Magnetic field/(uT)
+20km/h--x
+30km/h--x
+40km/h--x
+50km/h--x
+Fig. 2. The simulation of x-axis from 20 km/h to 50 km/h
+a period of time t (t > 0), the vehicle’s location becomes
+(x0 +vx·t,y 0,z 0) .
+Then the function for Bx of t is given like:
+f (t) = 2 (x0 +vx·t)2·mx· u0
+4π
+(
+(x0 +vx·t)2 +D
+)5
+2
++3vx·t·y0·my· u0
+4π
+(
+(x0 +vx·t)2 +D
+)5
+2
++3vx t·z0·mz· u0
+4π
+(
+(x0 +vx·t)2 +D
+)5
+2
++C· u0
+4π
+(
+(x0 +vx·t)2 +D
+)5
+2
+= A∗ (x0 +vx·t)2 +B∗vx·t +C
+(x0 +vx·t)5 +D
+(7)
+where A = 2mx·u0
+4π ,
+B = 3z0·mz·u0
+4π ,
+C = 3x0·z0·mz·u0−z2
+0 ·mx·u0
+4π ,
+D =
+(
+(x0 +vx·t)2 +z2
+0
+)5
+2
+− (x0 +vx·t)5
+Since z0 can be assumed to be small , the values of
+B and C are also small and can be neglected. Thus, an
+approximation can be applied.
+Bx ≊ A∗ (x0 +vx·t)2
+(x0 +vx·t)5 +D
+(8)
+Let f (t) = Bx ,
+f (t) = A∗ (x0 +vx·t)2
+(x0 +vx·t)5 +D
+(9)
+The denominator in (9) is polynomial and is hard to
+analyze ﬁfth root at polynomial. Let the reciprocal of f (t)
+be g(t) = 1
+f (t), then
+g(t) = (x0 +vx·t)5 +D
+A∗ (x0 +vx·t)2 (10)
+
+===== PAGE 5 =====
+
+Meanwhile, letting vx·t = x. x reﬂects the change of
+positions with a speed vx as time t passes. Because vx > 0
+and t> 0, so x> 0, and we have
+g(x) = 1
+A (x0 +x)3 + D
+A(x0 +x)2
+= 1
+Ax3 + 3x0
+A x2 + 3x0
+A x + x03
+A + D
+A(x0 +x)2 (11)
+As the value of x (x > 0) increases, 1
+Ax3 + 3x0
+A x2 +
+3x0
+A x + x0
+3
+A increases, and D
+A(x0+x)2 decreases. There is a
+turning point that reaches the local minimum value for g(x)
+is at x =
+5√
+−D−x0 , which allows 1
+Ax3 + 3x0
+A x2 + 3x0
+A x +
+x0
+3
+A + D
+A(x0+x)2 = 0.
+If x <
+5√
+−D− x0, the dominating term for g(x) is
+D
+A(x0+x)2 , thus g(x) = D
+A(x0+x)2 +ε1 , ε1 is system error.
+If x =
+5√
+−D−x0, g(x) = 0 .
+Ifx>
+5√
+−D−x0, the dominating term forg(x) is 1
+A (x0+
+x)3,thus g(x) = 1
+A (x0 +x)3 +ε2, ε2 is system error.
+g(x) =
+
+
+
+D
+A(x0+x)2 +ε1 x<
+5√
+−D−x0
+0 x =
+5√
+−D−x0
+1
+A (x0 +x)3 +ε2 x>
+5√
+−D−x0
+(12)
+x0,vx does not change with time t . Through the analysis
+ofg(x), there are four approximations models of f (t) given
+as follows based on the above discussions:
+Model 1: power form
+f1(t) = atb +c +ε1 (13)
+Model 2: polynomial form
+f2(t) = a0 +a1t +a2t2 +a3t3 +... +antn +ε2 (14)
+Model 3: rational form
+f3(t) = p1
+t3 +q1t2 +q2t +q3
++ε3 (15)
+Model 4: combination of polynomial form and rational
+form
+f4(t) = λ1t3 +λ2t2 +λ3t +λ4 +λ5· (t(−3)) +ε4 (16)
+Now the relationships between time and the magnetic ﬁeld
+perturbation caused by a moving vehicle are given as afore-
+mentioned. If we combine the models with real time data
+t , the parameters above can be calculated correspondingly.
+There is a value t0 when Bx = 0, which is the point which
+allowsf (t) = 0 . For different speeds,t0s are different, which
+reﬂects the interval between the beginning of x-axis and the
+time at Bx = 0 . Given the different t0s, it will reﬂect the
+real driving speed of the vehicles respectively, which outputs
+the estimation results of vehicle speed. In addition, the t0s
+are obtained from real trafﬁc data and preprocessed from
+noise. So signal processing techniques and ﬁlter techniques
+are applied in the next section. Experimental results for the
+models are given in section IV .
+C. Signal Processing Model
+Measurements in real road condition are full of back-
+ground noise and are affected by earth’s magnetic ﬁeld. [18]
+It makes the signals hard to distinguish the passing vehicles.
+So a low pass ﬁlter is used to make the waveforms pure and
+clear. [11]
+The earth’s magnetic value are (Bx0,By0,Bz0), and
+(Xi,Yi,Zi) are the values recorded by the magnetic sensor
+when a vehicle is passing. (Xi,Yi,Zi) is the The perturbation
+caused by a passing vehicle is (Bx,By,Bz), then
+(Bx,By,Bz) = (Xi−Bx0,Yi−By0,Zi−Bz0) (17)
+Fig. 3 shows the waveforms of (Xi,Yi,Zi) for a small
+vehicle at the speed of 30 km/h. The vertical axis B (µT )
+reﬂects the perturbation caused by the small vehicle. The
+horizontal axis t reﬂects time with the sampling frequency
+of a magnetic sensor.
+0 20 40 60 80 100
+t
+-400
+-200
+0
+200
+400
+600
+800
+B(uT)
+Real Data of 30km/h in Time Domain
+x-axis
+y-axis
+z-axis
+Fig. 3. Real magnetic perturbtation before the ﬁlter model
+There are lots of noises in the real environment, besides
+reduce the (Bx0,By0,Bz0), we apply Fast Fourier Transform
+(FFT) and use a low pass ﬁlter for (Bx,By,Bz) to eliminate
+noise effect. So after the FFT signal processing, Fig. 4 shows
+the ﬁltered and normalized waveforms for a vehicle at the
+speed of 30 km/h.
+0 20 40 60 80 100
+t
+-100
+-50
+0
+50
+100
+150
+200
+250
+B(uT)
+Filtered Normalized Real Data of 30km/h in Time Domain
+x-axis
+y-axis
+z-axis
+Fig. 4. Real magnetic perturbation after the ﬁlter model
+Through the signal processing model, it is visual to
+separate t0 for each speed’s waveform. The missing data
+
+===== PAGE 6 =====
+
+issue is also not negligible, so we conduct 5 times experiment
+for each speed and obtain the mean value of t0s to eliminate
+random errors. In the following section, we explain our
+experiments on road with a car driving in different speeds.
+IV. E XPERIMENTAL VALIDATION
+In this section, we present the evaluation of our speed
+estimation system, MagSpeed, in real driving environments
+in Xian, China.
+A. Experiment Setup
+We evaluate our speed estimation system, MagSpeed, in
+real driving environments with a single magnetic sensor on
+the road. Fig. 5 shows an experiment setup on a target road.
+The sensor in the experiment is RM3100 magnetic sensor,
+which outputs magnetic vibration in three axis. The size of
+the chip is only as large as a coin and the overall size of the
+sensor is tiny, which is portable for trafﬁc surveillance. We
+also put a camera on roadside to record the overall driving
+period. The setup is mainly aimed at urban roads with low
+speeds. Therefore, for each speed of 15 km/h, 20 km/h, 25
+km/h, 30 km/h, 35 km/h, 40 km/h, 45 km/h, we drive ﬁve
+times to ensure we have obtained accurate magnetic data.
+Experiment Car
+Camera
+Magnetic sensor
+Fig. 5. Experiment setup
+B. Experimental Results
+After combining real world data with MagSpeed, we
+receive the estimated values of each ﬁtting models based
+on the discussion in section III. Given the time of driving
+vehicle, parameters are calculated by MATLAB R2018 on
+windows 10 as follows.
+For power form, f1(t) = atb +c +ε1. Coefﬁcients (with
+95% conﬁdence bounds): a = 16 .42,b = −0.8424,c =
+−0.01758.
+For polynomial form, f2(t) = a0 +a1t +a2t2 +a3t3 +
+... +antn +ε2 . Coefﬁcients (with 95% conﬁdence bounds):
+a0 = 102.3,a 1 =−275.2,a 2 = 325.9,a 3 =−136.2.
+For rational form, f3(t) = p1
+t3+q1t2+q2t+q3
++ε3. Coefﬁ-
+cients (with 95% conﬁdence bounds): p1 = 10 .51,q 1 =
+−1.819,q 2 = 1.585,q 3 =−0.1058.
+For combination form, f4(t) = λ1t3 +λ2t2 +λ3t +λ4 +
+λ5· (t(−3)) +ε4. Coefﬁcients (with 95% conﬁdence bounds):
+λ1 = 37.36,λ 2 =−77.11,λ 3 = 27.48,λ 4 = 27.56,λ 5 =
+0.4019.
+C. Discussion
+0 1 2 3 4 5 6 7 8 9 10
+Speed Estimation Error (km/h)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+CDF
+CDF of the speed estimation errors among 4 models and control groups
+Using Model 1
+Using Model 2
+Using Model 3
+Using Model 4
+Using DDTW
+Using GPS
+Fig. 6. CDF of the speed estimation errors among 4 models and control
+groups
+Here we discuss the four proposed models with other
+work. Fig. 6 plots the cumulative distribution function (CDF)
+of the speed estimation errors (km/h) using the four pro-
+posed models, Derivative Dynamic Time Warping (DDTW)
+[24] and Localization algorithms. The results explain that
+we achieve high speed estimation performance in all four
+proposed models. For example, 80% of estimation errors are
+lower than 2 km/h if using the four proposed models, and
+50% of estimation errors are less than 1 km/h. In addition,
+only 10% of estimated speed errors in model 4 exceeds
+2km/h and almost all ﬁtting models achieve high accuracy
+within 5km/h. Thus, the proposed ﬁtting models are robust
+for vehicle speed estimation. In the meantime, we compare
+the four proposed models with DDTW (Derivative Dynamic
+Time Warping) and GPS. From Fig. 6, it can be seen that
+the ﬁtting models outperforms GPS in speed estimation.
+Compared with DDTW, the ﬁtting models still remain high
+precision. For example, 90% of DDTW’s estimation errors
+are less than 7 km/h. By contrast, all the estimation errors
+of the proposed models are lower than 5 km/h.
+D. V ehicle Speed Estimation Error Analysis
+In this part, we give the histograms of our four models
+to show the distribution of errors. As in Fig 7, through
+observation of the four models’ estimation error distributions,
+we can see the model that has less error and centered
+distribution is Model 4, which is the closest to the deviation
+result in Section III.
+Thus, for model 4, we achieve an error distribution result
+with µ = 0 .0030, σ2 = 1 .4356 , which has the mean
+of 0.0030, variance of 2.061. The overall vehicle speed
+estimation accuracy is 96.7%. For all models, the average
+vehicle speed estimation accuracy is 92.5%.
+
+===== PAGE 7 =====
+
+-6 -5 -4 -3 -2 -1 0 1 2 3 4
+difference in speed (km/h)
+0
+0.143
+0.285
+0.429
+probability
+(a) Model 1
+-6 -5 -4 -3 -2 -1 0 1 2 3 4
+difference in speed (km/h)
+0
+0.143
+0.285
+0.429
+probability (b) Model 2
+-6 -5 -4 -3 -2 -1 0 1 2 3 4
+difference in speed (km/h)
+0
+0.057
+0.114
+0.171
+0.229
+0.286
+0.343
+0.4
+0.457
+0.514
+probability
+(c) Model 3
+-4 -3 -2 -1 0 1 2 3 4
+difference in speed (km/h)
+0
+0.057
+0.114
+0.171
+0.229
+0.286
+0.343
+0.4
+0.457
+0.514
+probability (d) Model 4
+Fig. 7. Histograms of four models
+V. C ONCLUSIONS
+In this paper, we address the problem of performing
+accurate vehicle speed estimation in urban environments
+through a single magnetic sensor. In particular, we develop
+a vehicle speed estimation technique, MagSpeed, which uti-
+lizes normalized and ﬁltered magnetic waveforms to measure
+vehicle speeds. Also, road experiments are conducted to
+validate the effectiveness of the proposed technique. The
+magnetic sensor in our experiment is tiny, cost-effective,
+and environmental-friendly. While, sometimes the magnetic
+vibrations of the earth is not stable in different places as
+well as the adjacent lanes have effects on the measurement.
+In addition, it is part of our future work to combine with
+other sensor information to improve the performance of ﬁne-
+grained speed estimation. We will add analysis with multiple
+types of vehicles in the future through modelling analysis and
+real road test experiments.
+ACKNOWLEDGMENT
+This work was supported in part by the National
+Key Research and Development Program of China
+(2017YFB1400603). The authors would like to thank the
+anonymous reviewers for their comments. The authors would
+like to thank the effort of the students from Xidian University
+for the road experiment assistance.
+REFERENCES
+[1] N. H. T. S. A. Washington DC, “National center for statistics and
+analysis.” (2018, March, revised) Speeding: 2016 data (Trafﬁc Safety
+Facts. DOT HS 812 480).
+[2] C. Sun and S. G. Ritchie, “Individual vehicle speed estimation
+using single loop inductive waveforms,” Journal of Transportation
+Engineering, vol. 125, no. 6, pp. 531–538, 1999.
+[3] T. N. Schoepﬂin and D. J. Dailey, “Dynamic camera calibration of
+roadside trafﬁc management cameras for vehicle speed estimation,”
+IEEE Transactions on Intelligent Transportation Systems , vol. 4, no. 2,
+pp. 90–98, 2003.
+[4] S. Taghvaeeyan and R. Rajamani, “Portable roadside sensors for
+vehicle counting, classiﬁcation, and speed measurement,” IEEE Trans-
+actions on Intelligent Transportation Systems , vol. 15, no. 1, pp. 73–
+83, 2014.
+[5] Q. Wei and B. Yang, “Adaptable vehicle detection and speed esti-
+mation for changeable urban trafﬁc with anisotropic magnetoresistive
+sensors,” IEEE Sensors Journal , vol. 17, no. 7, pp. 2021–2028, 2017.
+[6] W. Balid, H. Taﬁsh, and H. H. Refai, “Development of portable
+wireless sensor network system for real-time trafﬁc surveillance,” in
+2015 IEEE 18th International Conference on Intelligent Transporta-
+tion Systems , Conference Proceedings, pp. 1630–1637.
+[7] ——, “Intelligent vehicle counting and classiﬁcation sensor for real-
+time trafﬁc surveillance,”IEEE Transactions on Intelligent Transporta-
+tion Systems , vol. 19, no. 6, pp. 1784–1794, 2018.
+[8] D. Obertov, V . Bardov, and B. Andrievsky, “Vehicle speed estimation
+using roadside sensors,” in 2014 6th International Congress on Ultra
+Modern Telecommunications and Control Systems and Workshops
+(ICUMT), Conference Proceedings, pp. 111–117.
+[9] H. Li, H. Dong, L. Jia, D. Xu, and Y . Qin, “Some practical vehicle
+speed estimation methods by a single trafﬁc magnetic sensor,” in 2011
+14th International IEEE Conference on Intelligent Transportation
+Systems (ITSC) . IEEE, Conference Proceedings, pp. 1566–1573.
+[10] D. Xiaoyong, H. Zhongwei, P. Zhang, and G. Jifu, “Vehicle class
+composition identiﬁcation based mean speed estimation algorithm
+using single magnetic sensor,” Journal of Transportation Systems
+Engineering and Information Technology , vol. 10, no. 5, pp. 35–39,
+2010.
+[11] J. Lan, Y . Xiang, L. Wang, and Y . Shi, “Vehicle detection and classi-
+ﬁcation by measuring and processing magnetic signal,” Measurement,
+vol. 44, no. 1, pp. 174–180, 2011.
+[12] S. V . Marshall, “Vehicle detection using a magnetic ﬁeld sensor,” IEEE
+Transactions on V ehicular Technology, vol. 27, no. 2, pp. 65–68, 1978.
+[13] S. Cheung, S. Coleri, B. Dundar, S. Ganesh, C.-W. Tan, and P. Varaiya,
+“Trafﬁc measurement and vehicle classiﬁcation with single magnetic
+sensor,” Transportation research record: journal of the transportation
+research board, no. 1917, pp. 173–181, 2005.
+[14] S. Y . Cheung, S. C. Ergen, and P. Varaiya, “Trafﬁc surveillance with
+wireless magnetic sensors,” in Proceedings of the 12th ITS world
+congress, vol. 1917, Conference Proceedings, p. 173181.
+[15] Q. Wang, J. Zheng, H. Xu, B. Xu, and R. Chen, “Roadside magnetic
+sensor system for vehicle detection in urban environments,” IEEE
+Transactions on Intelligent Transportation Systems , vol. 19, no. 5, pp.
+1365–1374, 2018.
+[16] D. Kleyko, R. Hostettler, W. Birk, and E. Osipov, “Comparison of
+machine learning techniques for vehicle classiﬁcation using road side
+sensors,” in 2015 IEEE 18th International Conference on Intelligent
+Transportation Systems, Conference Proceedings, pp. 572–577.
+[17] H. Li, H. Dong, L. Jia, D. Xu, and Y . Qin, “Some practical vehicle
+speed estimation methods by a single trafﬁc magnetic sensor,” in
+Intelligent Transportation Systems (ITSC), 2011 14th International
+IEEE Conference on. IEEE, Conference Proceedings, pp. 1566–1573.
+[18] S. Gontarz and Szulim, “Use of magnetic monitoring of vehicles
+for proactive strategy development,” Transportation Research
+Part C: Emerging Technologies , vol. 52, pp. 102–115, 2015.
+[Online]. Available: http://www.sciencedirect.com/science/article/pii/
+S0968090X1400357X
+[19] J. Xie, C. Qin, X. Zhou, L. Huang, X. Han, M. Wang, and L. Li, “The
+simulations and experiments of the electromagnetic tracking system
+based on magnetic dipole model,” IEEE Transactions on Applied
+Superconductivity, vol. 24, no. 3, pp. 1–4, 2014.
+[20] N. WahlstrÃ ¶m and F. Gustafsson, “Magnetometer modeling and
+validation for tracking metallic targets,” IEEE Transactions on Signal
+Processing, vol. 62, no. 3, pp. 545–556, 2014.
+[21] Q. Zhou, G. Tong, B. Li, and X. Yuan, “A practicable method for fer-
+romagnetic object moving direction identiﬁcation,” IEEE Transactions
+on Magnetics , vol. 48, no. 8, pp. 2340–2345, 2012.
+[22] S. Gontarz and S. Radkowski, “Impact of various factors on relation-
+ships between stress and eigen magnetic ﬁeld in a steel specimen,”
+IEEE Transactions on Magnetics , vol. 48, no. 3, pp. 1143–1154, 2012.
+[23] Y . Ren, C. Hu, S. Xiang, and Z. Feng, “Magnetic dipole model in the
+near-ﬁeld,” in 2015 IEEE International Conference on Information
+and Automation , Conference Proceedings, pp. 1085–1089.
+[24] G. Chandrasekaran, T. Vu, A. Varshavsky, M. Gruteser, R. P. Martin,
+J. Yang, and Y . Chen, “Tracking vehicular speed variations by warping
+mobile phone signal strengths,” in 2011 IEEE International Confer-
+ence on Pervasive Computing and Communications (PerCom) . IEEE,
+Conference Proceedings, pp. 213–221.

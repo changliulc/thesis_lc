@@ -33,6 +33,22 @@ class MorphologyParams:
     y_neg_gain_slope: float
 
 
+def configure_plot_style() -> None:
+    plt.style.use("default")
+    plt.rcParams.update(
+        {
+            "font.family": ["Times New Roman", "SimSun", "DejaVu Sans"],
+            "font.size": 13,
+            "axes.labelsize": 17,
+            "axes.titlesize": 16,
+            "xtick.labelsize": 13,
+            "ytick.labelsize": 13,
+            "legend.fontsize": 13,
+            "axes.unicode_minus": False,
+        }
+    )
+
+
 def load_best_model(path: Path) -> dict[str, object]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     best_key = str(payload["best_by_bic"])
@@ -359,6 +375,7 @@ def save_outputs(outputs: dict[float, dict[str, object]], output_dir: Path) -> N
 
 
 def plot_literature_style(outputs: dict[float, dict[str, object]], output_dir: Path) -> None:
+    configure_plot_style()
     fig, ax = plt.subplots(figsize=(10.8, 6.4))
     colors = {"x": "#e45756", "y": "#54a24b", "z": "#4c78a8"}
     gap = 16
@@ -371,9 +388,9 @@ def plot_literature_style(outputs: dict[float, dict[str, object]], output_dir: P
     for idx, speed_kmh in enumerate(sorted(outputs)):
         wf = np.asarray(outputs[speed_kmh]["cropped_waveform_nT"], dtype=np.float64)
         x = cursor + np.arange(wf.shape[0], dtype=np.float64)
-        ax.plot(x, wf[:, 0], color=colors["x"], linewidth=1.8, label="x" if idx == 0 else None)
-        ax.plot(x, wf[:, 1], color=colors["y"], linewidth=1.8, label="y" if idx == 0 else None)
-        ax.plot(x, wf[:, 2], color=colors["z"], linewidth=1.8, label="z" if idx == 0 else None)
+        ax.plot(x, wf[:, 0], color=colors["x"], linewidth=1.8, label="X轴" if idx == 0 else None)
+        ax.plot(x, wf[:, 1], color=colors["y"], linewidth=1.8, label="Y轴" if idx == 0 else None)
+        ax.plot(x, wf[:, 2], color=colors["z"], linewidth=1.8, label="Z轴" if idx == 0 else None)
 
         z_peak_idx = int(np.argmax(wf[:, 2]))
         peak_x = float(x[z_peak_idx])
@@ -391,17 +408,17 @@ def plot_literature_style(outputs: dict[float, dict[str, object]], output_dir: P
         ax.text(
             cursor + (wf.shape[0] - 1) / 2.0,
             y_min - 0.08 * y_span,
-            f"{wf.shape[0]} counts",
+            f"{wf.shape[0]}点",
             ha="center",
             va="top",
-            fontsize=10,
+            fontsize=12,
         )
         cursor += wf.shape[0] + gap
 
     ax.set_xlim(-3, cursor - gap + 3)
     ax.set_ylim(y_min - 0.16 * y_span, y_max + 0.20 * y_span)
-    ax.set_xlabel("Counts")
-    ax.set_ylabel("Field / nT")
+    ax.set_xlabel("采样点")
+    ax.set_ylabel("磁场扰动 / nT")
     ax.grid(True, alpha=0.25)
     ax.legend(
         loc="lower right",
@@ -415,9 +432,10 @@ def plot_literature_style(outputs: dict[float, dict[str, object]], output_dir: P
 
 
 def plot_overlay(outputs: dict[float, dict[str, object]], output_dir: Path) -> None:
+    configure_plot_style()
     fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=False)
     speed_colors = {20.0: "#4c78a8", 30.0: "#72b7b2", 40.0: "#54a24b", 50.0: "#e45756", 60.0: "#f58518"}
-    labels = ["X", "Y", "Z"]
+    labels = ["X轴", "Y轴", "Z轴"]
     for axis, ax in enumerate(axes):
         for speed_kmh in sorted(outputs):
             wf = np.asarray(outputs[speed_kmh]["cropped_waveform_nT"], dtype=np.float64)
@@ -426,12 +444,12 @@ def plot_overlay(outputs: dict[float, dict[str, object]], output_dir: Path) -> N
                 wf[:, axis],
                 linewidth=1.8,
                 color=speed_colors.get(speed_kmh, None),
-                label=f"{int(speed_kmh)} km/h ({wf.shape[0]} counts)",
+                label=f"{int(speed_kmh)} km/h（{wf.shape[0]}点）",
             )
         ax.set_ylabel(f"{labels[axis]} / nT")
         ax.grid(True, alpha=0.25)
     axes[0].legend(loc="upper right", fontsize=9)
-    axes[-1].set_xlabel("Local counts after cropping")
+    axes[-1].set_xlabel("截取后的局部采样点")
     fig.tight_layout()
     fig.savefig(output_dir / "speed_morphology_overlay.png", dpi=220)
     plt.close(fig)

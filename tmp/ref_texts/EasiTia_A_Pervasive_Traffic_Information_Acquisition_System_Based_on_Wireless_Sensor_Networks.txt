@@ -1,0 +1,765 @@
+
+
+===== PAGE 1 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011 615
+Short Papers
+EasiTia: A Pervasive Trafﬁc Information Acquisition
+System Based on Wireless Sensor Networks
+Rui Wang, Member , IEEE, Lei Zhang, Rongli Sun,
+Jibing Gong, and Li Cui, Member , IEEE
+Abstract—Trafﬁc information acquisition is often implemented by video
+cameras or inductive loops, which is expensive or inconvenient from
+installation and maintenance perspectives. We designed and implemented
+a pervasive trafﬁc information acquisition system based on wireless sensor
+networks called EasiTia. Unlike existing solutions, the implementation of
+the system does not require extra devices in the road infrastructure or
+vehicle, nor the excavation of the road surfaces. EasiTia can easily be
+deployed at roadsides. It is of low cost and resource efﬁcient. Our contribu-
+tions are given as follows: 1) To deal with low signal-to-noise ratios (SNRs)
+and stochastic disturbances in trafﬁc information acquisition, we proposed
+and implemented a cross-correlation-based vehicle-detection algorithm.
+2) To resolve the problems of data association, vehicle velocity calculation,
+and vehicle identiﬁcation, we proposed a collaborative trafﬁc information
+processing mechanism in the EasiTia system. Based on real road environ-
+ment experimental analysis, we demonstrate that EasiTia is an applicable
+and cost-effective candidate for a pervasive trafﬁc information acquisition
+system.
+Index Terms—Collaborative trafﬁc information processing, data associ-
+ation, trafﬁc information acquisition, wireless sensor networks (WSNs).
+I. I NTRODUCTION
+As the foundation of an intelligent transportation system (ITS),
+trafﬁc information plays an important role in an ITS system. At
+present, there are many trafﬁc information acquisition systems, such
+as the inductive loop monitoring system [1], [2], microwave [3], laser
+[4], infrared [5], and video [6], [7] monitoring system, which have been
+widely used to obtain trafﬁc information on expressways and main
+roads in a metropolis. These developed systems can acquire trafﬁc
+information of high quality in real time. However, nearly all the current
+trafﬁc information acquisition systems are wired. The detectors are
+ﬁrst laid on or embedded in the road; after that, they collect and send
+data to the trafﬁc management center through wires. Consequently, the
+deployment and maintenance of these systems is costly, and system
+scalability is limited. These disadvantages prevent the implementation
+of comprehensive trafﬁc information support for the ITS. Thus, a
+pervasive trafﬁc information acquisition system that is of low cost,
+convenient to deploy, and accurate in performance will be of great
+signiﬁcance to ITS implementation in developing countries.
+For reasons of low cost, high scalability, and deployment conve-
+nience, wireless sensor network (WSN)-based solutions have been re-
+Manuscript received June 25, 2010; revised August 31, 2010 and
+November 2, 2010; accepted November 3, 2010. Date of publication De-
+cember 30, 2010; date of current version June 6, 2011. This work was
+supported in part by the National Basic Research Program of China under
+Grant 2011CB302803, by the Beijing Natural Science Foundation under Grant
+4092045, and by the National Natural Science Foundation of China under
+Grant 61003292. The Associate Editor for this paper was M. Brackstone.
+The authors are with the Institute of Computing Technology, Chinese
+Academy of Sciences, Beijing 100190, China (e-mail: wangrui@ict.ac.cn;
+zhanglei82@ict.ac.cn; sunrongli@ict.ac.cn; gongjibing@ict.ac.cn; lcui@
+ict.ac.cn).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TITS.2010.2096467
+search hot spots in trafﬁc acquisition systems [8], [9]. A well-designed
+WSN-based solution for trafﬁc information acquisition systems should
+resolve two problems.
+1) A way to develop a real-time, accurate, and lightweight vehicle-
+detection algorithm. V ehicle detection is the fundamental sys-
+tem function, because only when vehicles are detected timely
+and accurately can vehicle information be obtained and more
+comprehensive trafﬁc information, such as trafﬁc volume, lane
+occupancy, and vehicle velocity be determined. Most existing
+[10], [11] methods process raw data with a ﬁlter and then use
+a threshold to detect a vehicle. These methods perform well
+when the noises and disturbances are relatively low. However,
+if the signal-to-noise ratio (SNR) is low, these methods will lead
+to serious degradation in detection quality, such as increases in
+false alarm and missed detection rates, leading to poor system
+performance. On the other hand, some constant false alarm rate
+(CFAR) [12] related methods perform well, but they demand
+much more computation resource. As a result, the ﬁrst challenge
+that should be taken into consideration is to develop an effective
+detection algorithm with limited resources.
+2) A way to realize collaborative information processing (CIP).
+When WSN is applied in the ﬁeld of trafﬁc information acqui-
+sition, because of the unpredictable on-road environment and
+poor single-node computation capacity, the road-monitoring task
+should be accomplished in a collaborative way. Furthermore,
+more comprehensive trafﬁc information cannot be determined
+from single-node data. To obtain the required information, CIP
+between multinodes is required. Due to the resource limitations,
+the mechanism for internode information sharing, processing,
+and fusion should be explored.
+In this paper, we propose a pervasive trafﬁc information acquisition
+system based on a WSN platform called EasiTia. Our main contribu-
+tions are given as follows: First, we developed a WSN-based pervasive
+trafﬁc information acquisition system, which can easily be deployed to
+various road conditions for trafﬁc information acquisition. Second, to
+resolve the problems of low detection rate and high false alarm rate in
+the on-road environment, we proposed a vehicle-detection algorithm
+based on cross correlation. Third, we developed a collaborative mech-
+anism that calculates vehicle information. With this mechanism, data
+from multinodes can be fused, and more vehicle information can be
+obtained.
+II. O
+VERVIEW OF EasiTia SYSTEM
+As shown in Fig. 1, EasiTia is composed of several information
+collection units, and each unit includes several sensor nodes and an
+information collection node. The sensor nodes are deployed alongside
+the roads and are set to a power-saving status. When a vehicle is
+detected, the sensor nodes will be woken up and acquire vehicle
+information. The collected data will be sent to the corresponding
+information collection node where the information will be fused and
+processed. By information fusion, the information collection node
+will produce comprehensive trafﬁc information for that unit and send
+it to a base station that is one or more hops away. In the base
+station, information from the different units will be merged, and useful
+information can be supplied to potential clients via the network.
+1524-9050/$26.00 © 2010 IEEE
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+616 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011
+Fig. 1. EasiTia system.
+Fig. 2. Easi210 hardware design. (a) Hardware design. (b) Sensor node.
+(c) Signal sampled by node.
+A. Hardware Design
+The sensor node is the basic cell of the EasiTia system. In our
+EasiTia System, we designed a wireless sensor node named EZ210
+[13]. As shown in Fig. 2, the sensor node is composed of a signal
+collection module, a preprocessing module, a microcontroller unit
+(MCU), a communication module, and a power control module. The
+signal collection module senses a vehicle and produces an electrical
+signal. The preprocessing module ampliﬁes the original electrical
+signal and performs analog-to-digital conversion. It also supplies a
+reset signal for the sensor. The MCU processes the signal and manages
+the other modules. The communication module works as a radio
+transmitter and receiver. The power control module supplies power for
+other modules.
+At present, the sensors used in a trafﬁc information acquisition
+mainly include the following types: image (camera) sensor, inductive
+loop detector, acoustic sensor, seismic sensor, magnetic sensor, etc.
+The image sensor acquires an abundance of information, but it is
+vulnerable to bad weather and nighttime operation. Furthermore, the
+image sensor requires more system resources. The seismic sensor and
+acoustic sensor are vulnerable to noise in deployment environments.
+Since a vehicle is ferrous, the strength of the earth’s magnetic ﬂux
+around the vehicle will be distorted. Consequently, we use the mag-
+netic sensor HMC1021Z [14] in vehicle detection.
+Fig. 3. EasiTia system architecture.
+B. Software Design
+Trafﬁc information processing algorithm design is the key to the
+EasiTia system. The information processing consists of sensing, vehi-
+cle detection, and vehicle information calculation. Generally, informa-
+tion processing can be designed in a centralized or a distributed way.
+However, in a trafﬁc information acquisition system, compared
+with a distributed processing mechanism, the centralized processing
+mechanism has the following three drawbacks.
+1) The processing center may become the bottleneck, because all
+the original data collected by the nodes are gathered in the center,
+and the center will undertake too many processing tasks.
+2) The large amount of data transmission occupies too much band-
+width.
+3) Sending back original data will consume too much energy, as
+the communication module is the most energy-wasting module
+in the node.
+For the reasons previously given, we use a distributed processing
+mechanism in the EasiTia system. Fig. 3 shows the information
+processing procedure.
+Magnetic data are collected by the sensor node. Then, it is processed
+by the vehicle-detection algorithm to detect the presence of a vehicle.
+When a vehicle is detected, the sensor node i will calculate the vehicle
+characteristic vector (feature information) VF
+i a n ds e n di tt ot h e
+information collection node.
+The information collection node listens and processes messages
+inside a monitoring unit. When VF i is received, it will ﬁrst be associ-
+ated to messages from other nodes, and then, a determination will be
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011 617
+made on whether these messages are generated from the same vehicle
+object. This process is called data association. After data association,
+information from different nodes but caused by the same vehicle will
+be brought together, and a record will be produced, which corresponds
+to the vehicle information in this unit. Based on these records, more
+comprehensive trafﬁc information such as vehicle identiﬁcation and
+velocity can be calculated.
+When the trafﬁc information is produced inside a collection unit,
+it will be sent to a base station one or more hops away. In the base
+station, records from different data collection units can be processed
+by a high-level fusion algorithm. Query and storage services can also
+be supplied by the base station.
+Considering the complicated on-road environment and the limi-
+tation of the node resource, effective trafﬁc information acquisition
+should provide accurate timely vehicle detection and collaborative traf-
+ﬁc information processing among the sensor nodes. We will describe
+the corresponding algorithms in the next section.
+III. A
+LGORITHM DESIGN
+A. Cross-Correlation-Based V ehicle-Detection Algorithm
+The aim of vehicle detection is to detect a passing vehicle in a
+ﬁxed region while the detection unit is subject to stochastic noises
+and disturbances. In this paper, we propose a cross-correlation-based
+vehicle-detection method called the CD algorithm. The aim of the
+CD algorithm is to improve the SNR by cross correlation and then
+to enable an improvement in detection performance.
+1) Algorithm Design: Without loss of generality, sensor measure-
+ment can be expressed as
+z(t)= s(t)+ n(t). (1)
+In (1), z(t) is a node measurement, and it is composed of two
+parts: s(t) and n(t). s(t) is the input signal, and n(t) is the measure-
+ment noise. Suppose that h(t) is a referential signal; then, the cross
+correlation of h(t) and z(t) is
+R
+zh(t)=
++∞∫
+−∞
+h(τ)z(t − τ)dτ
+=
++∞∫
+−∞
+h(τ)(s(t − τ)+ n(t − τ))dτ. (2)
+It is obvious that, if z(t) is the input, Rzh(t) is the output. When
+h(τ)= s(t0 − τ), the maximum spectral energy of s(t) will be re-
+tained, so the largest SNR will appear in t0. Obviously, a larger SNR
+will be helpful in detecting useful signal from background noise.
+Based on the preceding analysis, the CD algorithm can be described
+as follows: First, the cross correlation of z(t) and h(t) will be
+calculated; then, the result Rzh(t) will be used to determine the signal
+type and vehicle-detection output. As we use cross correlation to
+increase SNR, we can obtain high detection performance with a simple
+threshold method.
+2) Choice of Referential Signal: In the CD algorithm, the key
+problem is to choose a proper referential signal.
+Ideally, when a vehicle passes a sensor, the sensor response will
+reﬂect the strength change in the magnetic ﬂux. Therefore, we can
+choose the change curve of magnetic ﬂux as the referential signal.
+In the scenario shown in Fig. 4, a sensor is ﬁxed at point C; the
+vehicle starts from point A, runs at velocity v, and reaches point B
+Fig. 4. Sensor and vehicle at time instant t.
+Fig. 5. CD algorithm response.
+at time t. Thus, the strength of the earth’s magnetic ﬁeld around the
+vehicle can be expressed by the following equation [15]:
+H = m/ur3 + n (3)
+where m is the magnetization, r is the distance between the sensor and
+the vehicle, u is the media constant, and n is the measurement noise.
+Then, the distance between B and C is given as follows:
+lBC(t)=
+√
+d2 +( l − vt)2. (4)
+According to (3) and (4), the magnetic strength H(t) is given as
+follows:
+H(t)= m/
+(
+u ·
+(
+d2 +( l − vt)2)3/2
+)
++ n. (5)
+Then, the referential signal can be expressed as
+h(t)= m/
+(
+u ·
+(
+d2+(l− vt)2)3/2
+)
+,
+√
+d2+( l− vt)2 ⩽Rs (6)
+where Rs indicates the maximum sensing range of the sensor. Appar-
+ently, an extreme value of h(t) will be obtained if t = l/v. According
+to (6), we have (l −
+√
+(R2
+s − d2))/v ⩽ t ⩽ (l +
+√
+(R2
+s − d2))/v,
+so the time duration of referential signal 2τ is 2
+√
+(R2
+s − d2)/v,w h e r e
+2τ indicates the time duration for a vehicle passes the detection unit.
+Consequently, the value of τ conforms to
+τ =
+√
+(R2
+s − d2)/vmean (7)
+where vmean indicates the average speed of the vehicle.
+3) V ehicle Feature Calculation: Once a vehicle is detected by the
+CD algorithm, vehicle feature information will be calculated by the
+sensor node. A typical vehicle response is shown in Fig. 5. In this
+ﬁgure, T
+p identiﬁes the time instant when the distance between the
+vehicle and sensor is minimal (peak time instant), and Sp is the
+response height (peak height) at the time instant Tp.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+618 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011
+Fig. 6. Simulation scenario.
+B. Collaborative Trafﬁc Information Processing
+Obviously, it is difﬁcult to gain comprehensive trafﬁc information
+based only on information provided by a single node. Furthermore,
+we cannot acquire the comprehensive trafﬁc information simply by
+accumulating information from several sensor nodes. Consequently,
+internode CIP needs to be considered. In this section, we utilize CIP to
+solve three important problems in trafﬁc information acquisition, i.e.,
+data association, velocity calculation, and vehicle identiﬁcation.
+1) Basic Assumptions and Deﬁnitions: EasiTia is composed of
+information collection units. In each information collection unit, four
+sensor nodes S
+1, S2, S3,a n d S4 will be put on the roadside in a
+rectangular manner, as shown in Fig. 6. Moreover, we assume that
+the node location is given. Correspondingly, if Si detects a vehicle
+presence, it will send vehicle information to an information collection
+node. Without loss of generality, we assume that the two nodes on the
+two sides ( S
+1 and S2,o r S3 and S4 in Fig. 6) will detect a vehicle at
+the same instant in time. In our on-road experiments, we found that,
+in practice, the difference in the time instants of detection of these two
+nodes was very small, and the algorithm performance was only slightly
+inﬂuenced.
+Suppose that the distance between nodes on the same side of the
+road is l
+c; we deﬁne the time window Tw as follows:
+Tw = lc/vmin (8)
+where vmin is the minimal velocity, which can be decided by prior
+knowledge. Obviously, Tw indicates the longest time duration for a
+vehicle passing the detection unit.
+Since we choose the magnetic sensor and the maximum sensing
+range of the HMC1021Z, Rs is 7 m, we assume that our system is
+deployed on a bidirectional two-lane road. By adopting multi-detection
+units, our solution can easily be expanded to a more general road
+environment.
+2) Data Association: When a bidirectional two-lane road is as-
+sumed, there are three typical scenarios. Scenario 1: for each time
+frame, only one vehicle appears in the detection unit. Scenario 2: two
+vehicles appear in the detection unit but run in the same direction.
+Scenario 3: two vehicles appear in the detection unit but run in opposite
+directions.
+All three scenarios are shown in Fig. 7. In scenario 1, in T
+w for any
+node Si, only one vehicle is detected. In scenarios 2 and 3, in Tw for
+node Si, at least two vehicles will be detected. In all these scenarios,
+the sensor node should correlate its vehicle measurement in Tw with
+measurements from the other nodes, which means the data association
+must be resolved.
+In scenarios 2 and 3, it is clear that problems of data association
+cannot be solved based on measurement from a single node. Therefore,
+a multinode collaboration-based data association method is proposed
+to associate measurements with the appropriate vehicles.
+In the scenario of two lanes and two directions, data association
+can be divided into the following two steps: 1) Determine the vehicle
+lane of this measurement. 2) Determine which vehicle in that lane
+Fig. 7. Typical trafﬁc scenarios. strong response in close side and weak
+in distant side (Scenario 1: Single vehicle. Scenario 2: Two vehicles, same
+direction. Scenario 3: Two vehicles, reverse directions).
+causes this measurement. Based on this analysis, we use strength and
+time information to accomplish data association. We determine the
+vehicle lane information by the measurement strength of the nodes and
+then accomplish data association through the node’s time measurement
+information.
+According to (3), the response strength is in the inverse ratio to r
+3,
+so the roadside node will produce a strong response when a vehicle
+appears in the lane closer to it. On the other hand, a weak response will
+be produced if a vehicle appears in the far lane. This notable property
+will be used in this paper.
+In our system, the distance between in-unit nodes is not very large;
+correspondingly, the situation in which two vehicles enter and leave the
+same detection unit can be considered to follow the “First-In First-Out
+(FIFO)” rule. In other words, vehicle overtaking inside the detection
+unit is not supposed to occur. Consequently, the time sequence of
+vehicles passing by can be used to address the data-association issue.
+Based on the preceding analysis, we propose a data association
+algorithm as follows:
+When vehicle A passes a detection unit at time instant t, the nodes
+on both sides i and j will detect this vehicle at the same time. Their
+response strength measurements
+iSpA
+t and jSpA
+t
+will be produced.
+Then, a feature vector at the time instant t, i.e., CH ij
+t :( iSpA
+t , jSpA
+t
+),
+can be calculated. In a time window Tw , more than one feature vector
+may be generated by the node pair i and j. We identify these feature
+vectors as CH ij = {CH ij
+1 ,CH ij
+2 ,...,CH ij
+m }. Meanwhile, another
+node pair k and l may produce more than one feature vector in Tw .W e
+identify them as CH kl = {CH kl
+1 ,CH kl
+2 ,...,CH kl
+n }.
+According to the preceding analysis, when CH ij
+t is given, based
+on the strong–weak relationship in the response strength of the feature
+vector, an alternative subset of CH
+kl
+t , which consists of all the vectors
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011 619
+Fig. 8. Time delay in message synchronization.
+caused by vehicles from the same lane, can be produced. Meanwhile,
+if two vehicles run in the same lane, they are traveling in the same
+direction. Combined with the FIFO rule we assumed, the correspond-
+ing vector CH kl
+t , which is caused by the same vehicle and results in
+CH ij
+t , can be determined.
+3) V elocity Calculation: Theoretically, vehicle velocity v can be
+calculated according to the time duration between the vehicle passing
+two nodes on the same side. Suppose that, in Fig. 6, the distance
+between s
+1 and s3 is lc and the time interval is Tlc ; then, the vehicle
+velocity can be calculated by the following equation:
+v = lc/Tlc . (9)
+However, to accurately calculate v, the following problems need
+to be addressed: 1) how to realize accurate synchronization between
+nodes and 2) the criterion for the distance l
+c.
+As the nodes do not share the same clock, an accurate synchro-
+nization mechanism is required for each detection unit. Here, we
+introduce a master–slave collaborative synchronization mechanism.
+Suppose that the master node s
+1 is the node that ﬁrst detects the target
+and the remaining nodes are the slave nodes.
+As shown in Fig. 8, at the beginning of synchronization, the master
+node broadcasts its local time stamp. The slave node then receives the
+time stamp TM and sets its local time to TS . We have the following
+deﬁnitions as illustrated in Fig. 8: (TS − TM ) is Δ t; TPM is the time
+interval in which the master node prepares to send the synchronization
+packet (SynPac for short); TTM is the time interval during which the
+master node transports the SynPac; TTMS is the interval during which
+the SynPac is transmitted from the master node to the slave node; TRS
+is the time interval during which the slave node receives the SynPac;
+TPS is the time interval in which the slave node processes the SynPac;
+RdT is the data transporting rate; RdR is the data receiving rate, and
+NSyn is the length of the SynPac. Thus
+Δ t = TPM + TTM + TTMS + TRS + TPS. (10)
+Because TPM, TTMS,a n d TPS are negligible, compared with TTM
+or TRS,t h e n
+Δ t ≈ TTM + TRS ≈ RdT · NSyn + RdR · NSyn ≈ 2 · Rd · NSyn.
+(11)
+The distance between node S1 and node S3 in Fig. 7 (expressed as
+lc) is predeﬁned before the installation of the monitoring system and
+is constant since the nodes are static while they are working. On the
+one hand, the two nodes should be closer to each other, so that no
+vehicle overtaking occurs in the detection range. On the other hand,
+as the clocks of the two nodes are not completely consistent, the node
+distance should be large enough, so that the error caused by the node
+time difference can be ignored. Thus, the choice of l
+c is a tradeoff be-
+tween the nonovertaking and synchronization differences weakening.
+Suppose that our acceptable largest measurement error is ERv ;t h e n
+(vveh − v′
+veh)/vveh ⩽ ERv (12)
+where v′
+veh is the measurement of vehicle velocity vveh. Δ t is the error
+of time synchronization; then, we have
+v′
+veh = lc/((lc/vveh)+Δ t) . (13)
+According to (12) and (13), if the velocity is maximized (vveh =
+vmax), vveh · Δ t · (1 − ERv)/ERv will be maximized, so lc should
+conform to
+lc ⩾ vmax · Δ t · (1 − ERv)/ERv. (14)
+4) Target Identiﬁcation: In China, it is common for bicycles (non-
+motor objects) and vehicles (motor objects) to share the same road.
+Therefore, the ability to identify bicycles is desirable in building
+an accurate trafﬁc information acquisition system. In general, the
+ferromagnetic characteristics of a vehicle are much more pronounced
+than that of a bicycle, and the theoretical strength of response from a
+vehicle is usually greater than that from a bicycle. This information
+about the strength of the magnetic response can be used in vehicle
+identiﬁcation. However, the strength of magnetic response is also
+related to the distance between the observation node and the object.
+The strength of the response will decay with the increment in distance.
+Therefore, the strength of the response caused by a distant vehicle may
+approximate that of a closer bicycle. V elocity is another useful source
+of information in vehicle identiﬁcation. The velocity of a vehicle is
+usually greater than the velocity of bicycle, and only in special cases
+such as a car slowing down to a stop or trafﬁc jam may it be slower
+than a typical bicycle.
+According to the aforementioned analysis, it can be seen that, if only
+one type of physical information is used, the identiﬁcation accuracy
+might not be satisfying. However, if multiple types of information
+are fused, particularly when the types of information are comple-
+mentary, the identiﬁcation accuracy may be improved. In this paper,
+the Dempster–Shafer Theory of Evidence [16] (DST) is adopted to
+identify the vehicle, and we take these two types of information as
+evidences.
+The foremost issue in DST reasoning is the construction of a
+basic belief mass model . Based on the statistical analysis of the large
+quantities of actual on-road measured data, we construct a simple but
+approximate basic belief mass model .
+Based on the statistical analysis, the lower limit of the response
+strength of a vehicle (VS
+low) and the upper limit of the response
+strength of a bicycle (BShigh) can be obtained. VS low may be caused
+by a mini car in the far lane, and BShigh may be caused by a bicycle
+in the near lane. BShigh is usually higher than VS low.W h e n Sp
+(response strength) is lower than VS low, the detected object is more
+likely to be a bicycle. Thus, we assign bicycle a high mass value of 0.9
+and vehicle a low mass value of 0.1. When Sp is greater than BS
+high,
+the detected object is more likely to be the vehicle. Thus, in this case,
+we assign bicycle a low mass value of 0.1 and vehicle a high mass
+value of 0.9. However, when Sp is between VS
+low and BShigh,i t
+might be either a vehicle or a bicycle. Therefore, we simply assign both
+of them to be 0.5. The mass model for response strength is shown in
+mSp(bicycle)=
+⎧
+⎨
+⎩
+0.9,S p < V S low
+0.1,S p > B S high
+0.5, Others
+mSp(vehicle)=
+⎧
+⎨
+⎩
+0.1,S p < V S low
+0.9,S p > B S high
+0.5, Others.
+(15)
+As for velocity, similar rules are built based on the lower limit of the
+velocity of the vehicle VV low and the upper limit of the velocity of the
+bicycle BVhigh. The difference is that, when the velocity of detected
+object is between VV low and BVhigh, we assume that the probability
+of it being a bicycle linearly decreases with the increase in velocity
+while the probability of it being a vehicle linearly increases.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+620 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011
+TABLE I
+SIMULA TION PARAMETERS
+The mass model for velocity is shown in
+mv(bicycle)=
+⎧
+⎨
+⎩
+0.9,v < V V low
+0.1,v > B V high
+0.9 − 0.8·(v− VV low)
+BVhigh− VV low
+, Others
+mv(vehicle)=
+⎧
+⎨
+⎩
+0.1,v < V V low
+0.9,v > B V high
+0.1+ 0.8·(v− VV low)
+BVhigh− VV low
+, Others.
+(16)
+According to the DST combination rules, we can get combination
+evidence through the fusion of the response strength evidence and the
+velocity evidence. After fusion, the masses for the bicycle and the
+vehicle can be calculated, respectively. If the mass of the bicycle is
+larger than that of the vehicle, we would identify the detected object as
+the bicycle; otherwise, it is the vehicle.
+IV . S
+YSTEM EVA L U AT I O N
+A. Simulation Settings
+Our on-road experiments were carried out on a bidirectional two-
+lane road, as shown in Fig. 6. Four Easi210 nodes equipped with
+HMC1021Z were put on the roadside. The detection unit reported its
+measurements when a vehicle passed through the detection unit.
+As we have mentioned before, our proposed system is low in cost for
+pervasive deployment. In this experiment, one detection unit, including
+four sensor nodes and an information collection node, costs less
+than $250.
+Guided by statistics on actual on-road measured data, we adopt the
+following values for the parameters. These parameters will be used in
+the personal computer simulation and on-road experiments.
+According to Table I, some detailed parameters can be calculated.
+Based on (14), the distance between nodes on the same side of the
+road should conform to l
+c ⩾ 4.76 m; so here, we choose lc =6 m.
+Based on (8), the window duration Tw is 1.2 s. According to (7),
+the time duration of the referential signal can be calculated, i.e., τ =√
+(R2
+s − d2)/vmean ≈ 0.7 s .S i n c ew es e tt h es a m p l i n gr a t efs to be
+100 Hz, the length of the referential signal is 2 × τ × fs = 140. Then,
+according to (6), we can calculate the normalized referential signal
+h(t)= − 42.875 × (12.25 +x(t)
+2)− 3/2, |x(t)| ⩽ 7,w h e r e x(t)=
+l − vt is lDC in Fig. 4.
+B. On-Road Experiments
+The on-road experiment is shown in Fig. 9. To verify the basis of our
+experiment, we used a video camera to capture visual images, so that
+Fig. 9. On-road experiments.
+TABLE II
+VEHICLE DETECTION RESULT OF ON-ROAD EXPERIMENT
+the detection accuracy could be established by the video. The video
+captures image at 24 frame/s, and, by counting the frames as a vehicle
+passes through the detection unit, the real vehicle velocity can be
+obtained. In this section, we will show the results of the on-road tests
+on vehicle detection, velocity calculation, and vehicle identiﬁcation.
+1) Detection Experiments: Here, we verify the CD algorithm via
+on-road experiments. The CD algorithm was implemented on Easi210
+nodes, and an on-road detection experiment was conducted.
+The detection result is shown in Table II. In total, ten groups of
+detection test were completed. The worst result was over 80%, whereas
+the best was 100%. The overall detection quality was about 90%.
+To compare the performances of the different detection methods,
+we processed on-road sensor data with several commonly used meth-
+ods, including the direct threshold measurement method [10] [using
+thresholds on the raw data (DT)] and the ﬁnite impulse response (FIR)-
+based threshold measurement method [11] [using the thresholds on
+the data processed by FIR (FIRT)]. The actual number of vehicles is
+ascertained by watching the synchronized video. In the CD simulation,
+the data are processed by the CD algorithm with two thresholds, i.e.,
+0.3(low) and 0.4(high). In the DT simulation, the data are processed
+by the threshold algorithm. The value of the threshold is 10UG(low)
+and 20UG(high), using the unit (HMC1021 resolution), below the
+background noise strength. In the FIRT simulation, the data are ﬁrst
+processed by a low-pass ﬁlter (the cutoff frequency of the ﬁlter is
+4 Hz); then, two thresholds, i.e., 10UG(low) and 20UG(high), are used
+to detect the appearance of the vehicle. According to the results shown
+in Table III, when the low threshold is adopted, the detection rate of
+the DT and FIRT is relatively high, but the false alarm rate is also
+relatively high. When the high threshold is adopted, although the false
+alarm rate of the DT and FIRT can be reduced, their detection rate
+also decreases. Referring to our proposed CD algorithm, we see from
+this table that the CD algorithm is not sensitive to the threshold, and
+its false alarm rate is very low (0 when the threshold is 0.3 and 0.4).
+Therefore, we can conclude that the CD algorithm outperforms the
+commonly used detection methods. Furthermore, the results indicate
+that the CD algorithm is not threshold sensitive.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 12, NO. 2, JUNE 2011 621
+TABLE III
+ORIGINAL MAGNETIC DATA F O R SIMULA TION
+TABLE IV
+VELOCITY CALCULA TION RESULT OF ON-ROAD EXPERIMENT
+TABLE V
+VEHICLE IDENTIFICA TION RESULTS OF DIFFERENT APPROACHES
+2) On-Road Experiments of V elocity Calculation: We conducted
+four groups of tests, and each test lasted 10 min.
+In all four tests, nine vehicles appeared in group 1, 11 vehicles in
+group 2, ﬁve fast bicycles in group 3, and ﬁve slow bicycles in group 4.
+The results of the average velocity for each group are listed in Table IV.
+In groups 1 and 2, it can be seen that, when the velocity was relatively
+high, the estimation error was large. The reason is that, in this case,
+the error of time duration calculation was relatively large. The average
+accuracy of the velocity measurement was estimated to be 90%.
+3) V ehicle Identiﬁcation: Based on the constructed masses of the
+response strength and the velocity above, we implemented DST-
+based vehicle identiﬁcation ( D
+vi method). To compare the difference
+between identiﬁcation results before and after fusion, we also imple-
+mented vehicle identiﬁcation only according to the response strength
+(Rvi method) and only according to the velocity ( Vvi method). In Rvi,
+the average of the mean vehicle response strength and the mean bicycle
+response strength was taken as the threshold. We also applied similar
+operations to Vvi.
+In our on-road simulation, the sample size of the detected objects
+was 72, of which 31 were bicycles and the rest objects were vehicles.
+The identiﬁcation results are shown in Table V.
+According to Table V, if the vehicle identiﬁcation is accomplished
+only based on response strength, the accuracy will be low, i.e., about
+51.39% in our experiment. The reason is that the magnetic response
+strength of a vehicle is decided by not only the magnetic feature of
+the vehicle itself but also the distance between the vehicle and sensors.
+The uncertainty of response strength leads to the low identiﬁcation
+accuracy.
+Compared with strength-only vehicle identiﬁcation, the identiﬁca-
+tion accuracy based only on speed is about 83.33%. The reason is
+that velocity information is more reliable in identiﬁcation, and vehicle
+is commonly much faster than bicycle. A better identiﬁcation, with
+identiﬁcation accuracy up to 88.89%, is achieved by the DST method.
+In particular, the vehicle-identiﬁcation accuracy is greatly improved.
+The reason is that two kinds of complementary information are taken
+into consideration.
+V. C
+ONCLUSION AND FUTURE WORK
+In this paper, we have designed and implemented a pervasive trafﬁc
+information acquisition system based on WSNs. Unlike traditional
+video cameras or inductive loops, our solution is of low cost and
+resource efﬁcient. It can easily be deployed at the roadside. Further-
+more, the system implementation does not require the excavation of
+the road surface and extra devices in the road infrastructure. Compared
+with radio-frequency identiﬁcation or in-vehicle trafﬁc information
+acquisition systems, no device on a vehicle is required by our system.
+Thus, our proposed system is more adaptable and scalable.
+In the future, we will collect enough trafﬁc data, so that we can
+develop intelligent algorithm to improve the system performance.
+Meanwhile, we plan to utilize the collected data to enable our proposed
+approach to deal with more comprehensive trafﬁc scenarios. Further-
+more, we plan to use more types of sensors, e.g., acoustic or image
+sensor, to gain new physical information. By fusion of multimodal sen-
+sor information, we will investigate more comprehensive and accurate
+trafﬁc information systems.
+R
+EFERENCES
+[1] Q. Kong, Z. Li, Y . Chen, and Y . Liu, “An approach to urban trafﬁc
+state estimation by fusing multisource information,” IEEE Trans. Intell.
+Transp. Syst., vol. 10, no. 3, pp. 499–511, Sep. 2009.
+[2] C. Sun, G. Arr, R. Ramachandran, and S. Ritchie, “V ehicle reidentiﬁcation
+using multidetector fusion,” IEEE Trans. Intell. Transp. Syst., vol. 5, no. 3,
+pp. 155–164, Sep. 2004.
+[3] J. Wang, E. Case, and D. Manor, “The road trafﬁc microwave sensor
+(RTMS),” in Proc. 3rd Int. Conf. V eh. Navig. Inf. Syst., 1992, pp. 83–90.
+[4] H. Cheng, B. Shaw, J. Palen, B. Lin, B. Chen, and Z. Wang, “Development
+and ﬁeld test of a laser-based nonintrusive detection system for identiﬁca-
+tion of vehicles on the highway,” IEEE Trans. Intell. Transp. Syst.,v o l .6 ,
+no. 2, pp. 147–155, Jun. 2005.
+[5] T. Hussain, A. Baig, T. Saadawi, and S. Ahmed, “Infrared pyroelectric
+sensor for detection of vehicular trafﬁc using digital signal processing
+techniques,” IEEE Trans. V eh. Technol. , vol. 44, no. 3, pp. 683–689,
+Aug. 1995.
+[6] Y . Chen, “Highway overhead structure detection using video image se-
+quences,” IEEE Trans. Intell. Transp. Syst. , vol. 4, no. 2, pp. 67–77,
+Jun. 2003.
+[7] G. Alessandretti, A. Broggi, and P . Cerri, “V ehicle and guard rail detection
+using radar and vision data fusion,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 8, no. 1, pp. 95–105, Mar. 2007.
+[8] A. Haoui, R. Kavaler, and P . V araiya, “Wireless magnetic sensors for
+trafﬁc surveillance,” Transp. Res. Part C: Emerging Technol. , vol. 16,
+no. 3, pp. 294–306, Jun. 2008.
+[9] K. Kwong, R. Kavaler, R. Rajagopal, and P . V araiya, “Real-time measure-
+ment of link vehicle count and travel time in a road network,” IEEE Trans.
+Intell. Transp. Syst., vol. 11, no. 4, pp. 814–825, Dec. 2010.
+[10] L. Gu, D. Jia, P . Vicaire, T. Y an, L. Luo, A. Tirumala, Q. Cao, T. He,
+J. Stankovic, T. Abdelzaher, and B. Krogh, “Lightweight detection and
+classiﬁcation for wireless sensor networks in realistic environments,” in
+Proc. 3rd ACM Conf. Embedded Netw. Sens. Syst. , 2005, pp. 205–217.
+[11] J. Ding, S. Cheung, C. Tan, and P . V araiya, “Signal processing of sensor
+node data for vehicle detection,” in Proc. 7th Int. IEEE Conf. Intell.
+Transp. Syst., 2004, pp. 70–75.
+[12] M. di Bisceglie and C. Galdi, “CFAR detection of extended objects in
+high-resolution SAR images,” IEEE Trans. Geosci. Remote Sens., vol. 43,
+no. 4, pp. 833–843, Apr. 2005.
+[13] Easinet, Website, 03 2010. [Online]. Available: http://www.easinet.cn/
+en/products.htm
+[14] HMC1001, HMC1002, HMC1021 and HMC1022 1 and 2-Axis Magnetic
+Sensors, Website, 03 2010. [Online]. Available: http://www.ssec.
+honeywell.com/magnetic/datasheets/hmc1001-2_1021-2.pdf
+[15] R. S. Trebble and D. Craik, Magnetic Materials . New Y ork: Wiley-
+Interscience, 2008.
+[16] G. Shafer, A Mathematical Theory of Evidence. Princeton, NJ: Princeton
+Univ. Press, 1976.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:29:06 UTC from IEEE Xplore.  Restrictions apply. 

@@ -1,0 +1,1031 @@
+
+
+===== PAGE 1 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014 73
+Portable Roadside Sensors for V ehicle Counting,
+Classiﬁcation, and Speed Measurement
+Saber Taghvaeeyan and Rajesh Rajamani
+Abstract—This paper focuses on the development of a portable
+roadside magnetic sensor system for vehicle counting, classiﬁ-
+cation, and speed measurement. The sensor system consists of
+wireless anisotropic magnetic devices that do not require to be
+embedded in the roadway—the devices are placed next to the
+roadway and measure trafﬁc in the immediately adjacent lane. An
+algorithm based on a magnetic ﬁeld model is proposed to make
+the system robust to the errors created by larger vehicles driving
+in the nonadjacent lane. These false calls cause an 8% error
+if uncorrected. The use of the proposed algorithm reduces this
+error to only 1%. Speed measurement is based on the calculation
+of the cross correlation between longitudinally spaced sensors.
+Fast computation of the cross correlation is enabled by using
+frequency-domain signal processing techniques. An algorithm for
+automatically correcting for any small misalignment of the sensors
+is utilized. A high-accuracy differential Global Positioning System
+is used as a reference to measure vehicle speeds to evaluate the
+accuracy of the speed measurement from the new sensor system.
+The results show that the maximum error of the speed estimates
+is less than 2.5% over the entire range of 5–27 m/s (11–60 mi/h).
+Vehicle classiﬁcation is done based on the magnetic length and an
+estimate of the average vertical magnetic height of the vehicle.
+Vehicle length is estimated from the product of occupancy and
+estimated speed. The average vertical magnetic height is estimated
+using two magnetic sensors that are vertically spaced by 0.25 m.
+Finally, it is shown that the sensor system can be used to reliably
+count the number of right turns at an intersection, with an ac-
+curacy of 95%. The developed sensor system is compact, portable,
+wireless, and inexpensive. Data are presented from a large number
+of vehicles on a regular busy urban road in the Twin Cities, MN,
+USA.
+Index Terms—Magnetic sensors, portable trafﬁc sensor, road-
+side trafﬁc sensor, vehicle classiﬁcation, vehicle detection, vehicle
+speed measurement.
+I. I NTRODUCTION
+T
+HIS paper describes a portable sensing system that can
+be placed adjacent to a road and can be used for vehicle
+counting, vehicle classiﬁcation, and vehicle speed measure-
+ments. The proposed system can make these trafﬁc measure-
+ments reliably for trafﬁc in the lane adjacent to the sensors. The
+developed signal processing algorithms enable the sensor to be
+robust to the presence of trafﬁc in other lanes of the road.
+The sensor consists of magnetoresistive devices that measure
+the magnetic ﬁeld. Signal processing algorithms based on an
+Manuscript received March 25, 2013; revised May 22, 2013; accepted
+July 2, 2013. Date of publication September 25, 2013; date of current version
+January 31, 2014. This work was supported in part by the ITS Institute,
+University of Minnesota. The Associate Editor for this paper was F. Zhu.
+The authors are with the University of Minnesota, Twin Cities, Minneapolis,
+MN 55455 USA (e-mail: rajamani@me.umn.edu).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TITS.2013.2273876
+analysis of the magnetic ﬁeld around a car are used to enable
+the sensor estimates. The developed sensing system is compact,
+portable, wireless, and inexpensive (with an expected cost on
+the order of $50).
+Inductive loop detectors (ILDs) are a widespread technology
+used by many transportation agencies for vehicle detection and
+measurement of trafﬁc ﬂow rates. Single inductive loops, by
+themselves, do not measure individual vehicle speed.
+V ehicle classiﬁcation into predeﬁned classes such as cars,
+trucks, and tractor trailers typically requires measuring the
+size or length of a vehicle and/or counting the number of
+axles of the vehicle. A vehicle classiﬁcation model based on
+feature extraction from piecewise slope rate values in single-
+loop inductive signature data was pursued in [1] and classiﬁed
+vehicles into 15 classes. However, the accuracy rate is not 100%
+and can vary from 40% to 100%, depending on the amount of
+“problematic” data present in the sensor readings and the class
+of vehicle under consideration.
+V ehicle detection and classiﬁcation based on feature ex-
+traction from camera systems have been developed by many
+researchers [2], [3]. The research in [3] presented model-
+based and fuzzy-logic approaches to improve the reliability of
+such systems. An evaluation of three commercial camera-based
+vehicle detection systems is presented in [4] under adverse
+weather conditions of snow, fog, and rain. The results therein
+show that the performance of such systems deteriorates under
+adverse weather, particularly under snow conditions in both
+daytime and nighttime. Increases in false activations by up to
+90% and in missed calls by up to 50% were shown to occur in
+adverse weather.
+Magnetic sensors and anisotropic magnetoresistive (AMR)
+sensors have also been evaluated for vehicle classiﬁcation by
+some research groups [5]–[11]. The main limitation of these
+works is their inability to distinguish between sedans ver-
+sus sport utility vehicles (SUVs), pickups, and vans. Mostly,
+these two classes are combined, or poor classiﬁcation rates
+are obtained when these are considered as individual classes.
+Furthermore, the magnetic sensors that have been evaluated are
+based on devices that were directly embedded in the roadway
+lanes.
+Unlike inductive loops and magnetic sensors that have been
+evaluated, the sensing system proposed in this paper does not
+require devices to be embedded in the roadway. Instead, it
+utilizes sensors that are placed on the side of the road, and
+hence, there is no need to stop the trafﬁc for their installation. In
+addition, the sensor system used is very compact and wireless
+and can provide very high accuracies in vehicle detection, speed
+measurement, and classiﬁcation.
+1524-9050 © 2013 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+
+===== PAGE 2 =====
+
+74 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014
+Fig. 1. Magnetic ﬁeld readings for a Ford Ranger from a magnetic sensor
+embedded in the road.
+This paper is organized as follows. In Section II, the
+signal strength and sensing system conﬁguration is discussed.
+In Section III, the detection performance of the system is
+presented. The method that was developed to make the
+system robust to trafﬁc in the nonadjacent lane is described
+in Section IV. In Section V, the speed estimation method is
+described. V ehicle classiﬁcation is discussed in Section VI. A
+method of counting the number of vehicles that make a right
+turn at an intersection is discussed in Section VII. Conclusions
+are presented in Section VIII.
+II. S
+IGNAL STRENGTH AND SENSING SYSTEM
+CONFIGURA TION
+An AMR sensor has a silicon chip with a thick coating of
+piezoresistive nickel–iron. The presence of an automobile in
+close range causes a change in magnetic ﬁeld, which changes
+the resistance of the nickel–iron layer. The HMC2003 three-
+axis magnetic sensor boards from Honeywell are utilized for
+the system developed in this paper. Each sensor board contains
+core HMC100x AMR sensing chips, which cost about $10.
+First, magnetic ﬁeld readings were obtained from a magnetic
+sensor that was embedded on top of the road surface at the
+center of a lane and compared with the magnetic ﬁeld readings
+when the sensor was placed adjacent to the road. Fig. 1 shows
+the magnetic ﬁeld readings of the x-, y-, and z-axes, with the
+sensor placed at the center of the road lane. Here, the x-axis
+is along the longitudinal direction of travel of the vehicles, the
+y-axis is perpendicular to the direction of travel of the vehicles,
+and the z-axis is perpendicular to the road surface and upward.
+Fig. 2 shows magnetic ﬁeld readings when the magnetic sensor
+was placed adjacent to the road at a height of about 0.6 m. It is
+clearly shown that the magnetic ﬁeld readings due to the vehicle
+are ten times stronger when the sensor was placed on the road.
+The vehicle that was used for these two tests was a Ford Ranger
+pickup truck.
+It is also shown in Figs. 1 and 2 that, when the sensors are
+placed on the side of the road, the signals are more uniform
+compared to the case that the sensors are on the road. The main
+Fig. 2. Magnetic ﬁeld readings for a Ford Ranger from a magnetic sensor
+adjacent to the road.
+Fig. 3. Sensor conﬁguration for data collection.
+reason is that, with the sensors on the road, many different
+ferromagnetic parts underneath the vehicle will pass over the
+sensors at close proximity and create extra ﬂuctuations in
+the signal. Because the original signal levels are low when the
+sensors are placed on the side of the road, it is necessary to use
+higher ampliﬁcation to get a better signal-to-noise ratio (SNR).
+Hence, the sensor signals were ampliﬁed using instrumentation
+ampliﬁers, with cutoff frequencies set to 100 Hz to reduce the
+noise level.
+Fig. 3 shows the conﬁguration of the sensing system, which
+includes four three-axis AMR sensors placed on the side of the
+road. The objective of the system is to count the number of
+vehicles, measure the speed, and classify the vehicles that pass
+in the adjacent lane. Sensors 1 and 2 are laterally spaced from
+each other by 0.1 m. Sensor 3 is placed 0.9 m longitudinally
+downstream from sensor 1. Sensor 4 is placed 0.3 m vertically
+above sensor 1. Sensors 1 and 2 are together used to obtain a
+rough estimate of the lateral location of the vehicle and make
+the sensing system robust to the trafﬁc in the nonadjacent lane.
+This method is described in Section IV. Sensors 1 and 3 are
+together used to calculate the longitudinal speed of the vehicle.
+The speed estimation algorithm is described in Section V.
+Sensor 4 is used along with sensor 1 to get a rough estimate of
+the average vertical magnetic height of passing vehicles. This is
+used for vehicle classiﬁcation, which is described in Section VI.
+A single printed circuit board (PCB) contains sensors 1 and
+2. Two other PCBs contain sensors 3 and 4. The PCBs include
+Microchip dsPIC microcontrollers, which sample the sensors
+output at 1 kHz with 12-bit analogue-to-digital converters
+
+===== PAGE 3 =====
+
+T AGHV AEEY AN AND RAJAMANI: PORTABLE ROADSIDE SENSOR FOR VEHICLE COUNTING AND SPEED MEASUREMENT 75
+Fig. 4. Developed PCB for data acquisition and wireless transmission.
+(ADCs). The magnetic ﬁeld is read in as arbitrary voltage units
+(counts) as provided by the ADCs. The data is transferred from
+the PCBs to a laptop, either wirelessly or through a serial
+port. The XBee wireless module from Digi is used for wireless
+communication. This module has an outdoor line-of-sight range
+of 100 m, required power of 150 mW, and a radio-frequency
+data rate of 250 kb/s. Fig. 4 shows the developed PCB.
+III. V
+EHICLE DETECTION AND COUNTING
+As mentioned in the previous section, the recorded signals
+from the sensors placed adjacent to the road are more uniform
+compared to the case that the sensors are on the road. This
+behavior makes the detection more reliable, because large
+oscillations in the signals can cause errors due to the double
+detection of a single vehicle. In particular, it was observed that
+the signals measured along the z-axis have very similar patterns
+for a large variety of vehicles. Hence, magnetic readings of the
+z-axis of sensor 1 are used for detecting and counting the
+passing vehicles in the adjacent lane. A threshold of 30 counts
+was used as the vehicle detection threshold. This threshold was
+experimentally selected. If it is set very high, smaller vehicles
+will not be detected, and if it is set very low, a higher percentage
+of vehicles that pass in the nonadjacent lane will be detected.
+Although a robust algorithm is developed to reduce the false
+detections due to vehicles that pass in the nonadjacent lane
+(described in Section IV), it is good to avoid false detections
+at an early stage to have a minimized ﬁnal false detection rate.
+Signals from 188 vehicles driving in the adjacent lane were
+recorded in two days during afternoon hours, with clear-sky
+conditions. Out of the 188 vehicles, 186 vehicles created a
+large-enough signal to be detected, resulting in a detection rate
+of 99%. Fig. 5 shows a sample signal recorded from a jeep
+SUV that passes in the adjacent lane, two unknown vehicles
+that pass in the nonadjacent lane, and a Mazda sedan that passes
+in the adjacent lane at lateral distances of 2, 5.3, 4.6, and 1.6 m
+from the sensors, respectively. The lateral distance was mea-
+sured only for reference purposes by a sonar sensor that faces
+the road.
+IV . R
+OBUSTNESS TO TRAFFIC ON THE
+NONADJACENT LANE
+While measuring trafﬁc parameters on the lane adjacent to
+the sensors, the signals from more than 216 vehicles that pass
+Fig. 5. Recorded magnetic ﬁeld from a jeep SUV and a Mazda sedan that pass
+in the adjacent lane and two other vehicles that pass in the nonadjacent lane.
+in the nonadjacent lane (the lane next to the closest lane to
+the sensors) were also recorded. Analyzing the data, it was
+observed that passenger sedans, SUVs, and pickups that travel
+in the nonadjacent lane typically do not create errors in the
+sensing system signals. However, larger vehicles (e.g., trucks
+and buses) that pass in the nonadjacent lane may create large
+enough signals to cause false detections and affect the accuracy
+of the system. The false detections can signiﬁcantly increase
+the detection error. In our experiments, 15 out of 216 vehicles
+created a large-enough signal to be miscounted as vehicles that
+pass in the adjacent lane. If uncorrected, this will cause an
+overdetection error of 8%. The results presented in [12] show
+a similar error rate from the false detection of vehicles in the
+adjacent lanes, ranging from 5.6% to 15.4% in different weather
+conditions, even when the AMR sensors are embedded in the
+middle of the lane in the road. Note that increasing the detection
+threshold is not an effective solution to address this problem.
+Although it may reduce the number of false calls, it will also
+increase the number of missed calls due to smaller vehicles not
+being detected because of the higher threshold, as experienced
+in [13]. To correct for vehicle detection errors that can occur
+due to vehicles in the nonadjacent lane, the following method is
+proposed.
+It is shown through analytical modeling and experimental
+measurements that the magnetic ﬁeld intensity around a vehicle
+has a relation that approximately varies as 1 /x with distance,
+where x is the lateral distance from the vehicle [14]. Using
+sensor 2, an estimate of the lateral distance of the vehicle can be
+obtained by simply evaluating the ratio of the maximum of the
+measured magnetic ﬁelds between sensors 2 and 1 B
+2/B1.A s
+the distance x increases, the two sensors read roughly the same
+magnetic ﬁeld intensity. The closer the ratio of magnetic ﬁelds
+is to 1, the larger the lateral distance becomes. In addition, the
+vehicles that pass in the nonadjacent lane have a much lower
+peak value B
+max, on the average, compared to vehicles that
+pass in the adjacent lane. These two metrics can be used to
+reject the trafﬁc passing in the nonadjacent lane, which affects
+the sensors. Fig. 6 shows the result of applying the proposed
+method to the data set. A support vector machine has been
+
+===== PAGE 4 =====
+
+76 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014
+Fig. 6. Use of the ratio B2/B1 and B1−max to reject the trafﬁc in the
+nonadjacent lane.
+used to come up with a classiﬁcation boundary [15]. Using the
+proposed method, the error reduces from 8% to 1%. Based on
+the data of 216 vehicles shown in Fig. 6, it is shown that the pro-
+posed classiﬁcation boundary accurately classiﬁes 99% of the
+vehicles as correctly being in the adjacent or nonadjacent lane.
+All of the nonadjacent vehicles are correctly rejected. Only 2
+of the 201 adjacent lane vehicles are incorrectly classiﬁed as
+nonadjacent.
+V. S
+PEED ESTIMA TION
+Speed estimation of a passing vehicle is required to measure
+the vehicle length, which is used for vehicle classiﬁcation.
+Speed estimation also has other applications; for example, it
+has been used by researchers to estimate the queue length
+for ramp-metering algorithms [16]. Transportation agencies
+use estimated speed information for setting speed limits and
+timing trafﬁc signals [17]. There are some proposed methods
+in the literature for speed measurement using a single magnetic
+sensor [6]; however, those methods provide only an average
+estimate of the speed over a number of passing vehicles. To
+measure individual vehicle speed, two longitudinally spaced
+sensors are required. The conventional method for estimating
+speed with two magnetic sensors is based on the detection times
+of the two sensors. If the detection times for sensors “a” and “b”
+aret
+a,ON ,ta,OF F ,tb,ON , and tb,OF F , an estimate of the speed
+can be calculated as
+v = da−b
+((tb,ON −ta,ON)+( tb,OF F −ta,OF F))/2 (1)
+where da−b is the distance between sensors “a” and “b”, and
+ta,ON and tb,ON are the timestamps that the sensor signal
+goes over the detection threshold, for sensors “a” and “b”,
+respectively. ta,OF F and tb,OF F are the timestamps that the
+sensor signal drops below the detection threshold for sensors
+“a” and “b”, respectively. One of the primary factors that affect
+the accuracy of the speed estimates is the distance between
+the sensors; more accurate estimates are obtained by placing
+sensors farther away from each other. For example, [18] rec-
+ommends a separation of 4.9 m for speed estimation using
+two inductive loops. As another example, [19] recommends
+a separation of 3.1–3.7 m (10–12 ft) between the sensors for
+arterial applications and 6.1–7.3 m (20–24 ft) for freeway
+applications. However, none of the aforementioned references
+specify what the accuracy of the estimates will be. On the other
+hand, the problem with a large distance between the sensors
+is that a vehicle may perform a maneuver that may only be
+detected by one sensor [17]. This phenomenon will affect the
+synchronization between the sensors, which is required for
+speed estimation. Note that another factor in the accuracy of
+the estimated speed is SNR; the higher the SNR is, the more
+accurate the estimates become. As mentioned in the previous
+section, signals of lower level are obtained when placing the
+sensors on the side of the road compared to the case that the
+sensors are placed on the surface of the road, in the middle of
+the lane, and hence, the sensors outputs are ampliﬁed to get a
+higher SNR.
+In [17], a method for speed estimation is proposed based on
+signals from two ILDs that are separated by a distance of 6 m
+using detection times. Their method detects and drops the data
+points from “irregular driving vehicles,” deﬁned as vehicles that
+do not perfectly travel in parallel with the line that connects
+the center of the sensors. After dropping these data points, the
+maximum absolute value of the errors was within 5%. However,
+in their experiments, more than 8% of the detected vehicles
+were categorized as “irregular driving vehicles,” and hence,
+their speed was not estimated. This situation is not favorable for
+vehicle classiﬁcation based on the magnetic length of passing
+vehicles.
+In [20], a method for the estimation of speed is proposed,
+which is based on using three magnetic sensor nodes. The
+accuracy of the method is measured by driving a vehicle at a
+constant speed of 5.5 m/s (12 mi/h) over the sensors multiple
+times. The reported estimation error varies in the range of
+5%–20%, underestimating the actual speed in all cases.
+In [21], another method for speed estimation is proposed,
+which is based on using four magnetic sensors nodes: two nodes
+are placed on one side, and two nodes are placed on the other
+side of a one-lane road. The distance between the nodes on each
+side is 6 m. The results of the speed estimation method show
+maximum errors of 13%, with test speeds ranging from 6 m/s
+to 13 m/s (13.4–29 mi/h).
+The goal of the proposed system in this paper is to reduce the
+distance between the sensors to a minimum and still achieve
+highly accurate speed estimates by using sophisticated signal
+processing techniques to measure the time delay. In the de-
+signed system, the speed of each passing vehicle is determined
+by measuring the time delay between the signals of the two
+magnetic sensors placed longitudinally apart, sensors 1 and 3.
+The delay is calculated by taking the cross correlation between
+the signals of the two sensors and then ﬁnding the time delay
+by looking at the value where the resulting signal from the
+cross correlation is maximized. Knowing the time delay and the
+distance between the two sensors, the speed of the passing ve-
+hicle is estimated. This algorithm is described in the following
+section.
+
+===== PAGE 5 =====
+
+T AGHV AEEY AN AND RAJAMANI: PORTABLE ROADSIDE SENSOR FOR VEHICLE COUNTING AND SPEED MEASUREMENT 77
+A. Speed Estimation Algorithm
+Consider the magnitude of the magnetic ﬁeld signals from
+sensors 1 and 3, B1mag and B3mag , respectively. We expect
+that B3mag will have the same shape as B1mag but will be
+shifted in time, because sensor 3 is longitudinally spaced apart
+from sensor 1, downstream with respect to the vehicle. Ideally,
+the delay in time between the signal waveforms will have the
+following relation with the speed of the passing vehicle v:
+δt= d
+13
+v (2)
+where d13 is the distance between sensors 1 and 3, and δtis
+the time delay between the sensors signals to be calculated.
+Denoting the sampling time by T
+s, B3mag should be delayed
+by nd = δt/Ts samples with respect to B1mag . One reliable
+method of calculating the time delay is by using the cross
+correlation between the two signals. The time delay in terms
+of samples is given by
+n
+d =a r gm a x
+n
+f[n] (3)
+where
+f[n]=
+N−1∑
+m=0
+B1mag[m]B3mag[m−n]& −(N−1)≤n≤N−1
+(4)
+and N is the total number of samples for which the cross
+correlation is being computed. This computation is on the order
+of N 2 calculations [22]. The discrete Fourier transform (DFT)
+can be adopted to compute f[n], which results in a signiﬁcantly
+less number of required calculations. The method is described
+in the following paragraphs. Deﬁne
+z1[n]= B1mag[n]& z2[n]= B3mag [(N −1)−n]
+0 ≤n ≤N −1
+g[n]= f [n−(N −1)] 0 ≤n ≤2N −2. (5)
+It is shown that z2[n] is simply the ﬂipped version of
+B3mag[n] and g[n] is the shifted version of f[n].N o w ,w e
+rewrite (3) in terms of g[n] as
+nd =a r gm a x
+n
+f[n]=
+(
+argmax
+n
+g[n]
+)
+−(N −1). (6)
+We can also write g[n] as follows:
+g[n]= f [n−(N −1)]
+=
+N−1∑
+m=0
+B1mag[m]B3mag [m−(n−(N −1))]
+=
+N−1∑
+m=0
+B1mag[m]B3mag [(N −1)−(n−m)]
+=
+N−1∑
+m=0
+z1[m]z2[n−m]= z1[n]∗z2[n]. (7)
+Therefore, we have written g[n] in terms of the linear con-
+volution of z1[n] and z2[n]. The next step is to calculate this
+convolution in an efﬁcient way. Based on the properties of the
+DFT [22], [23], we know that
+x3[n]=
+N−1∑
+m=0
+x1[m]x2 [(n−m)mod N]= x1[n] ⊛x2[n]
+⇔X3[k]= X1[k]X2[k]
+0 ≤n, k ≤N −1( 8 )
+where ⊛ denotes the circular convolution, and X[k] is the DFT
+ofx[n],o r
+X[k]=DFT (x[n])=
+N−1∑
+m=0
+x[m]e−j( 2πkn
+N ) 0≤k≤N−1.
+(9)
+In general, a circular convolution differs from a linear con-
+volution. In a circular convolution, the second sequence is
+“circularly” shifted with respect to the ﬁrst sequence. However,
+we can use the relation in (8) to obtain g[n] if we pad the
+original signals z1[n] and z2[n] with zeros to a length equal
+to or greater than the expected length of the linear convolution
+(2N −1) [22], [23]. Thus, if we deﬁne
+˜z1[n]=
+{
+z1[n] 0 ≤n ≤N −1
+0 N ≤n ≤2N −1
+˜z2[n]=
+{
+z2[n] 0 ≤n ≤N −1
+0 N ≤n ≤2N −1 (10)
+we have
+g[n]= IDFT (DFT (˜z1[n])DFT (˜z2[n])). (11)
+Now that we have calculated g[n], we can obtain nd based
+on (6) and calculate the speed based on (2). Note that using
+fast Fourier transform and inverse fast Fourier transform algo-
+rithms for the calculation of DFT and inverse discrete Fourier
+transform (IDFT), we can calculate g[n] with computational
+complexity on the order of N logN compared to the original
+order of N 2 [22]. As an example, if we originally have N =
+10 000 datapoints (10 s of data sampled at 1 kHz), we will have
+orders of 10
+8 and 105 for the original and DFT methods, respec-
+tively. This difference can be considerable when the system is
+implemented in a processor for real-time classiﬁcation.
+The main beneﬁt of using the conventional method of ﬁnding
+the difference between the detection times to estimate the speed
+is its simplicity, which allows for the design of a sensing
+system with less complexity and reduced power consumption.
+These requirements are helpful in increasing the battery life of
+the sensors when the sensors are embedded in the pavement.
+However, with the sensors on the side of the road, the power
+can be provided by larger capacity batteries, power lines, solar
+cells, or a combination of these. Hence, it is possible to utilize
+more computational power and develop much more accurate
+algorithms to achieve better performance in speed estima-
+tion and consequently achieve better performance in vehicle
+classiﬁcation.
+
+===== PAGE 6 =====
+
+78 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014
+Fig. 7. Speed measurements of the GPS.
+B. Speed Estimation Experimental Results
+To check the speed estimation accuracy of the sensing
+system, the following experiment was conducted at the
+Minnesota Road Research Facility (MnROAD). The sensing
+system was placed adjacent to the lane, as shown in Fig. 3. A
+carrier-phase Global Positioning System (GPS), GPS18 L VC,
+was mounted on a test vehicle, and its data were captured using
+a laptop inside the vehicle. The accuracy of the GPS is 0.05 m/s,
+and its update rate is 1 Hz. A separate data acquisition system
+was used to capture the roadside sensor data, as shown in the
+previous experiments.
+For each test, the driver started at a long distance away from
+the sensors, reached the desired speed, passed in front of the
+sensors with constant speed, and later stopped. One sample of
+the speed plot that was obtained from the GPS during one test
+is shown in Fig. 7.
+Because the speed is almost constant during the time the
+vehicle passes in front of the sensors, it is possible to take the
+average of several data points before the vehicle decelerates
+and use it as the reference speed that was obtained from the
+GPS. In all the experiments, 11 satellites were in view for the
+GPS. The test vehicle was also equipped with a cruise control
+system, which was used for velocities above ∼13 m/s (30 mi/h)
+to achieve a more consistent speed.
+The error in speed estimates can be calculated as follows:
+Error = 100v
+GP S −vest
+vGP S
+(12)
+where vGP S is the reference GPS speed, and vest is the esti-
+mated speed from the magnetic sensors.
+Fig. 8 shows the estimation error between the GPS measure-
+ment and the sensor estimates when the sensor-based speed was
+calculated using the simple difference in the detection times
+described by (1). As shown in Fig. 8, the maximum error for
+speed estimation is more than 12%. As a result, the magnetic
+length estimates, being used for vehicle classiﬁcation, have the
+same percentage error, because speed estimate errors directly
+propagate to magnetic length estimate errors. Fig. 8 also shows
+Fig. 8. Speed estimation error using the conventional and cross-correlation
+methods.
+Fig. 9. Sensor conﬁguration for data collection.
+the estimation error when the cross-correlation method has been
+applied for speed estimation.
+As shown in Fig. 8, comparing the conventional and cross-
+correlation methods, the error range has been reduced from
+12% to only 3.5%. Considering the errors of the proposed
+method, a negative offset is observed, which means that the
+estimated speed is overestimating the actual speed. This over-
+estimation of speed is because the sensors are not perfectly
+aligned with the side of the road, as shown in Fig. 9, which
+makes the actual measured distance between the sensors larger
+than the effective distance between the sensors.
+Multiplying the measured distance between the sensors in
+this test by a constant factor of 0.98, we get an almost zero-
+bias speed estimation error distribution, as shown in Fig. 10.
+In a general test where there is no reference value for speed
+calibration, we can use the following algorithm to automatically
+compensate for misalignment problems.
+Assume that sensors 1 and 3 are perfectly aligned with the
+side of the road and a vehicle passes precisely parallel to the
+sensors. Therefore, the signal readings of sensors 1 and 3 should
+be exactly identical, except for a delay that is used for speed
+estimation. Now, assume that the sensors are not perfectly
+aligned. In this case, the signal levels at the two sensors will
+slightly be different. For example, in the scenario depicted in
+Fig. 9, where sensor 1 is closer to the road than sensor 3, we
+expect to see slightly higher signal levels for sensor 1 than
+sensor 3. We can use this difference and partially adjust for the
+
+===== PAGE 7 =====
+
+T AGHV AEEY AN AND RAJAMANI: PORTABLE ROADSIDE SENSOR FOR VEHICLE COUNTING AND SPEED MEASUREMENT 79
+Fig. 10. Speed estimation error. The offset is automatically adjusted.
+misalignment. The method is described as follows and is based
+on using the ratio of integrated values of the two signals. Deﬁne
+Bint−j =
+tj,2∫
+tj,1
+Bjdt j = 1, 3 (13)
+where tj,1 andtj,2 are the detection times. Now, deﬁning
+c =m i n
+(Bint−1
+Bint−3
+, Bint−3
+Bint−1
+)
+(14)
+we modify d13 as
+d13−corrected = c∗d13 (15)
+and estimate the speed as
+v = d13−corrected
+δt (16)
+where δtis the time difference between the signals calculated
+earlier. The result of this method is shown in Fig. 10. It is shown
+that, using this method, we can get an almost-zero-bias error
+(the mean error is −0.78%) distribution of speed estimations.
+As shown in Fig. 10, the maximum error in speed estimation
+is less than 2.5% over the entire range of speeds, 5–27 m/s
+(11–60 mi/h).
+VI. V EHICLE CLASSIFICA TION
+V ehicle classiﬁcation is useful in a number of applications,
+including road maintenance and management, roadway design,
+emissions evaluation, multimode trafﬁc model development, tra-
+fﬁc control, trafﬁc signal design, and toll systems development.
+For example, the distribution of passing vehicles on a road is
+used in the estimation of pavement life cycle [24]. There are
+different vehicle classiﬁcation methods proposed in the litera-
+ture based on inductive loops and vision systems. In general,
+the main drawbacks of using inductive loops are the high cost,
+the long installation process, and the intrusive nature of sensor
+installation. The main drawback of systems based on vision
+is the high sensitivity to weather conditions, as mentioned in
+Section I. The beneﬁt of using magnetic sensors for vehicle
+detection is that they are less expensive, more robust to weather
+conditions, and easier to install. In addition to these beneﬁts,
+the sensing system proposed in this paper is portable and can
+be placed adjacent to the road, and therefore, it is not necessary
+to stop the trafﬁc.
+There are existing methods in the literature for vehicle
+classiﬁcation based on magnetic sensors. However, the main
+limitation of these methods is the poor performance in differ-
+entiating sedans versus SUVs, pickups, and vans; hence, these
+two classes are usually combined, as shown in [9] and [10], or
+only vans are classiﬁed as a separate class [8], [11], [25].
+In [6], a vehicle classiﬁcation method is proposed based
+on the hill pattern of magnetic signatures that were obtained
+from a single magnetic sensor. V ehicles are classiﬁed into
+seven classes, including sedans, SUVs, and vans. However, the
+classiﬁcation accuracy that has been achieved is only 63%.
+A classiﬁcation method based on the average bar and hill
+pattern recognition schemes is proposed in [26]. V ehicles are
+classiﬁed into four classes, including sedans and SUVs/vans.
+About 95% of the vehicles are correctly classiﬁed; however,
+the number of SUVs/vans in the data set is only 5% of the total
+vehicles compared to the total number of sedans, which is 84%.
+The classiﬁcation method proposed in this section is based
+on using the magnetic length and an estimate of the average
+vertical height of the passing vehicles. V ehicles are classiﬁed
+into the following four classes.
+• Class I: Sedans.
+• Class II: SUVs, pickups, and vans.
+• Class III: Buses, two- and three-axle trucks.
+• Class IV: Articulated buses and four- to six-axle trucks.
+Section V described how the speed of each passing vehi-
+cle was calculated. In addition, the time duration for which
+the passing vehicle’s magnetic ﬁeld stays above a detection
+threshold can be measured to calculate occupancy. The product
+of the vehicle’s estimated speed and the time duration (occu-
+pancy) provides the vehicle’s magnetic length. Note that the
+vehicle’s magnetic length can slightly be different from its
+actual physical length. This is because the vehicle magnetic
+ﬁeld extends beyond its physical boundaries. However, the
+length can be calculated with sufﬁcient accuracy for vehicle
+classiﬁcation. Of the three axes signals, the magnetic signals
+along thez-axis were observed to have a very consistent pattern
+for different types of vehicles. Therefore, magnetic readings of
+the z-axis were used for measuring the magnetic length, and
+a threshold of 30 counts was used for the vehicle detection
+duration measurement. Examples of magnetic signatures are
+provided in the Appendix.
+Fig. 11 shows the measured magnetic length for various
+vehicles in four classes. As shown in this ﬁgure, the magnetic
+lengths of vehicles in classes III and IV are clearly distinguish-
+able from those of vehicles in classes I and II. As a result, by
+using only this single feature, it is possible to accurately classify
+vehicles in these two classes. This is expected, because the
+actual lengths of the vehicles in classes I and II and vehicles in
+classes III and IV are very different. However, because vehicles
+in classes I and II have similar lengths and, consequently,
+similar magnetic lengths, it is not possible to classify them only
+
+===== PAGE 8 =====
+
+80 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014
+Fig. 11. Magnetic length and classiﬁcation for various types of vehicles.
+Fig. 12. Classifying class-I and class-II vehicles.
+by magnetic length. To improve the classiﬁcation of vehicles
+between classes I and II, the following additional signal pro-
+cessing is adopted.
+It is expected that higher vertical locations of magnetic
+components in a vehicle in class II lead to a higher magnetic
+height compared to vehicles in class I. Placing another sensor,
+sensor 4, about 0.25 m vertically above sensor 1, it is expected
+that the ratio B
+4−z/B1−z will distinctly be larger for vehicles
+in class II. This ratio, along with the magnetic length, can be
+used to create more separable boundaries to classify between
+class-I and class-II vehicles. The result is shown in Fig. 12,
+where a support vector machine has been used to come up with
+a classiﬁcation boundary [15]. Using these two features, 83% of
+the vehicles are correctly classiﬁed into classes I and II. Note
+that the two features proposed for classiﬁcation are very easy to
+implement and are based on the physical magnetic properties of
+vehicles and not based on some heuristic features and methods
+such as hill patterns or neural networks.
+VII. R
+IGHT -T URN DETECTION
+The objective of the system described in this section is to
+count the number of right turns versus the number of straight-
+driving vehicles at a trafﬁc intersection. This portable system
+Fig. 13. Right-turn detection and placement of the AMR sensors.
+can be used to count the number of right turns at an intersec-
+tion, replacing the current method, which is based on manual
+counting. This information can be used for adjusting the trafﬁc
+lights. The sensors are placed at an intersection, as shown in
+Fig. 13.
+Our objective is to determine the percentage of the vehicles
+that move in lane 1 and make a right turn to lane 2. Recall
+that, for trafﬁc measurement, when vehicles travel in a straight
+line, the magnetic sensors could be placed on the side of the
+road, and vehicles should typically pass within a distance of
+2.5 m from the sensors to be detected. However, when the
+sensors are placed at the corner of an intersection, half of the
+turning radius ( ∼2–3 m) is added to the lateral distance from
+the passing vehicles in lane 1 to the sensors. Thus, most of the
+vehicles that pass straight in front of the sensors in lane 1 or 2
+are not typically detected. The vehicles that are being detected
+are the vehicles that make a right turn or larger vehicles that
+move straight on lane 1 or 2.
+By placing one magnetic sensor at the corner side of the road,
+as shown in Fig. 13, the number of right turns at an intersection
+can be counted. During the experiments, 56 out of 59 right
+turns were correctly counted, resulting in a detection rate of
+95%. As aforementioned, typically, straight-driving vehicles
+are not detected, because they pass at a larger distance from the
+sensor compared to vehicles that make a right turn. However,
+larger straight-driving vehicles can create large enough signals
+to be miscounted as vehicles that make right turns. During the
+experiments, 18 straight-driving vehicles created large enough
+signals to be miscounted as vehicles that make a right turn,
+which results in a detection error of 31%.
+Two methods, A and B, are proposed to identify and reject
+the errors caused by straight-driving vehicles, using two and
+four magnetic sensors, respectively. Considering the sensor
+conﬁguration shown in Fig. 14, in method A, signals from
+magnetic sensors 2 and 3 are used. In method B, signals
+from all the four magnetic sensors are used. The two methods
+are presented in the following sections. Note that the sensor
+conﬁguration used for right-turn detection, as shown in Fig. 14,
+is different from the sensor conﬁguration shown in Fig. 3.
+A. Method A
+As mentioned in Section III, it can be shown through both
+analytical modeling and experimental measurements that the
+magnetic ﬁeld intensity around a vehicle has a relation that
+approximately varies as 1/x with distance, wherex is the lateral
+
+===== PAGE 9 =====
+
+T AGHV AEEY AN AND RAJAMANI: PORTABLE ROADSIDE SENSOR FOR VEHICLE COUNTING AND SPEED MEASUREMENT 81
+Fig. 14. Magnetic-sensor conﬁguration for the right-turn detection system.
+distance from the vehicle [14]. This phenomenon is used in
+that case to reject the trafﬁc in the nonadjacent lane, which
+creates large enough signals to affect the sensors. In a right-turn
+detection system, generally, the trafﬁc going straight in lanes 1
+and 2 will pass at a larger lateral distance from the sensors than
+a vehicle that makes a right turn. Hence, for magnetic sensors 2
+and 3, we expect that the ratio r = B
+max−2/Bmax−3 is closer
+to 1 during scenarios 1 and 3 compared to scenario 2, as shown
+in Fig. 14.
+B. Method B
+Using all the information from all the four magnetic sensors,
+the following is expected when integrating the signals of each
+detected vehicle:
+Scenario 1 : Bint−1 ∼= Bint−3 >B int−2 ∼= Bint−4 (17)
+Scenario 2 : Bint−3 >B int−1 ∼= Bint−4 >B int−2 (18)
+Scenario 3 : Bint−3 ∼= Bint−4 >B int−1 ∼= Bint−2. (19)
+Now, consider four points in a 3-D space located at
+(0, 0,int B1),(0,d,int B2),(−d, 0,int B3), and(−d,d,int B4),
+where x and y of each point show the position of a magnetic
+sensor with respect to the origin (sensor 1), and z shows the
+value of Bint−i for each sensor. Next, we ﬁt a plane with
+a normal vector ˆn to these four points and deﬁne ˆnp as the
+projection of ˆn into the xy plane and γas the angle between
+ˆnp and the x-axis. It is expected that, for scenarios 1, 2, and 3,
+the angle γwill be close to 90 ◦,4 5◦, and 0◦, respectively. The
+angleγis calculated as follows. The equation of a plane is
+ˆn.(p−p0)= 0 (20)
+where p0 is the position of a known point on the plane, ˆn is
+a nonzero vector normal to the plane, and p is a point on the
+plane. Expanding this equation, we get
+nx(x−x0)+ ny(y−y0)+ nz(z−z0)= 0 → ax+by +c = z
+(21)
+where
+a = −nx
+nz
+b = −ny
+nz
+c = nxx0 +nyy0
+nz
++z0.
+Fig. 15. Results of applying the support vector machine algorithm to obtain
+classiﬁcation boundaries.
+Hence
+γ=a t a n
+(ny
+nx
+)
+=a t a n
+(b
+a
+)
+. (22)
+Therefore, we should obtain a, b, and c, which can be done
+using a least squares method, i.e.,
+y = Hx +v → ˆx =( HTH)−1HTy (23)
+where
+x =
+⎡
+⎣
+a
+b
+c
+⎤
+⎦ H =
+⎡
+⎢⎣
+00 1
+0 d 1
+−d 01
+−dd 1
+⎤
+⎥⎦ y =
+⎡
+⎢⎣
+Bint−1
+Bint−2
+Bint−3
+Bint−4
+⎤
+⎥⎦
+andv is the measurement noise.
+C. Experimental Results
+Methods A and B were applied to the data set obtained from
+the experiments. The data set was obtained by placing the sen-
+sors (with the conﬁguration shown in Fig. 14) at two different
+intersections and recording signals from passing vehicles. The
+experiments were performed during noon hours under clear-sky
+conditions. Fig. 15 shows the results.
+As shown in Fig. 15, both methods can be used separately
+or in combination to reject the straight-driving vehicles, which
+have created a large-enough signal to be incorrectly detected
+as a vehicle that makes a right turn. A support vector machine
+is used to obtain the classiﬁcation boundaries in Fig. 15 [15].
+If only one of the methods is used, the separation between
+the classes will be smaller, and the measurements will be less
+separated. These results show that straight-driving vehicles that
+have created a large-enough signal to be detected by the sensors
+can completely be excluded, reducing the 31% misdetection
+error to 0%.
+
+===== PAGE 10 =====
+
+82 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 15, NO. 1, FEBRUAR Y 2014
+Fig. 16. Magnetic signature of a Nissan Maxima (class I) that passes at 1.6 m
+from the sensors.
+Fig. 17. Magnetic signature of a Toyota Highlander SUV (class II) that passes
+at 1.4 m from the sensors.
+VIII. C ONCLUSION
+This paper has proposed a portable and low-cost sensing
+system based on magnetic sensors that can be placed adjacent to
+the road and be used for trafﬁc counting, speed measurement,
+and vehicle classiﬁcation in the lane adjacent to the sensors.
+The vehicle classiﬁcation and speed measurement in this paper
+are enabled using multiple spatially separated magnetic sensors.
+Through experimental data from 188 vehicles, it is shown that
+the trafﬁc counting accuracy of the system is 99%. A method
+is also proposed to make the system robust to the trafﬁc in the
+nonadjacent lane. The false calls caused by the trafﬁc in the
+nonadjacent lane, if uncorrected, can cause an 8% detection
+error. However, using the proposed method, the error reduces to
+1%. Speed estimation is done by placing two magnetic sensors
+0.9 m longitudinally apart and taking the cross-correlation
+between the signals from the two sensors. Digital signal pro-
+cessing methods are adopted to reduce the computation effort.
+The speed estimation method is veriﬁed by mounting a test
+vehicle with a GPS. Experimental results show a maximum
+of 2.5% error in speed estimates over the range of 5–27 m/s
+(11–60 mi/h). V ehicle classiﬁcation is performed based on
+Fig. 18. Magnetic signature of a cement truck (class III) that passes at
+1.5 m from the sensors.
+Fig. 19. Magnetic signature of an articulated bus (class IV) that passes at
+1.2 m from the sensors.
+the magnetic length and average magnetic height of vehicles.
+V ehicle length is estimated by multiplying the detection time
+by the estimated speed. The average vertical magnetic height is
+estimated using two magnetic sensors that are vertically spaced
+by about 0.3 m. Finally, it is shown that the sensing system
+can be used to reliably count the number of right turns at
+an intersection, with an accuracy of 95%. The challenge in
+counting the number of right turns is the false calls created
+by larger straight-driving vehicles, which, if uncorrected, cause
+31% overdetection. Two methods are proposed based on using
+two and four magnetic sensors, which totally eliminate this
+error.
+A
+PPENDIX
+Figs. 16–19 show four examples of magnetic signatures for
+vehicles in classes I–IV .
+REFERENCES
+[1] S. Jeng and S. Ritchie, “Real-time vehicle classiﬁcation using inductive-
+loop signature data,” Transp. Res. Rec., J. Transp. Res. Board, vol. 2086,
+pp. 8–22, 2008. [Online]. Available: http://dx.doi.org/10.3141/2086-02
+[2] S. Gupte, O. Masoud, R. F. K. Martin, and N. P . Papanikolopoulos, “De-
+tection and classiﬁcation of vehicles,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 3, no. 1, pp. 37–47, Mar. 2002.
+
+===== PAGE 11 =====
+
+T AGHV AEEY AN AND RAJAMANI: PORTABLE ROADSIDE SENSOR FOR VEHICLE COUNTING AND SPEED MEASUREMENT 83
+[3] H. Cheng, H. Du, L. Hu, and C. Glazier, “V ehicle detection and classiﬁ-
+cation using model-based and fuzzy logic approaches,” Transp. Res. Rec.,
+J. Transp. Res. Board, vol. 1935, pp. 154–162, 2005. [Online]. Available:
+http://dx.doi.org/10.3141/1935-18
+[4] J. Medina, M. Chitturi, and R. Benekohal, “Effects of fog, snow, and rain
+on video detection systems at intersections,” Transp. Lett., Int. J. Transp.
+Res., vol. 2, no. 1, pp. 1–12, Jan. 2010. [Online]. Available: http://dx.doi.
+org/10.3328/TL.2010.02.01.1-12
+[5] M. J. Caruso and L. S. Withanawasam, “V ehicle detection and compass
+applications using AMR magnetic sensors,” in Sens. Expo Proc. , 1999,
+pp. 477–489.
+[6] S. Cheung, S. Coleri, B. Dundar, S. Ganesh, C. Tan, and P . V araiya, “Traf-
+ﬁc measurement and vehicle classiﬁcation with single magnetic sensor,”
+Transp. Res. Rec., J. Transp. Res. Board , vol. 1917, pp. 173–181, 2005.
+[Online]. Available: http://dx.doi.org/10.3141/1917-19
+[7] S. Kaewkamnerd, J. Chinrungrueng, R. Pongthornseri, and S. Dumnin,
+“V ehicle classiﬁcation based on magnetic sensor signal,” in Proc. IEEE
+ICIA, 2010, pp. 935–939.
+[8] M. Bottero, B. Dalla Chiara, and F. P . Deﬂorio, “Wireless sensor networks
+for trafﬁc monitoring in a logistic center,” Transp. Res.—Part C: Emerg.
+Technol., vol. 26, pp. 99–124, Jan. 2013.
+[9] Y . He, Y . Du, and L. Sun, “V ehicle classiﬁcation method based on single-
+point magnetic sensor,” Proc. Social Behav. Sci. , vol. 43, pp. 618–627,
+2012.
+[10] J. Lan and Y . Shi, “V ehicle detection and recognition based on a MEMS
+magnetic sensor,” in Proc. 4th IEEE Int. Conf. NEMS, 2009, pp. 404–408.
+[11] Z. Feng and W. Mingzhe, “A new SVM algorithm and AMR sensor based
+vehicle classiﬁcation,” in Proc. 2nd ICICTA, 2009, pp. 421–425.
+[12] J. Medina, A. Hajbabaie, and R. Benekohal, “Detection performance
+of wireless magnetometers at signalized intersection and railroad grade
+crossing under various weather conditions,” Transp. Res. Rec., J. Transp.
+Res. Board, vol. 2259, pp. 233–241, 2011. [Online]. Available: http://dx.
+doi.org/10.3141/2259-22
+[13] F. Ahdi, M. K. Khandani, M. Hamedi, and A. Haghani, “Trafﬁc Data
+Collection and Anonymous V ehicle Detection Using Wireless Sensor
+Networks,” Univ. Maryland, College Park, MD, USA, 2012.
+[14] S. Taghvaeeyan and R. Rajamani, “Use of vehicle magnetic signatures
+for position estimation,” Appl. Phys. Lett., vol. 99, no. 13, pp. 134 101-1–
+134 101-3, Sep. 2011.
+[15] E. Alpaydin, Introduction to Machine Learning. Cambridge, MA, USA:
+MIT Press, 2010.
+[16] X. Sun and R. Horowitz, “Set of new trafﬁc-responsive ramp-metering
+algorithms and microscopic simulation results,” Transp. Res. Rec.,
+J. Transp. Res. Board, vol. 1959, pp. 9–18, 2006.
+[17] Y .-K. Ki and D.-K. Baik, “Model for accurate speed measurement
+using double-loop detectors,” IEEE Trans. Veh. Technol., vol. 55, no. 4,
+pp. 1094–1101, Jul. 2006.
+[18] L. A. Klein, M. K. Mills, and D. R. P . Gibson, Trafﬁc Detector Handbook:
+Volume I. Springﬁeld, V A, USA: Nat. Tech. Inf. Service, 2006.
+[19] Anonymous, VSN240 Wireless Flush Mount Sensor Data Sheet Sen-
+sys Networks. [Online]. Available: Http://Www.Sensysnetworks.Com,
+VSN240 Wireless Flush Mount Sensor Data Sheet
+[20] D. Nan, T. Guozhen, M. Honglian, L. Mingwen, and S. Y ao, “Low-power
+vehicle speed estimation algorithm based on WSN,” in Proc. 11th IEEE
+Int. Conf. ITSC, 2008, pp. 1015–1020.
+[21] L. Zhang, R. Wang, and L. Cui, “Real-time trafﬁc monitoring with mag-
+netic sensor networks,” J. Inf. Sci. Eng. , vol. 27, no. 4, pp. 1473–1486,
+Jul. 2011.
+[22] S. Engelberg, Digital Signal Processing: An Experimental Approach .
+New Y ork, NY, USA: Springer-V erlag, 2008.
+[23] A. V . Oppenheim, Digital Signal Processing . Englewood Cliffs, NJ,
+USA: Prentice-Hall, 1975.
+[24] C. Sun, “An investigation in the use of inductive-loop signatures for
+vehicle classiﬁcation,” California PA TH Program, Inst. Transp. Studies,
+Richmond, CA, USA, 2000.
+[25] W. Zhang, G. Tan, H. Shi, and M. Lin, “A distributed threshold algorithm
+for vehicle classiﬁcation based on binary proximity sensors and intelligent
+neuron classiﬁer,” J. Inf. Sci. Eng., vol. 26, no. 3, pp. 769–783, May 2010.
+[26] I. Jolevski, A. Markoski, and R. Pasic, “Smart vehicle sensing and classiﬁ-
+cation node with energy-aware vehicle classiﬁcation algorithm,” in Proc.
+33rd Int. Conf. ITI, 2011, pp. 409–414.
+Saber Taghvaeeyan received the B.S. degree in
+electrical engineering from the University of Tehran,
+Tehran, Iran, in 2009. He is currently working toward
+the Ph.D. degree in mechanical engineering at the
+University of Minnesota, Twin Cities, Minneapolis,
+MN, USA.
+His research interests include sensors, control sys-
+tems, and vehicle dynamics.
+Mr. Taghvaeeyan is the recipient of the 2013
+ITS Minnesota Best Student Paper Award and of
+the University of Minnesota Doctoral Dissertation
+Fellowship.
+Rajesh Rajamani received the B.Tech. degree from
+the Indian Institute of Technology, Madras, India,
+in 1989 and the M.S. and Ph.D. degrees from the
+University of California, Berkeley, CA, USA, in
+1991 and 1993, respectively.
+He is currently a Professor of mechanical en-
+gineering with the University of Minnesota, Twin
+Cities, Minneapolis, MN. He has been a coauthor
+of more than 95 journal papers and is a co-inventor
+on eight patent applications. He is the author of
+the popular book Vehicle Dynamics and Control
+(Springer-V erlag). His research interests include sensors and control systems
+for automotive and biomedical applications.
+Dr. Rajamani is a Fellow of the American Society of Mechanical Engineers
+(ASME). He has served as the Chair of the Technical Committee on Automotive
+Control of the IEEE Control Systems Society (CSS) and on the editorial
+boards of the IEEE T
+RANSACTIONS ON CONTROL SYSTEMS TECHNOL -
+OGY and the IEEE/ASME T RANSACTIONS ON MECHA TRONICS .H eh a s
+received the Faculty Early Career Development (CAREER) Award from the
+National Science Foundation, the 2001 Outstanding Paper Award from the
+IEEE T RANSACTIONS ON CONTROL SYSTEMS TECHNOLOGY , the Ralph R.
+Teetor Educational Award from SAE, and the 2007 O. Hugo Schuck Award
+from the American Automatic Control Council.

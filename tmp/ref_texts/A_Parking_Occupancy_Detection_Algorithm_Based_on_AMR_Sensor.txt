@@ -1,0 +1,747 @@
+
+
+===== PAGE 1 =====
+
+IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015 1261
+A Parking Occupancy Detection Algorithm
+Based on AMR Sensor
+Zusheng Zhang, Ming Tao, and Huaqiang Yuan
+Abstract— Recently, with the explosive increase of automobiles
+in cities, parking problems are serious and even worsen in many
+cities. This paper proposes a new algorithm for parking occu-
+pancy detection based on the use of anisotropic magnetoresistive
+sensors. Parking occupancy detection is abstracted as binary
+pattern recognition problem. According to the status of the park-
+ing space, the recognition result contains two categories: 1) vacant
+and 2) occupied. The feature extraction method of the parking
+magnetic signal is proposed. In addition, the classiﬁcation criteria
+are derived based on the distance discriminate analysis method.
+Eighty-two sensor nodes are deployed on the roadside parking
+spaces. By running the system for six months, we observed that
+the accuracy rate of the proposed parking occupancy detection
+algorithm is better than 98%.
+Index Terms— AMR sensor, wireless sensor networks, parking
+occupancy detection.
+I. I NTRODUCTION
+A
+T PRESENT, the sensors used in the trafﬁc informa-
+tion acquisition include the following types: inductive
+loop detector [1], image (camera) sensor [2], [3], acoustic
+sensor [4], [5], infrared sensor [6], ultrasonic sensor [7],
+etc. The image sensor acquires an abundance of information,
+but it is vulnerable to bad weather and nighttime operation.
+The acoustic sensor and infrared sensor are vulnerable to
+noise in deployed environments. Magnetic sensors based on
+magneto resistors have recently been proposed for vehicle
+detection [8]–[11] because they are quite sensitive, small and
+more immune to environmental factors such as rain, wind,
+snow or fog than sensing systems based on video cameras,
+ultrasound or infrared radiation.
+A. Dynamic Trafﬁc Information Acquisition
+Many algorithms have been proposed for dynamic trafﬁc
+information acquisition system based on AMR sensor.
+The PATH program of the University of California,
+Manuscript received September 7, 2014; revised October 2, 2014; accepted
+October 2, 2014. Date of publication Oct ober 9, 2014; date of current version
+December 3, 2014. This work was supported in part by the Guangdong
+Province Natural Science Fund, under Grant S2013040016582, in part by the
+National Natural Science Foundatio n of China under Project 61402105 and
+Project 61300198, and in part by the Gu angdong Higher School Scientiﬁc
+Innovation Project, China, under Gra nt 2013KJCX0177. The associate editor
+coordinating the review of this pape r and approving it for publication was
+Prof. Yu-Cheng Lin.
+The authors are with the Department of Computer Science and Technology,
+Songshan Lake Science and Technology Industry Park, Dongguan University
+of Technology, Dongguan 523808, China (e-mail: zushengzhang@gmail.com;
+taoming6723@126.com; hyuan66@163.com).
+Color versions of one or more of the ﬁgures in this paper are available
+online at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/JSEN.2014.2362122
+Berkeley [12], [13] had ﬁrst extensively explored of
+AMR sensor network based vehicle detection system.
+S. Y . Cheung et al. [13] had explored the applications
+for vehicle detection, speed estimation, and classiﬁcation.
+Experiment results show that the vehicle detection accuracy
+rate is more than 99%, and the accuracy rate to estimate length
+and speed of vehicle is more than 90%.
+M. Kang et al. [14] proposed a vehicle detector with
+an AMR sensor and addresses experimental study carried
+out to show the detector’s char acteristics and performance.
+Li Cui et al. [15], [16] proposed a Similarity Based Vehicle
+Detection (SBVD) algorithm to detect vehicles in low SNR
+conditions by calculating the correlation between on-road
+signals and a referential signal. Besides, data fusion algorithm
+based on fuzzy logic theory has also been proposed to monitor
+parking space using magnetic sensor [17].
+S. Taghvaeeyan et al. [18] presents a method to estimate the
+position of the vehicles. It utilizes the fact that the magnetic
+moment caused by a vehicle decreases as the distance to
+the sensor increases. The proposed method is affected by the
+type and size of the vehicle. The author integrated two AMR
+sensors and a sonar sensor together to address this issue and
+improve the estimation.
+B. Static Trafﬁc Information Acquisition
+Technologies normally employed within indoor car parks,
+such as ultrasonic sensors [19], could not be used outdoor
+because every space would need to be wired. Installing cables
+and wires along the roadside for data transmission and energy
+supply is very difﬁcult and challenging. So a completely wire-
+less solution was adopted. Wireless AMR sensor networks [20]
+have lots of potential toward providing an ideal solution for
+roadside parking service, such as their low power, small size,
+low cost, and high accuracy.
+The use of AMR sensors for detection of vehicle in parking
+space has been previously studied. In [21], S. Lee discussed the
+effect of detecting vehicles by comparing the acoustic, visual
+light, infrared, temperature, ultrasonic, and AMR sensors.
+Their experiments veriﬁed th at ultrasonic and AMR sensors
+have better accuracy and reliability in the parking space.
+Threshold detection algorithms are usually to measure the
+geomagnetic ﬁeld change of z-axis [22], [23]. If this change
+in frequency exceeds a threshold, the sensor will indicate
+the detection of a vehicle. But a single threshold cannot
+apply to all situations and often leads to a high false alarm
+rate. In order to solve this problem, an adaptive threshold
+1530-437X © 2014 I EEE. Personal u se is perm itted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+1262 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+algorithm is presented [24]. However, threshold-based vehicle
+detection algorithms have congenital defects. Firstly, there is
+no existence of a reasonable threshold to distinguish between
+the signal of interference and vehicle parking, especially in low
+Signal-Noise-Ratio (SNR). Furt hermore, different places have
+different geomagnetic ﬁelds, so it is difﬁcult have a threshold
+to adapt all situations. Our simulations and experiments also
+show that the aforementioned algorithm is difﬁcult to apply to
+the real system, because its vehi cle detection success rate is
+less than 96%.
+Another detection method is to study the characteristics
+of the wave pattern. J. Ding proposed Min-max Detection
+Algorithm [25]. Modiﬁed Min-max Algorithm for magnetome-
+ters [26] has also been published. These algorithms analyze
+the process of parking signal changes, but they still rely
+on single threshold and have low vehicle detection success
+rate.
+Commercial sensors, such as SENSIT system [27], can
+detect parking occupancy. Each node was equipped with
+two sensors: infrared and magnetic, and its vehicle detection
+accuracy rate is nearly 100%. But the system is too expensive.
+Existing parking occupancy detection algorithms did not
+analysis the characteristic between the parking signal and
+interference signal. On the other hand, a whole parking period
+of a vehicle can be divided into three phases: entering, parking
+stop and leaving. Most existing algorithms only consider the
+signal’s characteristic of the parking stop phase. They did
+not analysis the relationship bet ween the entering and leaving
+phases of magnetic signal. This paper will address these
+problems and propose a more accurate detection algorithm.
+Our main contributions are given as follows:
+(a) By Analysis of the characteristics of the disturbance geo-
+magnetic signal, the parking vehicle detection algorithm
+is proposed, and the algorithm has an immune feature
+for the interference signal.
+(b) Vehicle leaving can be regarded as an inverse process of
+its entering. Choosing the signal of the entering phase as
+the referential signal, leaving detection is to computing
+the similarity between the two phases.
+The remainder of this paper is organized as follows.
+Section II analyzes the characterizations of parking signal and
+proposes the algorithm. Section III conducts experiments to
+prove the performance of the algorithm. Finally, Section IV
+makes a brief conclusion.
+II. P
+ARKING OCCUPANCY DETECTION ALGORITHM
+According to the status of the parking space, parking
+occupancy detection is a binary recognition problem (two
+cases: vacant and occupied). The key issue is to train the
+classiﬁcation criteria from the magnetic signal. Solve the prob-
+lem involve following steps: Firstly, analysis characteristics of
+the magnetic signal and computing the features variable of
+ﬂuctuate signal. Secondly, classiﬁcation rules are trained using
+the distance discriminate method, and the training data are pre-
+classiﬁed examples (class label is known for each example).
+Finally, the parking detection algorithm is designed based on
+classiﬁcation criteria.
+Fig. 1. Three-axes magnetic signature of a parking space.
+Fig. 2. Signal processing.
+A. Feature Extraction of the Magnetic Signal
+Sensor node consists of a 3-axis AMR sensor. Fig. 1 is the
+three-axis magnetic signature of a vehicle parking process.
+A whole parking period includes three phases: entering, park-
+ing stop and leaving. Initially, the parking space is vacant, and
+the values of x, y, z are the background’s magnetic ﬁelds. Then
+a vehicle enters the parking sp ace and creates a ﬂuctuation of
+the magnetic ﬁeld. After the vehicle parking stop, the vehicle
+creates a stable disturbance on the environment’s magnetic
+ﬁeld. The parking space is occupied. Then the vehicle is
+leaving the parking space, and also has a ﬂuctuation signature.
+Finally, the parking space is vacant.
+1) Signal Preprocessing: The geomagnetic signal is studied
+and summarized in the time domain involves a series of
+steps as shown in Fig. 2. For vehicle presence applications,
+the direction of the magnetic ﬁeld is not important, but the
+detection of a signiﬁcant shift and frequent ﬂuctuation in
+the magnetic ﬁeld are the key factors. The vector magnitude
+shift from the environment’s magnetic ﬁeld would be the
+most reliable method. Using dig itized measurements of three-
+axis sensor outputs after ampliﬁcation, the vector magnitude
+would be:
+G(i ) =
+√
+X2
+i + Y 2
+i + Z2
+i (1)
+A smoothing ﬁlter, which takes a running average of the
+signal, is used to smooth the signal. The running average is
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+ZHANG et al.: PARKING OCCUPANCY DETECTION ALGORITHM BASED ON AMR SENSOR 1263
+Fig. 3. Peak values of magnetic signal.
+given by
+A(i )=
+⎧
+⎪⎨
+⎪⎩
+G(i ) + G(i − 1) +··· G(1)
+iG(i )+ G(i − 1) +··· G(i − L + 1)
+L
+fo r i < L
+fo r i >= L
+(2)
+G(i ) is the vector magnitude and L is the pre-deﬁned
+running average buffer size. For implementation, the buffer
+Gbu f stores the values of [ G(i ), G(i-1), …, G(i − L + 1)].
+2) Fluctuation Detection: Since the ﬂuctuation of the mag-
+netic signal is a key characteristic of the vehicle entering and
+leaving. Exact detection the ﬂuctuation signature is important
+for the vehicle detection algorithm. F(i ) is the stable states of
+the magnetic signal. If there has one up-or-down ﬂuctuation
+sample of the magnetic signal in the G
+bu f , the signal is
+unstable and F(i ) = 1, otherwise, the signal is stable and
+F(i ) = 0. F(i ) can be described as equation (3), where T1 is
+a threshold.
+F(i )
+=
+{ 1
+0
+if ∀k ∈ (i, i − 1,..., i − L+ 1) : |G(k)− A(i )|≥ T1
+Other wise
+(3)
+3) Peak Values Extraction: The algorithm in the node
+automatically extracts the sequence of peak values, i.e., local
+maxima and minima from a continuous ﬂuctuation signal
+which produces a successive sequence of “ F(i ) = 1”. Using
+an array P ={ (k, t
+k, pk),1 ≤ k ≤ N} to restore the
+peak values, where k is No., tk is the sample time, pk is
+the amplitude. Then ﬁlter out peaks with small amplitude or
+short duration, delete these elements in the array P if their
+del_ﬂag equal 1. The del_ﬂag is deﬁned in equation (4), where
+T2 and T3 are thresholds. So only the amplitude and duration
+of a peak is large enough will be adopted. In the Fig. 3, there
+are six peak values (including the initial and terminal values
+of the signal), which are denoted by cycles.
+del _ fl a g(k) =
+{ 1
+0
+if p
+k − pk−1 < T2 or tk − tk−1 < T3
+other wise
+(4)
+4) Feature Variables Computing: From the array P =
+{(k, tk , pk ),1 ≤ k ≤ N} of peak values, the algorithm can
+compute feature variables of the continuous ﬂuctuation signal.
+Fig. 4. The parking signal and interfere nce signal of a vehicle. (a) Parking
+signal. (b) Interference signal.
+The variable Peak_counter indicates the number of the mag-
+netic signal ﬂuctuations. The minimum tracks the local mini-
+mums in a continuous ﬂuctuation signal while the maximum
+tracks the local maximums. The variable Max_amplitude is
+the amount of change between the minimums and maximum.
+The variable Drift indicates the change before and after the
+signal ﬂuctuations, as shown in Fig. 3.
+Dri f t = abs ( fla t _ pre vious − fla t _current ). (5)
+B. Classiﬁcation Criteria
+1) Parking Detection: In our experiments, we found that
+some of the vehicles disturb the geomagnetic ﬁeld greater.
+They often bring interference to the sensors at the adjacent
+parking spaces. For simplicity, we deﬁne two kinds of signals:
+1) The parking signal which is perceived by the sensor node
+deployed on the vehicle parked space. 2) The interference
+signal which is perceived by the sensors at the neighbor
+parking spaces. The parking signa l and the interference signal
+of a vehicle are shown in Fig. 4.
+Through extensive data analysis shows that, under normal
+circumstances, the interference waveform’s change is rela-
+tively ﬂat, although there will be the formation of stable drift,
+but no occurrence of the waveform several times undulating.
+Interference brought by the by-pass moving vehicles on the
+road produces a short period of time ﬂuctuations, and thus
+will not form a stable drift.
+At present, the existing research results are mostly based
+on the stable drift of parking stop phase to detect vehicle
+occupancy, but the interference of neighbor parking will also
+form similar drift, especially in the case of low signal-to-
+noise ratio, as shown in Fig. 4. A vehicle presence detection
+method is proposed based on the integrated magnetic signal
+characteristics of a vehicle’s entering and parking stop phases.
+According to our statistics, almost all magnetic signals of
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+1264 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+TABLE I
+PRE -CLASSIFIED SAMPLES
+Fig. 5. V1 equals V2 approximately.
+vehicle parking own two features: frequent ﬂuctuation and
+a stable drift, this is what we proposed algorithm based on
+where. Abstract the vehicle signal for the three dimension data
+vector model, x = (v1, v2, v3)T ,w h e r ex denotes the classiﬁed
+objects, v1, v2, v3 are the three feature variables Peak_counter,
+Max_amplitude and Drift, respectively. v1 and v2 are the
+characteristics of the vehicle entering phase, v3 represents the
+characteristic of the parking stop phase.
+Given a linear discriminant function
+W (x) = wt x + w0 (6)
+As shown in Table I, the goal is to learn the weights w
+using a set of n labeled samples xi (i.e., each xi has a class
+label w1 or w2). A two-category classiﬁer with a discriminant
+function of the form g(x) uses the following rule: Decide w1
+if g(x) ≥ 0a n d w2 if g(x)< 0.
+2) Leaving Detection: Leaving can be regarded as an
+inverse process of parking. In the case of no interference, the
+leaving detection simpliﬁed as the magnetic signal recovered
+to be same as the background earth magnetic ﬁeld. But in
+the reality applications, there has overlap interference. Usually
+when the vehicle left, the magnetic signal is not recovered
+to the background value. Therefore, we choose the vehicle
+entering ﬂuctuation signal as the referential signal. Leaving
+detection is based on computing the similarity between the
+entering and leaving signal.
+1) Give B(i ) is the background magnetic value, A(i ) is the
+current magnetic signal value. If R(i ) = 1, it can decide
+the magnetic A(i ) is approximately equal to B(i ).
+R(i ) =
+{ 1
+0
+if |A(i ) − B(i )| ≤ T
+4
+Other wise (7)
+2) As shown in Fig. 5, when the vehicle is com-
+pletely stopped, a stable drift to the geomagnetic pro-
+duced. We can get the drift through the calculation of
+difference between the state of vacant and occupied,
+denoted by Drift
+entering . From Fig. 5 we can see,
+an opposite variation emerged when the vehicle left,
+Fig. 6. The magnetic signal of vehicle entering and leaving has symmetry,
+the asterisk is entering signal and the circle is leaving signal.
+denoted by Driftleaving . Driftentering equals Driftleaving
+approximately.
+dist
+(
+Dri f tentering , Dri f tleaving
+)
+= abs
+⏐⏐Dri f tentering 1− Dri f tleaving
+⏐⏐
+max
+(
+D rift entering 1 , Dri f tleaving
+) (8)
+dri f t _sim =
+⎧
+⎪⎨
+⎪⎩
+1 if d is t (Dri f tentering , Dri f tleaving )
+∈[ 0, C1]
+0 other wise
+(9)
+Using dist function to compute the similarity, a deci-
+sion criterion uses the following rule: Driftentering
+and Driftleaving are similar if dist (Driftentering ,
+Driftleaving ) ∈ [0, C1], where C1 is a given constant,
+in our experiment, it is 0.1.
+3) We also note that the magnetic signal of vehicles enter-
+ing and leaving have some symmetry. Fig. 1 presents
+an even symmetry. This symmetry is more obvious
+in Fig. 6.
+P is an array includes peak values extract from the
+entering ﬂuctuation. Peak points in the array are stored
+in chronological order. Then invert the array P and
+renumbered, and the ﬁnal result is P
+entering ={ (i, ti , xi ),
+1 ≤ i ≤ N}. Array Pleaving is the peak point collection
+of the leaving phase magnetic ﬂuctuations. Pleaving =
+{( j, sj , yj ),1 ≤ j ≤ M}, elements are stored in
+chronological order. The distance between Pentering
+and Pleaving can be computed by function S(Pentering ,
+Pleaving ). A decision criterion uses the following rule:
+it can be considered to the correspond waveform of
+Pentering and Pleaving are symmetrical if S(Pentering ,
+Pleaving ) ∈ [0, C2], where C2 is a given constant.
+S(Pentering , Pleaving ) =
+M∑
+i=1
+abs (yi − xi )
+max(yi , xi )
+/ M (10)
+fl u c t_sim =
+{ 1
+0
+if S (Pentering , Pleaving ) ∈[ 0, C2]
+other wise
+(11)
+A two-category classiﬁer with a discriminant func-
+tion of the equation Leaving uses the following rule:
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+ZHANG et al.: PARKING OCCUPANCY DETECTION ALGORITHM BASED ON AMR SENSOR 1265
+Fig. 7. The state machine of the proposed algorithm.
+Given the parking space is Occupied, decide w1 (vacant)
+if Leaving = 1a n d w2 (occupied) if Leaving = 0.
+Leaving
+=
+⎧
+⎪⎨
+⎪⎩
+1 if (d rift _sim = 1& &R(i ) = 1)
+or (d rift _sim = 1&& flu c t_sim = 1)
+0 other wise
+(12)
+C. Detection Algorithm
+Occupancy of parking space is determined by a state
+machine, as shown in Fig. 7. The state machine consists of:
+State: {Init, Vacant, Fluct entering, Occupied, Fluct leaving}
+Input [ F(i ),W (x), Leaving]: {0, 1}
+Output [ D(i )]: {0, 1}
+The Boolean ﬂags F(i ) is passed to the state machine. Their
+main objective is to trace the ﬂuctuate signals that are caused
+by vehicles entering or leaving. D(i ) is the output of the
+detection state machine. Only when the state machine is in
+“Occupied” or “ Fluct
+leaving ”, D(i ) = 1, otherwise, D(i ) = 0.
+The following section is a walk-through of the state machine’s
+logical ﬂow.
+S1 “Init”: Assuming there is no vehicle in the parking
+space when the sensor node is being deployed. It will go into
+state S1 and start initializing the background value with the
+environmental magnetic ﬁeld.
+S2 “Vacant”: After a pre-deﬁned initializing time, it will
+jump to the state S2 where the arrays Pentering and Pleaving
+are initialized. It will jump to state S3 there has an “ F(i ) = 1”
+and trace the possible entering ﬂuctuation.
+S3 “Fluctentering ”: It was found that a vehicle entering the
+parking space produces a successive sequence of “ F(i ) = 1”
+and this state is used to track such a sequence. The algorithm
+extracts the peak values of the ﬂuctuation and restores them in
+the array Pentering . If there is any “0” reading from F(i ),t h e
+algorithm computes W (x).I f W (x)> = 0, it will immediately
+jump to state S4. Otherwise, W (x)< 0, it will jump back to
+state S2.
+Fig. 8. Devices are deployed in roadside parking spaces. (a) Sensor nodes.
+(b) Router.
+S4 “Occupied”: Staying in this state implies the vehicle
+is on the sensor node, and the parking space is occupied.
+It initializes the array Pleaving . It will jump to S5 when the
+sensor detected a possible leaving ﬂuctuation.
+S5 “Fluct leaving ”: Within this state, it extracts the peak
+values of the ﬂuctuation and restores them in the array
+Pleaving . If there is any “0” reading from F(i ), the algorithm
+computes the function Leaving. It will jump back to state S4
+if Leaving = 0. Otherwise, Leaving = 1, it will jump to
+state S2.
+III. E XPERIMENTAL RESULTS AND ANALYSIS
+A. System Introduction
+The sensor node has Zigbee [28] based communication
+modules and it consists of HMC5883L [29] magnetic sensor.
+The Zigbee wireless module is using the CC2530 MCU [30].
+For battery powered sensor nodes, the lifetime is a critical
+factor. The sensor node has n o speciﬁc responsibility for
+maintaining the network infra structure because it is an end-
+device [28]. So it doesn’t exchange packet for network main-
+taining after joining the network. Sensor node samples the
+magnetic signal periodically. When it detected a car arrival
+or leave, it transmits one binary detection ﬂag to base station.
+And it goes to sleep when no task to save energy. Using a pair
+of 2500mAh AA Li batteries parallel connected, the sensor
+node can continuously work for 5 years without changing
+battery.
+To test the proposed system, we deploy eighty-two sensor
+nodes in the roadside parking. As shown in Fig. 8 (a). Devices
+with AMR sensors are nailed in the center of the parking
+spaces. The routers which are equipped a solar panel for
+forwarding parking message are ﬁxed on the roadside light,
+a ss h o w ni nF i g .8( b ) .
+We developed a server system using Java language and
+MySQL database. As shown in Fig. 9, using the graphical
+client interface, users can know which parking space is vacant
+or occupied, and the occupied duration of each parking space.
+As shown in Fig. 9(a), the nodes which ID signed as integer,
+such as 6, 3, 5, and so on, are router nodes. The nodes are
+magnetic sensor nodes, which ID started with “B”, such as
+B27, B26, and so on. The sensor node to be colored as a green
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+1266 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+Fig. 9. Pictures of the management system. (a) Sensor nodes deployed in
+the parking spaces. (b) Topology of the network.
+TABLE II
+EXPERIMENT PARAMETERS
+dot indicates the according par king space is vacant, on the
+other hand, a red dot represents the parking space is occupied.
+In Fig. 9 (b), these lines with arrow describe the wireless
+network topology.
+B. Experimental Results
+In our experiments, parameters related to the parking detec-
+tion algorithm are given in Table II. Fig. 10 shows the
+detection results of a parking space B19 for successive 8 days.
+X, Y , Z are the raw magnetic ﬁeld, and their value please refer
+to the right coordinate axis. D(i ) is the detection result whose
+value please refer to the left coordinate axis, where value 0
+indicates the parking is “vacant” , and 1 stands for “occupied”.
+As shown in Fig. 11, it describes the daily occupancy time of
+the parking space B19 for successive 8 days.
+In order to verify the proposed Parking Occupancy Detec-
+tion Algorithm (PODA for short), we deployed 82 nodes
+in the parking spaces. The system has operated for six
+months. According to the large number of measured data,
+we analyze the performance of the PODA using the detection
+accuracy of vehicle parking an d leaving. Table III shows the
+average accuracy of vehicle parking detection of PODA is
+about 98.9%.
+Fig. 10. The detection results of a parking space for successive 8 days.
+Fig. 11. The occupied time of a parking space.
+TABLE III
+VEHICLE PARKING DETECTION RESULT
+We are considered the cases in which a car has two or
+more times attempts before it comes to a parking stop, and
+also considered the similar situation in the car leaving phase.
+Assume D
+1 is the magnetic disturbance duration of the ﬁrst
+attempt, and D3 is the duration of the second attempt. Between
+D1 and D3, there has D2 which is the duration of a car beyond
+the sensor’s sensing range.
+First case, D2 > 0, during D2, the magnetic signal recov-
+ered to be same as the background magnetic ﬁeld. The algo-
+rithm will ignore the magnetic signals of D1, and recognize
+D3 as a new entering phase.
+Second case, D2 = 0, i.e. between two attempts, the car is
+within the sensor’s sensing range, as shown in Fig. 12. Our
+algorithm will combine the signal of D1 and D3 to be a car
+entering signal because it adopts a delay aware ﬂuctuation
+tracking mechanism. Vehicle detection is based on peak values
+of the ﬂuctuation wave, so that this case will not affect the
+performance of the algorithm, but will result in a larger delay
+of the vehicle detection.
+C. Comparative Analysis
+The prior work [24] proposed An Adaptive Threshold
+Detection Algorithm (ATDA for short). Using the magnetic
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+ZHANG et al.: PARKING OCCUPANCY DETECTION ALGORITHM BASED ON AMR SENSOR 1267
+Fig. 12. The magnetic signature of a car parking after two attempts.
+TABLE IV
+THE CONTRAST OF VEHICLE PARKING DETECTION ACCURACY
+BETWEEN PODA AND ATDA
+signal collected from sensor nodes, we run PODA and ATDA
+on PC, respectively. Table IV shows the test results of vehicle
+parking. The experiment results show that in the ﬁrst case two
+algorithms have best performance. In the case 2-4, interference
+signal caused by vehicles on neighbor parking spaces has
+a negative impact effect on th e detection performance. And
+PODA is more accurate for vehicle detection than ATDA.
+ATDA smoothes out the entering ﬂuctuation of the magnetic
+signal, and it is only considers the signal’s characteristic of the
+parking stop phase. As shown in Fig. 13–14, there doesn’t have
+a threshold to distinguish the characteristic between parking
+stop and interference. In the low SNR (signal-to-noise ratio)
+situation, the frequent up-and-down ﬂuctuation of the magnetic
+signal is a key characteristic for the vehicle parking detection.
+With the feature is designed, PODA has a better performance
+than ATDA.
+In the parking charge application, it is billed by the duration
+of occupancy. For the parking management company, cost to
+customers’ overcharged is more expensive than less-charged.
+So the vehicle leaving detectio n requires higher accurate than
+the parking detection. Vehicle leaving detection results is
+shown in Table V . The Accuracy of PODA is better than
+Fig. 13. The signal comparison of parki ng and interference. (a) The signal
+of a vehicle parking. (b) T he signal of interference.
+Fig. 14. The signal comparison o f parking and interference.
+TABLE V
+DETECTION RESULTS OF THE VEHICLE LEA VING
+ATDA. In ATDA, the leaving detection is simpliﬁed as the
+magnetic signal recovered to be same as the background earth
+magnetic ﬁeld. But in the roadside parking applications, there
+has overlap interference. Usually when the vehicle left, the
+magnetic signal is not recovered to the background value.
+As shown in Fig. 15, after the parking space is occupied,
+there has interference signal overlap on the parking signal.
+When the vehicle left, the magnetic signal did not recover
+to the background value. It is an obvious drift compared to
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+1268 IEEE SENSORS JOURNAL, VOL. 15, NO. 2, FEBRUARY 2015
+Fig. 15. After the parking space is occ upied, there has int erference signal
+overlap on the parking signal. When the vehicle left, the magnetic signal did
+not recover to the background value.
+the background magnetic ﬁeld between two vacant statuses.
+Using ATDA, the algorithm cannot do a correct vehicle leaving
+detection.
+IV . CONCLUSION
+In this paper, a parking occupancy detection algorithm based
+on AMR sensor is presented. It focuses on characteristic of the
+interference signal caused by adjacent vehicles, and proposes
+a more accurate detection algor ithm than existing algorithms
+both on the detections of vehicle parking and leaving. The
+parking occupancy monitoring system, which includes eighty-
+two sensor nodes, was deployed on a roadside parking. The
+system has been running reliably for six months. Extensively
+experiment results show that the system detection accuracy is
+better than 98%.
+R
+EFERENCES
+[1] Q.-J. Kong, Z. Li, Y . Chen, and Y . Liu, “An approach to urban trafﬁc
+state estimation by fusing multisource information,” IEEE Trans. Intell.
+Transp. Syst., vol. 10, no. 3, pp. 499–511, Sep. 2009.
+[2] G. Alessandretti, A. Broggi, and P. Cerri, “Vehicle and guard rail
+detection using radar and vision data fusion,” IEEE Trans. Intell. Transp.
+Syst., vol. 8, no. 1, pp. 95–105, Mar. 2007.
+[3] P. N. Pathirana, A. E. K. Lim, A. V . Savkin, and P. D. Hodgson, “Robust
+video/ultrasonic fusion-based estim ation for automotive applications,”
+IEEE Trans. Veh. Technol., vol. 56, no. 4, pp. 1631–1639, Jul. 2007.
+[4] V . Cevher, R. Chellappa, and J. H. McClellan, “Vehicle speed estimation
+using acoustic wave patterns,” IEEE Trans. Signal Process. , vol. 57,
+no. 1, pp. 30–47, Jan. 2009.
+[5] B. Guo, M. S. Nixon, and T. Damarla, “Improving acoustic vehicle
+classiﬁcation by information fusion,” Pattern Anal. Appl., vol. 15, no. 1,
+pp. 29–43, Feb. 2012.
+[6] C. N. Dickson, A. M. Wallace, M. Kitchin, and B. Connor, “Improving
+infrared vehicle detection with polarisation,” in Proc. IET Intell. Signal
+Process. Conf. (ISP) , Dec. 2013, pp. 1–6.
+[7] M. Chen and T. Chang, “A parking guidance and information system
+based on wireless sensor network,” in Proc. IEEE Int. Conf. Inf.
+Autom. (ICIA), Jun. 2011, pp. 601–605.
+[8] Q. Zhou, G. Tong, B. Li, and X. Yuan, “A practicable method for fer-
+romagnetic object moving direction identiﬁcation,” IEEE Trans. Magn.,
+vol. 48, no. 8, pp. 2340–2345, Jul. 2012.
+[9] J. Petrou, P. Skaﬁdas, E. Hristofo rou, “Electronic toll and road trafﬁc
+monitoring system using 3-D ﬁeld AMR sensors,” Sensor Lett., vol. 11,
+no. 1, pp. 91–95, 2013.
+[10] B. Koszteczky and G. Simon, “Magnetic-based vehicle detection with
+sensor networks,” in Proc. IEEE Int. Instrum. Meas. Technol. Conf. ,
+May 2013, pp. 265–270.
+[11] J. Pelegrí Sebastiá, J. A. Lluch, and J. R. L. Vizcaíno, “Signal condi-
+tioning for GMR magnetic sensors: Applied to trafﬁc speed monitoring
+GMR sensors,” Sens. Actuators A, Phys. , vol. 137, no. 2, pp. 230–235,
+2007.
+[12] S. Y . Cheung, S. Coleri, B. D undar, S. Ganesh, C.-W. Tan, and
+P. Varaiya, “Trafﬁc measurement and vehicle classiﬁcation with a single
+magnetic sensor,” California PATH, Univ. California, Berkeley, Berkeley,
+CA, USA, Tech. Rep. UCB-ITS-PWP-2004-7, 2004.
+[13] S.-Y . Cheung and P. P. Varaiya, “Trafﬁc surveillance by wireless sensor
+networks: Final report,” California P ATH, Univ. California, Berkeley,
+Berkeley, CA, USA, Tech. Rep. UCB-ITS-PRR-2007-4, 2007.
+[14] M. H. Kang, B. W. Choi, K. C. Koh, J. H. Lee, and G. T. Park,
+“Experimental study of a vehicle detector with an AMR sensor,”
+Sens. Actuators A, Phys. , vol. 118, no. 2, pp. 278–284, 2005.
+[15] R. Wang, L. Zhang, R. Sun, J. Gong, and L. Cui, “EasiTia: A per-
+vasive trafﬁc information acquisition system based on wireless sensor
+networks,” IEEE Trans. Intell. Transp. Syst., vol. 12, no. 2, pp. 615–621,
+Jun. 2011.
+[16] L. Zhang, R. Wang, and L. Cui, “Real-time trafﬁc monitoring
+with magnetic sensor networks,” J. Inf. Sci. Eng. , vol. 27, no. 4,
+pp. 1473–1486, 2011.
+[17] J. Zhu, C. Hongbing, S. Jie, and L. Haitao, “Data fusion for magnetic
+sensor based on fuzzy logic theory,” in Proc. Int. Conf. Intell. Comput.
+Technol. Autom. (ICICTA), Mar. 2011, pp. 87–92.
+[18] S. Taghvaeeyan and R. Rajamani, “The development of vehicle position
+estimation algorithms based on the use of AMR sensors,” IEEE Trans.
+Intell. Transp. Syst., vol. 13, no. 4, pp. 1845–1854, Dec. 2012.
+[19] G. Yao, J. Wang, X. Ran, Z. Li, and L. Yao, “Topology study on parking
+guidance and information system based on CAN,” in Proc. Int. Conf.
+Comput., Mechatron., Control, Electron. Eng. (CMCE) , Aug. 2010,
+pp. 420–422.
+[20] P. Baronti, P. Pillaia, V . W. C. Chook, S. Chessa, A. Gotta, and Y . F. Hu,
+“Wireless sensor networks: A survey on the state of the art and the
+802.15.4 and ZigBee standards,” Comput. Commun.
+, vol. 30, no. 7,
+pp. 1655–1695, May 2007.
+[21] S. Lee, D. Yoon, and A. Ghosh, “Intelligent parking lot application using
+wireless sensor networks,” in Proc. Int. Symp. Collaborative Technol.
+Syst., May 2008, pp. 48–57.
+[22] S. Coleri, S. Y . Cheung, and P. Varaiya, “Sensor networks for monitoring
+trafﬁc,” in Proc. Allerton Conf. Commun., Control, Comput. , 2004,
+pp. 32–40.
+[23] A. Haoui, R. Kavaler, and P. Varaiya, “Wireless magnetic sensors for
+trafﬁc surveillance,” Transp. Res. C, Emerg. Technol. , vol. 16, no. 3,
+pp. 294–306, 2008.
+[24] S. Y . Cheung, “Trafﬁc surveillance by wireless sensor networks,”
+Ph.D. dissertation, Univ. California, Berkeley, Berkeley, CA, USA, 2006.
+[25] J. Ding, S.-Y . Cheung, C.-W. Tan, a nd P. Varaiya, “Signal processing
+of sensor node data for vehicle detection,” in Proc. 7th Int. IEEE Conf.
+Intell. Transp. Syst., Oct. 2004, pp. 70–75.
+[26] J. Gu, Z. Zhang, F. Yu, and Q. Liu, “Design and implementation
+of a street parking system using wireless sensor networks,” in Proc.
+10th IEEE Int. Conf. Ind. Informat. , Jul. 2012, pp. 1212–1217.
+[27] (Aug. 2014). SENSIT. [Online]. Available: http://www.nedapavi.com/
+products/sensit/
+[28] ZigBee Alliance. (Aug. 2014). ZigBee PRO Speciﬁcation . [Online].
+Available: http://www.zigbee.org
+[29] (Aug. 2014). Three-Axis Magnetic Sensor HMC5883L .
+[Online]. Available: http:// www51.honeywell.com/aero/
+common/ documents/myaerospacecatalog -documents/Defense_Brochures-
+documents/HMC5883L_3-Axis_Digital_Compass_IC.pdf
+[30] (Aug. 2014). CC2530. [Online]. Available: http://www.ti.com.cn/
+product/cn/cc2530
+Zusheng Zhang received the B.S. degree from
+the Hunan University of Science and Technology,
+Xiangtan, China, in 2003, the M.S. degree from
+Nankai University, Tianjin, China, in 2006, and
+the Ph.D. degree from the Institute of Comput-
+ing Technology, Chinese Academy of Sciences,
+Beijing, China, in 2010. He is currently an Assis-
+tant Researcher with the Dongguan University of
+Technology, Dongguan, China. His research interests
+include intelligent transportation system and wire-
+less sensor networks.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+ZHANG et al.: PARKING OCCUPANCY DETECTION ALGORITHM BASED ON AMR SENSOR 1269
+Ming Tao received the B.S. degree from Anhui
+University, Hefei, China, in 2007, and the M.S. and
+Ph.D. degrees from the South China University of
+Technology, Guangzhou, China, in 2009 and 2012,
+respectively. He is currently an Assistant Researcher
+with the School of Computer, Dongguan Univer-
+sity of Technology, Dongguan, China. His research
+interests include the next-generation wireless/mobile
+networks.
+Huaqiang Yuan was born in 1966. He received the
+Ph.D. degree from Shanghai Jiao Tong University,
+Shanghai, China, in 1996. He is currently a Professor
+with the School of Computer, Dongguan Univer-
+sity of Technology, Dongguan, China. His primary
+research interests include signal processing and data
+mining.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:23:41 UTC from IEEE Xplore.  Restrictions apply. 

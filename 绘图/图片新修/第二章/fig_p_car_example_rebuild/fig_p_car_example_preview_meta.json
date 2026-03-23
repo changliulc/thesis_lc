@@ -1,0 +1,15 @@
+{
+  "source_png": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\images\\fig_p_car_example.png",
+  "type": "curve_preserving_replot_from_png",
+  "top_valid_ratio": {
+    "X轴差分": 0.9065,
+    "Y轴差分": 0.9873,
+    "Z轴差分": 1.0
+  },
+  "bottom_valid_ratio": 1.0,
+  "notes": [
+    "Rebuilt from the current thesis PNG because the original plotting code was not found.",
+    "Goal: keep curve shape close to the original and only enlarge text for thesis readability.",
+    "This script only writes preview files and does not overwrite images/fig_p_car_example.png."
+  ]
+}

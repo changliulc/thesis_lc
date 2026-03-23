@@ -1,0 +1,460 @@
+
+
+===== PAGE 1 =====
+
+IET Intelligent Transport Systems
+Research Article
+Vehicle detection using three-axis AMR
+sensors deployed along travel lane markings
+ISSN 1751-956X
+Received on 14th March 2017
+Revised 13th June 2017
+Accepted on 16th July 2017
+E-First on 28th September 2017
+doi: 10.1049/iet-its.2017.0100
+www.ietdl.org
+Meng Liu1 
+ , Wang Hua2, Quan Wei2
+1Shenzhen Urban Transport Planning Center, Shenzhen 518021, People's Republic of China
+2School of Transportation Science and Engineering, Harbin Institute of Technology, Harbin 150090, People's Republic of China
+ E-mail: liluo340@163.com
+Abstract: A vehicle detection method is developed based on three-axis anisotropic magneto resistive (AMR) sensors along
+travel lane markings. The method integrates multiple algorithms and uses different geomagnetic waveforms which are disturbed
+by vehicles passing a single AMR sensor. This method comprehensively analyses X-, Y-, and Z-axis information and applies a
+double-window algorithm to extract a single vehicle waveform. The vehicle mixed algorithm (VMA) is developed to differentiate
+vehicles driving by the AMR sensor simultaneously and determine vehicle flow rates. In addition, the vehicle motion-state
+discrimination algorithm (VMSDA) is developed to distinguish the vehicle operating status (i.e. driving on the left lane, the lane
+line, or the right lane). The field experimental tests verified the effectiveness of the both algorithms. Results indicate that the
+average accuracy rates of VMA and VMSDA can, respectively, be up to 98.0 and 96.4%.
+1 Introduction
+Traffic information acquisitions are an important foundation for
+supporting intelligent traffic operations, and are a basic
+requirement for the successful implementation of intelligent
+transportation systems in urban areas [ 1]. Geomagnetic sensor is
+superior because of its unique advantages, such as its robustness
+not being influenced by climate and weather conditions, its low
+costs, small volumes, convenient layouts, and suitability for
+wireless communication [2].
+The traditional geomagnetic detector is usually placed on the
+roadside or at the center of lanes to collect traffic measurements,
+which provide a limited sample dataset. Therefore, it can only
+analyse the vehicle motion states on the current lanes, and is unable
+to fully extrapolate to real-time traffic conditions. The traditional
+research method of vehicle detection depends on two or more
+geomagnetic sensors [ 3], thus resulting in the significant increase
+in vehicle detection costs. Moreover, the existing methods mostly
+applied single-axis information from geomagnetic sensors, giving a
+low-precision resolution.
+This paper puts forth a vehicle detection method based on an
+anisotropic magneto resistive (AMR) sensor deployed along travel
+lane markings, which synthesises information from the three X, Y,
+Z axes to obtain vehicle driving information from two adjacent
+lanes, thus comprehensively analyses the current traffic conditions.
+In addition, the method uses a single sensor node instead of double
+nodes to realise the detection of traffic flow parameters, which
+increases accuracy, reduces the installation and maintenance costs,
+saves resources, and reduces layout complexity. To collect traffic
+information and expand the functions of the geomagnetic sensors,
+the vehicle detection method differentiates vehicles driving by the
+AMR sensor and distinguishes the position of the vehicle (driving
+on the left lane, the lane line, or the right lane).
+2 The detection principle of AMR sensor
+The Earth's magnetic field intensity is in the range of 0.05–0.06  
+mT on average [4]. If there is no external disturbance, the magnetic
+field can be regarded constant. When the vehicle enters the
+magnetic field, the distribution of the magnetic field will change,
+forming a disturbance, as shown in Fig. 1 [5]. Analysis of the
+perturbation of the magnetic field allows the determination of
+whether a vehicle has passed or not. 
+AMR sensors use the anisotropic magneto-resistive effect of
+conductor materials. The resistance of the nickel iron magnetic
+alloy has a function related to the angle (θ) between bias current (I)
+and magnetic field vector (M) [6]. It changes with the magnetic
+field vector. AMR has a high sensitivity and triggers a response
+from a small disturbance, thus detecting the changes of the
+geomagnetic field.
+The approach places the AMR sensor on the lane line. Define
+the X-axis of the AMR sensor as the opposite driving direction set
+originally of driveways, the Y-axis as the horizontal component
+perpendicular to the driving direction, and the Z-axis as the vertical
+component perpendicular to the X-axis and the Y-axis, as shown in
+Fig. 2. 
+Fig. 1  Geomagnetic field changes disturbed by vehicle
+ 
+IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+581
+
+===== PAGE 2 =====
+
+3 Extraction of vehicle waveform based on
+double-window algorithm
+The data from vehicle magnetic detection is a time series of
+waveforms. To analyse the signal data, we define the time series as
+follows. The time series is a range of collected data distributed in
+chronological order with equal intervals, which is recorded as
+X = X1, X2, ⋯, Xs . Among them, Xi = ti, bi  is the state point of
+the time series, and bi is the value of the time series at moment ti,
+which is numeric data, and s is the length of the time series. For the
+fixed sampling frequency, time strictly increases in the time series.
+Namely, if i<j, so ti<tj. Since the time-series data has equal
+intervals, it can be directly represented as X = x1, x2, ⋯, xs , where
+xi is the value of the time series at moment i.
+When there are no vehicles in the detection range of the AMR
+sensor, the detected value fluctuates with a small range of changes,
+which is referred to as the base value [ 7]. As the external
+environment changes, the base value varies, so a dynamic base
+value algorithm is needed to ensure that the vehicle waveform is
+extracted completely and correctly. In this paper, a large-amount
+average algorithm is adopted as follows. First, a large amount of
+data is obtained from the time-series X = { x1, x2, ⋯, xs}, where xi is
+the value of the time series at moment i. Then the average value of
+xi is calculated, denoted as x is the initial base value D, and the
+time series is corrected according to D. The result is
+Xnew = {( x1 − x¯), (x2 − x¯), …, ( xs − x¯)}.
+This method utilises a double-window algorithm (as shown in
+Fig. 3) to extract the waveform of each vehicle as follows:
+(1) Initialise the size of two windows, including the vehicle-
+adjacency-discrimination window o1 and the vehicle-departure-
+discrimination window o2.
+(2) Start the vehicle-adjacency-discrimination window o1.
+(3) Input the time series in turn. If the sampling data is on the
+outside of o1, turn to (4), and record the vehicle-adjacency point as
+p1, or turn to (2).
+(4) Start the vehicle-departure-discrimination window o2.
+(5) Input the time series in turn. If the sampling data is inside of o2,
+record the vehicle-departure point as p2. At the same time, the
+vehicle flow adds one and records the waveform between p1 and p2
+as the vehicle waveform, return to (2) to continue detecting the
+next vehicle, or turn to (4).
+The double-window algorithm can get the complete waveform
+of a single vehicle, and record the sampling points of the vehicle
+adjacency and departure, which could provide the basic vehicle
+waveform data for calculating traffic flow, vehicle speed, vehicle
+length, time headway, vehicle type, and other traffic attributes. 
+4 Vehicle detection algorithm
+4.1 Mathematical model of geomagnetic disturbed by a
+vehicle
+The mathematical model of geomagnetic disturbance by a vehicle
+is shown in Fig. 4 [8]. Vehicles consist of iron metals, so it can
+produce an abnormal magnetic zone around them and cause the
+Earth's magnetic flux lines to bend, which changes the magnitude
+of magnetic induction intensity around a vehicle. The mathematical
+model describing magnetic signals produced by the vehicle can be
+simplified as a bipolar magnet, of which the magnetic moment m is
+in the center of the vehicle, parallel to the magnetic field, and
+generates magnetic components as BX, BY, BZ.
+BX = μ0
+4π
+mx 2x
+2
+− y
+2
+− z
+2
++ 3myxy + 3mzxz
+r
+5
+BY = μ0
+4π
+my 2y
+2
+− x
+2
+− z
+2
++ 3mxxy + 3mzyz
+r
+5
+BZ = μ0
+4π
+mz 2z
+2
+− x
+2
+− y
+2
++ 3mxxz + 3myyz
+r
+5
+(1)
+where μ0 is the permeability of free space and mx, my, mz are the
+magnetic moments of directions X, Y, Z, respectively, and r is the
+distance from the bipolar magnet to the observation point.
+The expression of the magnetic induction intensity under this
+circumstance is as follows [9]:
+B = μ0
+4π
+3 ISr r − rr IS
+rr
+5/2 (2)
+In (2), I is the current intensity and S is the coil area.
+Fig. 2  Installation layout of AMR sensors
+ 
+Fig. 3  The double-window algorithm
+ 
+582 IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 3 =====
+
+4.2 Vehicle mixed algorithm
+Since the AMR sensor is placed on lane markings, it is possible for
+two vehicles, one on the left side of it and the other one on the right
+side, passing the sensor at the same time. In this case, the double-
+window algorithm is unable to differentiate two vehicles, which
+degrades the accuracy rate of vehicle detection. Therefore, we
+apply the vehicle mixed algorithm (VMA) to distinguish two
+vehicles on the left and right lanes driving through the sensor's
+detection area simultaneously. So that we can estimate the traffic
+flow more accurately and improve the detection accuracy.
+By ( 2), the perturbation of the magnetic field produced by
+vehicles is proportional to S, so when two vehicles pass the AMR
+sensor at the same time, the geomagnetic perturbation is stronger
+than that generated from a single vehicle passing the sensor. It
+means that the detected magnetic signal is larger in amplitude than
+that from one vehicle, as shown in Fig. 5. 
+In Figs. 5a–c, when two vehicles pass the AMR sensor at the
+same time, the signal fluctuation amplitude of the X-axis and the Y-
+axis is bigger than that when a single vehicle passes the sensor. In
+addition, since the Z-axis represents the vertical component, which
+is perpendicular to the horizontal plane, only when the vehicle
+drives over the sensor can the Z-axis signal have a large
+fluctuation.
+According to this feature, we define the extracted single vehicle
+waveform as a vehicle sequence, the number of the initial vehicle
+sequence as vehicle flow Nv, the final number of vehicles as N, the
+value of the X, Y, Z axes of the vehicle sequence, respectively, as
+nx,, ny, nz and the threshold of the X, Y, Z axes, respectively, as Dx,
+Dy, Dz. VMA is as follows (as shown in Fig. 6):
+(1) Initialise Nv, Dx, Dy, Dz.
+(2) Input vehicle sequence in turn.
+(3) If max nz < Dz, turn to (4), or turn to (2).
+(4) If max nx > Dx, turn to (5), or turn to (2).
+(5) If max ny > Dy, N = Nv + 1. Namely, the vehicle flow adds
+one or turn to (2).
+4.3 Vehicle motion-state discrimination algorithm (VMSDA)
+In terms of AMR sensor installation layout, the positive direction
+of the Y-axis should point to the left lane and the negative one
+should point to the right lane. Furthermore, the magnetic intensity
+B is inversely proportional to the distance r from the vehicle to the
+sensor by (1). That is, the closer the vehicle away from the sensor,
+the larger the magnetic intensity. So when the vehicle on the left
+lane passes the sensor, cutting the geomagnetic field vertically, the
+detected positive-direction signal of the Y-axis has large
+fluctuations. Similarly, when the vehicle on the right lane passes
+the sensor, the detected negative-direction signal of the Y-axis has
+large fluctuations. The detected geomagnetic signal is shown in
+Fig. 7. 
+From Figs. 7a–c, when the vehicle on the left lane passes the
+sensor, the signal amplitude of the Y-axis is mostly above zero,
+while the signal amplitude of the Y-axis that belongs to the vehicle
+on the right lane is mostly below zero, and the signal of the Z-axis
+that belongs to the vehicle on the lane line has large fluctuations.
+The VMSDA distinguishes the vehicle's operating status (e.g.
+driving on the left lane, the lane markings, and the right lane),
+which can fully distinguish the traffic state. We define the
+Table 1 Test results of VMA
+Time quantum Actual vehicles Computational vehicles Accuracy rate, % Average accuracy rate, %
+7:30–8:30 1128 1096 97.16 98.0
+8:30–9:30 1304 1260 96.63
+9:30–10:30 612 604 98.69
+10:30–11:30 696 696 100.00
+11:30–12:30 516 524 98.45
+12:30–13:30 556 560 99.28
+13:30–14:30 412 416 99.03
+14:30–15:30 428 420 98.13
+15:30–16:30 456 460 99.12
+16:30–17:30 380 368 96.84
+17:30–18:30 1064 1028 96.62
+18:30–19:30 1204 1248 96.35
+19:30–20:30 1108 1080 97.47
+20:30–21:30 808 832 97.03
+21:30–22::30 872 880 99.08
+ 
+Fig. 4  Model diagram of geomagnetic field disturbed by vehicles
+ 
+IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+583
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 4 =====
+
+thresholds of Y-axis and Z-axis, respectively, as Gy(Gy < Dy), Gz,
+the number of vehicles driving on the left lane, the lane marking,
+and the right lane, respectively, as numl, numc, numr, the number of
+vehicles passing the sensor at the same time as numd, the final
+number of vehicles driving on the left lane and the right lane,
+respectively, as numl f, numr f. VMSDA is as follows (as shown in
+Fig. 8):
+(1) Initialise Gy, Gz and numl, numc, numr, numd.
+(2) Input vehicle sequences in turn, not including those when two
+vehicles pass together.
+(3) If max nz < Gz, turn to (4), or numc adds one, turn to (2).
+(4) If there is continuous n n > 100  groups ny<Gy, numr adds
+one, then turn to (2). Or if numl adds one, turn to (2).
+(5) Finally numr f = num r + numd/2, numl f = num l + numd/2.
+Fig. 5  Geomagnetic signal by vehicles with different numbers
+(a) Waveform diagram of two vehicles on two adjacent lanes (one in each lane) passing a sensor simultaneously, (b) Waveform diagram of one single vehicle passing the sensor on
+the left-side lane. (c) Waveform diagram of one single vehicle passing the sensor on the right-side lane
+ 
+584 IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 5 =====
+
+5 Experimental tests and discussions
+Our study utilised the sensor entitled smart road stud (SRS), which
+was developed independently by our team, to collect data. The SRS
+integrates advanced micro-sensing technology, micro-power-
+consumption processor technology, low-power wireless
+communication technology, and high-efficiency-solar-energy
+collection and management technology, including the energy
+collection unit, energy storage unit, energy management unit,
+lighting tip unit, magnetic sensing unit, and low-power wireless
+communication and control unit. The magnetic sensing unit uses
+BMM150, a three-axis AMR sensor. The resolution of this sensor
+can reach 0.3 μT, and the sampling rate is 300 Hz.
+The smart road stud was deployed on the lane marking of the
+southbound travel lane located at the intersection between the
+Songshan Road and Huaihe Road in the Nangang district in the
+City of Harbin, China. The traffic volume is lighter and the vehicle
+speed is 30–40 km/h. The field experiment test conducted as
+shown in Fig. 9. Road data was received via a PC, and a video
+recording was obtained using a camera. Ground-truth vehicle
+counts were obtained from the video recordings. The data sample
+used to verify the algorithms was collected from 7  : 00–23 : 00pm
+on November 26, 2014. Tables 1 and 2, respectively, show the test
+results performed by VMA and VMSDA. 
+In Tables 1 and 2, the detection accuracy of the VMA and
+VMSDA, respectively, achieve 98.0 and 96.4%. The result shows
+that the feasibility and applicability of both algorithms is excellent
+and worth pursuing. However, the paper only analysed the situation
+of low speed, research of vehicle detection at a variety of sites is
+the next work for the follow up paper.
+6 Conclusions
+We applied an AMR sensor deployed on the lane markings to get
+the real-time vehicle waveform information. Obtaining a single
+vehicle waveform is suitable for vehicle flow measurements and
+motion-state discrimination of urban traffic by a double-window
+algorithm. The proposed vehicle mixed algorithm (VMA)
+distinguishes between two vehicles passing the sensor at the same
+time. It synthesises the vehicle information of the three axes, X, Y,
+and Z, of the AMR sensor, which improves the accuracy rates of
+vehicle detection. Another algorithm developed in the paper is the
+VMSDA. It synthesises the vehicle information of the Y-axis and
+the Z-axis and allows for the discrimination of a vehicle's operating
+status (driving on the left lane, the lane marking, or the right lane),
+with high detection accuracy.
+Compared with traditional vehicle detection, the study deployed
+the AMR sensor on the lane markings, utilised the single node,
+synthesised three-axis vehicle information of the sensor, and
+realised the vehicle flow collection and the vehicle's motion-state
+identification. The further research effort is suggested collecting
+Fig. 6  Flowchart of VMA
+ 
+Fig. 7  Geomagnetic signal by vehicles on different lanes
+(a) Waveform profile of vehicle driving on the left lane. (b) Waveform profile of
+vehicle driving on the lane markings. (c) Waveform profile of vehicle driving on the
+right lane
+ 
+IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+585
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 6 =====
+
+Fig. 8  Flowchart of VMSDA
+ 
+Fig. 9  Image of field tests
+ 
+Table 2 Test results of VMSDA
+Time quantum Actual vehicles Computational vehicles Accuracy rate Total
+accuracy
+rate, %
+Average
+accuracy
+rate, %
+Left
+Lane
+Lane
+Line
+Right
+Lane
+Left
+Lane
+Lane
+Line
+Right
+Lane
+Left
+Lane, %
+Lane
+Line, %
+Right
+Lane, %
+7:30–8:30 612 140 376 636 136 324 96.08 97.14 86.17 93.13 96.4
+8:30–9:30 736 184 384 700 196 364 95.11 93.48 94.79 94.46
+9:30–10:30 292 44 276 300 40 264 97.26 90.91 95.65 94.61
+10:30–11:30 376 64 256 380 64 252 98.94 100.00 98.44 99.12
+11:30–12:30 216 28 272 220 28 276 98.15 100.00 98.53 98.89
+12:30–13:30 312 24 220 312 24 224 100.00 100.00 98.18 99.39
+13:30–14:30 172 60 180 180 60 176 95.35 100.00 97.78 97.71
+14:30–15:30 228 32 168 228 32 160 100.00 100.00 95.24 98.41
+15:30–16:30 176 60 220 184 64 212 95.45 93.33 96.36 95.05
+16:30–17:30 152 16 212 144 16 208 94.74 100.00 98.11 97.62
+17:30–18:30 588 116 360 580 120 328 98.64 96.55 91.11 95.43
+18:30–19:30 624 136 444 648 128 472 96.15 94.12 93.69 94.66
+19:30–20:30 496 80 532 480 88 512 96.77 90.00 96.24 94.34
+20:30–21:30 328 48 432 340 44 448 96.34 91.67 96.30 94.77
+21:30–22::30 420 68 384 424 72 384 99.05 94.12 100.00 97.72
+ 
+586 IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 7 =====
+
+additional sample data for vehicle classification under different
+weather conditions.
+7 References
+[1] Sifuentes, E., Casas, O., Pallas-Areny, R.: ‘Wireless magnetic sensor node for
+vehicle detection with optical wake-up’,  IEEE Sens. J. , 2011, 11, (8), pp.
+1669–1676
+[2] Cheung, S.Y ., Varaiya, P.P.: ‘Traffic surveillance by wireless sensor networks:
+Final report’, California PATH Program, Institute of Transportation Studies,
+University of California at Berkeley, 2007
+[3] Cai, B.G., Zhao, J.M., Wang, J., et al.: ‘Design and implementation of vehicle
+classification based on 3-axis AMR vehicle detector’, J. Transp. Syst. Eng.
+Inf. Technol., 2014, 14, (4), pp. 46–52
+[4] Hunter, T., Abbeel, P., Bayen, A.M.: ‘The path inference filter: model-based
+low-latency map matching of probe vehicle data’, Algorithmic Found. Rob. X,
+Springer Berlin Heidelberg, 2013, pp. 591–607
+[5] Cao, P., Miwa, T., Yamamoto, T., et al.: ‘Bi-level GLS estimation of dynamic
+origin-destination matrix for urban network using probe vehicle data’.
+Transportation Research Board 92nd Annual Meeting, 2013, pp. 13–24
+[6] Zhang, Z., Yang, D., Zhang, T. , et al. : ‘A study on the method for cleaning
+and repairing the probe vehicle data’, IEEE Trans. Intell. Transp. Syst., 2013,
+14, (1), pp. 419–427
+[7] Martin, P.T., Feng, Y ., Wang, X.: ‘Detector technology evaluation’, Mountain-
+Plains Consortium, 2003
+[8] Niknejad, H.T., Mita, S., McAllester, D. , et al. : ‘Vision-based vehicle
+detection for nighttime with discriminately trained mixture of weighted
+deformable part models’. 14th Int. IEEE Conf. Intelligent Transportation
+Systems (ITSC), 2011, pp. 1560–1565
+[9] Wu, J.H., Yan, X.Y ., Wang, H.: ‘Design on cruise missiles positioning system
+based on geomagnetic field disturbances detection’, Transducer Micro-syst.
+Technol., 2013, 32, (5), pp. 92–98
+IET Intell. Transp. Syst., 2017, Vol. 11 Iss. 9, pp. 581-587
+© The Institution of Engineering and Technology 2017
+587
+ 17519578, 2017, 9, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0100, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License

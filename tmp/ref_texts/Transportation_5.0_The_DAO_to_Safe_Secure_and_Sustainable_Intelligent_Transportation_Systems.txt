@@ -1,0 +1,1936 @@
+
+
+===== PAGE 1 =====
+
+10262 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+Transportation 5.0: The DAO to Safe, Secure, and
+Sustainable Intelligent Transportation Systems
+Fei-Yue Wang
+ , Fellow, IEEE, Yilun Lin
+ , Member, IEEE, Petros A. Ioannou
+ , Life Fellow, IEEE,
+Ljubo Vlacic
+ , Life Senior Member, IEEE , Xiaoming Liu, Azim Eskandarian, Senior Member, IEEE,
+Yisheng Lv
+ , Senior Member, IEEE, Xiaoxiang Na
+ , Member, IEEE, David Cebon
+ , Member, IEEE,
+Jiaqi Ma
+ , Member, IEEE, Lingxi Li
+ , Senior Member, IEEE, and Cristina Olaverri-Monreal
+Abstract— In 2014, IEEE Intelligent Transportation Systems
+Society established a Technical Committee on Transportation 5.0
+with the mission of promoting and transforming the deployment
+of advanced and innovative technologies, especially Artificial
+Intelligence in transportation. This paper briefly summarizes our
+main research and findings over the last decade. Transporta-
+tion Foundation Models, Transportation Scenarios Engineering,
+and Transportation Operating Systems have been identified
+as the main directions for the research and development of
+next-generation intelligent transportation systems.
+Index Terms— Intelligent transportation systems, cyber-
+physical-social systems, parallel intelligence, knowledge automa-
+tion, DAOs, transportation 5.0.
+Manuscript received 13 June 2023; revised 24 July 2023; accepted 9 August
+2023. Date of publication 11 September 2023; date of current version
+4 October 2023. This work was supported in part by the Project “A Uni-
+fied Approach for Transport Automation and Vehicle Intelligence: Parallel
+Driving,” funded by the Intel Collaborative Research Institute for Intelligent
+and Automated Connected Vehicles (ICRI-IACV); and in part by the Science
+and Technology Development Fund, Macau, SAR, under Grant 0050/2020/A1.
+The Associate Editor for this article was Y . Wang. (Corresponding author:
+Fei-Yue Wang.)
+Fei-Yue Wang is with the State Key Laboratory for Management and Control
+of Complex Systems, Chinese Academy of Sciences, Beijing 100190, China,
+and also with the Macau Institute of Systems Engineering, Macau University
+of Science and Technology, Macau, China (e-mail: feiyue.wang@ia.ac.cn).
+Yilun Lin is with the Urban Computing Laboratory and the Shanghai
+Artificial Intelligence Laboratory, Shanghai 200232, China (e-mail: linyilun@
+pjlab.org.cn).
+Petros A. Ioannou is with the Department of Electrical Engineering-Systems,
+University of Southern California, Los Angeles, CA 90007 USA (e-mail:
+ioannou@usc.edu).
+Ljubo Vlacic is with the Institute of Intelligent and Integrated Systems and
+the School of Engineering and Built Environment, Griffith University, Nathan,
+QLD 4111, Australia (e-mail: l.vlacic@griffith.edu.au).
+Xiaoming Liu is with the College of Metropolitan Transporta-
+tion, Beijing University of Technology, Beijing 100081, China (e-mail:
+liuxm@bjut.edu.cn).
+Azim Eskandarian is with the Department of Mechanical Engineering,
+Virginia Tech, Blacksburg, V A 24061 USA (e-mail: eskandarian@vt.edu).
+Yisheng Lv is with the Institute of Automation, Chinese Academy of
+Sciences, Beijing 100045, China (e-mail: yisheng.lv@ia.ac.cn).
+Xiaoxiang Na and David Cebon are with the Department of Engi-
+neering, University of Cambridge, CB2 1TN Cambridge, U.K. (e-mail:
+xnhn2@eng.cam.ac.uk; dc@eng.cam.ac.uk).
+Jiaqi Ma is with the Samueli School of Engineering, University of Califor-
+nia, Los Angeles, CA 90095 USA (e-mail: jiaqima@ucla.edu).
+Lingxi Li is with the Department of Electrical and Computer Engineering,
+Purdue School of Engineering and Technology, Indiana University–Purdue
+University Indianapolis (IUPUI), Indianapolis, IN 46202 USA (e-mail:
+ll7@iupui.edu).
+Cristina Olaverri-Monreal is with the Department of Intelligent Trans-
+portation Systems, Johannes Kepler Universität, 4040 Linz, Austria (e-mail:
+cristina.olaverri-monreal@jku.at).
+Digital Object Identifier 10.1109/TITS.2023.3305380
+I. T RANSPORTATION : A S OCIO -TECHNICAL SYSTEM
+T
+HE
+relationship between Intelligent Transportation Sys-
+tems (ITS) and human societies is multifaceted, encom-
+passing social morphology, transportation system design, and
+social behavior, all of which are interdependent and influence
+one another. Society plays an equal or even more signifi-
+cant role than transportation technologies in the development
+and evolution of ITS [1], [2]. In established facilities, such
+as intelligent surveillance and traffic light control, ITS has
+utilized societal and transportation-related human factors as
+contextual inputs, leading to a reactive response. The neglect
+of societal perspectives in previous studies was not due to a
+lack of recognition of their importance, but rather because
+of the tremendous complexity involved in accounting for
+social interactions. However, with the emergence of the Intel-
+ligent Technology Era (the New IT Era), the situation has
+changed.
+A recent methodology known as Transportation 5.0 has
+been proposed with a Cyber Physical Social Systems (CPSS)
+architecture [3]. Inspired by Karl Popper’s theory of real-
+ity [4], CPSS refers to the integration and coordination of
+three elements: computational (or cyber) resources, physical
+resources, and human or social traits [3], [5]. It emphasizes the
+deep integration of social and human dimensions into Cyber
+Physical Systems (CPS), establishing a new space with the
+same status as cyber and physical spaces, rather than being
+confined as a mere backdrop or context.
+Decentralized Autonomous Organizations and Operations
+(DAO2) have opened up a new world with new social norms
+and production relationships. Interestingly, the well-known
+ancient Chinese philosopher Lao Tzu (6th-4th century BC)
+started his classic Tao Teh Ching with six Chinese characters:
+“
+(Dao)
+ (Ke)
+ (Dao)
+ (Fei)
+ (Chang)
+ (Dao)”, Dao
+means journey or road in Chinese, inspires the incorporation
+of social factors in transportation systems [6]. By incorporating
+DAO into CPS, Transportation 5.0 is capable of treating
+society as an active entity, proactively interacting with society
+in ITS processes by leveraging advancements in Artificial
+Intelligence (AI), large-scale communication and computing,
+and data technologies.
+From the perspective of social operation and urban develop-
+ment, the transportation system encompasses all the systems
+that facilitate the movement of people and goods within a city.
+1558-0016 © 2023 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10263
+The level of urban development is highly reflected in the
+quality of a city’s transportation system. Likewise, the trans-
+portation system significantly impacts the regional economic
+structure and urban morphology [7]. The limited capacity
+and functionality of transportation systems can constrain the
+growth potential of cities.
+Although ITS technologies have experienced significant
+attention and growth, optimizing a transportation system
+necessitates more than just technological advancements.
+In fact, new technologies may introduce additional complex-
+ities to existing systems, which may lead to inefficiencies
+and degraded performance if not properly designed and opti-
+mized. The current transportation system is a collection of
+many uncoordinated subsystems each of which is trying to
+optimize its performance without caring about the overall
+system performance leading to well-known phenomenon of
+Price of Anarchy [8] where subsystem optimality does not
+imply system optimality and vice versa. The development of
+personal transportation, for example, runs counter to the need
+for social welfare due to the high consumption of roadway
+resources that results from the increasing demand for personal
+transportation [9], [10]. As a result, past transportation plan-
+ning objectives, which focused on ensuring efficient private
+transportation in decades, have led to severe environmental
+pollution and traffic congestion [11].
+Several everyday occurrences emphasize the significance
+of taking a societal perspective into account when designing
+transportation systems. For instance, social activities have
+become a primary purpose of trips for many people. Despite
+the COVID pandemic, the proportion of trips involving visiting
+friends and dining out went up from 48.6% in 2018 to 52.6%
+in 2020 in Beijing [12], [13]. In line with this, in light of
+the global COVID-19 pandemic, the importance of having
+a dependable and trackable logistics network became more
+critical than ever before [14].
+Studies demonstrate the crucial role that humans played
+in all technological fields [15], particularly in fields where
+ITS has a significant impact, such as vehicle technologies
+and level of automation, traveler information management,
+fleet planning, and traffic management control. Societal per-
+spectives should be prioritized early in the ITS testing phase
+to introduce a new ITS paradigm. The results of testing
+could lead to wider acceptance of the new ITS paradigm by
+the public. The increased acceptance of ITS could result in
+the improvement of its morphology, leading to a cycle of
+enhanced public awareness and continuous support of ITS
+developments. For example, the adoption of new technologies
+such as autonomous vehicles will depend on the public’s
+trust in the technology [16]. Even if the introduction of these
+vehicles into urban environments is expected to be gradual, the
+actions of the road users and their reactions to the vehicles
+need to be investigated to understand the mechanisms to
+establish such trust [17].
+During the 17th IEEE International Intelligent Transporta-
+tion Systems Conference (ITSC) held in Qingdao, China,
+in 2014, the Technical Committee on Transportation 5.0 was
+established by the IEEE Intelligent Transportation Systems
+Society (ITSS). Since then, IEEE ITSC has regularly organized
+workshops on Transportation 5.0 and published a number of
+technical reports [18], [19] and papers on topics of X 5.0 and
+Parallel Intelligence [20], [21], [22], [23], [24], [25], [26], [27],
+[28], [29], [30], [31], [32]. This position paper serves as a
+brief summary of these extensive activities and research over
+the past decade.
+The remainder of this paper is organized as follows: in
+Section II, we review the history of transportation systems
+through the lens of socio-technical systems. In Sections III
+and IV, we highlight the challenges brought about by recent
+social changes and the cornerstone technologies that could
+solve them. Section V then demonstrates best practices and
+upcoming ITS applications. Section VI concludes the paper.
+II. A B RIEF HISTORY OF TRANSPORTATION SYSTEMS
+A. Socio-Technical Transition
+Socio-technical systems (STS) refer to systematic arrange-
+ments that comprise cybernetic processes, technical objects,
+and human relationships. These intricate infrastructures are
+composed of social and technological factors that interact
+in a cause-and-effect mechanism and in an unpredictable
+manner as well. STS incorporates the four critical elements:
+humans, nature, artifacts, and organizations. Humans interact
+with nature, which results in the creation of artifacts, which
+in turn contribute to the formation of organizations [33], [34].
+Transportation can be classified as a typical example of
+STS. In this system, humans mainly interact with physical
+space and raw materials, which gives rise to human-made
+objects like roads and vehicles. During this process, humans
+not only construct the transportation instruments but also
+organize the operations involved, such as logistics and pub-
+lic transport services, which constitute an organizational
+action [35].
+Previous research showed that the unilateral optimization of
+society or technology tends to increase the number of unpre-
+dictable, “non-designed” relationships and those relationships
+that are detrimental to the system’s performance [36], [37].
+Thus, the socio-technical theory is about joint optimization or
+designing social and technological systems to work together
+smoothly [38].
+However, joint optimization is often difficult to achieve
+in socio-technical systems, because the optimization pro-
+cess depends on synchronized changes in both technological
+development and social awareness. When technological devel-
+opment exceeds the rate of change in social awareness, such
+development is often suppressed. Similarly, when social aware-
+ness exceeds the level of technological development, such
+social awareness is often limited to a small scope. Therefore,
+for complex systems such as transportation, it is necessary
+to use a socio-technical systems perspective to study them.
+This is the only way we can understand how to choose
+the appropriate path to adapt to the development of social
+awareness.
+B. Evolution of Transportation Systems
+By using the lens of socio-technical paradigm shifts, we can
+gain a deeper understanding of travel as a fundamental human
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+10264 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+need and divide the evolution of the transportation system
+into four phases. These four phases reflect the general pattern
+of socio-technical systems development, whereby advances in
+tools and technologies first bring about changes in societal
+forms, which in turn, begin to guide technological change in
+a reverse direction.
+Transportation 1.0: Transformation of the natural envi-
+ronment. The emergence of cities and nations led to the
+emergence of transportation systems. When the scope of
+human and commodity activities expanded beyond traditional
+tribal societies, the development of new transportation methods
+and the construction of transportation infrastructure became a
+fundamental requirement for the development of cities and
+nations [39]. The country’s road networks, such as the road
+network of Rome, the Qin Zhi Dao of China, and the Persian
+Royal Road, have been constructed, allowing the natural envi-
+ronment to support primitive transportation. More importantly,
+travel as a social phenomenon became familiar to humans, and
+the regions connected by the transportation system became
+essential to national identity.
+Transportation 2.0: Proliferation of transportation
+means. As familiarity with travel grew, the evolution of travel
+methods became a significant aspect of the 2.0 era. This
+development was initially driven by the ruling class, which
+resulted in the creation of primitive modes of transportation
+such as saddles, carriages, and sailing ships [40]. With the
+advent of the industrial revolution, modern tools such as
+automobiles, trains, and ships were created. The introduction
+of the Ford assembly line marked the peak of the second
+industrial revolution, as well as the Transportation 2.0 era.
+Since then, millions of people have had access to their own
+cars, and travel, a privilege in the 1.0 era. With the advent
+of the automobile age, it has become impossible to conceive
+of a society without vehicles for travel. The transportation
+system has become both a spatial foundation and an essential
+component of the modern city [41], [42].
+Transportation 3.0: Organizing the mobilities. With
+the ubiquity of transportation, the social coordination of
+mobilities has become an indispensable component, enabling
+the smooth and efficient operation of marine, air, rail, and
+urban road transportation, respectively [43], [44]. In the
+3.0 era, travel resource coordination has become the research
+focus. The primary outcomes of these studies are the stan-
+dardization of transportation means and developing relevant
+laws and regulations. One after another, standard-gauge rail-
+way, International Regulations for Preventing Collisions at
+Sea (COLREGs) [45], the Convention on International Civil
+Aviation [46], and other conventions have been proposed.
+The most well-known of these conventions is the Vienna
+Convention on Road Traffic and Road Signs and Signals [47],
+which regulates nearly all aspects of modern urban
+transportation.
+Transportation 4.0: Fulfilling the human need. As trans-
+portation systems have become increasingly important in our
+daily life, the focus of transportation system research has
+shifted back to its original goal: to fulfill human needs. This
+shift in research focus is fundamentally similar to all socio-
+technical systems, stemming from a misallocation of resources
+compared to the resource demand [48], [49]. Transportation
+is fundamentally a social need, and the vast majority of
+travel demand stems from social needs such as commuting
+and other social activities. However, the primary owners of
+transportation resources are individuals or businesses whose
+primary goal in providing resources is to satisfy individ-
+ual interest claims rather than social needs, squeezing the
+resource for public transportation. Furthermore, transporta-
+tion system development has noticeable and often negative
+effects on other social systems, such as personal safety and
+environmental protection [50]. Transportation 4.0 research
+focuses on better aligning transportation systems with human
+needs. Transportation safety and protection measures, such
+as airbags and seat belts, make travel much less dangerous
+to personal safety. Using new energy vehicles reduces the
+environmental impact of the transportation system. New modes
+of transportation, such as ride-sharing and on-demand ser-
+vice, reduce the need for private ownership of transportation
+resources, providing public transportation with the oppor-
+tunity to improve its effectiveness in meeting its resource
+needs [51], [52].
+C. Artificial Intelligence: The New Frontier
+In conclusion, the development of transportation systems
+has experienced four paradigm shifts in its research focus
+on transforming nature, creating artifacts, enhancing orga-
+nization and satisfying human desires. As a socio-technical
+system, the complexity of transportation systems has sig-
+nificantly increased from 1.0 to 4.0, making it challenging
+to achieve sufficient gains through technical optimization
+alone [53].
+While tackling traffic issues, taking social structural changes
+into account can have surprisingly beneficial outcomes. For
+example, new business models such as bike-sharing have
+significantly impacted the efficiency of the traffic system,
+though it contains very few technical inventions. However,
+without a well-thought-out plan, such efforts may lead to
+unintended consequences. For instance, the rise in popularity
+of courier delivery services has increased the use of non-
+motorized vehicles, leading to a corresponding increase in the
+rate of accidents associated with them [54], [55]. As a result,
+if a better transportation system is desired, new approaches
+to combining nature, artifacts, organization, and people are
+required.
+Fortunately, the advancement of AI technologies has made
+such convergence possible. The proliferation of intelligent
+technology has enabled the transformation of many previously
+human-responsive behaviors into the automatic behaviors of
+machines, making direct modification of social consciousness
+possible [56], [57]. As previously stated, the focus of the
+transportation system has shifted towards achieving efficiency
+in transforming nature, creating useful artifacts, constructing
+reliable organizations, and meeting human needs with trust-
+worthiness. These four most essential aspects can be combined
+into one in the new Intelligent Technology era, allowing for
+the synergistic optimization of multiple needs and acceleration
+of the paradigm shift from technology-centered to society-
+centered, as illustrated in Fig. 1.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10265
+Fig. 1. The evolution of transportation systems through four distinct phases
+that align with paradigm shifts in socio-technical systems. Each phase reflects
+the interplay between societal changes and technological advancements.
+III. D ECENTRALISED SOCIETY (DESOC):
+TRENDS AND CHALLENGES
+A. From New Technology to New Social Form
+In the previous sections, we discussed how intelligent
+technology will facilitate the integration of natural entities,
+artificial artifacts, social organizations, and humans. In this
+section, we will discuss the global impact of technology and
+the potential forms of future societies.
+The CPSS theory considers three worlds: the Physical
+World (World One), the Mental World (World Two), and
+the Artificial World (World Three), as an organic whole [4].
+This perspective proposes a profound understanding of the
+laws of socio-technical system development. As illustrated
+in Fig. 2, changes initially occur in the artificial world, which
+subsequently affects the mental and physical worlds. The
+three worlds connected through the artificial world, namely,
+a parallel world, will eventually serve as critical foundations
+for future advancements. The artificial world we are facing
+today has undergone significant transformation leading to a
+consequential impact on our mental and physical surroundings.
+Recognizing these changes appropriately is a prerequisite for
+the advancement of transportation systems.
+B. The Decentralization Trends
+As new social forms are gradually being constructed, the
+development of intelligent technology serves as the catalyst,
+while the development of energy technology and commu-
+nication technology respectively provides the material and
+informational exchange infrastructures. We believe that these
+three technological innovations have profoundly changed the
+human-made world and further shaped the present physical
+and mental world. Ultimately, society will evolve and develop
+towards a decentralized direction and trend.
+• Energy Technology. The development of clean energy
+is considered as crucial technological advancement that
+relieves human-environmental tensions from fossil fuel
+consumption. Furthermore, it has accelerated the matura-
+tion of battery technology. Presently, the development and
+widespread usage of electric vehicles and smartphones
+are closely linked to innovations in battery technol-
+ogy [58], [59], [60]. The shift from the centralized supply
+of fossil fuels, such as coal and natural gas, to the
+decentralized supply of battery-based energy, reflects a
+move towards decentralization in energy utilization. More
+importantly, this progress in energy technology provides
+a key enabling foundation for the development of digital
+technologies.
+• Communication Technology. Communication technol-
+ogy is an indispensable aspect of modern civilization in
+the 21st century, with smartphones leading to extensive
+advancements [61], [62]. These changes have signifi-
+cantly impacted modern life. The widespread use of mod-
+ern communication technologies like WiFi and 5G have
+integrated search engines and e-commerce into everyday
+life. Social networks and short videos have replaced
+traditional news sources and leisure activities [63], [64].
+• Intelligent Technology. Web and communication ser-
+vices have driven the development of technologies such
+as recommendation engines, large-scale databases, and
+application-specific integrated circuits. These innova-
+tions have enabled the processing of large volumes of
+data and facilitated the creation of powerful computing
+infrastructures, which have fueled the development of
+AI technologies capable of performing various intelli-
+gent tasks [65], [66]. Deep learning, along with various
+new technologies, has dramatically increased automation
+in speech and image recognition as well as intelli-
+gent decision-making [67], [68], [69]. However, these
+advancements sometimes pose a challenge for humans
+to comprehend.
+Initially, these technological advancements were devel-
+oped to enhance human connectivity and increase efficiency.
+However, their development has often led to unforeseen conse-
+quences. While social networks and short videos have acceler-
+ated the spread of news, they have simultaneously exacerbated
+the problem of information cocoons and the fragmentation
+of opinions [70]. The widespread adoption of smartphones
+and online entertainment has made attention one of the most
+highly sought-after and in-demand commodities of our era.
+These technological advancements affect the physical world
+in addition to the mental world. Cities have become crowded
+with intelligent technology, including face-recognition cam-
+eras and even autonomous vehicles (A Vs). Due to internet
+accessibility and remote work, the geographical distribution
+of the workforce underwent notable transformations [71].
+C. The Challenges of New Social Form
+The rise of the aforementioned technological innovations
+has led to societal fragmentation, with increasingly decen-
+tralized information channels, diverse controlling subjects,
+and pluralistic value orientations [72]. Bitcoin and other
+decentralized digital currencies, as well as Non-Fungible
+Tokens (NFTs), have gained immense popularity [73]. The
+most powerful subjects that influence society have shifted
+from city mayors to internet users who can post relevant
+news at the right time. Celebrities are no longer able to
+maintain their careers for decades, and instead, the concept
+of “15 minutes of fame” introduced by Andy Warhol has
+taken their place [74]. The phenomenon described above is
+often referred to as DeSoc, which stands for Decentralized
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+10266 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+Fig. 2. Three worlds in socio-technical systems shows the interconnected nature of the Physical World (World One), Mental World (World Two), and
+Artificial World (World Three).
+Society [75], [76]. Three of these changes in DeSoc, which
+have had a significant impact on the transportation system,
+will be examined in detail below.
+1) Decentralization of Information Channels: In the era of
+Web 3.0, the development of mobile apps and IoT technology
+has enabled almost anything to be transformed into a viable
+information channel [77]. Theoretically, more comprehensive
+information sources could enhance traffic management sys-
+tems’ accuracy and efficiency [78]; however, data barriers
+such as data segregation due to privacy protection laws and
+competing relationships among systems impose significant
+limitations on this approach. These barriers obstruct infor-
+mation channels and substantially restrict the transportation
+system’s ability to adjust dynamically to evolving conditions.
+Despite a considerable amount of data used to analyze and
+monitor traffic dynamics, data-driven decision-making tech-
+nologies often have limited access to local data, and their
+potential to benefit society remains untapped.
+The primary cause of data barriers is the lack of well-defined
+and properly implemented data pricing methods [79], [80].
+A price that is deemed reasonable and equitable must be
+agreed upon by both data providers and consumers to facilitate
+collaboration. Current data pricing strategies are typically
+tailored for single-system information channels where a single
+data source is targeted for a particular scenario. This hinders
+the growth of a mature data market and ultimately leads to
+the existence of data barriers. Balancing the privacy needs of
+individuals and the concerns of businesses about the dimin-
+ishing value of data as a result of privacy violations remains
+a challenging and unresolved issue. New industry chains,
+including data collaboration platforms and data as a service
+(DaaS) [81], should be indispensable tools for overcoming this
+barrier.
+2) Absence of Consensus: Individuals often perceive and
+react to phenomena differently. In the past, the uniqueness of
+advertising channels resulted in society overlooking individ-
+ual diversity and, therefore, lessening its influence on social
+interaction. The fragmentation of information channels has
+made the effects of diversity more apparent over time [82].
+Nowadays, it is common for two contrasting mainstream views
+on significant social issues to surface, indicating that the
+current mechanism for forming a consensus is not suitable
+for current situations.
+Building simulation systems is the typical solution to reach-
+ing consensus in social engineering. Participants can reach a
+consensus on the mechanism and response strategy of a social
+phenomenon by mathematically modeling it and fitting obser-
+vations to it. In the domain of ITS, examples of consensus
+are traffic flow models, car-following models, lane-changing
+models, and human driver models created through simulation.
+Current traffic system simulations depend on rules made
+by experts that constitute a singular consensus. Designing a
+system in this way accommodates simple social systems with
+one data source and allows researchers and decision-makers to
+create a dataset to assess the effectiveness of traffic planning
+and control strategies. However, with the increasing abundance
+of traffic data, the disparities between simulated data and
+actual data are becoming more apparent. Furthermore, the
+increase in control devices has made algorithms relying on
+simulation systems less dependable.
+To solve these problems, the existing consensus formation
+mechanisms need to be combined with varying perspectives
+based on the observer, encompassing a wider range of facets.
+The simulation mechanism should be automatically separated
+into several sub-simulations based on different observation
+perspectives and then altered using a data-driven, learning-
+based method. This shift is significant because it replaces a
+strongly consistent consensus with a mechanism for reaching
+local consensus on matters of common interest. For example,
+when utilizing a data-driven approach for a car-following
+model in a specific region, the simulation output will adjust to
+the area’s data granularity and patterns. Such a paradigm will
+allow each district to present data in diverse formats, which is
+non-trivially different from the traditional method.
+3) Conflicting Interests: In the transportation industry, con-
+flicts have been resolved by researchers using macro-level
+statistics. For example, the crowding-out effect of private
+cars on public transportation has been identified, leading to
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10267
+the creation of bus lanes [83]. However, in situations where
+information sources are widely distributed and consensus can
+only be reached at the local level, participants may develop
+conflicting interests. Drivers tend to criticize pedestrians who
+cross the street, but they also tend to complain about drivers
+who fail to yield when they are not driving. These dis-
+agreements are common, and in situations where there is
+competition for resources, divergent opinions on who should
+have the right to own or use limited resources or benefits are
+likely to arise.
+While macro-level statistics have been used to resolve
+conflicts in the transportation industry, micro-level conflicts
+have also been identified through data collection technologies
+and control devices. For example, decision-makers in the
+transportation industry often choose to optimize arterial traffic
+volumes at the expense of non-arterial traffic when traffic
+data is limited, which can be effective. However, with the
+emergence of mobile apps that enable individuals to predict
+their arrival time, there is a risk of a significant surge of
+vehicles on the arterial path, which can undermine the signal
+optimization strategy [84].
+The above examples demonstrate that when there is ample
+information available but no significant consensus on how
+to allocate limited resources or benefits, relying solely on
+macro-level statistics and control methods may not be suf-
+ficient to address complex social conflicts. Instead, a mul-
+tidimensional control strategy must be developed to address
+the dynamic game characteristics of social behavior, especially
+when micro-level factors can significantly alter the expected
+outcome.
+IV. T RANSPORTATION 5.0: T HE DAO TO SAFE ,
+SECURE AND SUSTAINABLE ITS
+The advancement of technology, particularly the Internet
+and information technology, has led to decentralization in
+numerous aspects of society, such as information channels,
+societal consensus, and interest demands. This shift has sig-
+nificantly impacted the design, planning, and management
+of transportation systems, which have traditionally relied on
+experience, theory, and values.
+Current centralized transportation systems often face numer-
+ous challenges in adapting to a decentralized society. Cen-
+tralized transportation systems, which are normally designed
+and managed by a unified authority, assume that the public
+transportation demands are relatively uniform. On the con-
+trary, in a decentralized society, these systems face several
+challenges in adapting to the diverse needs and expectations
+of individuals and communities. These challenges can be
+categorized into three aspects: description, prediction, and
+prescription [85].
+• Description: Centralized systems often struggle to adapt
+to the highly heterogeneous and dispersed data found
+in a decentralized society. These systems may fail to
+obtain timely and efficient information, which is crucial
+for making agile decisions and adjustments. In a decen-
+tralized context, data sources and information are more
+diverse, requiring more robust data collection and analysis
+methods.
+• Prediction: In centralized predictive models, it is difficult
+to accurately adapt to the differences between local
+areas within the transportation system, since each area
+may have unique characteristics and requirements that
+a centralized model cannot fully capture. Consequently,
+predictions made by such models might not be as accurate
+or useful for all regions, leading to suboptimal transporta-
+tion planning and resource allocation.
+• Prescription: Centralized methods lack the precise and
+effective control, which are needed to address the diverse
+demands of a decentralized society. The one-size-fits-all
+approach may result in inadequate solutions for specific
+situations or regions, and the implementation of these
+solutions may be delayed due to the bureaucratic nature of
+centralized systems. This can lead to decreased efficiency
+and satisfaction among users of the transportation system.
+The challenges faced by centralized transportation systems
+in a decentralized society highlight the need for innovative
+technologies and approaches that cater to the diverse needs of
+individuals and communities. ITS in the era of Transportation
+5.0 effectively utilizes communication, information technolo-
+gies, and AI for efficient data-driven traffic management,
+monitoring, prediction, and behavior analysis. By employing
+advanced technologies such as AI, Blockchain, DAO 2, and
+privacy-preserving computing, ITS addresses the description,
+prediction, and prescription aspects of challenges through the
+implementation of Privacy Data Collaboration, Transportation
+Foundation Models, and Decentralized Autonomous Operation
+and Organization.
+Specifically, the widespread use of AI in ITS applications
+such as autonomous driving, traffic signal control, traffic flow
+forecasting, demand modeling, driving behavior analysis, and
+traffic incident monitoring enhances the efficiency and effec-
+tiveness of transportation systems in a decentralized context.
+One example is the use of cooperative driving automation
+for behavior between vehicles, infrastructure, and other road
+users to improve overall system performance ( [86], [87], [88],
+[89], [90], [91]). These applications can be deployed in a
+decentralized system that is powered by Blockchain tech-
+nology, which is usually referred to as DAO 2. The DAO 2
+can manage a wide range of functions of complex and
+sophisticated systems through Smart contracts, which are exe-
+cuted automatically without centralized control, transparently
+recorded on a Blockchain, and can be incentivized through
+the use of characterized tokens. In addition, privacy-preserving
+computing further strengthens the entire system by allowing
+for data processing and analysis without compromising the
+privacy of individuals. It can help to improve the security and
+privacy of data, guaranteeing that data is kept private while
+still enabling computation and analysis. By combining these
+technologies, the development of Transportation 5.0 can evolve
+towards TRUE2, which stands for the four important indicators
+of Trust (T), Reliable (R), Usable (U), and Effective +
+Efficient (E).
+A. Privacy-Preserving Data Collaboration
+In the era of Transportation 5.0, the development of hard-
+ware, algorithms, and software systems centered on data
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+10268 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+technology has opened up new opportunities for ITS research
+and development [92]. Traffic data collection has moved
+beyond physical space and into cyber and social space, includ-
+ing travel service platforms, social media, and portable mobile
+devices. The increase in data volume and complexity has
+stimulated cross-disciplinary research and the emergence of
+technologies such as data mining, natural language processing,
+deep learning, and others.
+In the past, traffic data collection was primarily focused on
+measuring the volume of cars and other vehicles on roads and
+highways. This was done using physical sensors and cameras
+that were installed at various points along the roadways.
+Traditional data collection methods in physical and cyber
+space have limitations in terms of the space covered and the
+ability to capture the entire traffic process and environmental
+variables. With the rise of digital technology and social media,
+traffic data collection has expanded to include monitoring
+of social activity as well, such as tracking the number of
+visitors to location-based services. The data collected from
+social space can assist in addressing challenges in physical and
+cyber space data collection [93]. Social space data can pro-
+vide valuable insights into people’s transportation perceptions
+and behaviors and improve the accuracy of traffic prediction
+models.
+Social data collection, combined with privacy-preserving
+computing, blockchain, and distributed computing, can
+improve transportation data utilization in a broader social
+context. DAO-based city management provides an efficient
+method for optimizing data utilization and integrating it with
+data from other subsystems [94]. This could lead to a better
+understanding of urban dynamics and the development of a
+multi-system simulation based on data. Implementing a data
+pricing mechanism could encourage even more data sharing
+and improve data circulation in a variety of fields. Blockchain
+technology could result in a secure and decentralized data
+platform, increasing trust and authenticity in data transactions
+and improving system security.
+In summary, the emergence of advanced technologies such
+as privacy-preserving computing, blockchain, and distributed
+computing in the cloud computing and AI era opens up new
+opportunities for privacy data collaboration. By incorporating
+these technologies into ITS, we can overcome data hetero-
+geneity, real-time processing, and scalability challenges. This
+could be helpful in the creation of a data-driven multi-system
+simulation and the optimization of urban resource allocation,
+resulting in the greatest possible social benefits.
+B. Traffic Foundation Models
+Simulation techniques are commonly used in transportation
+planning and control decisions, with traffic simulation tech-
+nology widely utilized to study the operational mechanisms
+of cities. Traffic simulation models are built upon the traf-
+fic foundation model, utilizing models of individual agents
+or groups of agents (such as vehicles or pedestrians) that
+interact with the infrastructure in the simulated environment.
+To capture the complexities of urban cities accurately, it is
+crucial to analyze diverse road user behaviors. The Next
+Generation Simulation (NGSIM) datasets, provided by the
+USDOT, offer valuable real-world data for studying and under-
+standing the interactions among different road users. The work
+by Xia et al. [95] has contributed to extracting an enhanced
+version of the NGSIM dataset. However, urban cities are
+complex and dynamic social systems, where the development
+of the traffic system is not only the interaction between
+various traffic players but also changes in social structure and
+form, presenting new challenges for the future development of
+simulation technology.
+Various simulation models, including macroscopic, micro-
+scopic, mesoscopic, and vehicle-level simulation, have been
+developed to address the challenge of accurately simulating
+complex large-scale behavior in traffic [86], [96], [97], [98],
+[99], [100]. These models simplify the system by focusing on
+a single scale, providing different levels of detail and insights
+into traffic behavior. In addition, traffic simulation models that
+depend on rule-based methods utilizing pre-existing models,
+algorithms, and rules find it challenging to manage high-
+complexity large-scale agent behavior [101]. As urban systems
+become more complex, it becomes increasingly difficult to
+simulate real-time traffic responses dynamically, necessitating
+more advanced and adaptive simulation methods [102].
+In fact, traffic simulation systems can be considered funda-
+mental models for a variety of traffic-related tasks. By using
+computer algorithms and mathematical models to replicate the
+behavior of traffic systems, these simulations provide valuable
+insights into the traffic flow, congestion patterns, and the
+impact of various transportation policies and infrastructure
+changes. Data-driven traffic simulation models can serve as
+pre-trained models for tasks such as traffic flow prediction
+and traffic signal control. These models have been successfully
+applied in various fields, including visual and natural language
+processing, and general decision-making.
+By applying cutting-edge methods such as deep neural
+networks, graph learning, and multi-source data integration,
+we could turn traffic simulation into Transportation Foun-
+dation models, and transform task-specific intelligence into
+scenarios-oriented generic intelligence. The traffic founda-
+tion model is a theoretical framework used to understand
+traffic phenomena and solve scenario-based problems [94].
+Fig. 3 shows one of these models, TengYun, which is designed
+and developed with parallel learning and federated intelligence
+in TransVerse [103]. It addresses the challenge of insufficient,
+contradictory, and inconsistently distributed data by imple-
+menting data pre-processing, entity alignment, and scenario
+engineering [104]. It also adopts a “pre-training + prompt
+tuning” approach to training, which significantly reduces the
+computational resources and storage required for fine-tuning
+on edge servers while increasing the utilization of traffic
+knowledge [105]. TengYunprovides a solution to the challenge
+of integrating and utilizing transportation data for efficient and
+effective management and operation.
+TransWorld is an innovative traffic simulation model orig-
+inally developed by the CAST Lab with the primary objec-
+tive of constructing Artificial Transportation Systems (ATS)
+through agent-based technology and object-oriented pro-
+gramming [106]. The model simulates social and behav-
+ioral patterns using autonomous agents, which are guided
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10269
+Fig. 3. Conceptual framework of the Transportation Foundation Model for cognition, operation, and management. The model incorporates advanced techniques,
+such as deep neural networks, graph learning, and multi-source data integration, to facilitate scenario-oriented, generic intelligence in traffic simulation.
+by population statistics and behavioral models. Its application
+proves especially valuable in verifying and validating trans-
+portation operations, particularly at the logic level. Through
+agent interactions, TransWorld can provide a comprehensive
+description of traffic scenarios at various resolutions. The
+future of transportation modeling is expected to embrace
+advanced technologies and methodologies. These upcoming
+models must possess scalability, flexibility, and expandabil-
+ity to effectively manage the exponential complexity growth
+of transportation systems. Furthermore, future traffic models
+should be data-driven, serving as foundational tools to tackle
+intricate transportation problems by leveraging real-world
+data [107], [108].
+C. Decentralized Autonomous Operations and
+Organizations (DAO2)
+ITS is a complex system comprised of several subsystems
+that include multiple participants. These subsystems func-
+tion interactively to satisfy multitudinous demands such as
+commuting and tourism. Upon a sophisticated understanding
+of the system complexity of ITS through the data collec-
+tion/coordination, modeling, and simulation, the behaviors of
+participants in ITS can be predicted, whereas the ultimate goal
+is to manage and control the entire system. The control of ITS
+aims to achieve a safer, more efficient, and sustainable traffic
+system by balancing traffic demands and the infrastructure
+capacity, with the consideration of comfort, safety, emission,
+and energy consumption requirements [53], [109].
+Traffic management and control systems have made signifi-
+cant progress in recent decades to improve the performance
+of traffic infrastructures and vehicles through the devel-
+opment of various effective traffic control methods. These
+control methods can be generally classified based on the
+response time (e.g., from milliseconds to days) and controlled
+objects (e.g., regarding infrastructures or vehicles) as depicted
+in Table I.
+Accurate measurement and estimation of traffic states play
+a crucial role in enabling more efficient, safer, and sustainable
+traffic control strategies [110]. Existing control methods are
+theoretically mature and have evolved towards more expe-
+ditious, agile, and adaptive with the aid of AI in the era
+of Transportation 5.0. However, the complex nature of ITS
+has impeded these methods from functioning as intended in
+practice and enforced the entire system into the Braess paradox
+while implementing these methods without coordination [111],
+[112]. For instance, the green-wave traffic signal control may
+induce traffic congestion on uncontrolled roads, reduce the
+network capacity, and ultimately deteriorate the overall traffic
+efficiency [113]. Therefore, investigating integrated and coor-
+dinated control methods with the consideration of participants
+in multiple ITS subsystems and scales, as well as with multiple
+objectives renders a non-trivial challenge to be tackled.
+Recent studies have made some efforts on multi-scale and
+multi-objective integrated traffic control, which have suggested
+its efficiency in mitigating traffic congestion, guaranteeing
+safety, and enhancing sustainability. Typical studies include the
+integration and coordination of multiple infrastructure control
+methods within one specific subsystem (e.g., on highways)
+[114], [115] or in multiple subsystems (e.g, on highways
+and urban roads) [106], multiple connected and automated
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+10270 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+TABLE I
+TRAFFIC CONTROL MEASURES IN THE ERA OF TRANSPORTATION 5.0
+vehicles [90], [116], as well as between road infrastructures
+and vehicles [117], [118]. These studies are conducted either
+in a centralized or a decentralized scheme. The centralized
+scheme normally assumes perfect knowledge of all the con-
+trolled participants’ states, based on which a generalized
+objective is formulated summarizing the objectives of each
+controlled participant. On the contrary, under the decentralized
+scheme, the involved participants are controlled based on their
+own objectives, which are correlated to the observation and
+prediction of their connected participants’ states. While the
+centralized scheme is struggling with its scalability, stability,
+and security, which makes it incompetent of handling unlim-
+ited participants with heterogeneous attributes (e.g., different
+scales, response times, control objectives, etc.); control meth-
+ods adopting the decentralized scheme also leave much to be
+desired with their compromise on the optimality [119]. Fortu-
+nately, the emergence of Blockchain technology and DAO2 has
+shed some light on solving the issue of developing integrated
+and coordinated traffic control systems in a trustable, reliable,
+useful, and efficient manner [120], [121], [122], [123].
+By implementing a system based on DAO 2, coordi-
+nated control across multiple participants and subsystems
+can be achieved through a series of smart contracts [94].
+Specifically, the absence of centralized authority supported
+by Blockchain technology offers security and transparency,
+as well as simplifies and secures the sharing among a range
+of traffic data from different subsystems, including vehicle
+location, travel speed, traffic signal, etc.; Smart contracts
+can further process these data automatically and enabling
+appropriate actions to enhance traffic conditions. In gen-
+eral, this approach enables community-driven autonomy that
+aligns with the principles of mutual benefits, transparency,
+and safety [124].
+For example, traffic signals can be dynamically controlled
+based on DAO 2 by a series of smart contracts that optimize
+traffic flow and reduce congestion based on real-time data,
+such as vehicle location and speed [125]. These smart con-
+tracts can also facilitate the objectives of other participants
+in different subsystems, such as the safety of pedestrians and
+cyclists, by monitoring their behavior using real-time sensor
+data and taking appropriate actions, such as modifying traffic
+signals, to achieve mutual benefits. Furthermore, Blockchain
+technology guarantees secure and transparency within ITS. For
+instance, while implementing a smart ticketing system for pub-
+lic transportation, the DAO2-based integrated control approach
+can effectively reduce ticket fraud and decrease administra-
+tive expenses, meanwhile facilitating other objectives, such
+as reducing traffic congestion, through decentralized and
+tamper-proof record management.
+In summary, the combination of ITS and blockchain tech-
+nology can achieve more efficient, safer, and sustainable
+traffic control. Through integrated and coordinated control
+via Blockchain technology and DAO 2, the traffic system can
+indeed better meet people’s travel demands while reducing
+traffic congestion, improving safety, and contributing to the
+sustainable development of cities.
+D. Welcome to HANOI
+The three cornerstone technologies, namely Privacy-
+preserving Data Collaboration, Traffic Foundation Models,
+and DAO 2, provide support for the future ITS from the
+perspectives of description, prediction, and prescription, shown
+in Fig. 4. These technologies are also prepared to meet the
+technical and social architecture requirements of Transporta-
+tion 5.0, the decentralized society. Through Privacy-preserving
+data collaboration, information can be collected from dis-
+persed sources, and the Foundation Model can form a
+unified consensus from fragmented social organizations.
+Finally, the DAO 2 align the interests of all parties to max-
+imize overall social benefits. Compared with Transportation
+4.0, Transportation 5.0 involves a significantly increased
+number of participants. Therefore, the technical require-
+ments are broader, including IoT, blockchain, and intelligent
+technologies.
+In essence, the core of these three technologies is to
+achieve the coalescence of social consensus. From the most
+basic consensus of information disclosure methods, gradually
+developing into the consensus of overall status cognition,
+forming a consensus on the behavior of each subject in local
+time and space, and ultimately precipitating into a series of
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10271
+Fig. 4. Illustration of the three cornerstone technologies, namely Privacy Data
+Collaboration, Integrated Simulation System, and Integrated Decision-making,
+which play a crucial role in shaping the future of ITS.
+long-term consensus on behavior norms and resource exchange
+ratios. The first three consensuses often play a role in the
+social subsystem of transportation, while the last long-term
+consensus will have an impact beyond transportation, achiev-
+ing an organic fusion of transportation, and the other social
+subsystem.
+Although there is still much research required on the specific
+form and implementation path of these consensuses, it is
+believed that their ultimate goal is to achieve the TRUE 2
+of the overall system, that is the four important indicators
+of Trust (T), Reliable (R), Usable (U), and Effective +
+Efficient (E). It also aims to ensure safety in the physical world
+(Safety Index), security in the information world (Security
+Index), sustainability in the ecological world (Sustainability
+Index), optimization of individual needs and rights (Sensitiv-
+ity Index), high-quality services for everyone (Service Index),
+and intelligent infrastructure for everyone (Smartness Index)
+in the 6S society. Therefore, the “6I” intelligence is required,
+including Cognitive Intelligence and Parallel Intelligence at
+the technical level, Crypto Intelligence and Federated Intel-
+ligence at the operational and management level, and Social
+Intelligence and Ecological Intelligence at the organizational
+level [126]. This intelligence will ultimately form HANOI,
+which is a combination of human intelligence (H), artificial
+intelligence (A), natural intelligence (N), and organizational
+intelligence (OI) [127]. Fig. 5 explains the six types of
+intelligence and indexes that form HAONI.
+V. F UTURE SCENARIOS AND REQUIRED SYSTEMS
+In addition to cornerstone technologies and tool systems,
+new traffic modes such as Mobility as a Service (MaaS) and
+autonomous driving are emerging to accommodate alterations
+in social structures. The future ITS scenarios will guide future
+transportation development.
+A. Social-Participated AI Test and Scenario Engineering
+The successful deployment and commercialization of Intel-
+ligent agents, such as A Vs, necessitate extensive testing.
+However, the growth of AI tests has been hindered due to
+insufficient relevant data and repetitive test scenarios.
+Inspired by the concept of DAO 2, AI tests should not be
+constrained to a single type of vehicle or restricted area.
+Socially participated AI tests should be adopted, in which
+tests are conducted in diverse contexts with many connected
+vehicles, conventional vehicles equipped with data collectors,
+and all traffic participants (including bicycles and pedestrians).
+SE (Scenario Engineering) is an integrated reflection of the
+scenarios and activities within a certain temporal and spatial
+range, where all actionable AI are encouraged to complete
+the design, certification, and verification [126]. SE shapes
+the AI systems to be more coherent to their original testing
+purpose by preventing repetitive scenarios and generating more
+valuable scenarios. Parallel learning is proposed as a good
+tool for the AI test and scenario engineering [128]. DeCAST
+in the TransVerse platform was designed and constructed
+according to the principle of DAO 2, as shown in Fig. 6 [94].
+Through parallel learning, the evaluation and development
+of A Vs could be greatly accelerated. As a case study,
+Li et al. [129] present how to design reliable intelligence tests
+for A Vs.
+It is essential to acquire a significant amount of data for
+the AI testing method in generating comprehensive scenar-
+ios, especially for mixed-traffic environments. Comprehensive
+scenarios, in turn, can alleviate the bottleneck in developing
+autonomous driving technology. To accomplish this goal,
+an integrated testing platform is required to connect the
+virtual simulation test field, human-driven driving simula-
+tor, and actual test field. As a result, it will establish a
+closed-loop process to develop, test, and advance new tech-
+nologies. The proposed simulation-driven AI could meet the
+requirement for the Try-Test-Adjust design policy to build
+an intelligent machine when integrating virtual with real data
+collected [130].
+B. Trans-Scale Control and RoW-Based Traffic System
+The current control range of traffic lights has raised research
+concerns, as signal lights are placed only at intersections
+and expressway ramps, leading to potential conflicts. Right
+of Way (RoW) in traffic interactions could be a crucial
+new concept and technology in overcoming the challenges
+associated with traditional traffic control.
+To fully utilize limited road resources, an efficient traffic
+control system must address the following challenges:
+• Precisely determining the arrival time of vehicles at
+intersections to deploy appropriate control signals;
+• Ensuring that the distribution and communication of RoW
+are seamlessly integrated throughout the entire driving
+process;
+• Accurately measuring and controlling the movement of
+each vehicle on the road.
+The emergence and advancement of V2X technology pro-
+vide new opportunities to address RoW ownership issues.
+It creates a network connecting humans, vehicles, roads,
+and other transportation elements, allowing for ubiquitous
+information sharing. However, the transportation system faces
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 11 =====
+
+10272 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+Fig. 5. The six types of intelligence and indexes that form HANOI. This figure shows the different types of intelligence and corresponding indexes
+that contribute to the ultimate goal of achieving Trust, Reliable, Usable, and Effective + Efficient (TRUE2) transportation systems. HANOI represents the
+combination of human intelligence (H), artificial intelligence (A), natural intelligence (N), and organizational intelligence (OI) to ensure the overall success
+of the transportation system.
+Fig. 6. The platform architecture of DeCAST: Parallel transportation
+management and control.
+challenges due to the absence of a unified control objective
+for coordinated subsystem control. A new concept called
+“Generalized Right of Way” is required to address this
+issue in traffic systems across various agents at different
+scales. As a general usufruct of the transportation system,
+the RoW is a fundamental attribute granting permission to
+occupy specific travel resources for a specific period. By uti-
+lizing this concept, a trans-scale traffic control system can
+be constructed to address the issue of fragmented control
+strategies.
+With the continuous development of urban intermodal
+transportation demand, the limitations of single scale control
+methods gradually emerge, restricting the ability to integrate
+multi-scale schemes to achieve control objectives. Recently,
+some studies have been conducted to explore the cooper-
+ation of trans-scale traffic control tasks. As an important
+issue in ITS, how to develop a unified control mechanism
+from the standpoint of maximizing social resource allocation
+and appropriately coordinating the employment of multiple
+control modes still requires further in-depth research. The
+RoW facilitates seamless transformation between different
+subsystems and scales within the traffic system by quantifying
+one aspect’s impact on all others. Based on the unified control
+objective (RoW), a multi-agents collaboration mechanism for
+trans-scale traffic control can be achieved. The mechanism
+allows for a multi-agent joint control scenario, due to its
+development in accordance with the percentage of resource
+consumption and control effectiveness of each agent.
+The RoW can also be exchanged with currency, carbon
+emissions, energy consumption, and other rights/interests to
+achieve a tradable system. By connecting the transportation
+subsystem with the carbon sink trading system and LBS
+system, this system can improve resource allocation based
+on data integration from users and various travel resources.
+Then, by collaboratively controlling all elements in a complex
+traffic system and abstracting numerous social interactions as
+generalized usage rights, a unified quantitative method for
+resource recycling mechanisms can be provided. Furthermore,
+the cross-system decision-making scheme to optimize the
+overall social benefits can be used to allocate social resources.
+As one of the best practices of traffic control based on RoW
+theory, an application of parallel transportation system, Traffic
+Operation Recommendation for Controlling Hangzhou Road
+Networks (TORCH), has been successfully deployed on the
+Hangzhou road network, realizing city-level traffic control at
+more than 1,000 intersections while enhancing the capacity
+of handling traffic congestion incidents by two to three times,
+as shown in Fig. 7.
+We have also investigated proactively preventing collisions
+using a set of decision criteria for A Vs to effectively determine
+the RoW [131]. In order to boost driving safety for A Vs,
+we have identified three key concepts and developed a rule-
+based, nine-step communication-decision paradigm, as shown
+in Fig. 8. The decision criteria are intended to be clear and
+quickly computed with the least amount of communication
+so that human drivers and A Vs can comprehend each other’s
+behaviors and intents.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 12 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10273
+Fig. 7. Traffic Operation Recommendation for Controlling Hangzhou Road
+Networks (TORCH) is an exemplary application of a parallel transportation
+system that demonstrates one of the best practices in traffic control based on
+the concept of RoW theory. (a) The case study area of TORCH, and (b) The
+architecture of TORCH.
+Fig. 8. Flowchart of the communication-decision model for RoW in proactive
+collision prevention for A Vs. The model outlines a rule-based, nine-step
+paradigm that facilitates clear and efficient communication between A Vs and
+human drivers, ensuring safe and coordinated interactions on the road.
+C. MaaS and Human-Oriented Operating Systems
+MaaS is an emerging transportation business model that
+assembles the services of different mobility service providers
+through exchanging data, simplifying intermediation, and pro-
+viding customers with seamless service and a unified payment
+interface through a continuous pipeline. While there are mul-
+tiple definitions of MaaS, most share a common vision of
+transforming the need for ownership of vehicles to enable users
+to access the most desirable shared mode of transportation
+on a trip-by-trip basis. Several cities worldwide have already
+adopted the concept of MaaS, numerous practical studies on
+driving MaaS implementation [132] and research examining
+the business models of MaaS [133] have been published in
+recent years. For city administrators, MaaS provides an oppor-
+tunity to build and operate city-scale transportation systems
+and services in a holistic manner, rather than managing each
+transportation service independently.
+A completely new system is needed to integrate all aspects
+of transportation into social life. Such a system will present a
+unified, human-oriented interface, coordinating with people’s
+behavior habits and preferences, and use human feedback
+to improve its underlying agent system. Some researchers
+suggest that such a system could be called a Human-oriented
+Operating System (H2OS) [134]. Like the operating system
+for computer software and hardware, H2OS is a complex
+system composed of multiple components that can virtualize
+transportation resources, parallelize transportation requests,
+and apply transportation planning to real-world operation.
+The H2OS for transportation environment includes multi-
+ple components, such as traffic data collection, processing,
+and storage modules, traffic request management modules,
+resource scheduling modules, etc. Through component col-
+laborations, H2OS can virtualize and optimize transportation
+resources, making transportation smarter and more efficient.
+A core feature of H2OS is its unified interface through which
+users can easily obtain transportation resources and perform
+planning and scheduling operations.
+In the design of H2OS, a decentralized architecture should
+be used, which provides numerous benefits. For instance,
+it makes H2OS more resilient to local failures or attacks. Addi-
+tionally, as new nodes join the network, they can contribute
+their resources to the system, enabling H2OS to scale more
+easily. This architecture can also enable H2OS to allocate and
+optimize transportation resources more efficiently, as it can
+take advantage of distributed computing and real-time data
+processing to make better decisions. Furthermore, privacy and
+security can be improved as the users’ data is distributed across
+the network rather than being stored in a central location. This
+can also make the system more transparent and accountable,
+as all network participants can view the system’s transactions
+and operations.
+VI. F UTURE AND VISION
+In conclusion, it is important to emphasize the ongoing
+paradigm shift in ITS from a technology-centric focus to
+a more society-centric one. This transition is being driven
+by adopting Cyber-Physical-Social Systems architecture and
+parallel systems methodology, which offer innovative and
+comprehensive solutions to pressing transportation challenges.
+These approaches are being rapidly developed and imple-
+mented across three key applications: Privacy-preserving Data
+Collaboration, Traffic Foundation Models, and Decentralized
+Autonomous Operation and Organization.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 13 =====
+
+10274 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+The success of past and present ITS practices validates
+the position and related assertions of ITSS TC for Trans-
+portation 5.0 proposed a decade ago. As the development of
+ITS continues to evolve, scenarios such as social-participated
+AI Test, ROW-based traffic control, and MaaS will play a
+crucial role in advancing ITS towards a more society-centered
+architecture. This significant shift will not only transform the
+ITS landscape but also profoundly impact the organization of
+related fields, such as urban planning, energy, and environ-
+ment, steering transportation systems toward human welfare
+and sustainability-centered objectives.
+ACKNOWLEDGMENT
+The authors sincerely appreciate the researchers with the
+Shanghai Artificial Intelligence Laboratory, including Ding
+Wang, Shengyue Yao, Jia Xu, Jingru Yu, Yi Yu, Xuhong Wang,
+Wei Hu, and Yiwen Cong, for their valuable contributions
+to this article. Their insightful discussions and expertise in
+data collaboration, traffic simulation, and vehicle control were
+essential in the completion of this research.
+REFERENCES
+[1] A. Tuominen and T. Ahlqvist, “Is the transport system becoming
+ubiquitous? Socio-technical roadmapping as a tool for integrating the
+development of transport policies and intelligent transport systems and
+services in Finland,” Technological Forecasting Social Change, vol. 77,
+no. 1, pp. 120–134, Jan. 2010.
+[2] H. Kopackova and P. Libalova, “Smart city concept as socio-technical
+system,” in Proc. Int. Conf. Inf. Digit. Technol. (IDT), Jul. 2017,
+pp. 198–205.
+[3] F.-Y . Wang and J. J. Zhang, “Transportation 5.0 in CPSS: Towards
+ACP-based society-centered intelligent transportation,” in Proc. IEEE
+20th Int. Conf. Intell. Transp. Syst. (ITSC), Oct. 2017, pp. 762–767.
+[Online]. Available: http://ieeexplore.ieee.org/document/8317905/
+[4] K. Popper, Three Worlds. Ann Arbor, MI, USA: Univ. Michigan Ann
+Arbor, 1979.
+[5] F.-Y . Wang, “The emergence of intelligent enterprises: From
+CPS to CPSS,” IEEE Intell. Syst., vol. 25, no. 4, pp. 85–88,
+Jul. 2010.
+[6] F.-Y . Wang, Q. Miao, X. Li, X. Wang, and Y . Lin, “What does
+ChatGPT say: The DAO from algorithmic intelligence to linguistic
+intelligence,” IEEE/CAA J. Autom. Sinica, vol. 10, no. 3, pp. 575–579,
+Mar. 2023.
+[7] H. Zhou and H. Gao, “The impact of urban morphology on urban
+transportation mode: A case study of Tokyo,”Case Stud. Transp. Policy,
+vol. 8, no. 1, pp. 197–205, Mar. 2020.
+[8] T. Roughgarden, Selfish Routing and the Price of Anarchy. Cambridge,
+MA, USA: MIT Press, 2005.
+[9] R. Zhang, K. Spieser, E. Frazzoli, and M. Pavone, “Models, algorithms,
+and evaluation for autonomous mobility-on-demand systems,” in Proc.
+Amer. Control Conf. (ACC), Jul. 2015, pp. 2573–2587.
+[10] H. Andersen et al., “Autonomous personal mobility scooter for multi-
+class mobility-on-demand service,” in Proc. IEEE 19th Int. Conf. Intell.
+Transp. Syst. (ITSC), Nov. 2016, pp. 1753–1760.
+[11] R. Zhang, F. Rossi, and M. Pavone, “Analysis, control, and evaluation
+of mobility-on-demand systems: A queueing-theoretical approach,”
+IEEE Trans. Control Netw. Syst., vol. 6, no. 1, pp. 115–126,
+Mar. 2019.
+[12] Beijing Transportation Research Center. (2019). 2019 Transportation
+Annual Report of Beijing. [Online]. Available: https://www.bjtrc.org.
+cn/List/index/cid/7.html
+[13] Beijing Transportation Research Center. (2021). 2021 Transportation
+Annual Report of Beijing. [Online]. Available: https://www.bjtrc.org.
+cn/List/index/cid/7.html
+[14] A. Validi et al., “Hybrid on/off blockchain approach for vehicle data
+management, processing and visualization exemplified by the ADAPT
+platform,” in Proc. IEEE 25th Int. Conf. Intell. Transp. Syst. (ITSC),
+Oct. 2022, pp. 3152–3158.
+[15] W. Barfield and T. A. Dingus, Human Factors in Intelligent Trans-
+portation Systems. London, U.K.: Psychology Press, 2014.
+[16] L. Chen et al., “Milestones in autonomous driving and intelligent
+vehicles: Survey of surveys,” IEEE Trans. Intell. Vehicles, vol. 8, no. 2,
+pp. 1046–1056, Feb. 2023.
+[17] C. Olaverri-Monreal, “Promoting trust in self-driving vehicles,” Nature
+Electron., vol. 3, no. 6, pp. 292–294, Jun. 2020.
+[18] F.-Y . Wang, “Computational transportation and transportation 5.0,”
+IEEE Trans. Intell. Transp. Syst., vol. 5, no. 15, pp. 1861–1868,
+2014.
+[19] F.-Y . Wang, “A five-year report on transportation 5.0: Smart soci-
+eties with smart logistics and mobility,” IEEE ITSS TC Trans. 5.0,
+Tech. Rep., Sep. 2018.
+[20] F.-Y . Wang, Y . Yuan, X. Wang, and R. Qin, “Societies 5.0: A new
+paradigm for computational social systems research,” IEEE Trans.
+Computat. Social Syst., vol. 5, no. 1, pp. 2–8, Mar. 2018.
+[21] F.-Y . Wang, “Control 5.0: From Newton to Merton in popper’s cyber-
+social-physical spaces,” IEEE/CAA J. Autom. Sinica, vol. 3, no. 3,
+pp. 233–234, Jul. 2016.
+[22] F.-Y . Wang, Y . Gao, X. Shang, and J. Zhang, “Parallel manufacturing
+and industries 5.0: From virtual manufacturing to intelligent manufac-
+turing,” Sci. Technol. Rev., vol. 36, no. 21, pp. 10–22, 2018.
+[23] J. Deng, F.-Y . Wang, Y . Chen, and X. Zhao, “From industries 4.0 to
+energy 5.0: Concept and framework of intelligent energy systems,”Acta
+Autom. Sinica, vol. 41, no. 12, pp. 2003–2016, 2015.
+[24] F. Wang et al., “Nuclear energy 5.0: New formation and system
+architecture of nuclear power industry in the new IT era,” Acta Autom.
+Sinica, vol. 44, no. 5, pp. 922–934, 2018.
+[25] F.-Y . Wang, “Intelligence 5.0: Parallel intelligence in parallel age,”
+J. China Soc. Sci. Tech. Inf., vol. 34, no. 6, pp. 563–574,
+Jun. 2015.
+[26] Y . Yuan, F. Wang, J. Li, and R. Qin, “A survey on real time bidding
+advertising,” in Proc. IEEE Int. Conf. Service Oper. Logistics, Infor-
+mat., Oct. 2014, pp. 418–423.
+[27] F.-Y . Wang, “CC 5.0: Intelligent command and control systems in
+the parallel age,” J. Command Control, vol. 1, no. 1, pp. 107–120,
+2015.
+[28] F.-Y . Wang and Y . Gao,Advanced Studies of Flexible Robotic Manipu-
+lators: Modeling, Design, Control and Applications, vol. 4. Singapore:
+World Scientific, 2003.
+[29] F.-Y . Wang, “New control paradigm for industry 5.0: From big models
+to foundation control and management,” IEEE/CAA J. Autom. Sinica,
+vol. 10, no. 8, pp. 1643–1646, Aug. 2023.
+[30] X. Wang et al., “Steps toward industry 5.0: Building ‘6s’ parallel
+industries with cyber-physical-social intelligence,”IEEE/CAA J. Autom.
+Sinica, vol. 10, no. 8, pp. 1692–1703, Aug. 2023.
+[31] F.-Y . Wang, J. Yang, X. Wang, J. Li, and Q.-L. Han, “Chat with
+ChatGPT on industry 5.0: Learning and decision-making for intelligent
+industries,” IEEE/CAA J. Autom. Sinica, vol. 10, no. 4, pp. 831–834,
+Apr. 2023.
+[32] Y . Lin, X. Na, D. Wang, X. Dai, and F.-Y . Wang, “Mobility 5.0:
+Smart logistics and transportation services in cyber-physical-social
+systems,” IEEE Trans. Intell. Vehicles, vol. 8, no. 6, pp. 3527–3532,
+Jun. 2023.
+[33] E. L. Trist and K. W. Bamforth, “Some social and psychological
+consequences of the longwall method of coal-getting: An examination
+of the psychological situation and defences of a work group in relation
+to the social structure and technological content of the work system,”
+Hum. Relations, vol. 4, no. 1, pp. 3–38, Feb. 1951.
+[34] J. W. Stranks, Human Factors and Behavioural Safety. Evanston, IL,
+USA: Routledge, 2007.
+[35] F. W. Geels, “From sectoral systems of innovation to socio-technical
+systems: Insights about dynamics and change from sociology and
+institutional theory,” Res. Policy, vol. 33, nos. 6–7, pp. 897–920, 2004.
+[36] S. O. Funtowicz and J. R. Ravetz, “Science for the post-normal age,”
+Futures, vol. 25, no. 7, pp. 739–755, Sep. 1993.
+[37] J. H. Holland, “Studying complex adaptive systems,” J. Syst. Sci.
+Complex., vol. 19, no. 1, pp. 1–8, Mar. 2006.
+[38] R. Cooper and M. Foster, “Sociotechnical systems,” Amer. Psycholog.,
+vol. 26, no. 5, p. 467, 1971.
+[39] C. Marchetti, “Anthropological invariants in travel behavior,” Technol.
+Forecasting Social Change, vol. 47, no. 1, pp. 75–88, Sep. 1994.
+[40] J. Clutton-Brock, Horse Power: A History of the Horse and the Donkey
+in Human Societies. Washington, DC, USA: Natural History Museum
+Publications, 1992.
+[41] K. Small, Urban Transportation Economics, vol. 4. Oxford, U.K.:
+Taylor & Francis, 2013.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 14 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10275
+[42] D. A. Badoe and E. J. Miller, “Transportation–land-use interaction:
+Empirical findings in North America, and their implications for mod-
+eling,” Transp. Res. D, Transp. Environ., vol. 5, no. 4, pp. 235–263,
+Jul. 2000.
+[43] D. G. Douglas, The Social Construction of Technological Systems,
+Anniversary Edition: New Directions in the Sociology and History of
+Technology. Cambridge, MA, USA: MIT Press, 2012.
+[44] K. Lucas, “Providing transport for social inclusion within a framework
+for environmental justice in the U.K.,” Transp. Res. A, Policy Pract.,
+vol. 40, no. 10, pp. 801–809, Dec. 2006.
+[45] D. Zorovic, “International regulations for preventing collisions at sea
+(COLREGs) amendment proposal,” J. Maritime Transp. Sci., vol. 55,
+no. 1, pp. 229–230, Jan. 2019.
+[46] R. Abeyratne, “Convention on international civil aviation,” in A Com-
+mentary. Cham, Switzerland: Springer, 2014.
+[47] L. M. Surhone, M. T. Tennoe, and S. F. Henssonow, Vienna Convention
+on Road Signs and Signals . Riga, Latvia: Betascript Publishing, 2013.
+[48] K. Martens, Transport Justice: Designing Fair Transportation Systems.
+Evanston, IL, USA: Routledge, 2016.
+[49] D. Banister, “The sustainable mobility paradigm,” Transp. Policy,
+vol. 15, no. 2, pp. 73–80, Mar. 2008.
+[50] R. Willson, “Assessing communicative rationality as a transportation
+planning paradigm,” Transportation, vol. 28, pp. 1–31, Feb. 2001.
+[51] M. Kamargianni, W. Li, M. Matyas, and A. Schäfer, “A critical review
+of new mobility services for urban transport,” Transp. Res. Proc.,
+vol. 14, pp. 3294–3303, Jan. 2016.
+[52] E. Kopits and M. Cropper, “Traffic fatalities and economic
+growth,” Accident Anal. Prevention, vol. 37, no. 1, pp. 169–178,
+Jan. 2005.
+[53] A. Auer, S. Feese, S. Lockwood, and B. A. Hamilton, “History of
+intelligent transportation systems,” United States. Dept. Transp., Intell.
+Transp. Syst. Joint Program Office, Tech. Rep. FHW A-JPO-16-329,
+2016.
+[54] X. Zhang et al., “Road traffic injuries among riders of electric
+bike/electric moped in southern China,” Traffic Injury Prevention,
+vol. 19, no. 4, pp. 417–422, May 2018.
+[55] J. Allen et al., “Understanding the impact of e-commerce on last-
+mile light goods vehicle activity in urban areas: The case of
+London,” Transp. Res. D, Transp. Environ. , vol. 61, pp. 325–338,
+Jun. 2018.
+[56] E. Brynjolfsson and A. McAfee, The Second Machine Age: Work,
+Progress, and Prosperity in a Time of Brilliant Technologies. New York,
+NY , USA: WW Norton & Company, 2014.
+[57] R. Doede, “What technology wants,” Tradition Discovery, Polanyi Soc.
+Periodical, vol. 37, no. 3, pp. 71–74, 2010.
+[58] C. C. Chan, “An overview of electric vehicle technology,” Proc. IEEE,
+vol. 81, no. 9, pp. 1202–1213, Sep. 1993.
+[59] X. Sun, Z. Li, X. Wang, and C. Li, “Technology development
+of electric vehicles: A review,” Energies, vol. 13, no. 1, p. 90,
+Dec. 2019.
+[60] S. Manzetti and F. Mariasiu, “Electric vehicle battery technologies:
+From present state to future systems,” Renew. Sustain. Energy Rev.,
+vol. 51, pp. 1004–1012, Nov. 2015.
+[61] D. McNaughton and J. Light, “The iPad and mobile technology revolu-
+tion: Benefits and challenges for individuals who require augmentative
+and alternative communication,” Augmentative Alternative Commun.,
+vol. 29, no. 2, pp. 107–116, Jun. 2013.
+[62] M. Castells, M. Fernandez-Ardevol, J. L. Qiu, and A. Sey, Mobile
+Communication and Society: A Global Perspective. Cambridge, MA,
+USA: MIT Press, 2009.
+[63] Y . Wu, X. Wang, S. Hong, M. Hong, M. Pei, and Y . Su, “The
+relationship between social short-form videos and youth’s well-being:
+It depends on usage types and content categories,” Psychol. Popular
+Media, vol. 10, no. 4, pp. 467–477, Oct. 2021.
+[64] A. Kalogeropoulos, F. Cherubini, and N. Newman, “The future of
+online news video,” Digit. News Project, 2016.
+[65] D. Das, L. Sahoo, and S. Datta, “A survey on recommendation system,”
+Int. J. Comput. Appl., vol. 160, no. 7, pp. 6–10, 2017.
+[66] L. Deng, “Artificial intelligence in the rising wave of deep learning:
+The historical path and future outlook [perspectives],” IEEE Signal
+Process. Mag., vol. 35, no. 1, p. 180, Jan. 2018.
+[67] L. Deng, G. Hinton, and B. Kingsbury, “New types of deep neural
+network learning for speech recognition and related applications: An
+overview,” in Proc. IEEE Int. Conf. Acoust., Speech Signal Process. ,
+May 2013, pp. 8599–8603.
+[68] J. Ker, L. Wang, J. Rao, and T. Lim, “Deep learning applications
+in medical image analysis,” IEEE Access, vol. 6, pp. 9375–9389,
+2018.
+[69] X. Liu, J. Liang, and B. Xu, “A deep learning method for lane
+changing situation assessment and decision making,” IEEE Access,
+vol. 7, pp. 133749–133759, 2019.
+[70] J. Wang and R. Zhang, “Research on the influencing fac-
+tors of the user information cocoon effect of short video plat-
+forms based on personalized recommendation algorithms,” in Proc.
+2nd Int. Conf. Big Data Eng. Educ. (BDEE), Aug. 2022,
+pp. 53–60.
+[71] K. Su, J. Li, and H. Fu, “Smart city and the applications,” in
+Proc. Int. Conf. Electron., Commun. Control (ICECC), Sep. 2011,
+pp. 1028–1031.
+[72] T. Jeong and D.-H. Seol, “Theoretical construction of a frag-
+mented society,” J. Asian Sociol., vol. 51, no. 1, pp. 97–128,
+2022.
+[73] G. P. Dwyer, “The economics of Bitcoin and similar private
+digital currencies,” J. Financial Stability, vol. 17, pp. 81–91,
+Apr. 2015.
+[74] A. Piechucka, “Fifteen minutes of fame, fame in fifteen minutes:
+Andy Warhol and the dawn of modern-day celebrity culture,”
+Tech. Rep., 2014. [Online]. Available: https://depot.ceon.pl/
+bitstream/handle/123456789/8734/08_pjas8.pdf?sequence=1
+[75] F.-Y . Wang, “The metaverse of mind: Perspectives on DeSci for
+DeEco and DeSoc,” IEEE/CAA J. Autom. Sinica, vol. 9, no. 12,
+pp. 2043–2046, Dec. 2022.
+[76] P. Ye and F.-Y . Wang, “Parallel population and parallel human—A
+cyber-physical social approach,” IEEE Intell. Syst., vol. 37, no. 5,
+pp. 19–27, Sep. 2022.
+[77] S. Madakam, R. Ramaswamy, and S. Tripathi, “Internet of Things
+(IoT): A literature review,” J. Comput. Commun., vol. 3, no. 5, p. 164,
+2015.
+[78] S. Sagiroglu and D. Sinanc, “Big data: A review,” in Proc. Int. Conf.
+Collaboration Technol. Syst. (CTS), May 2013, pp. 42–47.
+[79] D. L. Rubinfeld and M. S. Gal, “Access barriers to big data,” Ariz. L.
+Rev., vol. 59, p. 339, Jan. 2017.
+[80] A. Muschalle, F. Stahl, A. Löser, and G. V ossen, “Pricing
+approaches for data markets,” in Proc. Int. Workshop Business
+Intell. Real-Time Enterprise , Istanbul, Turkey: Springer, Aug. 2012,
+pp. 129–144.
+[81] O. Terzo, P. Ruiu, E. Bucci, and F. Xhafa, “Data as a service (DaaS)
+for sharing and processing of large data collections in the cloud,” in
+Proc. 7th Int. Conf. Complex, Intell., Softw. Intensive Syst., Jul. 2013,
+pp. 475–480.
+[82] M. Nazarov, “Modern media landscape: Diversity and fragmenta-
+tion,” Sotsiologicheskie Issledovaniya, vol. 14, no. 8, pp. 54–64,
+2018.
+[83] M. Eichler and C. F. Daganzo, “Bus lanes with intermittent
+priority: Strategy formulae and an evaluation,” Transp. Res. B,
+Methodol., vol. 40, no. 9, pp. 731–744, Nov. 2006. [Online]. Available:
+https://linkinghub.elsevier.com/retrieve/pii/S0191261505001104
+[84] V . Astarita, V . P. Giofrè, G. Guido, and A. Vitale, “The use of adaptive
+traffic signal systems based on floating car data,” Wireless Commun.
+Mobile Comput., vol. 2017, pp. 1–13, May 2017. [Online]. Available:
+https://www.hindawi.com/journals/wcmc/2017/4617451/
+[85] Q. Miao, Y . Lv, M. Huang, X. Wang, and F.-Y . Wang, “Par-
+allel learning: Overview and perspective for computational learn-
+ing across Syn2Real and Sim2Real,” IEEE/CAA J. Autom. Sinica,
+vol. 10, no. 3, pp. 603–631, Mar. 2023. [Online]. Available:
+https://ieeexplore.ieee.org/document/10057176/
+[86] R. Xu et al., “The OpenCDA open-source ecosystem for cooperative
+driving automation research,”IEEE Trans. Intell. Vehicles, vol. 8, no. 4,
+pp. 2698–2711, Apr. 2023.
+[87] X. Han et al., “Strategic and tactical decision-making for cooperative
+vehicle platooning with organized behavior on multi-lane highways,”
+Transp. Res. C, Emerg. Technol., vol. 145, Dec. 2022, Art. no. 103952.
+[88] Y . Guo and J. Ma, “SCoPTO: Signalized corridor management with
+vehicle platooning and trajectory control under connected and auto-
+mated traffic environment,” Transportmetrica B, Transp. Dyn., vol. 9,
+no. 1, pp. 673–692, Jan. 2021.
+[89] R. Xu, H. Xiang, Z. Tu, X. Xia, M.-H. Yang, and J. Ma, “V2X-ViT:
+Vehicle-to-everything cooperative perception with vision transformer,”
+in Computer Vision ECCV 2022. Cham, Switzerland: Springer, 2022,
+pp. 107–124.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 15 =====
+
+10276 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+[90] P. A. Ioannou, Automated Highway Systems, University of South-
+ern California. Center for Advanced Transportation Technologies.
+New York, NY , USA: Plenum Press, 1997.
+[91] P. Ioannou and H. Jula, “Automated container terminal concepts,” in
+Intelligent Freight Transportation. Boca Raton, FL, USA: CRC Press,
+2008, pp. 7–33.
+[92] L. Zhu, F. R. Yu, Y . Wang, B. Ning, and T. Tang, “Big data analytics
+in intelligent transportation systems: A survey,” IEEE Trans. Intell.
+Transp. Syst., vol. 20, no. 1, pp. 383–398, Jan. 2019. [Online]. Avail-
+able: https://ieeexplore.ieee.org/document/8344848/
+[93] S. De, Y . Zhou, I. Larizgoitia Abad, and K. Moessner, “Cyber–
+physical–social frameworks for urban big data systems: A survey,”
+Appl. Sci., vol. 7, no. 10, p. 1017, Oct. 2017. [Online]. Available:
+http://www.mdpi.com/2076-3417/7/10/1017
+[94] C. Zhao, Y . Lv, J. Jin, Y . Tian, J. Wang, and F.-Y . Wang, “DeCAST
+in TransVerse for parallel intelligent transportation systems and
+smart cities: Three decades and beyond,” IEEE Intell. Transp. Syst.
+Mag., vol. 14, no. 6, pp. 6–17, Nov. 2022. [Online]. Available:
+https://ieeexplore.ieee.org/document/9896812/
+[95] X. Xia et al., “An automated driving systems data acquisition and ana-
+lytics platform,” Transp. Res. C, Emerg. Technol., vol. 151, Jun. 2023,
+Art. no. 104120. [Online]. Available: https://linkinghub.elsevier.com/
+retrieve/pii/S0968090X23001092
+[96] A. D. May, Traffic Flow Fundamentals. Upper Saddle River, NJ, USA:
+Prentice-Hall.
+[97] P. A. Lopez et al., “Microscopic traffic simulation using SUMO,”
+in Proc. 21st Int. Conf. Intell. Transp. Syst. (ITSC), Nov. 2018,
+pp. 2575–2582. [Online]. Available: https://ieeexplore.ieee.
+org/document/8569938/
+[98] H. Zhang et al., “CityFlow: A multi-agent reinforcement learning
+environment for large scale city traffic scenario,” in Proc. World Wide
+Web Conf., May 2019, pp. 3620–3624, doi: 10.1145/3308558.3314139.
+[99] H. Andreas, N. Kai, and A. W. Kay, Introducing MATSim. Zurich,
+Switzerland: ETH Zurich, 2016. [Online]. Available: http://hdl.
+handle.net/20.500.11850/164522
+[100] R. Xu, Y . Guo, X. Han, X. Xia, H. Xiang, and J. Ma, “OpenCDA:
+An open cooperative driving automation framework integrated with
+co-simulation,” in Proc. IEEE Int. Intell. Transp. Syst. Conf. (ITSC),
+Sep. 2021, pp. 1155–1162.
+[101] J. Nguyen, S. T. Powers, N. Urquhart, T. Farrenkopf, and M. Guckert,
+“An overview of agent-based traffic simulators,” Transp. Res. Interdis-
+cipl. Perspect., vol. 12, Dec. 2021, Art. no. 100486. [Online]. Avail-
+able: https://linkinghub.elsevier.com/retrieve/pii/S2590198221001913
+[102] W. Fan, P. Chen, D. Shi, X. Guo, and L. Kou, “Multi-agent
+modeling and simulation in the AI age,” Tsinghua Sci. Tech-
+nol., vol. 26, no. 5, pp. 608–624, Oct. 2021. [Online]. Available:
+https://ieeexplore.ieee.org/document/9409754/
+[103] C. Zhao, X. Dai, Y . Lv, Y . Tian, Y . Ren, and F.-Y . Wang, “Foundation
+models for transportation intelligence: ITS convergence in TransVerse,”
+IEEE Intell. Syst., vol. 37, no. 6, pp. 77–82, Nov. 2022. [Online].
+Available: https://ieeexplore.ieee.org/document/10044573/
+[104] Y . Chen, Y . Lv, and F.-Y . Wang, “Traffic flow imputation using parallel
+data and generative adversarial networks,” IEEE Trans. Intell. Transp.
+Syst., vol. 21, no. 4, pp. 1624–1630, Apr. 2020. [Online]. Available:
+https://ieeexplore.ieee.org/document/8699108/
+[105] Y . Du, F. Wei, Z. Zhang, M. Shi, Y . Gao, and G. Li, “Learning
+to prompt for open-vocabulary object detection with vision-language
+model,” 2022, arXiv:2203.14940.
+[106] F.-Y . Wang, “Parallel control and management for intelligent trans-
+portation systems: Concepts, architectures, and applications,” IEEE
+Trans. Intell. Transp. Syst., vol. 11, no. 3, pp. 630–638, Sep. 2010.
+[107] D. Wang et al., “TransworldNG: Traffic simulation via foundation
+model,” in Proc. IEEE 26th Int. Conf. Intell. Transp. Syst. (ITSC),
+May 2023.
+[108] X. Wang, D. Wang, L. Chen, and Y . Lin, “Building transportation
+foundation model via generative graph transformer,” in Proc. IEEE
+26th Int. Conf. Intell. Transp. Syst. (ITSC), May 2023.
+[109] M. Papageorgiou, C. Diakaki, V . Dinopoulou, A. Kotsialos, and
+Y . Wang, “Review of road traffic control strategies,” Proc. IEEE,
+vol. 91, no. 12, pp. 2043–2067, Dec. 2003.
+[110] W. Liu, X. Xia, L. Xiong, Y . Lu, L. Gao, and Z. Yu, “Automated vehicle
+sideslip angle estimation considering signal measurement characteris-
+tic,” IEEE Sensors J., vol. 21, no. 19, pp. 21675–21687, Oct. 2021.
+[Online]. Available: https://ieeexplore.ieee.org/document/9556130/
+[111] D. H. Wolpert and K. Tumer, “Collective intelligence, data routing
+and Braess’ paradox,” J. Artif. Intell. Res., vol. 16, pp. 359–387,
+Jun. 2002.
+[112] C. Diakaki, M. Papageorgiou, I. Papamichail, and I. Nikolos,
+“Overview and analysis of vehicle automation and communication
+systems from a motorway traffic management perspective,” Transp.
+Res. A, Policy Pract., vol. 75, pp. 147–165, May 2015.
+[113] A. Kouvelas, K. Aboudolas, E. B. Kosmatopoulos, and
+M. Papageorgiou, “Adaptive performance optimization for large-
+scale traffic control systems,” IEEE Trans. Intell. Transp. Syst.,
+vol. 12, no. 4, pp. 1434–1445, Dec. 2011.
+[114] J. Jin, H. Guo, J. Xu, X. Wang, and F.-Y . Wang, “An end-to-end
+recommendation system for urban traffic controls and management
+under a parallel learning framework,” IEEE Trans. Intell. Transp. Syst.,
+vol. 22, no. 3, pp. 1616–1626, Mar. 2021.
+[115] C. Roncoli, M. Papageorgiou, and I. Papamichail, “Traffic flow
+optimisation in presence of vehicle automation and communi-
+cation systems—Part II: Optimal control for multi-lane motor-
+ways,” Transp. Res. C, Emerg. Technol., vol. 57, pp. 260–275,
+Aug. 2015.
+[116] V . Milanés, S. E. Shladover, J. Spring, C. Nowakowski, H. Kawazoe,
+and M. Nakamura, “Cooperative adaptive cruise control in real traf-
+fic situations,” IEEE Trans. Intell. Transp. Syst., vol. 15, no. 1,
+pp. 296–305, Feb. 2014.
+[117] C. Yu, Y . Feng, H. X. Liu, W. Ma, and X. Yang, “Integrated
+optimization of traffic signals and vehicle trajectories at isolated
+urban intersections,” Transp. Res. B, Methodol., vol. 112, pp. 89–112,
+Jun. 2018.
+[118] Q. Guo, L. Li, and X. (Jeff) Ban, “Urban traffic signal control with
+connected and automated vehicles: A survey,” Transp. Res. C, Emerg.
+Technol., vol. 101, pp. 313–334, Apr. 2019.
+[119] Y . Yuan and F.-Y . Wang, “Towards blockchain-based intelligent trans-
+portation systems,” in Proc. IEEE 19th Int. Conf. Intell. Transp. Syst.
+(ITSC), Nov. 2016, pp. 2663–2668.
+[120] X. Liang et al., “TAO-based data governance in intelligent transporta-
+tion systems,” in Proc. 26th Int. Conf. Intell. Transp. Syst. (ITSC),
+Sep. 2023.
+[121] J. Li et al., “From DAO to TAO: Finding the essence of decen-
+tralization,” in Proc. IEEE Int. Conf. Syst. Man, Cybern. (SMC),
+Oct. 2023.
+[122] F.-Y . Wang, “The DAO to MetaControl for MetaSystems in metaverses:
+The system of parallel control systems for knowledge automation and
+control intelligence in CPSS,” IEEE/CAA J. Autom. Sinica, vol. 9,
+no. 11, pp. 1899–1908, Nov. 2022.
+[123] J. Li et al., “True autonomous organizations and operations for Web3,”
+J. Cyber-Phys.-Social Intell., vol. 2, no. 1, pp. 1–8, 2023.
+[124] S. Yao et al., “Towards integrated traffic control with operating decen-
+tralized autonomous organization,” in Proc. IEEE 26th Int. Conf. Intell.
+Transp. Syst. (ITSC), Jul. 2023.
+[125] C. Zhao, X. Dai, Y . Lv, J. Niu, and Y . Lin, “Decentralized
+autonomous operations and organizations in TransVerse: Federated
+intelligence for smart mobility,” IEEE Trans. Syst. Man, Cybern.
+Syst., vol. 53, no. 4, pp. 2062–2072, Apr. 2023. [Online]. Available:
+https://ieeexplore.ieee.org/document/9996183/
+[126] X. Li, P. Ye, J. Li, Z. Liu, L. Cao, and F.-Y . Wang, “From fea-
+tures engineering to scenarios engineering for trustworthy AI: I&I,
+C&C, and V&V ,” IEEE Intell. Syst., vol. 37, no. 4, pp. 18–26,
+Jul. 2022.
+[127] F.-Y . Wang, “Parallel intelligence in metaverses: Welcome to Hanoi!”
+IEEE Intell. Syst., vol. 37, no. 1, pp. 16–20, Jan. 2022.
+[128] L. Li et al., “Parallel testing of vehicle intelligence via virtual-real
+interaction,” Sci. Robot., vol. 4, no. 28, Mar. 2019, Art. no. eaaw4106,
+doi: 10.1126/scirobotics.aaw4106.
+[129] L. Li et al., “Artificial intelligence test: A case study of intel-
+ligent vehicles,” Artif. Intell. Rev., vol. 50, no. 3, pp. 441–465,
+Oct. 2018.
+[130] L. Li, Y . Lin, Y . Wang, and F.-Y . Wang, “Simulation driven AI: From
+artificial to actual and vice versa,” IEEE Intell. Syst., vol. 38, no. 1,
+pp. 3–8, Jan. 2023.
+[131] L. Li et al., “Three principles to determine the right-of-way for
+A Vs: Safe interaction with humans,” IEEE Trans. Intell. Transp. Syst.,
+vol. 23, no. 7, pp. 7759–7774, Jul. 2022.
+[132] B. Maas, “Literature review of mobility as a service,” Sustain-
+ability, vol. 14, no. 14, p. 8962, Jul. 2022. [Online]. Available:
+https://www.mdpi.com/2071-1050/14/14/8962
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 16 =====
+
+W ANG et al.: TRANSPORTATION 5.0: THE DAO TO SAFE, SECURE, AND SUSTAINABLE ITS 10277
+[133] W. Kriswardhana and D. Esztergár-Kiss, “A systematic litera-
+ture review of mobility as a service: Examining the socio-
+technical factors in MaaS adoption and bundling packages,” Travel
+Behaviour Soc., vol. 31, pp. 232–243, Apr. 2023. [Online]. Available:
+https://linkinghub.elsevier.com/retrieve/pii/S2214367X22001478
+[134] F.-Y . Wang, J. Li, R. Qin, J. Zhu, H. Mo, and B. Hu, “ChatGPT
+for computational social systems: From conversational applications
+to human-oriented operating systems,” IEEE Trans. Computat. Social
+Syst., vol. 10, no. 2, pp. 414–425, Apr. 2023. [Online]. Available:
+https://ieeexplore.ieee.org/document/10089798/
+Fei-Yue Wang (Fellow, IEEE) received the
+Ph.D. degree in computer and systems engineering
+from the Rensselaer Polytechnic Institute, Troy, NY ,
+USA, in 1990. He joined The University of Arizona
+in 1990 and became a Professor and the Director
+of the Robotics and Automation Laboratory and
+the Program in Advanced Research for Complex
+Systems. In 1999, he founded the Intelligent Con-
+trol and Systems Engineering Center, Institute of
+Automation, Chinese Academy of Sciences (CAS),
+Beijing, China, under the support of the Outstanding
+Chinese Talents Program from the State Planning Council. In 2002, he was
+appointed as the Director of the Key Laboratory for Complex Systems and
+Intelligence Science, CAS, where he was the Vice President of the Institute of
+Automation, in 2006. He found CAS Center for Social Computing and Parallel
+Management in 2008, and became the State Specially Appointed Expert
+and the Founding Director of the State Key Laboratory for Management
+and Control of Complex Systems in 2011. His current research focuses on
+methods and applications for parallel intelligence, social computing, DeSci,
+and knowledge automation.
+He is a fellow of INCOSE, IFAC, ASME, and AAAS. In 2007, he received
+the National Prize in Natural Sciences of China and numerous best papers
+awards from IEEE T RANSACTIONS . He became an Outstanding Scientist of
+ACM for his work in intelligent control and social computing. He received
+the IEEE ITS Outstanding Application and Research Awards in 2009,
+2011, and 2015; and the IEEE SMC Norbert Wiener Award in 2014.
+Since 1997, he has been serving as the general chair or the program
+chair for over 30 IEEE, INFORMS, IFAC, ACM, and ASME conferences.
+He was the President of the IEEE ITS Society, from 2005 to 2007; the
+IEEE Council of RFID, from 2019 to 2021; the Chinese Association for
+Science and Technology, USA, in 2005; the American Zhu Kezhen Education
+Foundation, from 2007 to 2008. He was the Vice President of the ACM China
+Council, from 2010 to 2011; and the IEEE Systems, Man, and Cybernetics
+Society, from 2019 to 2021. He was the Vice President and the Secretary
+General of the Chinese Association of Automation, from 2008 to 2018.
+He was the Founding Editor-in-Chief (EiC) of the International Journal of
+Intelligent Control and Systems, from 1995 to 2000; IEEE Intelligent Trans-
+portation Systems Magazine, from 2006 to 2007; IEEE/CAA J OURNAL OF
+AUTOMATICA SINICA , from 2014 to 2017; China’s Journal of Command and
+Control, from 2015 to 2021; and China’s Journal of Intelligent Science and
+Technology, from 2019 to 2021. He was the EiC of the IEEE I NTELLIGENT
+SYSTEMS , from 2009 to 2012, IEEE T RANSACTIONS ON INTELLIGENT
+TRANSPORTATION SYSTEMS , from 2009 to 2016, and IEEE T RANSACTIONS
+ON COMPUTATIONAL SOCIAL SYSTEMS , from 2017 to 2020. Currently,
+he is the President of the CAA’s Supervision Council, and the EiC of IEEE
+TRANSACTION ON INTELLIGENT VEHICLES . He became the IFAC Pavel J.
+Nowacki Distinguished Lecturer in 2021.
+Yilun Lin (Member, IEEE) received the
+Ph.D. degree in control science and engineering
+from the State Key Laboratory of Management
+and Control for Complex Systems, Institute
+of Automation, Chinese Academy of Sciences
+(CASIA), China, in 2019. He was an Assistant
+Professor with the State Key Laboratory for
+Management and Control of Complex Systems,
+Chinese Academy of Sciences, from 2019 to 2020;
+and a Senior Algorithm Engineer with the Ant
+Group, from 2020 to 2022. He is currently a
+Research Scientist and the Principal Investigator of the Urban Computing
+Laboratory, Shanghai AI Laboratory. His research interests include social
+computing, urban computing, intelligent transportation systems, deep
+learning, reinforcement learning, and privacy-preserving computing.
+Petros A. Ioannou (Life Fellow, IEEE) received
+the B.Sc. degree (Hons.) from University Col-
+lege London, U.K., in 1978, and the M.S. and
+Ph.D. degrees from the University of Illinois
+Urbana–Champaign, Urbana–Champaign, IL, USA,
+in 1980 and 1982, respectively. In 1982, he joined
+the Department of Electrical Engineering-Systems,
+University of Southern California, Los Angeles,
+CA, USA. He is currently a Professor and the
+A V “Bal” Balakrishnan Chair with the Department
+of Electrical Engineering-Systems, the Director of
+the Center of Advanced Transportation Technologies, and the Associate
+Director of research with METRANS. He also holds a courtesy appointment
+with the Department of Aerospace and Mechanical Engineering. He is the
+author/coauthor of nine books and over 400 papers in the areas of control,
+dynamics, and intelligent transportation systems. In 2022, he was inducted to
+the National Academy of Engineering. His research interests are in the areas
+of adaptive control, neural networks, nonlinear systems, vehicle dynamics and
+control, intelligent transportation systems, and marine transportation. He is a
+fellow of IFAC and AAAS.
+Ljubo Vlacic (Life Senior Member, IEEE) received
+the Graduate Diploma degree in electrical engineer-
+ing and the M.Phil. and Ph.D. degrees in control
+systems engineering from the University of Sarajevo,
+Sarajevo, Bosnia and Herzegovina, in 1973, 1976,
+and 1986, respectively. He also received the Conser-
+vatorium of Music (Violin) from the University of
+Sarajevo, in 1976. He is a control systems scientist
+and a practitioner, renowned for his contributions
+to co-operative driverless vehicles and intelligent
+control systems research and development. He has
+held a number of leading roles in both industry and academia. He is
+currently with the Institute for Integrated and Intelligent Systems, Griffith
+University, QLD, Australia. He was a recipient of 22 awards, including the
+IEEE Achievement Medal (world-wide), the Sir Lionel Hooke Award, the
+Queensland Professional Engineer of the Year Award, and the Gold Coast
+Business Events Ambassador Award. He has organized and hosted 12 national
+and international scientific conferences. His research achievements made news
+headlines and were broadcast through media outlets throughout the world.
+He is the Chair of the IET Queensland Local Network and the IET Australia
+Forum. He is the Editor-in-Chief of IEEE Intelligent Transportation Systems
+Magazine. He played Violin with professional Symphony Orchestra.
+Xiaoming Liu received the bachelor’s degree in
+traffic engineering from Southeast University and
+the master’s degree in transportation engineering
+from the Beijing University of Technology. He is
+a Professor of transportation engineering with the
+Beijing University of Technology. He has pub-
+lished 15 books and over 150 academic papers.
+His research has applied to major events, such as
+the Beijing Olympics and the Asia–Africa Forum.
+His research interests are centered on transportation
+engineering, with a particular focus on traffic behav-
+ior theory, transportation planning, and multimodal transport.
+He is a Traffic Advisor of the Beijing Municipal Government, the Vice
+President of the China Association for Transportation Science and Technology,
+a Council Member and the Deputy Director of the Youth Expert Committee
+for the China Highway and Transportation Society, and the Deputy Director
+of the Academic Committee of the Urban Planning Society of China. He has
+received awards, including the Eighth China Youth Science and Technology
+Award, the Second Prize of the National Scientific and Technological Progress
+Award in 2002, numerous Second and Third Prizes of the Beijing Science and
+Technology Progress Awards, and the Second Prize of the China Highway and
+Transportation Society’s Science and Technology Progress Award. He was
+selected as one of the first Beijing Youth Science and Technology Stars
+in 1993. He was also among the first group of individuals selected for the
+National “Hundred, Thousand, and Ten Thousand Talents Project” in 1996.
+In 2000, he was chosen as one of the top talents of the Ministry of Transport’s
+Cross-Century Talent Project. In 2002, he was selected for the Ministry of
+Education’s Cross-Century Talent Project.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 17 =====
+
+10278 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 24, NO. 10, OCTOBER 2023
+Azim Eskandarian (Senior Member, IEEE)
+received the B.S. and D.Sc. degrees in mechanical
+engineering from George Washington University
+(GWU), Washington, DC, USA, and the M.S. degree
+in mechanical engineering from Virginia Tech (VT),
+Blacksburg, V A, USA. He was a Professor of
+engineering and applied science with GWU,
+and the Founding Director of the Center for
+Intelligent Systems Research, from 1996 to 2015.
+From 2002 to 2015, he was the Director of the
+Transportation Safety and Security University
+Area of Excellence. In 1992, he was the Co-Founder of the National
+Crash Analysis Center, where he was the Director, from 1998 to 2002 and
+2013 to 2015. He was an Assistant Professor with The Pennsylvania
+State University, State College, PA, USA, from 1989 to 1992; and the
+engineer/project manager with industry, from 1983 to 1989. Since 2015,
+he has been a Professor and the Head of the Mechanical Engineering
+Department, VT. In 2018, he became the Nicholas and Rebecca Des
+Champs Chaired Professor. He has established the Autonomous Systems
+and Intelligent Machines Laboratory, VT, to conduct research on intelligent
+and autonomous vehicles and mobile robots. He is a fellow of ASME and a
+member of SAE professional societies. He was a recipient of the IEEE ITS
+Society’s Outstanding Researcher Award in 2017 and the GWU’s School of
+Engineering Outstanding Researcher Award in 2013.
+Yisheng Lv (Senior Member, IEEE) is a Professor
+with the State Key Laboratory for Management and
+Control of Complex Systems, Institute of Automa-
+tion, Chinese Academy of Sciences, Beijing, China.
+He is also with the University of the Chinese
+Academy of Sciences, Beijing. His research inter-
+ests include artificial intelligence for transportation,
+intelligent vehicles, and parallel traffic management
+and control systems.
+Xiaoxiang Na (Member, IEEE) received the B.Sc.
+and M.Sc. degrees in automotive engineering from
+the College of Automotive Engineering, Jilin Uni-
+versity, China, in 2007 and 2009, respectively,
+and the Ph.D. degree in driver-vehicle dynamics
+from the Department of Engineering, University
+of Cambridge, U.K., in 2014. He is currently a
+University Assistant Professor of applied mechanics
+with the Department of Engineering, University of
+Cambridge. From 2014 to 2023, he was a Research
+Associate and later a Senior Research Associate with
+the Centre for Sustainable Road Freight (SRF), University of Cambridge. His
+main research interests include driver-vehicle dynamics, in-service monitoring
+of heavy goods vehicle (HGV) operations, and assessment and modeling of
+HGV energy performance.
+David Cebon (Member, IEEE) received the
+B.E. degree in mechanical engineering from the
+University of Melbourne, Parkville, VIC, Australia,
+in 1980, and the Ph.D. degree in engineering from
+the University of Cambridge, Cambridge, U.K.,
+in 1985. Since 1985, he has been with the Depart-
+ment of Engineering, University of Cambridge,
+where he is currently a Professor of mechanical
+engineering. He is a fellow of the Royal Academy of
+Engineering. He is also the Director of the Centre for
+Sustainable Road Freight and the Cambridge Vehicle
+Dynamics Consortium. He also leads the research theme energy, transport,
+and urban infrastructure with the Department of Engineering, University of
+Cambridge. His research interests include mechanical, civil, materials, and
+energy aspects of road transport engineering.
+Jiaqi Ma (Member, IEEE) received the Ph.D. degree
+in transportation engineering from the University
+of Virginia, Charlottesville, V A, USA, in 2014.
+He is currently an Associate Professor with the
+Samueli School of Engineering, UCLA, where he
+is also the Faculty Lead of the New Mobility
+Program, Institute of Transportation Studies. His
+research interests include intelligent transportation
+systems, autonomous driving, and cooperative driv-
+ing automation. He is a member of the TRB Stand-
+ing Committee on Vehicle-Highway Automation, the
+TRB Standing Committee on Artificial Intelligence and Advanced Computing
+Applications, and the American Society of Civil Engineers (ASCE) Connected
+and Autonomous Vehicles Impacts Committee. He is the Co-Chair of the IEEE
+ITS Society Technical Committee on Smart Mobility and Transportation 5.0.
+He is the Editor-in-Chief of the IEEE O PEN JOURNAL OF INTELLIGENT
+TRANSPORTATION SYSTEMS .
+Lingxi Li (Senior Member, IEEE) received the
+Ph.D. degree in electrical and computer engineering
+from the University of Illinois at Urbana–Champaign
+in 2008. He is a Professor with the Department
+of Electrical and Computer Engineering, Purdue
+School of Engineering and Technology, Indiana
+University–Purdue University Indianapolis (IUPUI),
+USA. He has authored/coauthored one book and
+over 140 research articles in refereed journals and
+conferences. His current research focuses on the
+modeling, analysis, control, and optimization of
+complex systems, connected and automated vehicles, intelligent transportation
+systems, digital twins and parallel intelligence, and human–machine inter-
+action. He was a recipient of five best paper awards, the 2021 IEEE ITSS
+Outstanding Application Award, the 2017 Outstanding Research Contributions
+Award, the 2012 T-ITS Outstanding Editorial Service Award, and several
+university research/teaching awards. He has served as the general chair, the
+program chair, and the program co-chair for more than 20 international
+conferences. He is currently serving as an associate editor for five renowned
+international journals.
+Cristina Olaverri-Monreal received the
+Ph.D. degree from Ludwig-Maximilians University
+(LMU), Munich, in cooperation with BMW. She
+is a Professor and the BMK Endowed Chair of
+sustainable transport logistics 4.0 with Johannes
+Kepler University Linz, Austria. Prior to this
+position, she led diverse teams in industry and in
+academia in the U.S. and in distinct countries in
+Europe. Her research aims at studying solutions for
+an efficient and effective transportation focusing
+on minimizing the barrier between users and road
+systems. To this end, she relies on the automation, wireless communication,
+and sensing technologies, that pertains to the field of ITS.
+She is a member of the EU-wide platform for coordinating open road
+tests [Cooperative, Connected, and Automated Mobility (CCAM)] and a
+representative of the European technology platform “Alliance for Logistics
+Innovation Through Collaboration in Europe” (ALICE) for the “Workgroup
+Road Safety” (WG4: EU-CCAM-WG-ROAD-SAFETY@ec.europa.eu). She
+received the IEEE Educational Activities Board Meritorious Achievement
+Award in Continuing Education for her dedicated contribution to continuing
+education in the field of ITS. She is the President of the IEEE Intelligent
+Transportation Systems Society (IEEE ITSS), a Founder and the Chair
+of the Austrian IEEE ITSS Chapter, and the Chair of the Technical
+Activities Committee (TAC) on human factors in intelligent transportation
+systems (ITS). In 2017, she was the General Chair of the IEEE International
+Conference on Vehicles Electronics and Safety (ICVES’2017). Furthermore,
+she is an Expert for the European Commission on “Automated Road
+Transport” and a consultant and a project evaluator in the field of ICT
+and connected, cooperative autonomous mobility systems for various EU
+and national agencies and organizations in Germany, Sweden, France, and
+Ireland. She is a Senior Editor/an Associate Editor and a Editorial Board
+Member of several journals in the field, including the IEEE T RANSACTIONS
+ON INTELLIGENT TRANSPORTATION SYSTEMS and IEEE Intelligent
+Transportation Systems Magazine.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 11:37:59 UTC from IEEE Xplore.  Restrictions apply. 

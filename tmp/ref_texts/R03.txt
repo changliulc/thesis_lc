@@ -1,0 +1,1599 @@
+
+
+===== PAGE 1 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 639 
+RESEARCHES AND APPLICATIONS OF INTELLIGENT 
+TRANSPORTATIONS SYSTEMS IN URBAN AREA: 
+SYSTEMATIC LITERATURE REVIEW 
+ 
+Youssef EL Mokaddem and Fouad Jawab 
+USMBA, High School of Technology (EST) Laboratory of International Management, Decision Making and Logistics 
+(MIDLOG) - Fez, Morocco 
+E-Mail: youssef.elmokaddem@usmba.ac.ma 
+ 
+ABSTRACT 
+The purpose of this paper is to systematically review evidence of exi sting ITS research that could be effective in 
+mitigating current problems in City Logistics. We systematically search ed the English and French languages literature 
+indexed in Scopus (2010 to July 2018), including: Elsevier, ACM, Spr inger, and IEEE. We also added studies identified by 
+experts up to July 2018. The study selection was descriptive and comp arative studies and systematic reviews of Intelligent 
+Transportation Systems. Therefore, we independently extracted information on ITS subsystem capabilities & development 
+and technologies used. 56 studies met the inclusion criteria, some were in the resear ch and development stage, while others 
+have seen some measure of application or deployment. Most studies ad dressed Advanced Traffic Management Systems 
+(ATMS), Advanced Public Transportation Systems (APTS) and Advanced Traveller Information Systems (ATIS). Data on 
+efficiency measure, technologies used were mixed. Empirical cost data were limited. T his study has a number of 
+implications. Practitioners and researchers will gain a greater understanding of  how ITS are carried out in developed 
+countries and the type of challenges that have been addressed. Furtherm ore, the results provide insights about the researc h 
+path, current technologies and future research directions in the field of ITS. 
+ 
+Keywords: intelligent transportations systems (ITS), city logistics, advanced traffic management systems (ATMS), advanced public 
+transportation systems (APTS), advanced traveller information systems (ATIS). 
+ 
+1. INTRODUCTION 
+Intelligent Transportations Systems were 
+originally designed for use to face the saturation of the 
+transportation infrastructures (M Alam, et al,  2016 [1]) 
+due to the growing number of vehicles and the rapid 
+urbanization over the last five decades, Figure-1. This 
+situation affects people lives mainly in the urban areas, 
+while we need, progressively, to move quickly between 
+different places. The results are accidents, traffic 
+congestion, transportation delays and larger vehicle 
+pollution emissions. ITS were introduced to reduce these 
+problems or their outcomes. However, the fact that they 
+are more difficult to implement in developing countries (H 
+Quak and N Nesterova, 2014 [2]) Compared to developed 
+countries, which are easier for implementation. 
+Despite the challenges related to urban area, there 
+is an industry trend towards deploying ITS in cities (K 
+Sjoberg, et al ., 2017 [3]; L Zhuhadar, et al ., 2017 [4]). 
+Since that, their shown and potential benefits have made 
+them attractive. Examples are multiple in both developed 
+and developing countries. Nevertheless, currently it is 
+clear that constructing more roads to reduce traffic 
+congestion is not the “Good” solution, because is more 
+expensive, while causing a significant environmental 
+impact, besides requiring a more space, which is a vital 
+limitation within urban areas. On the other hand, it is also 
+straightforward that the improvement of the transport 
+infrastructure is essential for the economic development. 
+So, the new researches on ITS must take in consideration 
+this. 
+The State of Intelligent Transportation Systems 
+that BH Lee et al., [5] has conducted by 2011, discussed a 
+few problematics related to urban area as well, e.g.  
+Authors regard the traffic problem as not only a problem 
+for individual countries, but also a global topic by 
+providing a comparison and analysis of international ITS 
+research and development. 
+As literature contains several research studies, 
+experience reports and cases studies on ITS applications in 
+urban area, a systematic overview and synthesis of this 
+growing body of research is still missing. In this paper, we 
+start filling in this gap by giving a systematic literature 
+review of researches and applications of ITS in urban area. 
+The sample of our study is limited to some 
+selected subset regions (U.S.A, Japan, and European 
+Union).  However, this indicates that there seems to exist a 
+large number of countries that have implemented or are 
+implementing ITS technologies. 
+This SLR is considered a valuable addition to the 
+available ITS literature, and will allow readers not only to 
+take an overview of research and technologies recently 
+developed in the field of ITS, but also to give practitioners 
+a clear picture of the main challenges faced in the adoption 
+of ITS in cities.  
+ 
+ 
+ 
+ 
+
+===== PAGE 2 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 640 
+ 
+ 
+Figure-1. Evolution of urban population & world vehicles 
+in use (1996-2016) [6]. 
+ 
+2. BACKGROUND 
+ 
+A. Definition of intelligent transportation systems 
+From a research point of view, we identified a 
+number of a brief literature search discussing and 
+interpreting of what ITS is. Y Lin et al., 2017 [7] consider 
+that Intelligent Transportation Systems is the application 
+of detection, analysis, control and communication 
+technologies to transportation in order to improve 
+mobility, safety and efficiency. ITS includes a varied 
+range of applications that process and share information to 
+improve traffic management, reduce congestion, ease 
+environmental impact and increase the benefits of 
+transportation for both commercial users and citizens, as 
+represented in Figure-2. 
+In early work on ITS, Figueiredo considers that 
+ITS is applying advanced communication, information and 
+electronics technology to solve transportation problems 
+such as, traffic congestion, safety, transport efficiency and 
+environmental conservation (Figueiredo et al., 2001). 
+Therefore, on the institutional level, the ITSS ’s 
+constitution defines ITS applications as “those systems 
+utilizing synergistic technologies and systems engineering 
+concepts to develop and improve transportation systems of 
+all kinds ” [8]. And according to the Directives of the 
+European Union on Intelligent Transport Systems [9], ITS 
+are advanced applications which without embodying 
+intelligence as such aim to provide innovative services 
+relating to different modes of transport and traffic 
+management and enable various users to be better 
+informed and make safer, more coordinated and ‘smarter’ 
+use of transport networks. 
+Other recent studies [10], [11] have referred to 
+ITS as a part of the Internet of Things, includes vehicle- to-
+vehicle (V2V), vehicle- to-infrastructure (V2I), vehicle- to-
+everything (V2X) technology and big data analytics in 
+order to connect vehicle information and location to other 
+vehicles, other transportation modes (such as pedestrians  
+ 
+ 
+Figure-2. ITS conceptual model [7]. 
+ 
+or bicyclists), local infrastructure and remote infrastructure 
+in the cloud. It been clear that, the evolution of challenges, 
+technologies, and growing needs of users has affected 
+directly the context of what is seen as ITS. Although, we 
+have cited the definitions that we consider to be the most 
+important and that mark the evolution of ITS concept. 
+Figure-2, represent the communication between the three 
+main elements of ITS (User, Road and vehicles), by 
+sharing and transmitting data in real time. 
+ 
+B. Evolution of intelligent transportation systems 
+While research and applications of ITS in urban 
+areas are accumulating and growing in different countries 
+and through different subsystems, most research and 
+reports claim that ITS development started in the 1980s. 
+The main ambition was to fully integrate sustainable 
+development, in all its components (environmental, social 
+and economic), and transportations challenges, into 
+national policy. 
+Based on the bibliographic analysis performed, 
+we found that researches on ITS were dominated by U.S.A 
+followed by Japan and European Union researchers and 
+institutions. Indeed, most of research literatures indicate 
+that the main development on ITS were made in thus three 
+regions (U.S.A, Japan and European Union) [4]. However, 
+papers that presents clearly the history timeline of ITS 
+were limited. Lino Figueiredo et al [13], consider that ITS 
+development has gone through three phases: Preparation 
+(1930-1980), feasibility study (1980-1995) and product 
+development (1995-present). Therefore, James Bunch et 
+al. [12], presented the ITS development through four 
+generations: First Generation ITS 1.0 (1980-2000), Second 
+Generation ITS 2.0 (2000-2003), Third Generation ITS 3.0 
+(2004-2005) and ITS 4.0 (2006-present). 
+Although, based on the results of such papers, 
+and the other government and local reports [14], [15], 
+which presents the history of ITS in the country / region 
+involved. We have established history time sheet with a 
+global perspective Table-1. Through this time sheet, we 
+have tried to combine the different historical pervious 
+works by distributing it into six main periods, which are 
+Preparation (1970-1980), Feasibility study and research 
+(1980-1990), First Generation ITS 1.0 (1990-2000), 
+
+
+===== PAGE 3 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 641 
+Second Generation ITS 2.0, Third Generation ITS 3.0, and 
+ITS 4.0 (2015-present). Some main ITS technologies 
+examples are given for each period in order to have a clear 
+idea.  
+ITS deployment methods emphasize that 
+planning is only meaningful for the near future. However, 
+the lack of planning can be a concern as PPP Public-
+Private Partnerships often build on long-term road 
+mapping. Enabling operation with shorter term planning 
+requires educating urban stakeholders and reviewing 
+contracting practices. 
+ 
+ 
+ 
+Table-1. Time sheet history of ITS evolution (1970-Present). 
+ 
+ 
+ 
+C. Applications of ITS in Urban Area 
+The difficulty of introducing ITS technologies 
+increases in the urban area, and more specifically in the 
+developing countries (H Menouar, et al., 2017 [16]).  
+The difficulty is partly related to the higher 
+institution inertia, which slows down territorial / 
+technological change. ITS development is not founded on 
+the use of individual solution or technology, but rather on 
+a holistic way of thinking. Adopting ITS often requires 
+change of the entire culture in the involved environment 
+(G Kant et al., 2016[17]). 
+Urban area has more dependencies between 
+Public institutions. This increases the need for formal 
+documentation and approval of different stakeholders and 
+thus reduces agility (Juan Antonio, et al . 2015[18]). For 
+instance, all institutions affected by the ITS deployment 
+need to be informed and consulted, and the deployment 
+process must be adjusted according to their requirements. 
+ ITS deployment affects directly the PPP (Public-
+Private Partnership) management and institutions-citizen 
+related services. A key challenge is that ITS adoption must 
+move away from life-cycle models and towards iterative 
+and feature centric models (DIMITRAKOPOULOS 
+George, 2011[19]), which requires a change of mind-set. 
+The focus must be shifted from long-term planning to 
+shorter term project planning (Y Lin et al ., 2017 [7]), as 
+ITS deployment methods emphasize that planning is only 
+meaningful for the near future. However, the lack of 
+planning can be a concern as PPP Public-Private 
+Partnerships often build on long-term road mapping. 
+Enabling operation with shorter term planning requires 
+educating urban stakeholders and reviewing contracting 
+practices. 
+Solutions and technologies developed in STI 
+projects have been both criticized and advocated, and 
+research has shown that accommodating change and 
+current challenges may be a factor in both success and 
+failure of urban development (G Kant et al., 2016 [17]). It 
+has been shown that ITS technologies have improved 
+satisfaction of both citizens and local institutions, but on 
+the other hand there is evidence that ITS technologies may 
+not be a right fit for every urban area (COTRELL, J., et 
+al., 2014 [20]). A proposed solution is that each urban area 
+seeks its own balance of ITS technologies / infrastructure 
+and plan their adoption and deployment process (BB 
+Rhoades and JM Conrad, 2017). 
+Period Phase Main Technologies Examples
+1 1970-1980 Preparation
+2 1980-1990 Feasibility study and research
+Arterial Traffic Management
+Traffic Management Centers
+Route Destination & Driver Information Display
+Vehicle Diagnostics
+Smart Card Reader & Silent Alarm
+Automated Fare Collection and Passenger Counting
+Traffic Signal Priority
+GPS & Vehicle ID
+Traveler Information
+Trafic monitoring camera
+Lane side computer
+Traffic & Navigation
+Parking Info & Guidance
+Ride-Hailing & Carpooling
+“V2V” : Vehicles to Vehicles
+“V2I” : Vehicles to Infrastruture
+"V2X" : Vehicles to everythings
+Building Insights
+Mobile Asset Insights
+Connected infrastructure Logistics Safety
+Connected Fleet Logistics Networks
+5 2010-2015 Third Generation (ITS 3.0)
+Electronic Tolling & HOT 
+Lanes
+Mobile Devices
+6 2015-present ITS (ITS 4.0)
+Automated, Connected, 
+Cooperating, Electric 
+Vehicles
+Big data analytics
+“Smart cars” Systems
+3 1990-2000 First Generation (ITS 1.0)
+4 2000-2010 Second Generation (ITS 2.0)
+
+===== PAGE 4 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 642 
+3. RESEARCH METHOD 
+ 
+A. Research questions 
+Systematic literature review is a method of 
+identifying, evaluating and interpreting all available 
+research literature relevant to a specific research question, 
+or topic area, or phenomenon of interest. It is appropriate 
+for summarizing existing research, for identifying gaps in 
+the existing literature, as well as for providing background 
+for positioning new researches (B Kitchenham et al., 2004 
+[21]). 
+In this paper, we present the results of a 
+systematic literature review on the topic of Intelligent 
+Transportations Systems. The review is positioned in, and 
+utilizes the literature of, the field of city logistics. In the 
+review, we study the following research questions: 
+ 
+•RQ1:  What researches and solutions have been 
+developed so far in the field of Intelligent 
+Transportation systems?  
+•RQ2:  What challenges have been reported for ITS 
+applications in urban area context? 
+ 
+While Intelligent Transportations Systems could 
+provide many viewpoints to use as research questions, we 
+chose these two questions because we consider they 
+represent the viewpoints, which are likely to provide 
+actionable insights to researchers as well aspractitioners. 
+The research questions are intended to present 
+complements to each other by highlighting different 
+characteristics in the existing ITS deployed in countries 
+that could be effective in mitigating problems in urban 
+area. 
+ 
+Research process 
+The research process consisted of four key steps 
+represented in Figure-3, the selection of primary studies 
+was done in two steps first using keyword-based database 
+searches to identify potentially relevant sources, and then 
+manually filtering the search result. The two authors 
+executed the manual filtering process independently. Data 
+extraction was done by qualitative coding of the selected 
+primary studies by the first author. Finally, the results 
+were elicited by aggregating and analysing the coding of 
+the primary documents. The entire process was audited 
+and mentored by the second author. 
+ 
+ 
+ 
+Figure-3. Summary of research process. 
+ 
+a) Inclusion criteria 
+Based on the research questions and focus of the 
+research, we defined four facets to guide our 
+inclusion/exclusion decisions: Intelligent Transportations 
+Systems research & development, Intelligent 
+Transportations Systems applications, Urban Logistics, 
+and Empirical. Table-2 lists the facets and gives examples 
+on matching topics and irrelevant topics. For a study to be 
+included, it need to be relevant on all facets. 
+The facet of Intelligent Transportation Systems 
+research & development was interpreted according to the 
+existing literature review of ITS development, feasibility 
+studies on ITS application and official institutional reports 
+discussing ITS research & development. 
+We included also, studies of institutions that 
+focus on ITS development, as well as the parts of larger 
+(non-ITS focused) organizations that develop new 
+technologies in different area, that can contribute to and 
+improve the results of our review. 
+We excluded paper discussing Intelligent 
+Transportation Systems technical architecture since that it 
+is not relevant to our research questions. 
+ 
+Table-2. Inclusion criteria. 
+ 
+ 
+ 
+The facet of Intelligent Transportation Systems 
+applications was interpreted so that the primary study had 
+to present insights on the real case application and 
+challenges of ITS deployment. In some cases, the source 
+presented very vague indicators on ITS technology 
+adopted. For instance, one case (EL FAOUZI, Nour-
+Eddin, et al. , 2011 [44]) was included, as there were 
+indications of challenges of ITS adoption, although the 
+ITS technologies used remained unclearly presented. If 
+there were no indications of ITS technology adopted, the 
+paper was excluded. 
+Facet Relevant topics Examples of non-relevant topics
+Intelligent Transportation 
+Systems Research & 
+Development
+Literature review of ITS development, feasibility st udies on 
+new ITS application, official institutional reports  discussing  
+ITS development.
+Intelligent Transportation Systems architecture.
+Intelligent Transportation 
+Systems Applications
+Present insight about the deployement process, appli cation 
+challenges and Benefits. Non reputable source that discuss the ITS adoption.
+Urban logistics ITS implemented by cities in the selected countries ( U.S.A, 
+Japan, France and Germany)
+ITS implementation in outside of the selected 
+countries
+Empirical Case studies, implementation reports Students e xperiments, theory paper
+
+===== PAGE 5 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 643 
+Examples of excluded paper are non-reputable 
+source that discuss the use of ITS in urban area, and 
+merely presenting ITS tools in urban context. 
+The facet of urban logistics, we required that ITS 
+were aimed at introducing in urban area of the developed 
+countries, after our first research we decided to restrict the 
+scanning on four regions: the USA, Japan and European 
+Union. The Four countries were selected because of 
+existing and emerging applications of ITS strategies that 
+had resulted in measurable improvements in urban 
+logistics. 
+We excluded the application of ITS which not 
+affect the performance of transportation inside urban area. 
+According to the facet of empirical, we excluded 
+studies that did not deal with a distinguishable real-world 
+case. We excluded textbooks, studies that only presented 
+theories, as well as studies that did not include any cases 
+of urban area. In addition, we excluded studies on the 
+benefits or limitations of ITS in general. Finally, we 
+excluded students ’ experiments because it is implausible 
+to draw conclusions about the outcome of adoption. 
+ 
+b) Preliminary searches 
+Before proceeding with identifying the primary 
+studies several preliminary searches were performed. The 
+purpose of the preliminary searches was to develop and 
+evaluate different search strings. In addition, we used the 
+searches to identify a set of relevant papers that should be 
+matched by the actual search. We started by looking at the 
+most highly ranked occurrences by trivial keywords that 
+the final search string could miss. Initial searches were 
+conducted using keywords as general as possible, 
+including “Intelligent Transportations Systems ” and 
+“urban logistics”.  
+Based upon these preliminary searches, we 
+selected 103 papers that seemed relevant from the title. 
+We used this set as a «mind check» when developing the 
+database search. 
+ 
+c) Identification of primary studies 
+The collection of potential initial studies was 
+based on a search of the on- line databases mentioned in 
+Table-3. Based on the previously discussed facets, we 
+constructed a search string. Nevertheless, our initial 
+research has shown that it is difficult to choose keywords 
+with good accuracy. Particularly, we have not been able to 
+represent urban area and empirical facets with specific 
+words. Consequently, we only included research and 
+development of Intelligent Transport Systems and their 
+applications in the keyword search, which translates into 
+an increased manual filtering effort in the following steps. 
+The keywords used are indicated in Table-4. 
+ 
+Table-3. Databases included in search, and number of 
+matched articles. 
+ 
+ 
+ 
+d) Study selection 
+All the potential primary studies identified by the 
+database search were refined in two stages, first by 
+filtering based on abstracts and finally based on the full 
+text. The study selection process is described in Figure-4. 
+ 
+ 
+Table-4. Facets and related search terms used. 
+ 
+  
+The keyword search in the database matched 
+1437 unique articles. The abstracts of these articles were 
+categorized independently by the two authors into three 
+categories: include, exclude, and uncertain. 
+The two researchers agreed on 1184 exclusions 
+and 62 inclusions. The inclusion decisions for the 191 
+abstracts with uncertainty or disagreement were resolved 
+through discussion. 
+At this stage, articles were excluded only if both 
+researchers considered it clearly irrelevant, including 
+uncertain cases for full text filtering. As a result, 143 
+articles were selected for full text filtering. 
+Database URL # of matches
+IEEEXplore
+http://ieeexplore.ieee.org 614
+Elsevier (ScienceDirect) https://www.elsevier.com/ 289
+Taylor and Francis https://taylorandfrancis.com/ 104
+Springer link https://link.springer.com/ 79
+The TRIS and ITRD https://trid.trb.org 68
+Researchgate https://www.researchgate.net/ 65
+Google Books https://books.google.com/ 59
+ACM Digital Library http://dl.acm.org 32
+HAL https://hal.archives-ouvertes.fr/ 28
+MDPI www.mdpi.com/ 17
+US ITS Institutions Report 35
+Europe ITS Institutions Reports 26
+Japan ITS Institutions Reports 23
+1437Total
+Facet Keywords used in English Keywords used in French
+Intelligent Transportations 
+Systems research & 
+developement
+ITS, "Intelligent Transportations Systems", "Intelligent 
+Transportations Systems developement", Intelligent 
+Transportations Systems developement, "Smart parking", 
+Intelligent Transportations Systems "systematic review".
+STI, "Systems de Transport Intelligents", "Developpement 
+des Systems de Transport Intelligents", Developpement des 
+Systems de Transport Intelligents.
+Intelligent Transportations 
+Systems applications
+(Applicat*, Implement*, Adopt* introduc*, Deploy*) of ITS in 
+(=Name of country or (=Name of city)), Smart Parking in * (=Name 
+of city), intelligent transportation systems "application benefits", 
+Intelligent Transportations Systems "review".
+(Applicat*, Implément* Adopt* Mise en place*) des STI au 
+sein (=Nome du pays ou (=nom de la ville)), bénéfits de la 
+mise en place des systems de transports intelligents, 
+applications des systèmes de transports intelligents revue 
+de litterature.
+Only applications on urban 
+area related articles
+Intelligent Transportation Systems in urban area, Smart cities 
+"benefits", Smart cities "review".
+Application des Systems de Transport intelligents dans les 
+villes, STI et logistique urbaine, STI et Transport urbain.
+
+===== PAGE 6 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 644 
+Full text filtering was conducted by evaluating 
+the text of each article against the four facets of the 
+inclusion criteria. Filtering was done in two stages. In the 
+first stage, the first author extracted data relevant to the 
+four facets. Based on the extracted data, 65 papers could 
+be immediately considered as included or excluded. The 
+remaining 78 papers were evaluated against the inclusion 
+criteria by the two authors, and a decision was made after 
+discussing each paper separately. Following full text 
+filtering, 50 articles were selected for inclusion. 
+We assessed the keyword search result in the 
+database against the benchmark created in the preliminary 
+search step.  We concluded that 71 of the 103 articles 
+previously selected were matched by keyword searching in 
+the database. The 32 missing preliminary articles were 
+reviewed, resulting in the inclusion of four additional 
+articles as primary sources. 
+In parallel with the full text filtering step stage, 
+the relevance of the references of all 143 articles selected 
+for full-text filtering was also examined. Most articles 
+used very few references, generally referring to well-
+known descriptions of intelligent transport systems. This 
+step led us to include two additional articles in our 
+analysis of the full text. 
+As a result, we selected 56 articles for inclusion 
+in the analysis phase. 
+ 
+ 
+ 
+Figure-4. Outline of the research selection process. 
+ 
+e) Handling of duplicate reports on a single case 
+In several cases, more than one primary study 
+focused on the development and applications of the same 
+ITS technology. Duplicate descriptions generally focus on 
+different aspects. For example, one article would highlight 
+the R&D perspective on ITS and another would examine 
+ITS applications from the perspective of user experience. 
+Although ITS applications in a single urban area 
+were described in several studies, all sources that met the 
+inclusion criteria were included. Studies with the same 
+urban area were treated as a single unit so that we could 
+obtain as much information as possible on each urban 
+area. Conversely, there were also a few articles that 
+presented multiple case studies, and in these cases, we 
+treated each urban area studied individually. 
+Rather than using the most complete article as 
+proposed in the guidelines for systematic literature reviews 
+(B Kitchenham et al., 2004 [21]), we combined the results 
+represented in each article and considered the case as a 
+single unit in our analysis. Bearing in mind the potential 
+bias caused by duplicate publications, we believe that the 
+inclusion of all articles allowed us to gain a deeper 
+understanding of individual cases. 
+As a result, we identified 52 new technologies in 
+the primary studies. We use the term study to refer to the 
+primary publications, and the term case to refer to an 
+individual case urban area that may be described in several 
+different ITS studies. 
+ 
+f) Study quality assessment 
+The primary studies for this systemic literature 
+review are almost exclusively research papers. We 
+identified only seven experience reports with clearly 
+defined case studies. Therefore, observations on 
+applications were only presented as a minor part of 
+research papers. Based on this finding, we conclude that 
+case studies of ITS applications in urban areas are very 
+rare. We thought that the results would be highly biased 
+and that many valuable studies would be left out if a strict 
+quality assessment were part of the inclusion criteria. 
+Therefore, we have decided to include all experience 
+reports, regardless of potential author bias and publication 
+problems. 
+ 
+g) Coding of primary studies 
+We coded the primary studies following a 
+deductive approach, coding both applications report and 
+research studies (DS Cruzes and T Dyba - 2011 [22]). We 
+established a list of codes for contextual information 
+(Table-5), which included urban area/Country, Urban area 
+size; Reason to implement ITS, ITS subsystems, Key 
+technologies, ITS Service and Challenges. These codes 
+related to the research questions were created by a 
+deductive process to avoid having our previous 
+assumptions affect the choice of codes. 
+It should be noted that in this paper, we deal only 
+with outcomes related to the challenges and as such, they 
+are part of a larger study. 
+ 
+h) Synthesis of primary studies based on coding 
+We summarized our findings by creating an 
+initial organization of codes into high-level categories 
+based on code labels. Each code has been classified into a 
+single category. After each code was assigned to a unique 
+category, the content of the categories was reviewed. Each 
+category has been studied by reading each citation of each 
+code included. Typically, citations were posted and 
+reviewed in their original context, taking into account the 
+
+
+===== PAGE 7 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 645 
+surrounding paragraphs of the citation. Notes were taken 
+on each citation presenting observations of interest. We 
+used the notes to create a concise description for each 
+code. 
+Then we refined the categories according to the 
+concise descriptions. Some codes have been reclassified 
+and the definitions of some categories have been revised 
+until a final order is reached. The results are presented 
+based on the final categorization. 
+ 
+Table-5. Context information extracted from studies 
+& reports. 
+ 
+ 
+ 
+4. RESULTS 
+In this section, we present our findings. First, we 
+present an overview of the studies. Then, we discuss the 
+results organized according to our two research questions. 
+ 
+A. Overview of the primary studies 
+In this section we present the type of the primary 
+studies, some characteristics of the ITS research & 
+solutions, as well as the ITS applications challenges in 
+urban area. 
+ 
+a) Study types 
+The results include findings from 56 primary 
+studies discussing the main ITS technologies and solution 
+developed, deployed & used in urban area. Most studies 
+were research papers (49 studies). Only seven of the 
+included studies are experience reports contained ITS 
+applications explicitly detailed. The publication forums of 
+the selected papers were distributed so that 29 sources 
+were conference proceedings, 20 sources were journal 
+articles and seven sources was an institutional experiences 
+report. All studies and reports included were dated after 
+year 2010. 
+ 
+b) ITS Subsystems 
+The complete results related to the ITS 
+subsystems are too large to be totally included in this 
+review; therefore, we selected the most significant papers 
+relevant to our research questions. The result is presented 
+into eight major subsystems [12], Table-6.   
+The proposed subsystems exclude the application 
+of ITS outside urban area, e.g., Advanced Rural 
+Transportation systems (ARTS).  
+ 
+ 
+Table-6. Percentage summary of ITS studies & cases by 
+ITS subsystems. 
+ 
+ 
+ 
+Results show that the most prevalent ITS 
+subsystem was ATMS, which represent the sole subsystem 
+mentioned in 63% of cases. The second most mentioned 
+ITS subsystem was APTIS and ATIS (in 25% of cases). 
+Although, it was quite common that researchers sought to 
+combine ITS subsystems in the same paper which led us to 
+consider it in our analysis. 
+ 
+c) Urban areas case 
+Some urban areas were represented quite evenly 
+in the selected countries. According to the result of our 
+research, U.S.A was the most represented by 39% of cases 
+(including cities such as New York, Seattle, Las Vegas 
+and California). The second most represented country was 
+Japan by 31% of cases. Followed by European Union by 
+26%, while in 4% of studies there was no direct indication 
+about the urban area / Country. Table 7 summarizes the 
+Percentage of ITS studies & cases performed by the 
+selected countries. 
+ 
+Table-7. Percentage summary of ITS studies & cases 
+by countries. 
+ 
+ 
+ 
+B. ITS Researches and development studies 
+In this section, we answer our first research 
+question, RQ1: What research and solutions have been 
+developed so far in the field of Intelligent Transportation 
+systems? We organized the results, into eight subsystems, 
+which are elaborated in this section and summarized in 
+Table-8. 
+The table present the subsystems of ITS. We have 
+included list of references to the primary studies and key 
+technologies / results that the studies focus on. The 
+purpose is to give the reader an idea about the main 
+technologies and solutions developed in the selected 
+countries. 
+ 
+C. ITS Applications in urban area cases 
+Any applications of ITS in urban area involve 
+challenges. In this section, we answer our second research 
+question RQ2: What challenges have been reported for 
+ITS applications in urban area context?  We organized the 
+Contextual code Explanation
+Urban area, Country Urban area in which the ITS is us ed/Operates
+urban area size Mentionning the size of the urban ar ea
+Reason to implement 
+ITS
+Reason to start the 
+developement/implementation of ITS
+ITS subsystems ITS subsystems developped/used in the urban 
+area 
+Key technologies Key technologies / results the studies focuses 
+on
+ITS services Services covered by the ITS adopted
+Challenges Statements presenting challenges of the ITS 
+applications 
+ITS Subsystems % of cases
+Advanced Traffic Management Systems (ATMS) 63%
+Advanced Public Transportation Systems (APTS) 25%
+Advanced Traveler Information Systems (ATIS) 21%
+Commercial Vehicle Operations (CVO) 21%
+Transit Management Systems (TMS) 17%
+Emergency Management Systems (EMS) 13%
+Advanced Vehicle Control Systems (AVCS) 13%
+Incident Management Systems (IMS) 8%
+Counries % of cases
+U.S.A 39%
+Japan 31%
+European Union 26%
+Undifined 4%
+
+===== PAGE 8 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 646 
+challenges that slowing up the development and 
+implementation of new ITS solutions into six categories. 
+The categories are summarized in Table-9.  
+The table presents the challenge categories, lists 
+references to primary sources and experience reports. We 
+have included a count of the number of individual cases 
+and references mentioned for each factor, and a percentage 
+of that count against the application challenges category. 
+The purpose of these counts is to give the reader an idea of 
+how often the factor was mentioned. We would like to 
+note that the frequency of mentions alone is not verifiable 
+evidence of the real importance of the factors. 
+ 
+5. DISCUSSIONS 
+In this section, we first discuss our general 
+observations, followed by a discussion regarding the 
+answers to our research questions. Next, we identify 
+discrepancies and outstanding issues in the literature. 
+Finally, we discuss the limitations and present a research 
+agenda for future works. 
+ 
+A. General observations 
+The primary studies identified were almost 
+exclusively research documents. We could only find seven 
+experience reports. None of these research papers directly 
+addressed ITS application challenges, although they also 
+provided information on the deployment process. As 
+shown in our relevance classification in Table-8. 24 
+research papers received classification 2, while 18 
+received 3 and one received 4 (with a scale of 1 to 5, 
+where 5 means the entire article focuses on describing the 
+results related to our two research questions). While the 
+experience reports were better focused on describing the 
+challenges. 
+Moreover, belong mentioned challenge in our 
+primary studies rose the “Lack of information about 
+existing and new ITS applications and initiatives”. 
+ 
+B. Answers to research questions 
+This section summarizes and discusses the 
+answers to the research questions.  
+As an answer to RQ1:  “What researches and 
+solutions have been developed so far in the field of 
+Intelligent Transportation systems?”, we identified 52 new 
+technologies from 2010 until July 2018, the result is 
+grouped into eight subsystems, as presented in Table-8. 
+The ITS subsystem that stand out are: 1) Advanced Traffic 
+Management Systems (ATMS) (63%), 2) Advanced 
+Public Transportation Systems (APTS) (25%) and 
+Advanced Traveller Information Systems (ATIS) (21%).  
+These results clearly explain the growing interest 
+of researchers in the topic of ITS as far as their 
+applications in urban area. Moreover, it was quite evident 
+that most recent research studies focused on big data 
+analytics, IoT-based communication (Application of 
+vehicle to another entity V2X…). 
+To answer RQ2:  “What challenges have been 
+reported for ITS applications in urban area context? ” we 
+identified 23 challenges grouped into six categories, 
+summarized in Table 9 The challenge categories that 
+received the most mentions were: 1) Cybersecurity & 
+Privacy information (mentioned by 44% of the cases), 2) 
+Coordination & collaboration among different 
+Stakeholders (40%), 3) Different approaches emerge in a 
+multi-actors environment (32%), 4) New ITS solutions 
+requireless hardware, more software (28%), 5-6) The 
+complexity of ITS Projects (24%) andthe lack of 
+investment (20%). 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+===== PAGE 9 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 647 
+Table-8. ITS R&D studies. 
+ 
+  
+Table-9. ITS applications challenges. 
+ 
+ 
+ITS Subsystems Ref Key technologies / results the studi es focus on Relevance
+Advanced Traffic Management 
+Systems (ATMS)
+[1], [23], [24], [20], 
+[25], [32], [33],  [34], 
+[35], [36], [38], [39], 
+[40], [41], [42]
+- Automatic incident detection on arterial roads
+- Proposed a relatively simplistic clustering technique in mobile phone for vehicle count, density, speed.
+- Seven multi-sensor data fusion-based estimation techniques
+- Studying a system to achieve automated driving on expressways
+- Expanding the use of ETC and other ITS technologies
+- Develop an automatic closed-loop algorithm to determine critical parameters.
+- Big data applications in real-time traffic operation
+- Vehicular Ad Hoc Network (VANET)
+- CMS (changeable message signs)
+- Agent and multiagent systems
+2, 2, 2, 3, 2, 2, 
+3, 3, 4, 3, 3, 2, 
+3, 3, 3Advanced Public Transportation 
+Systems (APTS)
+[5], [35], [37], [38], 
+[42], [43]
+- Bus Rapid Transit (BRT)
+- UHF RFID technologies for real-time passenger recognition 2, 3, 2, 3, 3, 2
+Advanced Traveller  Information 
+Systems (ATIS)
+ [23], [24], [30], [31], 
+[37], 
+- Generic and multimodal ITS framework
+- Generic multimodal transport network model for ATIS applications
+- GIS - based automatic transit traveler information system (ATTIS)
+2, 2, 3, 2, 2
+Commercial Vehicle Operations (CVO) [26], [27], [28],  [34], 
+[40]
+- RFID technology for order-picking operations
+- Research-Based decision-support software suggest for ul timate performance of Freight ITS
+- Automated transfer management system (ATMS) at terminal and distribution centers
+- Onboard safety monitoring (OBSM) system
+- Vehicle pre-clearance programs
+3, 2, 2, 2, 2
+Transit Management Systems (TMS) [25], [32], [43], [58]
+- Evaluation index system
+- Automatic vehicle location (AVL) and Automatic passenger count (APC) systems
+- Travel assistance device (TAD)
+2, 2, 3, 2
+Advanced Vehicle Control Systems 
+(AVCS)
+[26], [33], [42]
+- Pneumatic road tube inductive loop detectors, piezoelectric sensors, magnetic sensors, and weigh in 
+motion (WIM)
+- Video image processor, microwave radar infrared sensors, ultrasonic sensors, and passive acoustic array 
+sensors.
+- Intelligent shared electric vehicle system 
+- Innovated techniques for trip registration, intelligent monitoring, and vehicle communication.
+3, 3, 2
+Emergency Management Systems 
+(EMS)
+[29], [32], [36]
+- Multi-commodity stochastic humanitarian inventory management model (MC-SHIC)
+- The emergency training prototype
+- Optimal model for the transportation of emergency resource
+- Advanced MMUI systems for emergency management
+2, 3, 2
+Incident Management Systems (IMS) [1],  [39]
+- CIMS efficiency model
+- Perceptual Control Architecture of CPSs
+- FIAS - Freeway Incident Analysis System
+- Cooperative Awareness Messages (CAMs)
+- Decentralized Environmental Notification Messages (DENMs)
+2, 3
+Challenge Group Ref Case # of cases
+Cybersecurity & Privacy information (44%)
+Skepticism towards the new technologies
+Users unwiling to change 
+Lack of confidence or reluctance shown by citizens (lack of clarity around benefits).
+Coordination & collaboration among different Stakeho lders & technologies (40%)
+Interfacing between stakeholders & technologies difficult (Multi-agency, multi-modal, multi-purpose)
+More people “in the control loop”
+Lack of political will
+Different approaches emerge in a multi-actors environ ment (32%)
+Keeping the old bureaucracy
+Interpretation of ITS differs between stakholders
+Using old and new methods side by side
+Less hardware, more software (28%)
+SW development difficult to manage
+Expensive skill marketplace
+SW requires a lot of maintenance
+Ever-changing security threats
+ITS Projects are complex (24%) 
+Limited coverage
+Lack of information about existing & new ITS applications and initiatives
+ITS  Technology readiness and maturity
+ITS Customized poorly
+Reverting to the old way of working
+The adaptation of ITS for urban area growth
+Lack of investment (20%)
+High cost
+Lack of training
+Challenges in rearranging public spaces
+Old commitments kept
+2[2], [10], [18], [56], [4] C3, C9
+[2], [13], [19],  [44], [18], 
+[45], [51], [53], [56], [20]
+C1, C3, C4, 
+C5, C10 5
+2
+5
+2[12], [44], [19], [54], [55], 
+[56], [20] C7, C8
+[2], [19], [46], [48], [20], 
+[18] C3, C10
+[10], [11], [16], [47], [49], 
+[50],  [20], [17] , [4], [3], 
+[56]
+C2, C3, C4, 
+C6, C8
+[12], [13], [18], [19],  [7], 
+[52], [17], [53] C3, C4, C6 3
+
+===== PAGE 10 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 648 
+These results show that ITS appears to be more 
+difficult to implement in urban areas than people expect 
+because of the different challenges... If these challenges 
+are not carefully aligned and studied, this could lead to 
+serious limitations for ITS deployment and, therefore, the 
+full potential of ITS technologies cannot be achieved. 
+These challenges are evolving and vary from one 
+ITS subsystem to another based on the prerequisite of 
+deployment, and also, from one region to another based on 
+the citizens culture. Therefore, according to our scope, the 
+result show that ITS cannot be just taken into use off-the-
+shelf but must be carefully customized to fit well with the 
+characteristics of the urban area and derive the best 
+benefits from it. Although ITS is often seen as a grassroots 
+movement from development, it is clear that management 
+support is needed to achieve urban transformation. Mind-
+set and alignment have also increased, emphasizing that 
+understanding the purpose behind ITS deployment, 
+practices are important and aligning all stakeholders 
+towards common purposes facilitates the transition to the 
+smart cities. 
+There are no literature studies similar to ours on 
+ITS, nor are there any specific surveys of ITS applications 
+in urban areas. Existing studies and surveys have 
+examined ITS in general, and not specifically the 
+challenges of its adoption in urban area, e.g. ZEAR, Aditi, 
+et al., 2016 [57] providing an overview of ITS progress in 
+general.  
+The survey on the state of ITS did not highlights 
+all current challenges. One explanation for this might be 
+that the survey probably had predefined response 
+categories limiting responses to them, whereas our 
+categories were derived from the data, and were therefore 
+not limited to predefined options. 
+ 
+C. Divergences and open issues 
+The articles included in our review provided 
+several valuable insights in the form of challenges and 
+practices. However, in examining the challenges, we can 
+notice some divergences, revealing those aspects of ITS 
+deployment that would require further study to find out 
+more. 
+Dealing with bad & old infrastructure. It is not 
+clear how and when to completely drop it and its related 
+practices. The literature mentions the challenges of 
+maintaining the old working method, such as the use of 
+"old and new infrastructure side by side", which indicates 
+that the coexistence of two different working methods 
+generate new problematics. 
+ 
+D. Limitations 
+Researchers' bias may have influenced the choice 
+of primary studies and data extraction. The selection of 
+primary studies may have been distorted by 
+misinterpretation of the inclusion criteria. This risk was 
+mitigated by the coordination of the two researchers in 
+designing the inclusion criteria.  When inclusion criteria 
+were used later, abstract filtering was done by both 
+researchers independently, and confusing cases were 
+resolved through case- by-case discussions. In the full text 
+filtering stage, the first researcher performed the initial 
+screening by making the decision regarding unambiguous 
+cases. For the less clear cases both researchers read the 
+paper and made independent proposals for inclusion or 
+exclusion decisions. In cases where they agreed, the paper 
+was included or excluded on the basis of their joint 
+agreement. Articles that were not yet clear were discussed 
+and resolved by the two researchers together. 
+The second part of the research that could be 
+affected by subjective bias was the obtaining of results by 
+coding and analysis. Our tools to mitigate this threat were 
+limited because the steps are particularly laborious. Due to 
+resource constraints, the process could not be duplicated. 
+We have tried to avoid subjective biases in the analysis by 
+making the results as traceable as possible, by providing 
+references to each claim presented in the results. 
+A notable problem in this systematic literature 
+review was the limitations of Boolean keyword searches in 
+on-line databases. A keyword search does not easily 
+identify urban areas and empirical facets, and also the 
+applications facet is difficult to capture with keywords. As 
+a result, we did not include the urban and empirical facets 
+in the keyword search, but rather manually reviewed all 
+articles selected in the filtering phase to determine if the 
+article contained empirical material. This added manual 
+work but mitigated the threat. 
+For the ITS applications facet, we used a variety 
+of synonyms as keywords, but a small risk remains that 
+some studies discussing applications without using any of 
+the keywords we used remain unidentified.  
+Based on our preliminary search, we found four 
+relevant papers that were not found by our keyword 
+search, and which we included in the study as primary 
+sources. In addition, by browsing the references of the 143 
+articles selected for full-text filtering, we identified five 
+other relevant articles that had not been matched by the 
+keyword search and that we included as primary studies. 
+By these means, we wanted to make sure to locate papers 
+that the keyword search might have missed. The fact that it 
+was possible to find additional papers outside the search 
+result suggests that it is still possible that our keyword 
+search also missed other papers. However, because we 
+have made reasonable efforts to identify missed 
+publications, we believe that the number of missed articles 
+remains very limited and therefore does not have a 
+significant impact on the results.  
+Only seven references presented a clearly focused 
+experience report. For this reason, we considered that the 
+results would be very biased and that many valuable 
+studies would be left out if a strict quality assessment were 
+part of the inclusion criteria. Therefore, we decided to 
+include all experience reports, irrespective of perceived 
+objectivity. 
+The tendency to publish only positive results is 
+also another particular limitation of this literature review. 
+Studies generally indicated that the development and 
+applications of ITS technologies were positive, indicating 
+publication bias. A related problem is that most of the 
+experience reports were written by people personally 
+involved in the projects, so authors may be reluctant to 
+
+===== PAGE 11 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 649 
+report implementation challenges. However, most of 
+articles did bring up several challenges encountered during 
+deployment as well as perceived practices. Given the 
+current state of empirical research, it is necessary to 
+include studies of varying weight of evidence in order to 
+aggregate relevant evidence on urban applications. 
+Due to the authors and publication bias of the 
+primary studies and the qualitative nature of the ITS 
+application descriptions, we decided not to make 
+quantitative interpretations in the results, but to use only 
+qualitative analysis. Therefore, based on these data, we 
+could not, for example, rank the challenges and say which 
+are the most important. However, an examination of the 
+number of cases cited gives an indication of the 
+occurrence of factors in the existing literature. 
+Nevertheless, because we do not know how well the 
+published articles represent ITS applications, we cannot 
+generalize the percentages to all urban area applications. 
+ 
+E. Future research agenda 
+Based on our literature review, we identify two 
+topics that we think requires significant further study, and 
+that together can be considered a research agenda on urban 
+ITS applications. 
+ 
+a) Case studies on ITS applications 
+A larger number of experience reports with 
+appropriate ITS technology in urban areas is absolutely 
+necessary. In our review, we delineated the scope of ITS 
+applications in the four selected developed countries. We 
+were only able to identify seven experience reports on the 
+subject. Although the topicality and importance for experts 
+is confirmed, by the fact that in recent years, several books 
+and courses have been published and organized by 
+consultants, and a large number of conferences on this 
+subject have been performed. Thus, the 49 research papers 
+and the seven experience reports seem to only scratch the 
+surface and report experiences from only a small portion 
+of the actual number of development and applications 
+projects. For this reason, we consider that more case 
+studies must performed to gain more insights on ITS and 
+how it is deployed in complex contexts. 
+ 
+b) Surveys on challenges and success factors 
+Surveys on challenges for ITS projects in general 
+have been conducted in several developed countries. Our 
+review was limited to selected subset regions (U.S.A, 
+Japan and European Union) due to the large number of 
+researches in this topic during the last decade.  However, 
+this indicates that there seems to exist a large number of 
+countries that implemented or are in the process of 
+implementation. It is therefore possible to carry out 
+interesting survey studies. One topic for further surveys 
+would be to explore how the challenges recognized in this 
+study, are experienced in other countries: which ones they 
+have experienced and which ones they consider most 
+important. 
+Therefore, the actual situation of urban 
+transportation in the developing countries is getting more 
+difficult, migration of people from rural to urban areas has 
+progressed quite differently compared to that of developed 
+countries. Many areas have become urbanized without a 
+significant increase in the quality of logistics infrastructure 
+and without the development of new suburbs. Therefore, 
+more works are needed to fill this gap, where there is a 
+tremendous need for studies to understand the several 
+challenges facing research and ITS adoption in these 
+countries.  
+On the other hand, it would be important to study 
+the success factors of ITS applications based on real 
+experiences. As there are few ITS experience reports in 
+the scientific literature, we encourage researchers to 
+conduct deep case studies to understand how ITS is used 
+and how it is customized. 
+ 
+6. CONCLUSIONS 
+We presented a systematic literature review of 
+research and empirical studies on ITS applications in 
+urban area. We reviewed 56 papers describing and 
+presenting qualitative findings of ITS research and the 
+challenges posed by ITS applications in urban area.  
+The primary studies identified were almost 
+exclusively research papers, only seven experience reports 
+were included. Thus, the main finding of this study is that 
+despite the relevance of the topic for practitioners, real 
+cases experiences report is significantly behind schedule, 
+and consequently the identified challenges are those that 
+practitioners perceive and report as most important. The 
+relationship between elements and the objective facts 
+remains unknown.   
+The challenge categories that received the most 
+mentions impact in slowing up the development and 
+implementation of new ITS solutions within urban area 
+are: Cyber security & Privacy information, Coordination 
+& collaboration among different Stakeholders, and those 
+different approaches emerge in a multi-actors 
+environment.  
+As future research topics, we suggest case studies 
+and surveys on ITS applications challenges, studies on ITS 
+deployment practices & success factors in developing 
+countries. 
+ 
+REFERENCES 
+ 
+[1] ALAM, Muhammad, Ferreira, Joaquim, et 
+FONSECA, José. 2016. Introduction to intelligent 
+transportation systems. In: Intelligent Transportation 
+Systems. Springer, Cham. pp. 1-17. 
+[2] QUAK, Hans et Nesterova, Nina. 2014. Towards zero 
+emission urban logistics: Challenges and issues for 
+implementation of electric freight vehicles in city 
+logistics. In: Sustainable Logistics. Emerald Group 
+Publishing Limited. pp. 265-294. 
+[3] Sjoberg, Katrin, Andres, Peter, Buburuzan, Teodor, et 
+al. 2017. Cooperative intelligent transport systems in 
+
+===== PAGE 12 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 650 
+Europe: current deployment status and outlook. IEEE 
+Vehicular Technology Magazine. 12(2): 89-97. 
+[4] Zhuhadar Leyla, Thrasher Evelyn, Marklin Scarlett, et 
+al. 2017. The next wave of innovation-Review of 
+smart cities intelligent operation systems. Computers 
+in Human Behavior. 66: 273-281. 
+[5] AN Sheng-hai, LEE, Byung-Hyug, et Shin, Dong-
+Ryeol. 2011. A survey of intelligent transportation 
+systems. In: 2011 Third International Conference on 
+Computational Intelligence, Communication Systems 
+and Networks. IEEE. pp. 332-337. 
+[6] World Bank, Information and Communication 
+Technologies: A World Bank data. Washington, DC: 
+World Bank, 2018. Available: 
+https://data.worldbank.org/indicator/SP.URB.TOTL.I
+N.ZS. [Accessed: February 28, 2018]. 
+[7] LIN Yangxin , Wang Ping, et MA, Meng. 2017. 
+Intelligent Transportation System (ITS): Concept, 
+Challenge and Opportunity. In: Big Data Security on 
+Cloud (BigDataSecurity), IEEE International 
+Conference on High Performance and Smart 
+Computing (HPSC), and IEEE International 
+Conference on Intelligent Data and Security (IDS), 
+2017 IEEE 3rd International Conference on. IEEE. 
+pp. 167-172. 
+[8] The ITSS ’s constitution, IEEE ITS Society, ITS 
+definition; Available: 
+www.ewh.ieee.org/tc/its/constitution.html. [Accessed: 
+Jul. 12, 2018]. 
+[9] Žura Marijan et Bićanić, Davor . 2012. Directives of 
+the European Union on Intelligent Transport Systems 
+and their impact on the Republic of Croatia. 
+[10] Shladover Steven E. 2018. Connected and automated 
+vehicle systems: Introduction and overview. Journal 
+of Intelligent Transportation Systems. 22(3): 190-200. 
+[11] CUNHA Felipe, MAIA Guilherme, RAMOS Heitor 
+S., et al . 2018. Vehicular Networks to Intelligent 
+Transportation Systems. In: Emerging Wireless 
+Communication and Network Technologies. Springer, 
+Singapore. pp. 297-315. 
+[12] Bunch James, Shah Vaishali, Burnier Carolina, et al.  
+2012. Review of Existing Literature and Deployment 
+Tracking Surveys: Decision Factors Influencing ITS 
+Adoption. United States. Joint Program Office for 
+Intelligent Transportation Systems. 
+[13] Figueiredo Lino, JESUS Isabel, Machado JA 
+Tenreiro, et al.  2001. Towards the development of 
+intelligent transportation systems. In: Intelligent 
+Transportation Systems, 2001. Proceedings. 2001 
+IEEE. IEEE. pp. 1206-1211. 
+[14] U.S.A. Department of Transportation, Intelligent 
+Transportation Systems Joint Program Office , Ashley 
+Auer, Shelley Feese et al. History of Intelligent 
+Transportation Systems; 2016. [Online]. Available: 
+https://rosap.ntl.bts.gov/view/dot/30826/dot_30826_D
+S1.pdf? [Accessed: June. 13, 2018].  
+[15] France. Ministère De La Transition Écologique Et 
+Solidaire, Ministère Chargé Des Transports , Les 
+Systèmes De Transport Intelligents (L ’expertise 
+Française); 2017. [Online]. Available: 
+https://www.ecologique-
+solidaire.gouv.fr/sites/default/files/14085_Transport-
+intelligent_Web_planches_FR.pdf [Accessed: June. 
+14, 2018]. 
+[16] Menouar Hamid, Guvenc Ismail, Akkaya Kemal, et 
+al. 2017. UAV-enabled intelligent transportation 
+systems for the smart city: Applications and 
+challenges. IEEE Communications Magazine . 55(3): 
+22-28. 
+[17] KANT Goos, QUAK Hans, PEETERS René, et al. 
+2016. Urban freight transportation: challenges, 
+failures and successes. In: Logistics and supply chain 
+innovation. Springer, Cham. pp. 127-139. 
+[18] Guerrero-Ibanez Juan Antonio, Zeadally Sherali, et 
+Contreras-Castillo, Juan. 2015. Integration challenges 
+of intelligent transportation systems with connected 
+vehicle, cloud computing, and internet of things 
+technologies. IEEE Wireless Communications . 22(6): 
+122-128. 
+[19] Dimitrakopoulos, George. Intelligent transportation 
+systems based on internet-connected vehicles: 
+Fundamental research areas and challenges. In: ITS 
+Telecommunications (ITST), 2011 11th International 
+Conference on. IEEE, 2011. pp. 145-151. 
+[20] Cotrell J., Steh ly T., Johnson J., et al. 2014. Analysis 
+of transportation and logistics challenges affecting the 
+deployment of larger wind turbines: summary of 
+results. National Renewable Energy Laboratory. 
+[21] Kitchenham Barbara. 2004. Procedures for 
+performing systematic reviews. Keele, UK, Keele 
+University. 33(2004): 1-26. 
+
+===== PAGE 13 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 651 
+[22] Cruzes, Daniela S. et DYBA, Tore. 2011. 
+Recommended steps for thematic synthesis in 
+software engineering. In: 2011 International 
+Symposium on Empirical Software Engineering and 
+Measurement. IEEE. pp. 275-284 
+[23] Gao H. and F. Liu. 2013. Estimating freeway traffic 
+measures from mobile phone location data. European 
+Journal of Operational Research, 229(1): 252-260. 
+[24] Bachmann C., et al. 2012. Fusing a Bluetooth Traffic 
+Monitoring System with Loop Detector Data for 
+Improved Freeway Traffic Speed Estimation. Journal 
+of Intelligent Transportation Systems, p. null-null. 
+[25] Bachmann Chris, Abdulhai Baher , Roorda Matthew 
+J., et al. 2013. A comparative assessment of multi-
+sensor data fusion techniques for freeway traffic 
+speed estimation using microsimulation modeling. 
+Transportation research part C: emerging 
+technologies. 26: 33-48. 
+[26] Hickman J.S. and R.J. Hanowski. 2011. Use of a 
+video monitoring approach to reduce at-risk driving 
+behaviors in commercial vehicle operations. 
+Transportation Research Part F: Traffic Psychology 
+and Behaviour. 14(3): 189-198. 
+[27] Bouvard Keomany, Artus Samuel, Bérenguer, 
+Christophe, et al.  2011. Condition-based dynamic 
+maintenance operations planning & grouping. 
+Application to commercial heavy vehicles. Reliability 
+Engineering & System Safety. 96(6): 601-610. 
+[28] Lee J., et al. 2013. Commercial vehicle pre-clearance 
+programs: Current issues and recommendations for 
+potential implementation. Transport Policy. 27(0): 92-
+101. 
+[29] Chunlin D. and Y. Liu. 2012. Sample Average 
+Approximation Method for Chance Constrained 
+Stochastic Programming in Transportation Model of 
+Emergency Management. Systems Engineerin g 
+Procedia. 5: 137-143. 
+[30] Zhang J., et al. 2011.A multimodal transport network 
+model for advanced traveler information systems. 
+Procedia-Social and Behavioral Sciences. 20: 313-
+322. 
+[31] Schilk G. and L. Seemann. 2012. Use of ITS 
+Technologies for Multimodal Transport Operations-
+River Information Services (RIS) Transport Logistics 
+Services. Procedia-Social and Behavioral Sciences. 
+48: 622-631. 
+[32] Up-date of Intelligent Transport Systems in Japan 
+Ministry of Land, Infrastructure, Transport and 
+Tourism Japan 2013. 
+[33] YAN Qinglong, SUN Zhe, GAN Qijian, et al . 2018. 
+Automatic identification of near-stationary traffic 
+states based on the PELT changepoint detection. 
+Transportation Research Part B: Methodological . 108: 
+39-54. 
+[34] Moufad Imane et Jawab, Fouad. 2017. Conception 
+and validation of a decision support model for Urban 
+Freight Transport. In: Logistics and Supply Chain 
+Management (LOGISTIQUA), 2017 International 
+Colloquium on. IEEE. pp. 94-99. 
+[35] Hasebe Koji, Kato Kazuhiko, ABE Hirotake, et al.  
+2017. Traffic management for last-mile public 
+transportation systems using autonomous vehicles. In : 
+Smart Cities Conference (ISC2), 2017 International. 
+IEEE. pp. 1-6. 
+[36] Astarita Vittorio, FESTA Demetrio Carmine et 
+GIOFRÈ, Vincenzo Pasquale. 2018. Mobile Systems 
+applied to Traffic Management and Safety: a state of 
+the art. Procedia Computer Science. 134: 407-414. 
+[37] LI Chunyan. 2010. Travel Information Service system 
+for public travel based on SOA. In: Service 
+Operations and Logistics and Informatics (SOLI), 
+2010 IEEE International Conference on. IEEE. pp. 
+321-324. 
+[38] Fayazi, S. Alireza, Vahidi, Ardalan, Mahler, Grant, et 
+al. 2015. Traffic signal phase and timing estimation 
+from low-frequency transit bus data. IEEE 
+Transactions on Intelligent Transportation Systems. 
+16(1): 19-28. 
+[39] SHI Qi et Abdel-Aty, Mohamed. 2015. Big data 
+applications in real-time traffic operation and safety 
+monitoring and improvement on urban expressways. 
+Transportation Research Part C: Emerging 
+Technologies. 58: 380-394. 
+[40] Jing Peng, Huang Hao, et Chen Long. 2017. An 
+Adaptive Traffic Signal Control in a Connected 
+Vehicle Environment: A Systematic Review. 
+Information. 8(3): 101. 
+
+===== PAGE 14 =====
+
+                                VOL. 14, NO. 3, FEBRUARY2019                                                                                                             ISSN 1819-6608 
+ARPN Journal of Engineering and Applied Sciences 
+©2006-2019 Asian Research Publishing Network (ARPN). All rights reserved. 
+ 
+www.arpnjournals.com 
+ 
+ 
+                                                                                                                                                 652 
+[41] Suhas S., Kalyan V. Vismaya, Katti, Manoj, et al . 
+2017. A Comprehensive Review on Traffic Prediction 
+for Intelligent Transport System. In: 2017 
+International Conference on Recent Advances in 
+Electronics and Communication Technology 
+(ICRAECT). IEEE. pp. 138-143. 
+[42] L'hostis Alain, Soulas Claude, Et Vulturescu, Bogdan. 
+2016. A Multricriteria approach for choosing a new 
+public transport system linked to urban development: 
+a method developed in the Bahn. Ville project for a 
+tram-train scenario in the Saint-Etienne region. 
+Recherche Transports Sécurité. 2016(1-2): 17-25. 
+[43] Xiong Gang, Dong Xisong, Fan Dong, et al. 2012. 
+Parallel bus rapid transit (BRT) operation 
+management system based on ACP approach. In : 
+Networking, Sensing and Control (ICNSC), 2012 9th 
+IEEE International Conference on. IEEE. pp. 22-27. 
+[44] El Faouzi, Nour-Eddin, Leung, Henry, et Kurian, 
+Ajeesh. 2011. Data fusion in intelligent transportation 
+systems: Progress and challenges –A survey. 
+Information Fusion. 12(1): 4-10. 
+[45] Moufad Imane et Jawab, Fouad. 2018. The 
+Determinants of the performance of the Urban Freight 
+Transport-An Empirical Analysis. In : 2018 
+International Colloquium on Logistics and Supply 
+Chain Management (LOGISTIQUA). IEEE. pp. 99-
+104. 
+[46] Fries Ryan N., Gahrooei Mostafa Reisi, Chowdhury, 
+Mashrur, et al.  2012. Meeting privacy challenges 
+while advancing intelligent transportation systems. 
+Transportation Research Part C: Emerging 
+Technologies. 25: 34-45. 
+[47] Koopman Philip et Wagner, Michael.  2017. 
+Autonomous vehicle safety: An interdisciplinary 
+challenge. IEEE Intelligent Transportation Systems 
+Magazine. 9(1): 90-96. 
+[48] Sun Wen, Liu Jiajia, et Zhan g, Haibin. 2017. When 
+smart wearables meet intelligent vehicles: challenges 
+and future directions. IEEE Wireless 
+Communications. 24(3): 58-65. 
+[49] Mehmood Yasir, Ahmad Farhan, Yaqoob Ibrar, et al. 
+2017. Internet- of-things-based smart cities: Recent 
+advances and challenges. IEEE Communications 
+Magazine. 55(9): 16-24. 
+[50] Cruz, Carlos Oliveira et Sarmento, Joaquim Miranda. 
+2017. Reforming traditional PPP models to cope with 
+the challenges of smart cities. Competition and 
+Regulation in Network Industries. 18(1-2): 94-114. 
+[51] Santana, Eduardo Felipe Zambom, Chaves, Ana 
+Paula, Gerosa, Marco Aurelio, et al.  2017. Software 
+platforms for smart cities: Concepts, requirements, 
+challenges, and unified reference architecture. ACM 
+Computing Surveys (CSUR). 50(6): 78. 
+[52] Ducret, Raphaëlle. 2014. Parcel deliveries and urban 
+logistics: Changes and challenges in the courier 
+express and parcel sector in Europe-The French case. 
+Research in Transportation Business & Management . 
+11: 15-22. 
+[53] Macharis, Cathy et Melo, Sandra (ed.). City 
+distribution and urban freight transport: multiple 
+perspectives. Edward Elgar Publishing, 2011. 
+[54] Taniguchi Eiichi, Thompson Russell G., et Yamada 
+Tadashi. 2016. New opportunities and challenges for 
+city logistics. Transportation research procedia . 12: 5-
+13.  
+[55] Monzon Andres. 2015. Smart cities concept and 
+challenges: Bases for the assessment of smart city 
+projects. In: Smart Cities and Green ICT Systems 
+(SMARTGREENS), 2015 International Conference 
+on. IEEE. pp. 1-11. 
+[56] Macharis, Cathy et Kin, Bram. 2017. The 4 A's of 
+sustainable city distribution: Innovative solutions and 
+challenges ahead. International Journal of Sustainable 
+Transportation. 11(2): 59-71. 
+[57] ZEAR Aditi, Singh, Pradeep Kumar, et Singh , 
+Yashwant. 2 016. Intelligent transport system: a 
+progressive review. Indian Journal of Science and 
+Technology. 9(32). 
+[58] Karim Z., Jawab F. 2017. Management modes and 
+urban transit performance: A literature review. 

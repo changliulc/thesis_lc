@@ -1,6 +1,6 @@
 clc; clearvars; clear functions; close all;
 
-%% -------------------------- Â·¾¶ÓëÊä³öÄ¿Â¼ ------------------------------
+%% -------------------------- Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ ------------------------------
 thisFile = mfilename('fullpath');
 if isempty(thisFile)
     rootDir = pwd;
@@ -14,117 +14,176 @@ matlabDataDir = fullfile(assetsDir, 'matlab_data');
 outDir        = fullfile(rootDir, 'figures');
 if ~exist(outDir, 'dir'); mkdir(outDir); end
 
-assert(exist(rawDataFile, 'file')==2, 'Î´ÕÒµ½Ô­Ê¼Êý¾ÝÎÄ¼þ£º%s', rawDataFile);
+assert(exist(rawDataFile, 'file')==2, 'Î´ï¿½Òµï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½%s', rawDataFile);
 
-%% -------------------------- È«¾Ö»æÍ¼·ç¸ñ --------------------------------
+%% -------------------------- È«ï¿½Ö»ï¿½Í¼ï¿½ï¿½ï¿½ --------------------------------
 fontCN = pick_chinese_font();
-fprintf('Ñ¡ÓÃ×ÖÌå fontCN = %s\n', fontCN);
+fprintf('Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ fontCN = %s\n', fontCN);
 set_plot_defaults(fontCN);
 
-%% -------------------------- ¹Ø¼ü²ÎÊý£¨ÓëÂÛÎÄÒ»ÖÂ£© -----------------------
-fs      = 50;     % ²ÉÑùÂÊ (Hz)
-N0      = 10;     % »ùÏß¹À¼Æ´°¿Ú³¤¶È£¨²ÉÑùµãÊý£©
-wR      = 0.15;   % Sakoe--Chiba ´°¿Ú±ÈÀý
-lambda  = 0.05;   % DTW ²½½ø³Í·£Ïî
-L       = 176;    % ÀëÏßÍ³Ò»¶¨³¤³¤¶È
+%% -------------------------- ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â£ï¿½ -----------------------
+fs      = 50;     % ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Hz)
+N0      = 10;     % ï¿½ï¿½ï¿½ß¹ï¿½ï¿½Æ´ï¿½ï¿½Ú³ï¿½ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+wR      = 0.15;   % Sakoe--Chiba ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½
+lambda  = 0.05;   % DTW ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½
+L       = 176;    % ï¿½ï¿½ï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-classNames = {'Ð¡ÐÍ³µ','ÖÐÐÍ³µ','´óÐÍ³µ'};
+classNames = {'Ð¡ï¿½Í³ï¿½','ï¿½ï¿½ï¿½Í³ï¿½','ï¿½ï¿½ï¿½Í³ï¿½'};
 
-fprintf('=== µÚÈýÕÂÍ¼Æ¬Éú³É¿ªÊ¼ ===\n');
+fprintf('=== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½É¿ï¿½Ê¼ ===\n');
 fprintf('rootDir = %s\n', rootDir);
 fprintf('outDir  = %s\n\n', outDir);
 
-%% -------------------------- ÔØÈëÔ­Ê¼Êý¾Ý --------------------------------
+%% -------------------------- ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½ --------------------------------
 S = load(rawDataFile);
 ProcessedData = S.ProcessedData;
 targetLength  = S.targetLength;
 
 %% ========================================================================
-%  1) ÈýÀà³µÁ¾´ú±íÐÔÈýÖá²¨ÐÎ£¨1ÐÐ3ÁÐ£©
-% ========================================================================
-fprintf('[1/6] Éú³ÉÈýÀà´ú±íÐÔÈýÖá²¨ÐÎÍ¼...\n');
+%  1) ????????????????????
+%% ========================================================================
+fprintf('[1/6] ?????????????...\n');
 
-[repIdx, repLen, repScore] = select_representative_samples(ProcessedData, targetLength, fs, N0, L);
+[repIdx, repLen, repScore] = select_grouped_comparison_samples(ProcessedData, targetLength, fs, N0, L);
 
-fprintf('  ´ú±íÐÔÑù±¾Ë÷Òý£¨1-based£©£ºÐ¡ÐÍ=%d£¬ÖÐÐÍ=%d£¬´óÐÍ=%d\n', repIdx(1), repIdx(2), repIdx(3));
-fprintf('  ¶ÔÓ¦³¤¶È N£º              Ð¡ÐÍ=%d£¬ÖÐÐÍ=%d£¬´óÐÍ=%d\n', repLen(1), repLen(2), repLen(3));
+for c = 1:3
+    fprintf('  %s?????1-based??%d, %d, %d\n', classNames{c}, repIdx(c,1), repIdx(c,2), repIdx(c,3));
+    fprintf('  %s???? N?        %d, %d, %d\n', classNames{c}, repLen(c,1), repLen(c,2), repLen(c,3));
+end
 
 cropCfg.frac   = 0.10;
 cropCfg.margin = 5;
+axisColors = lines(3);
 
-fig = figure('Color','w','Position',[100 100 1100 320]);
-tl = tiledlayout(fig, 1, 3, 'TileSpacing','compact', 'Padding','compact');
+fig = figure('Color','w','Position',[100 100 1180 460]);
+ax = axes('Parent', fig);
+hold(ax, 'on');
+grid(ax, 'on');
+box(ax, 'on');
+set(ax, 'Layer', 'top');
+xlabel(ax, '?? / s');
+ylabel(ax, '???? / nT');
 
 waveformExamples = struct();
-axHandles = gobjects(1,3);
-tMaxAll = 0; yMaxAll = 0;
+tCursor   = 0;
+gapEvent  = 0.18;
+gapGroup  = 0.70;
+evtNo     = 0;
+yMinAll   = inf;
+yMaxAll   = -inf;
+groupInfo = struct('x0', {}, 'x1', {}, 'y0', {}, 'y1', {}, 'name', {});
 
 for c = 1:3
-    idx = repIdx(c); N = repLen(c);
-    [~, dB, b, t] = extract_event(ProcessedData{c}{idx}, N, fs, N0);
-    useIdx = crop_by_mag(b, cropCfg.frac, cropCfg.margin);
+    groupStart = tCursor;
+    groupYMin = inf;
+    groupYMax = -inf;
 
-    t_use  = t(useIdx) - t(useIdx(1));
-    dB_use = dB(useIdx, :);
-    b_use  = b(useIdx);
+    for j = 1:3
+        evtNo = evtNo + 1;
+        idx = repIdx(c, j);
+        N   = repLen(c, j);
 
-    ax = nexttile(tl, c);
-    axHandles(c) = ax;
+        [~, dB, b, t] = extract_event(ProcessedData{c}{idx}, N, fs, N0);
+        useIdx = crop_by_mag(b, cropCfg.frac, cropCfg.margin);
 
-    % plot(ax, t_use, dB_use(:,1)); hold(ax,'on');
-    % plot(ax, t_use, dB_use(:,2));
-    % plot(ax, t_use, dB_use(:,3));
-    % grid(ax,'on'); box(ax,'on');
-    % 
-    % xlabel(ax, 'Ê±¼ä / s');
-    % if c==1
-    %     ylabel(ax, '´Å³¡ÈÅ¶¯ / nT');
-    %     legend(ax, {'XÖá','YÖá','ZÖá'}, 'Location','best');
-    % end
-   h1 = plot(ax, t_use, dB_use(:,1)); hold(ax,'on');
-h2 = plot(ax, t_use, dB_use(:,2));
-h3 = plot(ax, t_use, dB_use(:,3));
-grid(ax,'on'); box(ax,'on');
+        t_use  = t(useIdx) - t(useIdx(1));
+        dB_use = dB(useIdx, :);
+        b_use  = b(useIdx);
+        t_plot = tCursor + t_use;
 
-xlabel(ax, 'Ê±¼ä / s');
-if c==1
-    ylabel(ax, '´Å³¡ÈÅ¶¯ / nT');
-end
+        h1 = plot(ax, t_plot, dB_use(:,1), 'Color', axisColors(1,:));
+        h2 = plot(ax, t_plot, dB_use(:,2), 'Color', axisColors(2,:));
+        h3 = plot(ax, t_plot, dB_use(:,3), 'Color', axisColors(3,:));
 
-legend(ax, [h1 h2 h3], {'XÖá','YÖá','ZÖá'}, 'Location','best', 'Box','off');
-    title(ax, classNames{c}, 'FontWeight','normal');
+        if evtNo == 1
+            legend(ax, [h1 h2 h3], {'X?','Y?','Z?'}, 'Location','northwest', 'Box','off');
+        end
 
-    tMaxAll = max(tMaxAll, max(t_use));
-    yMaxAll = max(yMaxAll, max(abs(dB_use(:))));
+        waveformExamples(evtNo).className = classNames{c};
+        waveformExamples(evtNo).classID    = c;
+        waveformExamples(evtNo).eventID    = evtNo;
+        waveformExamples(evtNo).index      = idx;
+        waveformExamples(evtNo).N          = N;
+        waveformExamples(evtNo).score      = repScore(c, j);
+        waveformExamples(evtNo).t_local    = t_use;
+        waveformExamples(evtNo).t_plot     = t_plot;
+        waveformExamples(evtNo).dB         = dB_use;
+        waveformExamples(evtNo).b          = b_use;
 
-    waveformExamples(c).className = classNames{c};
-    waveformExamples(c).index     = idx;
-    waveformExamples(c).N         = N;
-    waveformExamples(c).score     = repScore(c);
-    waveformExamples(c).t         = t_use;
-    waveformExamples(c).dB        = dB_use;
-    waveformExamples(c).b         = b_use;
+        T = table(t_use, t_plot, dB_use(:,1), dB_use(:,2), dB_use(:,3), b_use, ...
+            'VariableNames', {'t_local_s','t_plot_s','dBx_nT','dBy_nT','dBz_nT','b_nT'});
+        writetable(T, fullfile(outDir, sprintf('waveform_group_class%d_evt%d_idx%d.csv', c, evtNo, idx)));
 
-    T = table(t_use, dB_use(:,1), dB_use(:,2), dB_use(:,3), b_use, ...
-        'VariableNames', {'t_s','dBx_nT','dBy_nT','dBz_nT','b_nT'});
-    writetable(T, fullfile(outDir, sprintf('waveform_class%d_idx%d.csv', c, idx)));
-end
+        localTop = max(dB_use(:));
+        localBot = min(dB_use(:));
+        localX   = mean([t_plot(1), t_plot(end)]);
 
-if yMaxAll > 0
-    for c = 1:3
-        xlim(axHandles(c), [0, tMaxAll]);
-        ylim(axHandles(c), 1.10 * yMaxAll * [-1, 1]);
+        yMinAll = min(yMinAll, localBot);
+        yMaxAll = max(yMaxAll, localTop);
+        groupYMin = min(groupYMin, localBot);
+        groupYMax = max(groupYMax, localTop);
+
+        waveformExamples(evtNo).labelX = localX;
+        waveformExamples(evtNo).labelY = localTop;
+
+        tCursor = t_plot(end) + gapEvent;
     end
+
+    groupEnd = tCursor - gapEvent;
+    groupInfo(c).x0 = groupStart;
+    groupInfo(c).x1 = groupEnd;
+    groupInfo(c).y0 = groupYMin;
+    groupInfo(c).y1 = groupYMax;
+    groupInfo(c).name = classNames{c};
+
+    tCursor = groupEnd + gapGroup;
 end
 
-save_png(fig, fullfile(outDir, 'ch3_waveform_by_class.png'), 300);
+yRange = yMaxAll - yMinAll;
+if yRange < eps
+    yRange = max(1, abs(yMaxAll));
+end
+yPad = 0.18 * yRange;
+yBoxPad = 0.08 * yRange;
+yLow = yMinAll - yPad;
+yHigh = yMaxAll + yPad;
+xlim(ax, [0, tCursor - gapGroup + 0.25]);
+ylim(ax, [yLow, yHigh]);
+
+for c = 1:3
+    x0 = groupInfo(c).x0 - 0.08;
+    x1 = groupInfo(c).x1 + 0.08;
+    y0 = groupInfo(c).y0 - yBoxPad;
+    y1 = groupInfo(c).y1 + yBoxPad;
+    rectangle(ax, 'Position', [x0, y0, x1-x0, y1-y0], ...
+        'LineStyle', ':', 'LineWidth', 1.2, 'EdgeColor', [0.35 0.35 0.35]);
+    text(ax, mean([x0, x1]), yLow + 0.10 * yRange, groupInfo(c).name, ...
+        'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle', ...
+        'FontSize', 14);
+end
+
+for i = 1:numel(waveformExamples)
+    labelY = min(waveformExamples(i).labelY + 0.07 * yRange, yHigh - 0.05 * yRange);
+    text(ax, waveformExamples(i).labelX, labelY, sprintf('%d', waveformExamples(i).eventID), ...
+        'HorizontalAlignment', 'center', 'VerticalAlignment', 'bottom', ...
+        'FontWeight', 'bold', 'FontSize', 13);
+end
+
+pngOut = fullfile(outDir, 'ch3_waveform_by_class.png');
+save_png(fig, pngOut, 300);
 close(fig);
 save(fullfile(outDir, 'ch3_waveform_examples.mat'), 'waveformExamples', 'cropCfg', 'fs', 'N0');
 
+repoRoot = fileparts(fileparts(fileparts(rootDir)));
+thesisImageDir = fullfile(repoRoot, 'images');
+if exist(thesisImageDir, 'dir') == 7
+    copyfile(pngOut, fullfile(thesisImageDir, 'ch3_waveform_by_class.png'));
+end
+
 %% ========================================================================
-%  2) ³µËÙ±ä»¯ÒýÆðµÄÊ±¼äÉìËõ¶¯»úÍ¼
+%  2) ï¿½ï¿½ï¿½Ù±ä»¯ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
 % ========================================================================
-fprintf('[2/6] Éú³ÉÊ±¼äÉìËõ¶¯»úÍ¼...\n');
+fprintf('[2/6] ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼...\n');
 
 cStretch = 2;
 lenVec = double(targetLength{cStretch}(:));
@@ -146,19 +205,19 @@ plot(t_s, b_s, 'LineWidth', 1.6); hold on;
 plot(t_l, b_l, 'LineWidth', 1.6);
 grid on; box on;
 
-xlabel('Ê±¼ä / s');
-ylabel('Ä£ÖµÐòÁÐ b[n] / nT');
-legend({sprintf('¶ÌÊ±³¤Ñù±¾£¨N=%d£©', lenVec(idxShort)), ...
-        sprintf('³¤Ê±³¤Ñù±¾£¨N=%d£©', lenVec(idxLong))}, 'Location','best');
-title(sprintf('³µËÙ±ä»¯ÒýÆðµÄÊ±¼äÉìËõÊ¾Òâ£¨%s£©', classNames{cStretch}), 'FontWeight','normal');
+xlabel('Ê±ï¿½ï¿½ / s');
+ylabel('Ä£Öµï¿½ï¿½ï¿½ï¿½ b[n] / nT');
+legend({sprintf('ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N=%dï¿½ï¿½', lenVec(idxShort)), ...
+        sprintf('ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N=%dï¿½ï¿½', lenVec(idxLong))}, 'Location','best');
+title(sprintf('ï¿½ï¿½ï¿½Ù±ä»¯ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½â£¨%sï¿½ï¿½', classNames{cStretch}), 'FontWeight','normal');
 
 save_png(fig, fullfile(outDir, 'fig_motivation_speed.png'), 300);
 close(fig);
 
 %% ========================================================================
-%  3) DTW ¶ÔÆëÊ¾ÒâÍ¼£¨Õ¹Ê¾ ¦¤Bz£©
+%  3) DTW ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Í¼ï¿½ï¿½Õ¹Ê¾ ï¿½ï¿½Bzï¿½ï¿½
 % ========================================================================
-fprintf('[3/6] Éú³É DTW ¶ÔÆëÊ¾ÒâÍ¼...\n');
+fprintf('[3/6] ï¿½ï¿½ï¿½ï¿½ DTW ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Í¼...\n');
 
 [~, dB_s, ~, ~] = extract_event(ProcessedData{cStretch}{idxShort}, lenVec(idxShort), fs, N0);
 [~, dB_l, ~, ~] = extract_event(ProcessedData{cStretch}{idxLong},  lenVec(idxLong),  fs, N0);
@@ -189,62 +248,62 @@ ax1 = nexttile(tl,1);
 plot(ax1, (0:N-1)'/fs, zX, 'LineWidth', 1.6); hold(ax1,'on');
 plot(ax1, (0:M-1)'/fs, zY, 'LineWidth', 1.6);
 grid(ax1,'on'); box(ax1,'on');
-xlabel(ax1,'Ê±¼ä / s');
+xlabel(ax1,'Ê±ï¿½ï¿½ / s');
 ylabel(ax1,'\Delta B_z[n] / nT');
-legend(ax1, {sprintf('Ñù±¾A£¨N=%d£©', N), sprintf('Ñù±¾B£¨N=%d£©', M)}, 'Location','best');
-title(ax1, '¶ÔÆëÇ°£¨Ê±¼äÉìËõÓë¾Ö²¿´íÎ»£©', 'FontWeight','normal');
+legend(ax1, {sprintf('ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½N=%dï¿½ï¿½', N), sprintf('ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½N=%dï¿½ï¿½', M)}, 'Location','best');
+title(ax1, 'ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½Î»ï¿½ï¿½', 'FontWeight','normal');
 
 ax2 = nexttile(tl,2);
 plot(ax2, tRef, zY, 'LineWidth', 1.6); hold(ax2,'on');
 plot(ax2, tRef, zX_aligned, 'LineWidth', 1.6);
 grid(ax2,'on'); box(ax2,'on');
-xlabel(ax2,'²Î¿¼Ê±¼äÖá / s');
+xlabel(ax2,'ï¿½Î¿ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ / s');
 ylabel(ax2,'\Delta B_z[n] / nT');
-legend(ax2, {'²Î¿¼Ñù±¾B','¶ÔÆëºóµÄÑù±¾A'}, 'Location','best');
-title(ax2, 'DTW ¶ÔÆëºó£¨Ó³Éäµ½²Î¿¼Ê±¼äÖá£©', 'FontWeight','normal');
+legend(ax2, {'ï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½B','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½A'}, 'Location','best');
+title(ax2, 'DTW ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½äµ½ï¿½Î¿ï¿½Ê±ï¿½ï¿½ï¿½á£©', 'FontWeight','normal');
 
 save_png(fig, fullfile(outDir, 'fig_motivation_dtw_align_z.png'), 300);
 close(fig);
 
 %% ========================================================================
-%  4) »ìÏý¾ØÕó£¨¸Ä²¼¾Ö£ºÌù½ü confusionchart ·ç¸ñ£©
+%  4) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¨¸Ä²ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ confusionchart ï¿½ï¿½ï¿½
 % ========================================================================
-fprintf('[4/6] Éú³É»ìÏý¾ØÕó£¨CNN Baseline£©...\n');
+fprintf('[4/6] ï¿½ï¿½ï¿½É»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CNN Baselineï¿½ï¿½...\n');
 make_confusion_chart( ...
     fullfile(matlabDataDir,'cm_cnn_baseline_data.mat'), ...
     fullfile(outDir,'cm_cnn_baseline.png'), ...
-    'ÀëÏß»ìÏý¾ØÕó£¨CNN Baseline£©', fontCN);
+    'ï¿½ï¿½ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½CNN Baselineï¿½ï¿½', fontCN);
 
-fprintf('[5/6] Éú³É»ìÏý¾ØÕó£¨DTW-MultiTemplate-CNN£©...\n');
+fprintf('[5/6] ï¿½ï¿½ï¿½É»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½DTW-MultiTemplate-CNNï¿½ï¿½...\n');
 make_confusion_chart( ...
     fullfile(matlabDataDir,'cm_dtw_multi_cnn_data.mat'), ...
     fullfile(outDir,'cm_dtw_multi_cnn.png'), ...
-    'ÀëÏß»ìÏý¾ØÕó£¨DTW-MultiTemplate-CNN£¬K_{MT}^*=4£©', fontCN);
+    'ï¿½ï¿½ï¿½ß»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½DTW-MultiTemplate-CNNï¿½ï¿½K_{MT}^*=4ï¿½ï¿½', fontCN);
 
 %% ========================================================================
-%  5) K_MT È¡ÖµÏûÈÚ£¨°´ Python ·ç¸ñ£º0-1£¬ÐéÏßÍø¸ñ£»±£Áô K* ÐéÏß£©
+%  5) K_MT È¡Öµï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ Python ï¿½ï¿½ï¿½0-1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ£»±ï¿½ï¿½ï¿½ K* ï¿½ï¿½ï¿½ß£ï¿½
 % ========================================================================
-fprintf('[6/6] Éú³É K_{MT} É¨ÃèÇúÏß...\n');
+fprintf('[6/6] ï¿½ï¿½ï¿½ï¿½ K_{MT} É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...\n');
 
 D = load(fullfile(matlabDataDir, 'ablation_K_data.mat'));
 
-% --- ¼æÈÝ×Ö¶ÎÃû£ºPython=K£»Äã¾É°æ=K_list ---
+% --- ï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½Python=Kï¿½ï¿½ï¿½ï¿½É°ï¿½=K_list ---
 if isfield(D,'K')
     KMT_list = double(D.K(:));
 elseif isfield(D,'K_list')
     KMT_list = double(D.K_list(:));
 else
-    error('ablation_K_data.mat È±ÉÙ K / K_list ×Ö¶Î');
+    error('ablation_K_data.mat È±ï¿½ï¿½ K / K_list ï¿½Ö¶ï¿½');
 end
 
 valF1  = double(D.val_f1(:));
 testF1 = double(D.test_f1(:));
 
-% --- Í³Ò»µ½ 0~1£¨Èç¹ûÊÇ°Ù·ÖÖÆ¾Í³ýÒÔ 100£©---
+% --- Í³Ò»ï¿½ï¿½ 0~1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°Ù·ï¿½ï¿½Æ¾Í³ï¿½ï¿½ï¿½ 100ï¿½ï¿½---
 if max(valF1)  > 1.2, valF1  = valF1  / 100; end
 if max(testF1) > 1.2, testF1 = testF1 / 100; end
 
-% --- K*£ºÓÅÏÈ¶ÁÎÄ¼þ£¬·ñÔò°´ÑéÖ¤¼¯×î´óÖµÑ¡ ---
+% --- K*ï¿½ï¿½ï¿½ï¿½ï¿½È¶ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÑ¡ ---
 if isfield(D,'K_best')
     KMT_best = double(D.K_best(1));
 elseif isfield(D,'best_k')
@@ -256,13 +315,13 @@ end
 
 fig = figure('Color','w','Position',[100 100 900 520]);
 
-% ÎªÁËÌù½üÄã¡°µÚ¶þ¸öÍ¼¡±£ºÀ¶=Test£¬³È=Val
+% Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã¡°ï¿½Ú¶ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½=Testï¿½ï¿½ï¿½ï¿½=Val
 hTest = plot(KMT_list, testF1, '-o', 'LineWidth', 2.0, 'MarkerSize', 8, ...
     'MarkerFaceColor','auto'); hold on;
 hVal  = plot(KMT_list, valF1,  '-s', 'LineWidth', 2.0, 'MarkerSize', 8, ...
     'MarkerFaceColor','auto');
 
-% ±£ÁôÄãÏëÒªµÄ K* ÊúÖ±ÐéÏß
+% ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ K* ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 hBest = xline(KMT_best, '--', 'LineWidth', 1.6);
 
 grid on; box on;
@@ -278,28 +337,28 @@ xlim([min(KMT_list)-0.2, max(KMT_list)+0.2]);
 ylim([0.0, 1.0]);
 yticks(0:0.2:1.0);
 
-xlabel('Ã¿ÀàÄ£°åÊý K_{MT}');
+xlabel('Ã¿ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ K_{MT}');
 ylabel('Macro-F1');
-title('K_{MT} È¡ÖµÏûÈÚ', 'FontWeight','normal');
+title('K_{MT} È¡Öµï¿½ï¿½ï¿½ï¿½', 'FontWeight','normal');
 
 legend([hTest,hVal,hBest], ...
-    {'²âÊÔ¼¯ Macro-F1','ÑéÖ¤¼¯ Macro-F1', sprintf('K_{MT}^*=%d', KMT_best)}, ...
+    {'ï¿½ï¿½ï¿½Ô¼ï¿½ Macro-F1','ï¿½ï¿½Ö¤ï¿½ï¿½ Macro-F1', sprintf('K_{MT}^*=%d', KMT_best)}, ...
     'Location','southwest');
 
 save_png(fig, fullfile(outDir, 'ablation_K.png'), 300);
 close(fig);
 
-fprintf('\n=== È«²¿Íê³É ===\n');
-fprintf('Êä³öÄ¿Â¼£º%s\n', outDir);
+fprintf('\n=== È«ï¿½ï¿½ï¿½ï¿½ï¿½ ===\n');
+fprintf('ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½%s\n', outDir);
 
-%% =============================== º¯ÊýÇø ================================
+%% =============================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ================================
 
 function fontCN = pick_chinese_font()
     cand = { ...
-        'Microsoft YaHei','Microsoft YaHei UI','Î¢ÈíÑÅºÚ', ...
-        'SimHei','ºÚÌå', ...
-        'SimSun','ËÎÌå', ...
-        'STSong','»ªÎÄËÎÌå', ...
+        'Microsoft YaHei','Microsoft YaHei UI','Î¢ï¿½ï¿½ï¿½Åºï¿½', ...
+        'SimHei','ï¿½ï¿½ï¿½ï¿½', ...
+        'SimSun','ï¿½ï¿½ï¿½ï¿½', ...
+        'STSong','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', ...
         'Arial Unicode MS' ...
     };
     fs = listfonts;
@@ -310,11 +369,11 @@ function fontCN = pick_chinese_font()
         end
     end
     fsLower = lower(string(fs));
-    idx = find(contains(fsLower, "yahei") | contains(string(fs), "Î¢ÈíÑÅºÚ"), 1);
+    idx = find(contains(fsLower, "yahei") | contains(string(fs), "Î¢ï¿½ï¿½ï¿½Åºï¿½"), 1);
     if ~isempty(idx), fontCN = fs{idx}; return; end
-    idx = find(contains(string(fs), "ËÎ") | contains(fsLower, "simsun"), 1);
+    idx = find(contains(string(fs), "ï¿½ï¿½") | contains(fsLower, "simsun"), 1);
     if ~isempty(idx), fontCN = fs{idx}; return; end
-    idx = find(contains(string(fs), "ºÚ") | contains(fsLower, "simhei"), 1);
+    idx = find(contains(string(fs), "ï¿½ï¿½") | contains(fsLower, "simhei"), 1);
     if ~isempty(idx), fontCN = fs{idx}; return; end
     fontCN = fs{1};
 end
@@ -440,6 +499,117 @@ function [repIdx, repLen, repScore] = select_representative_samples(ProcessedDat
     end
 end
 
+function [repIdx, repLen, repScore] = select_grouped_comparison_samples(ProcessedData, targetLength, fs, N0, L)
+    nClass = numel(ProcessedData);
+    repIdx   = zeros(nClass, 3);
+    repLen   = zeros(nClass, 3);
+    repScore = zeros(nClass, 3);
+
+    featCell   = cell(nClass, 1);
+    energyCell = cell(nClass, 1);
+    ampCell    = cell(nClass, 1);
+    lenCell    = cell(nClass, 1);
+
+    tmpl = zeros(nClass, 3 * L);
+
+    for c = 1:nClass
+        lenVec = double(targetLength{c}(:));
+        nSamp  = numel(lenVec);
+        feat   = zeros(nSamp, 3 * L);
+        energy = zeros(nSamp, 1);
+        ampVal = zeros(nSamp, 1);
+
+        for i = 1:nSamp
+            [~, dB, b, ~] = extract_event(ProcessedData{c}{i}, lenVec(i), fs, N0);
+            energy(i) = sum(b.^2);
+            ampVal(i) = max(abs(dB(:)));
+
+            Xi = zeros(L, 3);
+            for k = 1:3
+                xk = resample_linear(dB(:,k), L);
+                xk = (xk - mean(xk)) / (std(xk) + eps);
+                Xi(:,k) = xk;
+            end
+            feat(i,:) = reshape(Xi, 1, []);
+        end
+
+        featCell{c} = feat;
+        energyCell{c} = energy;
+        ampCell{c} = ampVal;
+        lenCell{c} = lenVec;
+
+        tmpl(c,:) = mean(feat, 1);
+        tmpl(c,:) = (tmpl(c,:) - mean(tmpl(c,:))) / (std(tmpl(c,:)) + eps);
+    end
+
+    qList = [30, 50, 70];
+
+    for c = 1:nClass
+        feat   = featCell{c};
+        energy = energyCell{c};
+        ampVal = ampCell{c};
+        lenVec = lenCell{c};
+        nSamp  = size(feat, 1);
+
+        ownScore = (feat * tmpl(c,:).') / (3 * L);
+        otherScore = -inf(nSamp, 1);
+        for oc = 1:nClass
+            if oc == c
+                continue;
+            end
+            ocScore = (feat * tmpl(oc,:).') / (3 * L);
+            otherScore = max(otherScore, ocScore);
+        end
+
+        marginScore = ownScore - otherScore;
+        energyScore = scale01(log(energy + 1));
+        ampScore    = scale01(ampVal);
+        baseScore   = ownScore + 0.80 * marginScore + 0.10 * energyScore + 0.10 * ampScore;
+
+        mask = (energy >= pct(energy, 40)) & (ampVal >= pct(ampVal, 40));
+        if sum(mask) < 9
+            mask = (energy >= pct(energy, 25));
+        end
+        if sum(mask) < 6
+            mask = true(size(mask));
+        end
+
+        used = false(nSamp, 1);
+        lenStd = std(lenVec) + eps;
+
+        for j = 1:3
+            lenTarget = pct(lenVec, qList(j));
+            lenScore = -abs(lenVec - lenTarget) / lenStd;
+            totalScore = baseScore + 0.20 * lenScore;
+            totalScore(~mask) = -inf;
+            totalScore(used) = -inf;
+
+            [bestScore, bestIdx] = max(totalScore);
+            if ~isfinite(bestScore)
+                fallbackScore = baseScore + 0.10 * lenScore;
+                fallbackScore(used) = -inf;
+                [bestScore, bestIdx] = max(fallbackScore);
+            end
+
+            used(bestIdx) = true;
+            repIdx(c, j) = bestIdx;
+            repLen(c, j) = lenVec(bestIdx);
+            repScore(c, j) = bestScore;
+        end
+    end
+end
+
+function y = scale01(x)
+    x = double(x(:));
+    lo = min(x);
+    hi = max(x);
+    if ~isfinite(lo) || ~isfinite(hi) || (hi - lo) < eps
+        y = 0.5 * ones(size(x));
+    else
+        y = (x - lo) / (hi - lo);
+    end
+end
+
 function idx = pick_max_energy(classCell, lenVec, idxPool, fs, N0)
     bestE = -inf;
     idx = idxPool(1);
@@ -453,22 +623,22 @@ function idx = pick_max_energy(classCell, lenVec, idxPool, fs, N0)
     end
 end
 
-%% ===================== »ìÏý¾ØÕó£ºÊÖ¶¯²¼¾Ö£¨Ìù½üÔ­ confusionchart£© =====================
+%% ===================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ confusionchartï¿½ï¿½ =====================
 
 function make_confusion_chart(matFile, outPng, titleStr, fontCN)
-    assert(exist(matFile,'file')==2, 'È±ÉÙ»ìÏý¾ØÕóÊý¾Ý£º%s', matFile);
+    assert(exist(matFile,'file')==2, 'È±ï¿½Ù»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½%s', matFile);
     D = load(matFile);
 
     cm = double(D.cm);
     labels = to_cellstr_row(D.labels);
 
-    desired = {'Ð¡ÐÍ³µ','ÖÐÐÍ³µ','´óÐÍ³µ'};
+    desired = {'Ð¡ï¿½Í³ï¿½','ï¿½ï¿½ï¿½Í³ï¿½','ï¿½ï¿½ï¿½Í³ï¿½'};
     [cm, labels] = reorder_cm_labels(cm, labels, desired);
 
     n = size(cm,1);
-    assert(n==3 && size(cm,2)==3, 'µ±Ç°»æÖÆ°´Èý·ÖÀàÊµÏÖ£¬µ«¼ì²âµ½ cm=%dx%d', n, size(cm,2));
+    assert(n==3 && size(cm,2)==3, 'ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½âµ½ cm=%dx%d', n, size(cm,2));
 
-    % ÐÐ/ÁÐ»ã×Ü£¨ÕûÊý°Ù·Ö±È£¬0% ²»Áô¿Õ£©
+    % ï¿½ï¿½/ï¿½Ð»ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù·Ö±È£ï¿½0% ï¿½ï¿½ï¿½ï¿½Õ£ï¿½
     tp = diag(cm);
     rowSum = sum(cm,2);
     colSum = sum(cm,1).';
@@ -490,14 +660,14 @@ function make_confusion_chart(matFile, outPng, titleStr, fontCN)
     rowWrong = 100 - rowCorrect;
     colWrong = 100 - colCorrect;
 
-    Prow = [rowCorrect, rowWrong];          % 3x2£¨ÓÒ²à£©
-    Pcol = [colCorrect.'; colWrong.'];      % 2x3£¨µ×²¿£©
+    Prow = [rowCorrect, rowWrong];          % 3x2ï¿½ï¿½ï¿½Ò²à£©
+    Pcol = [colCorrect.'; colWrong.'];      % 2x3ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½
 
     cmap = confusion_like_cmap(256);
 
     fig = figure('Color','w','Position',[100 100 950 720]);
 
-    % ---- ÊÖ¶¯²¼¾Ö£ºÓë confusionchart ½Ó½ü£¨¹Ø¼ü£©----
+    % ---- ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ confusionchart ï¿½Ó½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½----
     posMain = [0.10 0.34 0.56 0.56];   % [x y w h]
     posRow  = [0.70 0.34 0.22 0.56];
     posCol  = [0.10 0.10 0.56 0.18];
@@ -506,21 +676,21 @@ function make_confusion_chart(matFile, outPng, titleStr, fontCN)
     axRow  = axes('Parent', fig, 'Position', posRow);
     axCol  = axes('Parent', fig, 'Position', posCol);
 
-    % Ö÷¾ØÕó£º±£³Ö·½¸ñ¹Û¸Ð
+    % ï¿½ï¿½ï¿½ï¿½ï¿½ó£º±ï¿½ï¿½Ö·ï¿½ï¿½ï¿½Û¸ï¿½
     cm_plot_matrix(axMain, cm, cmap, [0 max(cm(:))], 'count',   fontCN, true);
-    axMain.XTick = [];                         % Ö÷¾ØÕó²»ÏÔÊ¾ x Àà±ð
+    axMain.XTick = [];                         % ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ x ï¿½ï¿½ï¿½
     axMain.YTickLabel = labels;
-    ylabel(axMain, 'ÕæÊµÀà');
+    ylabel(axMain, 'ï¿½ï¿½Êµï¿½ï¿½');
 
-    % ÐÐ»ã×Ü£ºÔÊÐíÀ­ÉìÌîÂú£¨²»Ç¿ÖÆ·½¸ñ£¬±ÜÃâÁô°×£©
+    % ï¿½Ð»ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½Æ·ï¿½ï¿½ñ£¬±ï¿½ï¿½ï¿½ï¿½ï¿½×£ï¿½
     cm_plot_matrix(axRow, Prow, cmap, [0 100], 'percent', fontCN, false);
-    axRow.XTick = []; axRow.YTick = [];        % ²»ÏÔÊ¾ÈÎºÎ¿Ì¶È
+    axRow.XTick = []; axRow.YTick = [];        % ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ÎºÎ¿Ì¶ï¿½
 
-    % ÁÐ»ã×Ü£ºÔÊÐíÀ­ÉìÌîÂú£¨²»Ç¿ÖÆ·½¸ñ£©
+    % ï¿½Ð»ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½Æ·ï¿½ï¿½ï¿½
     cm_plot_matrix(axCol, Pcol, cmap, [0 100], 'percent', fontCN, false);
     axCol.YTick = [];
     axCol.XTickLabel = labels;
-    xlabel(axCol, 'Ô¤²âÀà');
+    xlabel(axCol, 'Ô¤ï¿½ï¿½ï¿½ï¿½');
 
     sgtitle(titleStr, 'FontName', fontCN, 'FontWeight','normal', 'Interpreter','tex');
 
@@ -561,7 +731,7 @@ function [cm2, labels2] = reorder_cm_labels(cm, labels, desired)
     end
 
     if any(perm==0) || numel(unique(perm)) < numel(perm)
-        warning('labels ÎÞ·¨ÎÈ¶¨Æ¥Åäµ½ {Ð¡ÐÍ³µ,ÖÐÐÍ³µ,´óÐÍ³µ}£¬½«±£³ÖÔ­Ë³Ðò¡£labels=%s', strjoin(string(labels), ','));
+        warning('labels ï¿½Þ·ï¿½ï¿½È¶ï¿½Æ¥ï¿½äµ½ {Ð¡ï¿½Í³ï¿½,ï¿½ï¿½ï¿½Í³ï¿½,ï¿½ï¿½ï¿½Í³ï¿½}ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­Ë³ï¿½ï¿½labels=%s', strjoin(string(labels), ','));
         cm2 = cm;
         labels2 = labels;
         return;
@@ -572,8 +742,8 @@ function [cm2, labels2] = reorder_cm_labels(cm, labels, desired)
 end
 
 function cmap = confusion_like_cmap(n)
-    cLow  = [0.9569 0.8353 0.8078]; % Ç³ºì
-    cHigh = [0.0000 0.4470 0.7410]; % À¶
+    cLow  = [0.9569 0.8353 0.8078]; % Ç³ï¿½ï¿½
+    cHigh = [0.0000 0.4470 0.7410]; % ï¿½ï¿½
     cmap = [linspace(cLow(1), cHigh(1), n).', ...
             linspace(cLow(2), cHigh(2), n).', ...
             linspace(cLow(3), cHigh(3), n).'];
@@ -628,7 +798,7 @@ function cm_plot_matrix(ax, M, cmap, clim, mode, fontCN, squareCells)
     hold(ax,'off');
 end
 
-%% ===================== DTW Ïà¹Ø =====================
+%% ===================== DTW ï¿½ï¿½ï¿½ =====================
 
 function [path, D] = dtw_path_4ch(X, Y, w, lambda)
     N = size(X,1);

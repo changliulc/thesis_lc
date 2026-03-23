@@ -7,5 +7,6 @@
     "By": 35.456160573178295,
     "Bz": 57.8472751468654
   },
-  "note": "Cropped from Z-peak region, 2.5 h shown, labels fixed in UTF-8."
+  "font_rule": "Chinese SimSun, English Times New Roman",
+  "note": "Preview first. Thesis image overwritten only when --write-thesis is passed."
 }

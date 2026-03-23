@@ -1,0 +1,487 @@
+
+
+===== PAGE 1 =====
+
+Sensor Networks for Monitoring Trafﬁc
+Sinem Coleri, Sing Yiu Cheung and Pravin V araiya∗†‡
+August 5, 2004
+Abstract
+Trafﬁc surveillance is currently performed with inductive loop detectors and video
+cameras for the efﬁcient management of public roads. This paper proposes an alternative
+trafﬁc monitoring system using wireless sensor networks that offers high accuracy and
+lower cost compared. The system consists of two parts: wireless sensor network and
+access point. Trafﬁc information is generated at the sensor nodes and then transferred to
+the access point over radio. Our prototype called Trafﬁc-Dot achieves vehicle detection
+accuracy of 97% and accurately measures speed with a node pair. The communication
+protocol PEDAMACS (Power Efﬁcient and Delay Aware Medium Access Protocol for
+Sensor Networks) is shown to increase the lifetime of the system up to several years while
+still guaranteeing the timely arrival of information from the sensor nodes to the access
+point.
+1 INTRODUCTION
+Increasing congestion level in public road networks is a growing problem in many countries.
+The 2003 Urban Mobility Report [ 1] estimates total annual cost of congestion for the 75 U.S.
+urban areas at 69.5 billion dollars, the value of 3.5 billion hours of delay and 5.7 billion gallons
+of excess fuel consumed.
+Any remedial strategy for the efﬁcient management of roads requires the measurement of trafﬁc
+conditions. For instance, the trafﬁc management center (TMC) uses measurements of trafﬁc at
+urban intersections to optimize trafﬁc signal light settings based on trafﬁc queue lengths. And
+road users can use this information to better plan their activities and adjust their routes.
+Most conventional trafﬁc surveillance systems use intrusive sensors, including inductive loop
+detectors [ 2], micro-loop probes, and pneumatic road tubes, because of their high accuracy
+for vehicle detection ( > 97%). However, these sensors disrupt trafﬁc during installation and
+repair, which leads to a high installation and maintenance.
+∗ S. Coleri is Ph. D. student in Electrical Engineering and Computer Science, University of California Berkeley,
+CA 94720, USA csinem@eecs.berkeley.edu
+†S. Y . Cheung is Ph. D. student in Mechanical Engineering, University of California Berkeley, CA 94720,
+USA singyiu@path.berkeley.edu
+‡P . V araiya is Professor in Electrical Engineering and Computer Science, University of California Berkeley,
+CA 94720, USA varaiya@eecs.berkeley.edu883
+
+
+===== PAGE 2 =====
+
+In recent years, ab oveground sensors like video image processing [ 3], microwave radar, laser
+radar, passive infrared, ultrasonic, passive acoustic array are being used. However, these sys-
+tems have a high equipment cost and their accuracy depends on environment conditions [ 4]
+[5].
+This paper presents a novel system based on wireless sensors [ 6] that has the potential to
+revolutionize trafﬁc surveillance technology because of its low cost and potential for large
+scale deployment. The system consists of two parts: a wireless sensor network and an access
+point. The wireless sensor network consists of a group of nodes, each comprising one or
+more sensors, a processor, a radio and a battery. They generate trafﬁc information such as
+number of cars, speed and length of the vehicles, based on processing of the sensor data. The
+information is then sent to the access point over the radio. The trafﬁc management center
+collects the information from each access point to analyze trafﬁc conditions and take actions
+such as adjusting the trafﬁc light durations. An example conﬁguration for the system is given
+in Figure 1 for an urban intersection and a freeway.
+Sensor node
+Access point
+Freeway
+< 100 m
+Intersection
+Sensor node
+Access point
+Freeway
+< 100 m
+Intersection
+Figure 1: Example conﬁguration of wireless sensor network for trafﬁc surveillance at an urban
+intersection and a freeway.
+The wireless feature signiﬁcantly decreases the installation cost. To compete with current
+technologies, however, the data provided by the system must be accurate, delivered to the
+access point within a certain time for real-time applications, and the lifetime of the system must
+be on the order of several years. Section 2 describes the sensor node designed for the trafﬁc
+applications, which we call Trafﬁc-Dot. Section 3 gives the algorithms for detection, and speed
+and vehicle length estimation. Section 4 describes the performance of the communication
+protocol PEDAMACS (Power Efﬁcient and Delay Aware Medium Access Protocol for Sensor
+Networks). PEDAMACS increases system lifetime to several years compared with several
+days based on current random access schemes, and guarantees the real-time delivery of trafﬁc
+information at each node within a predetermined time.
+2 SENSOR NODE HARDW ARE
+Figure 2 is a photograph of Trafﬁc-Dot, which consists of a processor, a radio, a magnetome-
+ter, a battery and a cover for protection from the vehicles. The processor and the radio are
+located in MICA2DOT, the latest family of Berkeley motes [ 6]. The microprocessor is At-
+mel A Tmega128L with 128kB of programmable memory and 512kB of data ﬂash memory.884
+
+
+===== PAGE 3 =====
+
+It runs TinyOS, an operating system developed at UC Berkeley, from its internal ﬂash mem-
+ory. TinyOS enables the single processor board to run the sensor processing and the radio
+communication simultaneously.
+Figure 2: Trafﬁc-Dot
+The radio is ChipCon CC1000 916MHz, frequency shift keying (FSK) RF transceiver, capable
+of delivering up to 40kbps. The RF transmit power can be changed in software.
+There are two HMC1051Z magnetic sensors, based on anisotropic magnetoresistive (AMR)
+sensor technology. To receive one sample, the magnetometer is active for 0.9 msec and the
+energy spent for taking one sample is 0.9µJ. The magnetometer is turned off between samples
+for energy conservation.
+The battery is Tadiran Lithium TL5135, with 1.7Ah capacity in a compact size. The entire
+unit is encased in a SmartStud cover, designed to be placed on pavement and able to withstand
+16,000 lbs. So the node is protected and can be glued on anywhere on the pavement.
+3 VEHICLE DETECTION
+We discuss the use of a magnetometer for vehicle detection and present test results.
+The sensor detects distortions of the Earth’s ﬁeld caused by a large ferrous object like a vehicle.
+Such a vehicle can be modelled by a composite of many dipole magnets [ 7]. Since the distor-
+tion depends on the ferrous material, its size and orientation, a magnetic signature is induced
+corresponding to the vehicle’s shape and conﬁguration.
+Figure 3 a) shows a simulation of the magnetic ﬁeld at a location on the side of the lane when
+a “point-source-dipole” is moving from x− to x+. Figure 3 b) shows the plot of a real-time
+measurement of the magnetometer of a test vehicle on the road sampling at 64Hz for each axis,
+under conﬁguration similar to that of the simulation. The two plots have different scales, but
+the measurements agree with the simulated patterns.
+For detecting the presence of a vehicle, measurements of the (vertical) z-axis is a better choice
+as it is more localized and the signal from vehicles on adjacent lanes can be neglected. Figure
+4 shows z-axis measurements of a node pair at a known distance from each other placed in the
+middle of a lane when a test vehicle passes over them along the x-axis. There is a sharp change
+as the vehicle moves over the nodes. This characteristic suggests a simple threshold detection
+algorithm. The detection ﬂag is generated with the state machine of Figure 5.
+To measure speed we use a synchronized node pair with known separation. The measurements
+also give the magnetic vehicle length using the estimated speed and occupancy from each node.885
+
+
+===== PAGE 4 =====
+
+a)
+ b)
+Figure 3: a) Magnetometer simulation for vehicle moving from x− to x+ b)Magnetometer
+measurement for vehicle moving from x− to x+
+Figure 4: Z-axis measurement of a vehicle running over two motes at 16mph
+Figure 5: The state machine for the threshold detection algorithm886
+
+
+===== PAGE 5 =====
+
+The major error in speed estimation is caused by inaccurate time synchronization between
+the node pair, the resolution of the sampling rate, and the node separation. In the test shown
+in Figure 4, the nodes are separated by 0.165m( 6.5”), and the sampling rate is 256Hz. The
+estimated speed is 15.76mph which agrees with the reference speed of 16mph from a GPS
+meter.
+A test was conducted under a conﬁguration similar to that in Figure 4. A node pair was stuck
+in the center of a single lane section in local trafﬁc for one hour. The sampling frequency is
+128Hz with a node separation of 1.5m. 333 vehicles were counted manually during the test. A
+summary of the experimental results is shown in Table 1.O v e r 97% of vehicles are detected
+by both nodes.
+Samples with unaligned “on” and “off” time pairs between node A and B are dropped. Samples
+are unaligned because of the error in synchronization. 238(71%) valid detection pairs were
+identiﬁed. The resulting estimated speed and magnetic vehicle length distributions are shown
+in Figure 6, which also gives the vehicle types observed.
+0 5 10 15 20 25 30 35 40 45 50 55 60 65 700
+10
+20
+30
+40
+50
+60
+70
+80Num of Detections
+Estimated Speed [mph]
+Distribution of Estimated Speed by a Node Pair
+2 3 4 5 6 7 8 9 10 11 12 13 140
+10
+20
+30
+40
+50
+60Num of Detections
+Estimated Magnetic Length [m]
+Distribution of Estimated Magnetic Length by a Node Pair
+Motorcycle Passenger SUV Van Mini−Truck Bus Truck
+0
+50
+100
+150
+200
+250
+Num of Detections
+Vehicle Type
+Distribution of Vehicle Types during Experiment
+Figure 6: Distributions of estimated speed, magnetic vehicle length and vehicle type
+4 COMMUNICA TION PROTOCOL
+In a sensor node, battery energy is mostly consumed by the radio. Therefore, the network’s
+communication protocol, which determines how the radios are operated, has a decisive inﬂu-
+ence on battery lifetime. Existing MAC protocols fall into one of two categories: random
+access and time division multiple access (TDMA).
+Several proposals have been advanced for random access schemes to reduce the effects of en-
+ergy consuming operations such as constantly listening to the channel, overhearing packets not
+#Detections
+ Mean
+ STD
+Manual Counting
+ 333
+ −
+ −
+Speed estimated by node A
+ 330(99%)
+ 30.0mph
+ 10.4mph
+Speed estimated by node B
+ 326(97.9%)
+ 33.8mph
+ 13.6mph
+Speed estimated by node pair
+ 238(71%)
+ 30.9mph
+ 12.8mph
+Length estimated by node pair
+ 238(71%)
+ 5.1m
+ 2.5m
+Table 1: Summary of the experimental results887
+
+
+===== PAGE 6 =====
+
+destined for them, and transmissions collisions [ 9, 10]. These proposals achieve power savings
+up to a factor of 10 at the cost of considerable increase in hardware or control complexity.
+The TDMA schemes on the other hand are more power efﬁcient since they allow the nodes
+in the network to enter inactive states until their allocated time slots. However, previously
+proposed TDMA schemes do not take advantage of the fact that all sensor data are destined for
+a single access point and introduce distributed synchronization overhead [ 11, 12].
+We adopt PEDAMACS (Power Efﬁcient and Delay Aware Medium Access Protocol for Sensor
+Networks) [ 8] for our trafﬁc system. PEDAMACS is a TDMA scheme that discovers the
+topology of the network and keeps the nodes synchronized to validate the execution of a TDMA
+schedule. It is designed to meet both delay and energy requirements of trafﬁc applications
+by exploiting the special characteristics of sensor networks. The data at the sensor nodes in
+the wireless network is periodically transferred to a distinguished node called access point
+(AP) for purposes of control. The AP then transfers the data to the trafﬁc management center.
+Moreover, the sensor nodes have limited (transmit) power and energy, but the access point
+is not so limited. Consequently, communication from nodes must travel over several hops to
+reach the access point, but packets from the access point can reach all nodes in a single hop.
+PEDAMACS protocol operates in four phases: the topology learning phase, the topology col-
+lection phase, the scheduling phase and the adjustment phase. In the topology learning phase,
+each node identiﬁes its (local) topology information, i.e. its neighbors and its interferers, and
+its parent node in the routing tree rooted at the AP obtained according to some routing metric.
+In the topology collection phase, each node sends this topology information to the AP so, at
+the end of this phase, the AP knows the full network topology. At the beginning of the schedul-
+ing phase, the AP broadcasts a schedule. Each node then follows the schedule: In particular,
+the node sleeps when it is not scheduled either to transmit a packet or to listen for one. The
+adjustment phase is included if necessary to learn the local topology information that was not
+discovered in topology learning phase or that changed, depending on the application and the
+number of successfully scheduled nodes in scheduling phase.
+The determination of the schedule based on the topology of the network at the AP is performed
+according to the PEDAMACS scheduling algorithm [ 8]. The scheduling algorithm ideally
+should minimize the delay—the time needed for data from all nodes to reach the access point.
+However, this optimization problem is NP-complete. PEDAMACS instead uses a polynomial-
+time scheduling algorithm which guarantees a delay proportional to the number of packets in
+the sensor network to be transferred to the AP in each period. The algorithm assigns a group
+of non-conﬂicting nodes to transmit in each time slot, in such a way that the data packets
+generated at each node reaches the AP by the end of the scheduling frame.
+We compare the performance of PEDAMACS with that of ﬁve existing schemes, namely, im-
+plicit random, IEEE 802.11, SMAC 50%, SMAC 10% and TDMA, by conducting Monte Carlo
+simulations of the protocols in TOSSIM [ 13], the TinyOS simulation framework, over 10 dif-
+ferent random conﬁgurations. Implicit random and IEEE 802.11 refer to the random access
+schemes with implicit and explicit acknowledgements respectively whereas smac 50% and
+smac 10% refers to SMAC [ 10] for 50% and 10% duty cycles (SMAC is a MAC protocol that
+provides low-duty cycle operation of each node by periodic sleeping).
+Figure 7 shows the delay comparison of PEDAMACS with existing protocols for different
+number of nodes. IEEE 802.11 provides slightly smaller delay compared to implicit random
+access schemes. SMAC increases the delay by a factor of 2-3 and 7-10 for 50% and 10% duty888
+
+
+===== PAGE 7 =====
+
+cycles respectively over the delay of IEEE 802.11. This factor decreases as the number of the
+nodes increases.
+For a 60-node network the average delay of IEEE 802.11 scheme is nearly 5 × 105 bit times,
+which is about 10 sec for a 50 kbps transmission rate. Taking the random variation in the actual
+delay into account may make a random access scheme unsuitable for the trafﬁc application,
+which generates data every 30 sec.
+20 25 30 35 40 45 50 55 60
+0
+0.5
+1
+1.5
+2
+2.5
+3
+x 10
+6
+number of nodes
+delay (bit time)
+pedamacs
+tdma
+implicit random
+IEEE 802.11
+smac,sleep %50
+smac,sleep %10
+Figure 7: Comparison of the delay of random access and PEDAMACS schemes for different
+number of nodes.
+The power-consuming operations in a sensor node are transmission and reception of a packet,
+listening to the channel, sampling, and running the microprocessor. Figure 8-a gives the life-
+time estimates of PEDAMACS and existing protocols for 50 kbps transmission rate, 128Hz
+sampling rate and 2 minute packet generation period, assuming that each node has a pair of
+AA batteries, which can supply 2200 mAh at 3 V .
+The lifetime of random access schemes, implicit random and IEEE 802.11, is about ten days
+whereas the lifetime of SMAC protocol increases up to 60 days for 10% duty cycle. The
+lifetime of PEDAMACS system, on the other hand, is about 1200 days. The reason for the
+dramatic difference becomes clear from Fbigure 8-b, which compares the power consumed
+by these schemes in different operations during a period for a 60-node random network. The
+primary cause is in the total energy consumed by the radio in ‘listening’ and ‘sleeping’ modes.
+SMAC 10% can decrease this energy by a factor of 10 whereas PEDAMACS decreases it by
+a factor of more than 1, 000. The difference in lifetimes also arises from differences in the
+amount of energy spent in transmission due to retransmissions and reception because of the
+‘overhearing effect’: In random access schemes, when one node transmits a packet, all neigh-
+boring nodes receive it whereas only the parent of that node receives the packet in PEDAMACS
+(the other neighbors are in sleep mode).
+In order to make our trafﬁc system competitive with current trafﬁc measurement equipment,
+which lasts almost 10 years without maintenance, the lifetime of the PEDAMACS network
+can be increased further by using extra relay nodes in conjunction with an energy efﬁcient
+routing that balances the energy consumption on multiple paths. In [ 14], we formulated this
+problem as a linear programming problem. Given the location of sensor nodes, the problem is
+to determine the optimal locations of relay nodes together with the optimal energy provided to
+them so that the network is alive during the desired lifetime with minimum total energy. The
+original nonlinear programming problem is transformed to a linear programming problem by889
+
+
+===== PAGE 8 =====
+
+20 25 30 35 40 45 50 55 60
+10
+0
+10
+1
+10
+2
+10
+3
+10
+4
+number of nodes
+lifetime (day)
+pedamacs
+implicit random
+IEEE 802.11
+smac,sleep %50
+smac,sleep %10
+0
+1
+2
+3
+4
+5
+6
+7
+operation
+log10 of energy consumption (uJ) 
+pedamacs
+implicit random
+IEEE 802.11
+smac,sleep %50
+smac,sleep %10
+    transmission            reception                 sleeping                     listening                 sampling 
+Figure 8: a) Comparison of the lifetime of PEDAMACS with competing schemes for different
+number of nodes. b) Comparison of power consumption in a PEDAMACS network vs. con-
+tention networks for different node operations in one period. Note that the vertical axis is log10.
+s1
+s10
+s9
+s8
+s7
+s6
+s5
+s4
+s3
+s2
+AP
+10ft
+20ft 20ft 20ft
+5ft
+1.2943
+0.7310
+0.73101.7744
+1.7744
+1.7744
+1.7744
+0.7005
+0.7310
+0.7310
+a)
+s1
+s10
+s9
+s8
+s7
+s6
+s5
+s4
+s3
+s2
+AP
+10ft
+20ft 20ft 20ft
+5ft
+0.0583
+0.0610
+0.05830.1845
+0.2345
+0.1156
+0.0721
+0.0583
+0.0583
+0.0963
+r4
+r3r1
+r2
+0.1068
+0.26480.2879
+0.1068
+b)
+Figure 9: a) Locations of the AP and sensor nodes in a trafﬁc intersection with the energy
+distribution at transmission range 40ft. b)Energy distribution for grid size 20ft at transmission
+range 20ft.
+restricting the locations where the relay nodes are allowed to a square lattice.
+Figure 9 a) and b) show the energy required to achieve the desired lifetime t
+d =1 0 years in
+terms of battery energy for each node for the ‘no relay node’ case at transmission range 40ft
+and for a 20ft grid size at transmission range 20ft respectively. Using extra relay nodes in the
+network makes one unit battery energy achieve the desired lifetime.
+5 CONCLUSIONS AND FUTURE WORK
+Wireless sensor networks offer a promising platform for trafﬁc monitoring that can compete
+with current technology in accuracy and lifetime. We have built a prototype of the sensor
+node for trafﬁc surveillance, which we call Trafﬁc-Dot. It consists of a processor, a radio, a890
+
+
+===== PAGE 9 =====
+
+magnetometer, a battery and a cover for protection from the vehicles. We have shown that the
+magnetic sensor data can detect vehicles with 97% accuracy, as well as estimating speed and
+vehicle length.
+To increase the lifetime of the network, the magnetic sensor is based on anisotropic magnetore-
+sistive (AMR) sensor technology so that the reaction of the sensor is very fast and not limited
+by coils or oscillating frequencies, and it can be turned off between the samples. Furthermore,
+the radio is controlled by PEDAMACS (Power Efﬁcient and Delay Aware Medium Access
+Protocol for Sensor Networks) [ 8], which controls the nodes’ transmissions so that their radio
+sleeps when it is not scheduled either to transmit a packet or to listen for one. PEDAMACS
+increases the lifetime of the network to several years, which can compete with 10 year lifetime
+of inductive loop detectors.
+In the future, we plan to compare the performance of wireless sensor data with inductive loop
+detectors in the ﬁeld. We are working on incorporating multiple functionality in Trafﬁc-Dot
+such as determining the weight of the trucks by using accelerometers and road conditions such
+as ice or fog. We are also working on classifying vehicles based on their magnetic signature.
+6 ACKNOWLEDGMENTS
+This study is supported by the National Science Foundation and a grant from the California
+Department of Transportation (Caltrans) to the California PA TH Program. The contents of this
+paper reﬂect the views of the authors who are responsible for the facts and the accuracy of the
+data presented herein. The contents do not necessarily reﬂect the ofﬁcial views of or policy
+of the California Department of Transportation. This paper does not constitute a standard,
+speciﬁcation or regulation.
+We are grateful to other members of the Distributed Sensing Group, especially Baris Dundar
+and Sumitra Ganesh, for their help.
+References
+[1] 2003 Urban Mobility Report, http://mobility.tamu.edu/ums/report/.
+[2] S. Oh, S. G. Ritchie and C. Oh, “Real Time Trafﬁc Measurement from Single Loop
+Inductive Signatures”, http://www.its.berkeley.edu/conferences/trb/00905.pdf.
+[3] C. Li, K. Ikeuchi and M. Sakauchi, “Acquisition of trafﬁc information using a video cam-
+era with 2D spatio-temporal image transformation technique ”, IEEE Intelligent Trans-
+portation Systems, 1999, p.634-638.
+[4] “A Summary of V ehicle Detection and Surveillance Technologies used in Intelligent
+Transportation Systems,”The V ehicle Detector Clearinghouse, Southwest Technology De-
+velopment Institute (SWTDI), 2000
+[5] C. A. Anderson, P . G. Michalopoulos and R. D. Jacobson, “Cost beneﬁt analysis of video-
+based vehicle detection,” V ehicle Navigation and Information Systems Conference, 1995.891
+
+
+===== PAGE 10 =====
+
+[6] P . Levis, S. Madden, D. Gay, J. Polastre, R. Szewczyk, A. Woo, E. Brewer and D.
+Culler, “The Emergence of Networking Abstractions and Techniques in TinyOS,” First
+USENIX/ACM Symposium on Networked Systems Design and Implementation , 2004
+[7] M. J. Caruso and L. S. Withanawasam, “V ehicle Detection and Compass Applications
+using AMR Magnetic Sensors,” Honeywell Report.
+[8] S. Coleri, PEDAMACS: Power efﬁcient and delay aware medium access protocol for sen-
+sor networks, MS Thesis, Department of Electrical Engineering and Computer Science,
+University of California, Berkeley, December 2002.
+[9] C. S. Raghavendra and S. Singh, “PAMAS - Power Aware Multi-Access Protocol with
+Signalling for Ad Hoc Networks,” Computer Communications Review, July 1998
+[10] W. Y e, J. Heidemann, and D. Estrin, “An Energy-Efﬁcient MAC Protocol for Wireless
+Sensor Networks,” IEEE INFOCOM 2002 , June 2002.
+[11] N. R. Prasad and H. Teunissen, “A state-of-the-art of HIPERLAN/2,” Fall IEEE VTC ,
+1999, volume:5 September 1999, pp.2661-2666
+[12] R. Ramaswami and K. K. Parhi, “Disributed Scheduling of Broadcasts in a Radio Net-
+work,” Proceedings of the Eighth Annual Joint Conference of the IEEE Computer and
+Communications Societies. Technology: Emerging or Converging , 1989 pp. 497 -504
+vol.2., INFOCOM 1989.
+[13] Using TOSSIM Simulator to Develop TinyOS Components,
+http://webs.cs.berkeley.edu/to/tinyos-1.x/doc/tutorial/lesson5.html.
+[14] S. Coleri and P . V araiya, “Optimal Placement of Relay Nodes in Sensor Networks,” Tech-
+nical Report.892

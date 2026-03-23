@@ -1,0 +1,767 @@
+
+
+===== PAGE 1 =====
+
+Geomagnetic Sensor based Abnormal Parking
+Detection in Smart Roads
+Runsen He1,2, Guoqiang Mao 1,2, Yilong Hui 1,2,∗, and Qingwei Cheng 1,2
+1.State Key Laboratory of Integrated Services Networks, Xidian University, Xi’an, 710071
+2.Research Institute of Smart Transportation, Xidian University, Xi’an, 710071
+*ylhui@xidian.edu.cn
+Abstract—With the development of Internet of Things (IoT)
+and communication technology, abnormal parking detection
+based on geomagnetic sensors equipped with solar panels has
+become increasingly feasible and important. False parking
+detection is a main challenge affecting the widespread use
+of the aforementioned technology. Especially when ambient
+light change triggers changes in the current of solar panel,
+which may in turn cause local EM ﬁeld changes and affect the
+detection of nearby geomagnetic sensor . To that end, we propose
+an abnormal parking detection scheme to distinguish between
+real parking and false detections. Speciﬁcally, we establish
+an equivalent model of the magnetic ﬁeld around the solar
+panel, and design a method to compute the magnetic ﬁeld
+at the periphery of the solar panel. Then, we analyze the
+difference between the magnetic ﬁeld caused by the changes in
+ambient light and the magnetic ﬁeld produced by vehicles, and
+extract features that distinguish abnormal parking from false
+detections. Based on the features, a state machine is designed
+to distinguish the false detection of light from the real parking
+based on the magnetic ﬁeld waveform. Field tests show that the
+accuracy of the designed abnormal parking detection scheme
+can reach 97%.
+Index Terms—Internet of things, abnormal parking detection,
+geomagnetic sensor, smart roads
+I. I NTRODUCTION
+With the rapid development of Internet of Things (IoT)
+and communication technology, smart road technology has
+received extensive attention from industry and academia [1].
+In smart roads, by analyzing and processing trafﬁc data
+sensed by roadside sensors, efﬁcient trafﬁc management and
+abnormal event processing can be achieved to improve the
+trafﬁc efﬁciency.
+As a common road abnormal event, abnormal parking
+refers to an event in which vehicles stay on the main lane or
+emergency lane. Due to the high driving speed of vehicles,
+abnormal parking events will affect the normal trafﬁc order
+and may lead to trafﬁc accidents. Therefore, accurate identi-
+ﬁcation of abnormal vehicle parking events is an important
+function for smart roads. The existing schemes for detecting
+abnormal parking based on various radars or videos are
+difﬁcult to deploy on a large scale on highways due to
+cost limitations or visibility limitations. Recently, due to the
+advantages of geomagnetic sensors such as low cost and
+robust to environmental changes, researchers worldwide have
+investigated parking detection schemes based on geomagnetic
+sensors. In [2], the authors proposed an intelligent vehicle
+management scheme using geomagnetic sensors to realize
+real-time sharing of parking space information. In [3], the au-
+thors proposed a parking detection algorithm for eliminating
+interference from adjacent parking. The test showed that the
+detection accuracy of the algorithm for vehicles entering and
+leaving the parking space is 99.8% and 99.9%, respectively.
+In order to overcome the interference of vehicles in adjacent
+parking spaces, Zhang et al. [4] fused the data features
+collected by the geomagnetic sensors from multiple adjacent
+parking spaces to detect the current parking space occupancy.
+In [5], the authors proposed a parking detection algorithm
+that considers the temperature drift. With this algorithm, the
+inﬂuence of temperature on parking detection accuracy can
+be reduced.
+Although parking detection based on geomagnetic sensors
+has been widely studied, the detection solutions in the
+literature mostly focused on detection in parking lots, with
+few studying abnormal parking detection in highways. In the
+parking lot scenario, the number of sensors is relatively small
+and the location is relatively concentrated. Therefore, the
+sensors can be powered by the battery or directly connected
+to a power source. However, in the highway scenario, the
+replacement of batteries or wired power supply will bring
+huge consumption of human and ﬁnancial resources.
+For this reason, IoT devices integrating solar panels and
+geomagnetic sensors have gradually gained widespread at-
+tention [6]. Through the integration of geomagnetic sensors,
+microprocessors, solar panels, batteries and other compo-
+nents, the sensors can overcome the problems of high man-
+ufacturing costs and poor battery life, and realize real-time
+abnormal parking detection in highway scenarios. However,
+the integration of solar panels and geomagnetic sensors
+in closely packed IoT devices also brings new challenges.
+Speciﬁcally, when the solar panel charges the sensor battery
+under sunlight, a photon-generated current will be generated,
+which induces magnetic ﬁeld around the solar panel. There-
+fore, when the ambient light changes drastically, the magnetic
+ﬁeld strength around the solar panel will ﬂuctuate, which may
+cause false detection and affect the accuracy of trafﬁc ﬂow
+monitoring [7].
+To address the aforementioned false detection problem,
+we propose an abnormal parking detection scheme that
+can distinguish between real parking and false detection.
+Speciﬁcally, we ﬁrst establish a magnetic ﬁeld model around
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1060
+GLOBECOM 2023 - 2023 IEEE Global Communications Conference | 979-8-3503-1090-0/23/$31.00 ©2023 IEEE | DOI: 10.1109/GLOBECOM54140.2023.10437955
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+Y
+X
+Z
+Magnetic 
+Sensors
+Uniform UniformHighly-
+Distorted
+Highly-
+Distorted
+Slightly-
+Distorted
+Y
+X
+Z
+Y
+X
+Z
+Fig. 1. The deployment of sensor node
+the solar panel to calculate the magnetic ﬁeld at the periphery
+of the solar panel. Then, we analyze the difference between
+the magnetic ﬁeld generated by light and the magnetic ﬁeld
+generated by a vehicle passing through the geomagnetic
+sensor, and extract the features that can be used to distinguish
+abnormal parking and false detection. After that, we design a
+state machine to distinguish between false detections caused
+by the changes in ambient light and real parking. Finally, we
+verify the effectiveness of our proposed scheme through ﬁeld
+tests.
+The remainder of this paper is summarized as follows. Sec-
+tion II presents the system model of the geomagnetic sensor
+node and the equivalent model of the magnetic ﬁeld around
+the solar panel. In Section III, the abnormal parking detection
+scheme is described. Section IV presents the experimental
+results, followed by the conclusion in Section V .
+II. S YSTEM MODEL
+A. Geomagnetic Sensor
+The geomagnetic sensor node used in this paper is com-
+posed of microprocessor, geomagnetic sensor, data transmis-
+sion module, solar panel, battery and its charging circuit [8].
+The microprocessor adopts STM32F103 series 64-bit mi-
+crocontroller. The solar panel converts solar energy into
+electrical energy, charges the battery, which in turn supplies
+power to the sensor node. The geomagnetic sensor is a
+three-axis geomagnetic sensor with a sampling frequency
+of 100Hz. It can simultaneously collect three-axis (i.e, X,
+Y , Z) magnetic ﬁeld strength data. After collecting the
+data, the data transmission module then uses the LoRa
+wireless communication module to upload the data to an edge
+computing server. As shown in Fig. 1, the sensor nodes are
+deployed along the road boundary line, where the positive
+direction of the X-axis of the sensor is the same as the
+driving direction of the vehicle; the positive direction of the
+Y -axis is parallel to the road and points to the centre of the
+lane; the positive direction of the Z-axis is perpendicular to
+the road.
+Let Fx(k), Fy(k), and Fz(k) denote the magnetic ﬁeld
+data of the X, Y , and Z axes at the k-th sampling instant. In
+order to process the environmental noise, the collected data
+will be processed by a moving average ﬁlter. The ﬁltering
+formula can be expressed as
+Fi(k)= 1
+W −2
+(
+W∑
+j=1
+Fi(k −W +j)−Fmin −Fmax
+)
+(1)
+where i ∈{ X,Y,Z }, Fi(k) is the ﬁltered data, W is
+the length of the sliding window, Fmin and Fmax are the
+minimum and maximum values of the magnetic ﬁeld data in
+the sliding window, respectively [8].
+As shown in Fig. 1, when the vehicle enters the detection
+range of the geomagnetic sensor, the vehicle will induce
+a magnetic ﬁeld which can be sensed by the geomagnetic
+sensor. When the vehicle leaves the detection range of the
+geomagnetic sensor, the surrounding magnetic ﬁeld will
+return to the original level. Therefore, we take the magnetic
+ﬁeld strength value when no vehicle passes as the baseline.
+If the detected magnetic ﬁeld strength deviates signiﬁcantly
+from the baseline, it indicates that the vehicle is entering.
+Conversely, if the magnetic ﬁeld strength returns to the
+vicinity of the baseline, it indicates that the vehicle is leaving.
+Since the geomagnetic ﬁeld will ﬂuctuate slowly due to the
+interference of environmental factors such as temperature,
+the sensor nodes will update the baseline when no vehicles
+pass by. We have
+Fi
+b = 1
+J
+J∑
+j=1
+Fi(k −J +j) (2)
+where Fi
+b is the updated baseline on axis i, which is equal to
+the average of the latest J raw data collected for this axis.
+In order to make full use of the information of the three-
+axis data, the microprocessor fuses the ﬁltered three-axis data
+and uses the fused data for vehicle detection [8]. The three-
+axis data can be fused by
+Ffusion(k)
+=
+√
+(FX(k)−FX
+b )
+2
++(FY (k)−FY
+b )
+2
++(FZ(k)−FZ
+b )
+2
+(3)
+where Ffusion(k) is the fused magnetic ﬁeld strength at
+sampling time k.
+Based on (3), we set the detection threshold θth.I fa
+consecutive of M sampled data satisfying Ffusion(k) ≥θth,
+it is determined that a vehicle is passing the sensor node.
+In contrast, if a consecutive of N sampled data satisfying
+Ffusion(k) <θth, it is determined that the vehicle has left.
+B. Magnetic Field Model for Solar Panels
+It has been pointed out in [9] that a direct current (DC)
+photon-generated current will be generated if sunlight hits a
+solar panel, which will induce a magnetic ﬁeld in the space.
+Due to the large number of current branches on the surface of
+solar panels, analyzing the magnetic ﬁeld intensity generated
+by each branch at a certain point in space is extremely
+cumbersome. Therefore, in order to simplify the calculation,
+we approximate and simplify multiple currents. Due to the
+symmetry of the solar panel circuit, we consider equating the
+photon-generated current inside it to a total current located
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1061
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+L
+r
+A
+¦2
+¦
+2
+¦1
+Y
+X
+Z
+Solar Panel
+Equivalent 
+Current
+r
+Magnetic Field 
+Direction
+Fig. 2. The positional relationship between the solar panel and the
+geomagnetic sensor
+at the centerline of the solar panel. Furthermore, we consider
+the geomagnetic sensor located at a point outside and near
+the solar panel. Then the positional relationship between the
+solar panel and the geomagnetic sensor can be simpliﬁed as
+the positional relationship between a ﬁnite-length DC current
+and a point outside the current, as shown in Fig. 2.
+In Fig. 2, the photon-generated current inside the solar
+panel is approximately modeled by a DC current with a
+length L and a magnitude of I, where L is approximately
+equal to the length of the solar panel. Point A is the location
+of the geomagnetic sensor. r is the length of the vertical
+line from point A to the DC current I. By connecting point
+A to the two end points of the current, we can obtain the
+angles between the two lines and the vertical line, namely,
+α1 and α2. Let the vertical line be the reference and take the
+counterclockwise direction as the positive direction, then we
+have α1 > 0 and α2 < 0.
+According to the electromagnetic ﬁeld theory, the magnetic
+ﬁeld strength generated by the equivalent current at point A
+in Fig. 2 is given by
+B = μ0I
+4π
+∫
+L
+dL× r
+r3 = e· μ0I
+4πr(sinα1 −sinα2) (4)
+where μ0 is the magnetic permeability in the vacuum, e is
+a unit vector with the same direction as the direction of the
+magnetic ﬁeld B.
+According to the theory of photovoltaic power generation,
+the photon-generated current in the solar panel is proportional
+to the ambient light intensity. Therefore, it can be assumed
+that the relationship between the photon-generated current I
+and the light intensity G is
+I = p1G+p2 (5)
+where p1 and p2 are the unknown constants to be determined.
+By substituting Eq. (5) into Eq. (4), the relationship
+between the magnetic ﬁeld intensity B and the light intensity
+G can be given by
+B = e· μ0(p1G+p2)
+4πr (sinα1 −sinα2) (6)
+III. P ARKING DETECTION SCHEME
+A. Detection of V ehicle Parking and Departure
+It has been pointed out in Section II-A that the vehicle
+detection uses Eq. (3) to fuse the data collected by the
+geomagnetic sensor to determine the arrival and departure of
+vehicles. Therefore, the abnormal parking detection also uses
+the characteristics of the three-axis waveform to determine
+the parking event. When a vehicle is parked within the
+detection range of the sensor node for a sufﬁciently long time,
+the magnetic ﬁeld waveform collected by the geomagnetic
+sensor will tend to be stable. In addition, the relative position
+of the vehicle to the sensor node will result in different
+waveform shapes and amplitudes after stabilization.
+Speciﬁcally, the range of magnetic ﬁeld data is used in our
+scheme for judging whether the waveform becomes stable.
+Let FS
+fusion represents the set of S magnetic ﬁeld data
+collected by the geomagnetic sensor, then the range of these
+data can be calculated by
+Range =m a x{FS
+fusion}−min{FS
+fusion} (7)
+Based on Eq. (7), we denote the threshold as θrange .I f
+Range < θrange , it is determined that the waveform has
+stabilized. That is, a vehicle is parked within the detection
+range of the sensor node. The value of θrange will be
+determined in Section III-D.
+When the abnormally parked vehicle leaves, the magnetic
+ﬁeld will return to a level similar to that before the vehicle
+parked. Therefore, similar to the detection of normal vehicles,
+the magnetic ﬁeld strength of N consecutive sampled data
+is less than the detection threshold θth, it is determined that
+the vehicle has left, and the abnormal parking event ends.
+B. Features to Distinguish False Detection from Real Park-
+ing
+To distinguish between false detection caused by the
+changes in ambient light and real parking, we ﬁrst need
+to analyze the difference between the two magnetic ﬁeld
+waveforms. According to the research in [10], different parts
+of a vehicle have different degrees of inﬂuence on the geo-
+magnetic ﬁeld. Speciﬁcally, the parts that have the greatest
+inﬂuence on the geomagnetic ﬁeld are mainly the axles and
+the engine. Therefore, we can divide abnormal parking into
+two cases according to different relative positions of the
+vehicle and the sensor node.
+Case that has Not Passed(CNP): The vehicle stops as
+soon as it enters the detection range of the geomagnetic
+sensor, as shown in Fig. 3(a);
+Case that has Passed(CP): Part or all of the vehicle has
+passed the geomagnetic sensor before stopping, as shown in
+Fig. 3(b).
+For CNP, because the main body of the vehicle or the
+part that has a strong inﬂuence on the magnetic ﬁeld is
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1062
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+Sensor Node
+(a) CNP
+Sensor Node
+(b) CP
+Fig. 3. Two cases of abnorma1 parking
+00 . 511 . 522 . 533 . 544 . 55
+Time(s)
+0
+1000
+2000
+3000
+4000
+5000
+6000Magnetic Field Intensity (nT)
+CNP
+CP
+false detection
+Fig. 4. The magnetic ﬁeld wave-
+forms of parking and false detection
+00 . 511 . 522 . 533 . 544 . 55
+Time(s)
+-200
+0
+200
+400
+600
+800
+1000
+1200
+1400Magnetic Field Intensity (nT)
+CNP.X
+false detection.X
+Fig. 5. The X-axis waveforms of
+CNP and of false detection in Fig. 4
+gradually approaching the geomagnetic sensor, the magnetic
+ﬁeld waveform shows an upward trend with time, and the
+amplitude of the overall waveform is however small, as
+shown in Waveform of CNP in Fig. 4. For CP, part or all of
+the vehicle that has a strong inﬂuence on the magnetic ﬁeld
+begins to move away from the geomagnetic sensor. Thus, the
+magnetic ﬁeld waveform has reached the peak value, and the
+amplitude begins to decrease, as shown in Waveform of CP
+in Fig. 4.
+As can be seen from Fig. 4, the waveform of CP has a
+signiﬁcant amplitude difference from the waveform of false
+detection. Therefore, we consider the “maximum value of
+the waveform” as a feature to distinguish false detection,
+which is represented by PM . Speciﬁcally, when it is detected
+that the change of the current magnetic ﬁeld may be caused
+by abnormal parking, by extracting the peak value of the
+waveform and comparing it with an appropriately chosen
+threshold θM , the false detection can be distinguished from
+the real parking in CP.
+Different from CP, as shown in Waveform of CNP and
+Waveform of false detection in Fig. 4, the magnetic ﬁeld
+waveform collected by the sensor node in CNP is similar to
+that caused by the false detection in amplitude and waveform.
+In this case, it is difﬁcult to distinguish the false detection
+from the real parking using only PM . To this end, we need
+to further consider other features. According to the model of
+the solar panel magnetic ﬁeld in Section II-B, the direction
+of the magnetic ﬁeld is perpendicular to the plane where
+the solar panel is located, that is, perpendicular to the X-
+axis of the geomagnetic sensor. Therefore, when the variation
+of illumination changes the magnetic ﬁeld around the solar
+panel, the magnetic ﬁeld mainly affects the Y -axis and Z-
+axis data of the geomagnetic sensor, and has less effect on
+the X-axis data. For the real parking event, when the sensor
+node detects the vehicle, the amplitudes of the magnetic ﬁeld
+waveforms of the three axes have obvious changes. That is
+to say, the false detection mainly affects the data of the Y -
+Baseline 
+Update
+Arrival 
+Detection
+Arrived
+ Departure 
+Detection
+Parking 
+Detection
+Park
+()fusion thFk Tt
+1counter 
+1counter Mt
+()fusion thFk Tt
+()fusion thFk T
+()fusion thFk T
+2counter 
+2counter Nt
+rangeRange T
+MM
+x
+Po r
+x
+T
+T
+t
+'t
+MM
+x
+P and
+x
+T
+T
+
+'
+()fusion thFk T
+()fusion thFk Tt
+Fig. 6. State machine for abnormal parking detection
+axis and Z-axis of the geomagnetic sensor, and the abnormal
+parking has a relatively obvious impact on all three axes.
+Therefore, we can distinguish between abnormal parking and
+false detection by comparing the “change in amplitude of X-
+axis waveform”, which is represented by Δx. Speciﬁcally,
+when the geomagnetic sensor detects a waveform suspected
+of abnormal parking, if the change of the waveform of the
+X-axis is less than a ﬁxed threshold θx, it is considered
+that the waveform is generated by false detection. On the
+contrary, if the change of the waveform of the X-axis is
+greater than that, it is considered that the waveform is caused
+by real parking. Fig. 5 shows the X-axis waveforms of CNP
+and of false detection in Fig. 4, and it can be seen that
+there is a signiﬁcant difference in amplitude between the two
+waveforms.
+C. State Machine for Abnormal Parking Detection
+According to the features discussed in Section III-B, the
+state machine for abnormal parking detection is shown in
+Fig. 6.
+1) Baseline Update: When no vehicle passes by, the
+state machine is to update the baseline using Eq. (2); If
+Ffusion(k) ≥θth, then jump to Arrival Detection state.
+2) Arrival Detection: In this state, a counter variable
+counter1 will be established to record the number of data
+satisfying Ffusion(k) ≥θth.I fcounter 1 ≥M, it suggests
+that a vehicle is coming, then the state jumps to Arrived
+state; Once Ffusion(k) <θth is satisﬁed, then jump to
+BaselineUpdate state.
+3) Arrived: In this state, Eq. (7) will be used to peri-
+odically calculate Range.I fRange < θrange , then jump
+to Parking Detection state. If Ffusion <θth, jump to
+Departure Detection state;
+4) Departure Detection: In this state, a counter counter2
+will be established to record the number of data satisfying
+Ffusion <θth.I f counter2 ≥N, it indicates that the vehicle
+has left, then the state jumps to Baseline Update state;
+Once Ffusion(k) ≥θth is satisﬁed, then jump to Arrived
+state.
+5) Parking Detection: In this state, the parameters PM
+and Δx will be calculated to distinguish between false
+detection and parking events. If PM ≥ θM or Δx ≥ θx,
+then the state jumps to Park state; If PM <θM and
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1063
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+Δx<θx, it means that it is a false detection, then jump
+to BaselineUpdate state.
+6) Park: In this state, the detection of vehicle departure
+is performed, where the detection method is the same as that
+of the Arrived state.
+D. Determination of Parameters
+For threshold θRange, we assume that the ambient noise
+superimposed on the fused waveform follows a normal
+distribution with an expectation of 0 and a standard deviation
+ofσRange. Then an estimate of the standard deviation ˆσRange
+can be obtained from the acquired waveform data. Based on
+ˆσRange, we can take
+θRange =( 4∼6)ˆσRange (8)
+When the range of the data is less than θRange, the current
+waveform can be considered to be stable.
+For threshold θM , it is considered that its value should
+be equal to the maximum magnetic ﬁeld change that can be
+generated by the false detection. Let Gmax and Gmin denote
+the maximum and minimum values of outdoor light intensity,
+respectively. Then, the value of θM can be calculated by
+θM = K ·ΔG+p2 (9)
+where K = μ0p1
+4πr(sinα1 −sinα2) and ΔG= Gmax −Gmin.
+For threshold θx, attributable to noise and modeling errors
+in the actual scene, the magnetic ﬁeld strength on the X-axis
+caused by false detection cannot be completely 0. Therefore,
+based on the measured data, we count the variation of the
+X-axis magnetic ﬁeld strength in the false detection data
+and use the maximum variation Δˆxmax as an estimate of
+the maximum magnetic ﬁeld variation generated by the false
+detection on the X-axis. Then, we assume that the noise
+superimposed on the X-axis follows a normal distribution
+with an expectation of 0 and a standard deviation of σx.B y
+collecting X-axis environmental data when no vehicles pass
+by, we can obtain the estimate of σx. Based on the estimate
+ˆσx,w eh a v e
+θx =Δ ˆxmax +(4 ∼6) ˆσx (10)
+ForθRange, its value is related to ˆσRange. In most road sce-
+narios, there is no strong magnetic ﬁeld interference source
+near the sensor node, and the noise mainly comes from the
+slight ﬂuctuations of the geomagnetic ﬁeld. Therefore, the
+value of ˆσRange is consistent across all scenarios. For θM
+and θx, K, p2 and Δˆxmax involved in Eq. (9) and Eq.
+(10), they depend on the hardware properties of the sensor
+nodes. ΔG is the maximum value of outdoor light variation,
+which has fully considered the extreme situations in various
+road scenarios. θx is similar to θRange, and its value mainly
+depends on slight ﬂuctuations in the geomagnetic ﬁeld.
+Therefore, the values of θM and θx are not sensitive to
+different scenarios.
+0123456789
+Illumination(LUX) 104
+-50
+0
+50
+100
+150
+200Output Current(mA)
+(a) First-order
+0123456789
+Illumination(LUX) 104
+-50
+0
+50
+100
+150
+200Output Current(mA)
+(b) Second-order
+0123456789
+Illumination(LUX) 104
+-50
+0
+50
+100
+150
+200Output Current(mA)
+(c) Third-order
+Fig. 7. Polynomial ﬁtting
+12345678
+Data Serial Number
+0
+50
+100
+150Magnetic Field Variation
+Measured Value
+Theoretical Value
+Fig. 8. Comparison of measured variation and theoretical variation
+IV . PERFORMANCE EV ALUATION
+A. Magnetic Field Model V alidation
+We ﬁrst verify the relationship between the photon-
+generated current in the solar panel and the ambient light
+intensity. We collected 60 sets of data, each of which includes
+ambient illuminance and the corresponding current output of
+the solar panel. Figs. 7(a)-7(c) show these collected data and
+the corresponding ﬁrst-order, second-order and third-order
+polynomial ﬁtting curves.
+From these ﬁgures, it can be seen that the ﬁrst-order
+polynomial can already reﬂect the relationship between
+illumination and output current well. When the order is
+increased, the ﬁtting results obtained will not have signiﬁcant
+improvement. Therefore, we can use Eq. (5) to characterize
+their relationship. In addition, by using the least square
+method, the parameters in Eq. (5) can be given byp1 =0 .002
+and p2 = −14.530.
+Based on Eq. (5), the rationality of Eq. (6) can be veriﬁed
+as follows. We collected 8 sets of data, where each set of data
+includes the variation of the ambient illuminance ΔGand the
+variation of the environmental magnetic ﬁeld collected by the
+sensor node ΔBm. By measuring the relative position of the
+solar panel and the geomagnetic sensor on the sensor node,
+we can obtain the values of r, sinα1 and sinα2 in Eq. (6)
+and further calculate the theoretical variation caused by the
+change in ambient illumination. Fig. 8 shows the values of
+ΔBm and the theoretical variation of the data in the same
+set. It can be seen from Fig. 8 that the average relative
+error between the measured variation and the theoretical
+variation is 5.87%. Therefore, we can estimate the variation
+of magnetic ﬁeld caused by illumination using Eq. (6).
+B. Parking Detection Accuracy Test
+To test the accuracy of the parking detection scheme, we
+deploy a sensor node on the lane line, as shown in Fig. 9.
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1064
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+Fig. 9. Test scenario
+TABLE I
+DETECTION ACCURACY
+Relative position
+of vehicle
+and sensor node
+Lateral distance
+between vehicle
+and sensor node
+Number of
+data sets
+Detection
+Accuracy
+CNP
+0.3m 50 98%
+0.7m 50 98%
+1m 50 88%
+CP
+0.3m 50 100%
+0.7m 50 100%
+1m 50 98%
+The raw geomagnetic ﬁeld data collected by the sensor node
+in real time can be stored through the laptop. And we use a
+camera to record the actual situation of the test.
+To calculate the detection rate of parking events, as shown
+in TABLE I, we consider different scenarios according to the
+relative position of the vehicle and the sensor node and the
+lateral distance between them. As can be seen from TABLE
+I, when the vehicle is close to the sensor node, the detection
+accuracy is high. However, when the distance reaches 1
+meter, due to the obvious attenuation of the magnetic ﬁeld,
+the amplitude of the magnetic ﬁeld data collected by the
+sensor is small. Therefore, the detection accuracy decreases.
+Especially in CNP, when the lateral distance between the
+vehicle and the sensor node is equal to 1 meter, the detection
+rate is greatly reduced. This is because the distance between
+the vehicle and the sensor node in this case is the largest of
+the six cases in TABLE I. Due to the same amount of data
+in each scenario, taking the average of all accuracy rates in
+TABLE I can result in a detection accuracy of 97% for the
+parking detection scheme.
+V. C ONCLUSION
+In this paper, an abnormal parking detection scheme based
+on geomagnetic sensor deployed in highway scenario is pro-
+posed. In order to improve the accuracy of abnormal parking
+detection, this paper focuses on the problem of false detection
+caused by the changes in ambient light. First, an equivalent
+magnetic ﬁeld model around the solar panel is established.
+Then, we analyze the differences between the magnetic ﬁeld
+changes caused by illumination and those caused by real
+parking, and propose an abnormal parking detection scheme
+to distinguish between false detection and real parking. The
+test results show that the magnetic ﬁeld model of the solar
+panel can better reﬂect the real environmental magnetic ﬁeld,
+and the accuracy of the designed algorithm is 97%.
+For future work, we will comprehensively consider the
+inﬂuence of vehicle type and vehicle speed on the magnetic
+ﬁeld waveform to further improve the performance of our
+parking detection scheme.
+ACKNOWLEDGMENT
+This research is supported by NSFC grant, Grant number:
+U21A20446.
+REFERENCES
+[1] G. Mao, Y . Hui, X. Ren, C. Li and Y . Shao, ”The Internet of
+Things for Smart Roads: A Road Map From Present to Future Road
+Infrastructure,” IEEE Intelligent Transportation Systems Magazine,
+early access, 2022.
+[2] A. Floris, R. Girau, S. Porcu, G. Pettorru and L. Atzori, ”Imple-
+mentation of a Magnetometer based Vehicle Detection System for
+Smart Parking applications,” 2020 IEEE International Smart Cities
+Conference (ISC2), 2020, pp. 1-7.
+[3] H. Zhu, S. Feng and F. Yu, ”Parking Detection Method Based on
+Finite-State Machine and Collaborative Decision-Making,” in IEEE
+Sensors Journal, vol. 18, no. 23, pp. 9829-9839, Dec, 2018.
+[4] Z. Zhang, X. Mao, K. Zhou and H. Yuan, ”Collaborative Sensing-
+Based Parking Tracking System With Wireless Magnetic Sensor Net-
+work,” in IEEE Sensors Journal, vol. 20, no. 9, pp. 4859-4867, May,
+2020.
+[5] J. Gu, Z. Zhang, F. Yu and Q. Liu, ”Design and implementation of
+a street parking system using wireless sensor networks,” IEEE 10th
+International Conference on Industrial Informatics, 2012, pp. 1212-
+1217.
+[6] P. ˇSoli´c, A. Leoni, R. Colella, T. Perkovi ´c, L. Catarinucci and V .
+Stornelli, ”IoT-Ready Energy-Autonomous Parking Sensor Device,”
+IEEE Internet of Things Journal, vol. 8, no. 6, pp. 4830-4840, 15
+March, 2021.
+[7] D. Norte, ”Estimating Electromagnetic Interference From Solar Panels
+For Space Vehicles,” 2019 IEEE International Symposium on Electro-
+magnetic Compatibility, Signal & Power Integrity (EMC+SIPI), 2019,
+pp. 487-492.
+[8] Z. Chen et al., ”Roadside Sensor Based Vehicle Counting Incomplex
+Trafﬁc Environment,” 2019 IEEE Globecom Workshops (GC Wkshps),
+2019, pp. 1-5.
+[9] W. Balid, H. Taﬁsh and H. H. Refai, ”Intelligent Vehicle Counting
+and Classiﬁcation Sensor for Real-Time Trafﬁc Surveillance,” IEEE
+Transactions on Intelligent Transportation Systems, vol. 19, no. 6, pp.
+1784-1794, June 2018.
+[10] H. Zhu, S. Feng and F. Yu, ”Parking Detection Method Based on
+Finite-State Machine and Collaborative Decision-Making,” in IEEE
+Sensors Journal, vol. 18, no. 23, pp. 9829-9839, Dec, 2018.
+[11] N. Wahlstrom and F. Gustafsson, Magnetometer modeling and valida-
+tion for tracking metallic targets, IEEE Trans. Signal Process., vol. 62,
+no. 3, pp. 545-556, Feb. 2014.
+[12] Y . Feng et al., ”MagMonitor: Vehicle Speed Estimation and Vehicle
+Classiﬁcation Through A Magnetic Sensor,” IEEE Transactions on
+Intelligent Transportation Systems, vol. 23, no. 2, pp. 1311-1322, Feb.
+2022.
+[13] J. Xie et al., The simulations and experiments of the electromagnetic
+tracking system based on magnetic dipole model, IEEE Trans. Appl.
+Supercond., vol. 24, no. 3, pp. 1-4, Jun. 2014.
+[14] Q. Wang, J. Zheng, H. Xu, B. Xu and R. Chen, ”Roadside Magnetic
+Sensor System for Vehicle Detection in Urban Environments,” IEEE
+Transactions on Intelligent Transportation Systems, vol. 19, no. 5, pp.
+1365-1374, May 2018.
+[15] Bao, Xu, Li, et al, ”Trafﬁc Vehicle Counting in Jam Flow Conditions
+Using Low-Cost and Energy-Efﬁcient Wireless Magnetic Sensors,”
+Sensors 2016. V ol. 16, Pages 1868.
+2023 IEEE Global Communications Conference: IoT and Sensor Networks
+1065
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 11,2024 at 05:22:40 UTC from IEEE Xplore.  Restrictions apply. 

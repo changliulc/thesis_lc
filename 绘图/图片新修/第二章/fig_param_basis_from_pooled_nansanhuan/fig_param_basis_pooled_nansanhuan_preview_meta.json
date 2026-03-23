@@ -1,0 +1,60 @@
+{
+  "source_files": [
+    "G:\\地磁组路段数据\\路段统计\\20240506南三环\\20240506南三环.xlsx",
+    "G:\\地磁组路段数据\\路段统计\\0511南三环\\2024.5.11南三环数据采集.xlsx",
+    "G:\\地磁组路段数据\\路段统计\\20240522南三环\\2024.5.22南三环数据采集.xlsx",
+    "G:\\地磁组路段数据\\路段统计\\20240528南三环\\2024.5.28中型车大型车数据采集.xlsx"
+  ],
+  "total_rows": 199152,
+  "event_count": 747,
+  "false_lens_count": 2452,
+  "drop_lens_count": 45,
+  "panel_a": {
+    "p_env_p99_9": 0.9999909491153752,
+    "p_env_p99": 0.994252436629734,
+    "p_veh_p1": 0.0053735635312153265,
+    "p_veh_p5": 0.14135437931665323
+  },
+  "panel_b": {
+    "coverage_lt_narr": 100.0,
+    "p95": 7.0,
+    "p99": 9.0
+  },
+  "panel_c": {
+    "coverage_le_td": 93.33333333333333,
+    "p95": 8.399999999999991,
+    "p99": 9.560000000000002,
+    "n": 45
+  },
+  "per_file": [
+    {
+      "file": "G:\\地磁组路段数据\\路段统计\\20240506南三环\\20240506南三环.xlsx",
+      "rows": 38035,
+      "event_count": 175,
+      "false_lens_count": 412,
+      "drop_lens_count": 9
+    },
+    {
+      "file": "G:\\地磁组路段数据\\路段统计\\0511南三环\\2024.5.11南三环数据采集.xlsx",
+      "rows": 50228,
+      "event_count": 209,
+      "false_lens_count": 548,
+      "drop_lens_count": 8
+    },
+    {
+      "file": "G:\\地磁组路段数据\\路段统计\\20240522南三环\\2024.5.22南三环数据采集.xlsx",
+      "rows": 52274,
+      "event_count": 152,
+      "false_lens_count": 877,
+      "drop_lens_count": 13
+    },
+    {
+      "file": "G:\\地磁组路段数据\\路段统计\\20240528南三环\\2024.5.28中型车大型车数据采集.xlsx",
+      "rows": 58615,
+      "event_count": 211,
+      "false_lens_count": 615,
+      "drop_lens_count": 15
+    }
+  ],
+  "note": "Preview only. Current thesis image was not overwritten."
+}

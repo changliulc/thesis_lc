@@ -1,0 +1,613 @@
+
+
+===== PAGE 1 =====
+
+IEEE International Workshop on Intelligent Data Acquisition and Advanced Computing Systems: Technology and Applications 
+21-23 September 2009, Rende (Cosenza), Italy 
+ 
+Automatic Vehicle Classification Using Wireless Magnetic 
+Sensor 
+Saowaluck Kaewkamnerd1, Ronachai Pongthornseri1, Jatuporn Chinrungrueng1, Teerapol Silawan2 
+1 National Electronics and Computer Technology Center, Thailand 
+2 Chulalongkorn University, Thailand 
+ 
+Abstract – This paper proposes an extension to our 
+previous work on an automatic low-computed vehicle 
+classification using embedded wireless magnetic sensor. A 
+realization of our vehicle classification on embedded wireless 
+magnetic sensor is studied in this work. The implementation 
+allows real-time vehicle classification based on vehicle 
+magnetic length, averaged energy, and Hill-pattern peaks.  
+The system automatically detects vehicles, extracts features, 
+and classifies them. The three features are of low-
+computation. We classify vehicles into 4 types: motorcycle, 
+car, pickup and van). The cla ssification shows a promising 
+result. It can classify motorcycle with 95% accuracy. The 
+classification rates between 70%-80% are achieved with car, 
+pickup and van due to their similarity in these extracted 
+features. The results obtained are comparable to our 
+implementation using PC in our previous work and 
+demonstrate that the algorithm can be realized on the 
+embedded wireless magnetic sensor.  
+ 
+Keywords – vehicle classification, magnetic sensor, wireless 
+sensor network 
+I. INTRODUCTION 
+For traffic management, the vehicle classification is 
+important in several applications. For example, automatic 
+toll collection requires that different vehicle type is 
+charged differently. Road construction and maintenance 
+must be planed using statistic data of road usage as higher 
+grade of materials must be employed when the roads must 
+support larger trucks. To control the road access is another 
+application of vehicle classification. In order to develop a 
+practical classification system, some requirements have to 
+be considered such as high accuracy of classification with 
+low-computation, robustness to various weather 
+conditions, and ease of installation and maintenance. 
+Existing several classification systems are based on 
+inductive loop sensor, magnetic sensor, video camera, 
+ultrasonic device and infrared camera [1]. Between them, 
+magnetic sensor is of smaller size, easier installation and 
+maintenance, more power efficient with high sensitivity. 
+Magnetic sensor has been used in many classification 
+systems. Michael J. Caruso and Luckey S. Withanawasam 
+propose the use of three-axis Anisotropic 
+Magnetoresistive (AMR) sensor in several vehicle 
+applications including classification [2]. Sing Y. Cheung 
+and et.al, also propose a simple classification scheme 
+based on AMR sensor to classify vehicle into five types as 
+in [3],[4]. The magnitudes of magnetic length of three 
+axes are used for classification giving a promising 
+classification rate. Multiple sensors which include video, 
+infrared and piezoelectric sensor  are employed as in [5]. 
+Using multiple sets of information from various sensors 
+may achieve better accuracy, but also increases more 
+complexity and computation re sources. In “Ref. [6]” we 
+design a wireless magnetic sensor that provides an 
+implementation of real-tim e classification system. 
+However, we only employ one set of three-axis magnetic 
+sensors which do not allow vehicle speed estimation. The 
+speed estimation is therefore obtained with video data and 
+thus the system is not self-contained. The result is very 
+promising. We work on an extension of our previous work 
+such that a self-contained wireless magnetic sensor is 
+achieved.  
+In this paper, an enhanced self-contained system is 
+proposed. We use magnetic sensor because of its 
+robustness to weather, ease of installation, and low 
+maintenance cost. We separate the classification into two 
+parts. In the first part, the sensor board detects vehicle and 
+computes relative vehicle length and occupancy time. The 
+board then samples magnetic signal and transmits these 
+samples to the PC along with the length and occupancy 
+time information.  In the second part, the PC computes the 
+other two features i.e. averaged energy and number of 
+Hill-pattern peaks. We empl oy all three features for 
+classification. Due to time constraint in preparing this 
+manuscript we extract averag ed energy and number of 
+Hill-pattern peaks using a PC, but their simplicities make 
+them possible to be computed real-time by 
+microcontroller. 
+In Section II, the architectur e of the proposed system is 
+shown. The detection mechan ism of vehicle arrival and 
+departure is explained in Section III. The feature 
+extraction and classification processes are described in 
+Section IV and Section V. Th en, the experimental results 
+are reported in Section VI. Finally, the conclusion is in 
+Section VII. 
+II. O
+VERVIEW OF THE PROPOSED SYSTEM 
+In “Fig. 1”, the system architecture of vehicle 
+classification system is shown. The proposed system 
+consists of magnetic sensor board, RS232 transceiver 
+board and personal computer. The CC1000 RF 
+
+===== PAGE 2 =====
+
+communication board is not active except for transmitting 
+data via wireless network. On magnetic sensor board, 
+MSP430F449 is the main processor which has many 
+peripherals embedded inside such as A/D converter, timer 
+module, UART and digital I/O port. Two 12-bit-ADCs 
+convert analog signal from magnetic sensor to 4 bytes 
+digital data. Timer module sets a sampling period to 
+approximately 10,000 samples per second. UART module 
+communicates and transmits sampled magnetic signal and 
+relative vehicle length to the PC for further operations. 
+Digital I/O port drives LED status and controls set/reset 
+circuit for refreshing sensitivity of magnetic sensor every 
+2 seconds (upon the applications). 
+ 
+12Bit
+ADC
+UART
+1INA
+INA
+MSP430F449
+Timer
+B
+Digital I/O
+RS232
+Transceiver
+Board
+CC1000
+RF
+communication
+Board
+Set/Reset
+Circuit
+Antenna
+Magnetic Sensor Board
+3.3VDC Regulator
+Z1
+Z2
+JTAG
+Program&Debug
+12VDC INPUT
+Magnetic Sensor Test System
+Signal Processing PC
+HMC1001
+HMC1001
+ 
+Fig. 1. System Architecture. 
+ 
+Two magnetoresistive sensors (HMC1001) are 
+employed to sense density of earth magnetic field. These 
+two sensors are separated from each other at a certain 
+distance and allow vehicle speed estimation. The structure 
+of sensor is nickel-iron thin film strip deposited on silicon 
+wafer and arranged to Wheatstone bridge. By applying 
+voltage to sensor, the output voltage can be measured. The 
+variation of output voltage is related to a variation of the 
+strip resistance upon magnetic flux density. This output 
+voltage variation is too small. An amplifier is needed to 
+magnify the signal. Two cascades amplifiers with total 
+approximately gain of 100 are used for this purpose. The 
+first one is instrument amplifier which has a common 
+mode rejection characteristic and high impedance 
+balanced input while the second one is the amplifier with 
+active filter for reducing ripple of signal. 
+RS232 transceiver board is used for converting 3.3 
+logical voltage signal of magnetic sensor board to RS232 
+line level before transmitting to personal computer. At 
+computer side, this transmitted magnetic signal is further 
+analyzed in feature extraction and classification process. 
+III. V
+EHICLE DETECTION 
+First, vehicle detection is performed by magnetic sensor 
+board processor. Since, the magnetic sensor board has 
+limitation on computation and resources, only the earth 
+magnetic field in z-axis is used for vehicle detection. In 
+first stage, the earth magnetic fields of the sensor locations 
+are set to be the base line b
+1 and b 2 as shown in “Fig. 2”. 
+In normal situation, earth magnetic field variation has very 
+small change, however, when a vehicle is present, the 
+magnetic field will be disturbed and results in noticeable 
+larger changes. If the magnitudes of earth magnetic field 
+comparing to base line of both sensors are greater then the 
+threshold th for a certain period of time T
+d, it is considered 
+as vehicle arrival. Otherwise, it is considered as a noise. 
+Let z be z-axis magnetic time series observed by sensor.  
+z
+n = z-axis magnetic field at time sample n, 
+bi = magnetic base line of sensor i,  
+th b zi n≥ −                                  (1) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Fig. 2. Vehicle detection scheme. 
+ 
+When vehicle arrival is detected, the follow z-axis 
+magnetic signal is gathered and smoothed. To smooth the 
+signal in time series, we perform moving average over 8 
+samples: 
+ 
+8
+7
+0
+∑
+=
+−
+= i
+i n
+M
+n
+z
+z                             (2) 
+Where is moving average z-axis at time sample n. 
+Superscript M represents a moving average sample. 
+M
+nz
+ 
+Every 10 milliseconds (ms) of moving average 
+signal, is sent to personal computer through RS232 
+transceiver board. The signal transmission is stopped 
+when vehicle departure is de tected. The vehicle departure 
+is determined as same as the arrival except the magnitudes 
+of earth magnetic field comparing to base line of both 
+sensors are less than the threshold for a certain period of 
+time T
+d. Otherwise, it is considered that the vehicle still 
+occupies the sensor. 
+M
+nz
+th b zi n≤ −                                 (3) 
+b1 
+th
+-th 
+Time 
+Earth Magnetic Field 
+First point 
+th
+b2 
+-th 
+First sensor 
+Second sensor 
+Second point 
+Td 
+First point Second point 
+T1 T2 
+Tn 
+
+===== PAGE 3 =====
+
+IV. FEATURE EXTRACTIONS 
+Features using for classification are relative vehicle 
+length, averaged energy and numbers of Hill-pattern peak.  
+Relative vehicle length is obtained during vehicle 
+detection by magnetic sensor board. Averaged energy and 
+numbers of Hill-pattern peak are obtained by personal 
+computer. 
+A. Relative Vehicle Length (please correct this part) 
+Two sensors are installed on the magnetic sensor board 
+with an inch apart. The signal delay between two sensors 
+is used to calculate the relative speed of a vehicle. Let d be 
+the distance between the two sensors in inch, N be the 
+number of delay samples and v be the estimated vehicle 
+speed. 
+d N v/=                                   (4) 
+The number of delay samples N is obtained based on 
+the two-stage scheme. In Firs t stage, when the vehicle 
+arrival is detected by one sensor, the counter C is reset and 
+increments at every sample it  monitors. The increment is 
+stopped if the second sensor detects the arrival of that 
+vehicle. The value of counter C represents the delay 
+sample D
+s of two sensors within the delay period Tn in 
+“Fig. 2”.  
+In second stage, we further explore the entire samples 
+from arrival to departure to find the zero-crossing points. 
+The zero-crossing point is the point where the signal 
+crosses the base line of the sensor between the threshold 
+boundaries. The crossing point inside the threshold 
+boundaries is not considered as zero-crossing point. It is 
+possible to have more than one zero-crossing point as in 
+“Fig. 2”. If the zero-crossing point is found, the number of 
+delay samples N  is obtained as in (5). Otherwise, the 
+number of delay samples N is set to D
+s.  
+Z
+N
+i
+T
+N
+S
+N
+Z
+i∑
+== 1                              (5) 
+Where Ti is the zero-crossing delay period of two 
+sensors at i point. 
+           is the number of samples in period Ti. 
+iTS
+            NZ   is the number of zero-crossing point. 
+ 
+After the estimate vehicle speed v is obtained, relative 
+length l in inch can be calculated. Let M is the total 
+number of samples from arrival to departure. 
+v M l/=                                   (6) 
+B. Averaged Energy 
+Averaged vehicle energy can be employed for 
+classification. It gives information on how much effect a 
+vehicle has on the earth magnetic  field at the sensor node. 
+It is expected that large body vehicles has more effect than 
+small body vehicles. Also, the closer the body to the 
+sensor node also yields mo re changes of the signal. 
+Averaged vehicle energy E is defined the total energy 
+of smoothed differential magnitude m
+nM , defined as in 
+[6], computed during the period over which a ve
+ as 
+hicle is 
+detected, divided by the vehicle magnetic length S 
+S
+M
+E
+Peroid
+Detected
+Vehicle
+m
+n∑
+=                             (7) 
+C.
+consecutive r than a threshold. 
+ased on combination of the three 
+features by path 2. 
+ Number of Hill-pattern peak 
+Hill pattern is used in [3]. It is a pattern extracted from 
+magnitude signal based on its slope. Hill-pattern is 
+employed as it is believed that different vehicles possess 
+different parts of structures and different numbers of 
+axles. This is represented as  the number of peaks in the 
+Hill-pattern. We represent positive slope with 1 and 
+negative slope with 0. A peak is considered valid when a 
+ number of samples are large
+V. CLASSIFICATION 
+We perform classification based on three features, 
+relative vehicle length, averaged energy and number of 
+Hill-pattern peaks into 4 types of vehicles: motorcycle, 
+car, pickup and van. We propose a simple classification 
+based on hierarchical tree methodology as in [6]. In “Fig. 
+3”, the motorcycles’ relative length, averaged energy, and 
+number of Hill-pattern peaks are much lower than the 
+other types of vehicles. These three features are employed 
+in path 1 to mainly identify motorcycles and cars. A more 
+thorough look into the groups of cars, pickup, and vans is 
+then considered b
+Start
+b1≤L ≤b2
+motorcycle car
+path 1
+e1≤E E >e1
+motorcycle
+P=0 P=1
+path 2
+P=2
+b2<L≤b3
+P=1
+pickup vancar
+E<e2 e2≤E≤e3 E >e3
+P=7
+pickup vancar
+E<e2 e2≤E≤e3 E >e3
+P=2 P=4P=3 P=5 P=6
+ 
+g. 3. Classification tree based on the three features: relativeFi  
+vehicle length, averaged energy, and Hill-pattern peaks. 
+
+===== PAGE 4 =====
+
+VI. RESULTS 
+We setup the system by placing our magnetic sensor 
+board on the middle of the lane about 5 meters behind the 
+entering gate where a vehicle must enter with low speed. 
+This allows us to collect magnetic signal with not much 
+speed variation. With the sensors on magnetic sensor 
+board, we obtain the earth magnetic field variation of both 
+sensors in z-axis. Z-axis is the direction perpendicular to 
+the ground pointing upward. The total number of vehicles 
+we observed is 130. That consists of 24 motorcycles, 57 
+cars, 35 pickups and 14 vans. We do the data analysis on 
+observed vehicles as follows. 
+ 
+A. Distribution of Relative Vehicle Length 
+“Fig. 4” shows the distribution of relative vehicle length 
+of all 4 types of observed vehicles. We observe that the 
+distribution of motorcycle length is clearly separated from 
+the others types while the distributions of car, pickup and 
+van are very much overlapped. It means that only relative 
+vehicle length can be used to clearly classify motorcycles. 
+However, in order to classify car, pickup and van, 
+additional features are required. 
+B. Distribution of Averaged Energy 
+“Fig. 5” shows the distribution of averaged energy of 4 
+types of vehicles. Due to the size of the motorcycles, their 
+averaged energy should be smaller than others but the 
+distribution of motorcycles in “Fig. 5” is not much 
+different from the others. This is because the sensors can 
+detect the motorcycles only when they pass by very closer 
+to the sensors that makes high earth magnetic field 
+variations. This feature is not useful for classifying 
+motorcycle from other types. 
+In “Fig. 6”, we focus on the distribution of car, pickup 
+and van. The graph shows that the van’s average energy 
+distribution is relatively higher than car and pickup. We 
+can take advantage of this feature to classify van from car 
+and pickup. The distributions of car and pickup are almost 
+the same.  
+0
+10
+20
+30
+40
+50
+60
+70
+20 40 60 80 100 120 140 160 180 200 220 240 260 280 300 320 340
+Relative Vehicle Length (inch)
+Distribution (percent)
+Car
+Motorcycle
+Pickup
+Van
+ 
+Fig. 4. Distribution of relative length. 
+0
+5
+10
+15
+20
+25
+30
+2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34
+A veraged Energy  (voltage)
+Distribution (percent)
+Car
+Motorcycle
+Pickup
+Van
+ 
+Fig. 5. Distribution of averaged energy for all types of vehicles. 
+ 
+0
+5
+10
+15
+20
+25
+30
+2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34
+A veraged Energy  (voltage)
+Distribution (percent)
+Car
+Pickup
+Van
+ 
+Fig. 6. Distribution of averaged energy for car, pickup and van. 
+ 
+C. Distribution of Number of Hill-pattern Peaks 
+“Fig. 7” shows that the distributions of number of Hill-
+pattern peaks for 4 types of vehicles. The graph shows that 
+the motorcycle yields small number of peaks comparing to 
+other types. For other three types, they possess almost all 
+number of peaks, especially between 1 and 6.  
+ 
+0
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+1234567
+Number of Hill-Pattern Peaks
+Distribution (percent)
+Car
+Mortorcycle
+Pickup
+Van
+ 
+Fig. 7. Distribution of Number of Hill-Pattern Peaks. 
+ 
+
+===== PAGE 5 =====
+
+Based on above distributions, the relative vehicle length 
+is mainly used to classify motorcycle from other types of 
+vehicles. All three features are used to classify car, pickup 
+and van. The classification process is based on 
+hierarchical tree shown in “F ig. 3”. The thresholds are 
+chosen as follows: b
+1=3, b2=110, b3=300, e1=8, e2 ~ 6-10, 
+e3 ~ 12-16. Thresholds e 2 and e3 are expressed in ranges 
+because they have to be chosen according to each different 
+path. The overall 77.69 per cent of the vehicles are 
+classified correctly. In Table 1, the classification results of 
+each vehicle type is shown. The motorcycle achieves high 
+accuracy 95 percent because the length is clearly 
+distinguished to the other three types. The discrimination 
+of three types (car, pickup and van) is fuzzy using only the 
+length, therefore the furthe r classification are needed 
+using number of Hill-pattern peak and averaged energy. 
+The accuracies of car, pickup  and van are 68.42, 95.83 
+and 71.43 percents respectively. 
+Table 1 
+CLASSIFICATION RESUTLS 
+Vehicle Type Classification Result 
+(percent) 
+Car 68.42 
+Motorcycle 95.83 
+Pickup 82.86 
+Van 71.43 
+ 
+VII. CONCLUSION 
+An automatic vehicle cla ssification system based on 
+magnetic sensors for wireless sensor network is proposed. 
+All processes of the proposed system such as data 
+acquisition, data preprocessi ng, feature extraction and 
+classification are automatica lly performed. The system 
+consists of magnetic sensor board, RS232 transceiver 
+board and personal computer. The magnetic sensor board 
+can detect vehicle and computes its relative length. It then 
+samples signal and transmits the signal and relative 
+vehicle length to the PC through RS232 transceiver board.   
+The other two features, aver aged energy and numbers 
+of Hill-pattern peak and classification process are operated 
+on the PC. The feature extraction and classification 
+processes in personal computer can be further 
+implemented on magnetic sensor node for real-time 
+operations. All three features, relative vehicle length, 
+averaged energy and number  of Hill-pattern peaks are 
+used for classification process. Based on the results, the 
+system classifies vehicles into four types: motorcycle, car, 
+pickup and van. The accuracies of car, pickup and van are 
+68.42, 82.86 and 71.43 percents, respectively while the 
+accuracy of motorcycle is 95. 83 percent. We found that 
+the classification based on the length of the vehicle gives 
+very high accuracies when the vehicles have length 
+distinction (motorcycle). The discrimination of three types 
+(car, pickup and van) is fuzzy using only the length, 
+therefore the further classifi cation are needed using peak 
+and averaged energy. To better separate car, pickup and 
+van, the investigation for su itable features is needed. 
+However, the feature extraction processes for these 
+features must be simple enough to implement on magnetic 
+sensor board. 
+A
+CKNOWLEDGEMENT 
+This work is funded by ITS program, NSTDA. The 
+authors thank those security officials at the NSTDA’s 
+entrance who assist to our experiment and provide safety 
+to both drivers and us. 
+ 
+R
+EFERENCES 
+[1] Lawrence A. Klein, “Sensor technologies for ITS”, powerpoint 
+prepared for Transportation Research Board Freeway Operations 
+and Signal Systems, Jul. 21-23, 2002.  
+[2] Michael J. Caruso, Lucky S. W ithanawasam, “Vehicle detection 
+and compass applications using AMR magnetic sensors”, 
+www.ssec.honeywell.com 
+[3] Sing Y. Cheung and et al., “Traffic measurement and vehicle 
+classification with a single magne tic sensors”, working papers 
+2004. 
+[4] Sing Y. Cheung and et al., “Traffic measurement and vehicle 
+classification with a single magnetic sensor”, Technical Report 
+prepared for 84
+th Annual Meeting Transportation Research Board, 
+Jan 2005. 
+[5] Weiming Liu, Xueping Zhao, Jingfang Xiao, Youlong Wu, 
+“Automatic vehicle classificati on instrument based on multiple 
+sensor information fusion”, Proceedings of Third International 
+Conference on Information Technol ogy and Applications, vol. 1, 
+pp. 379-382, July 2005. 
+[6] Saowaluck Kaewkamnerd, Jat uporn Chinrungrueng, Chaipat 
+Jaruchart, “Vehicle classification with low computation magnetic 
+sensor”, The 8
+th International Conference on ITS 
+Telecommunication, pp.164-169, October 2008. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

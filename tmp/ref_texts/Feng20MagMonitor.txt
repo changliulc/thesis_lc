@@ -1,0 +1,1268 @@
+
+
+===== PAGE 1 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS 1
+MagMonitor: V ehicle Speed Estimation and V ehicle
+Classiﬁcation Through A Magnetic Sensor
+Yimeng Feng, Graduate Student Member , IEEE , Guoqiang Mao , Fellow, IEEE, Bo Cheng , Member , IEEE,
+Changle Li , Senior Member , IEEE, Yilong Hui , Member , IEEE, Zhigang Xu , Member , IEEE,
+and Junliang Chen, Senior Member , IEEE
+Abstract— Internet of Things (IoT) is playing an increasingly
+important role in Intelligent Transportation Systems (ITS) for
+real-time sensing and communication. In ITS, vehicle types,
+volume and speeds provide important information for road trafﬁc
+management. However, the present methods for on-road trafﬁc
+monitoring are lacking in providing cost-effective means to meet
+the demands. In this paper, we propose MagMonitor, a novel
+method for on-road trafﬁc surveillance through a single small and
+easy-to-install magnetic sensor. The developed magnetic sensor
+system is wireless-connected, cost-effective, and environmental-
+friendly. First, a magnetic model of a moving vehicle is presented.
+The model employs multiple magnetic dipoles for modelling
+moving vehicle and varies depending on the on-road vehicle types.
+Through modelling of local magnetic ﬁeld perturbations caused
+by moving vehicles, we extract the characteristics of magnetic
+waveforms for vehicle identiﬁcation and speed estimation. The
+proposed model and estimation technique are validated with real
+ﬁeld experimental data. Furthermore, we analyze and compare
+the performance of the proposed estimation technique with other
+speed estimation algorithms, which shows the superior accuracy
+of the proposed technique.
+Index Terms— Magnetic sensor, vehicle classiﬁcation, speed
+estimation, trafﬁc surveillance, signal processing.
+I. I NTRODUCTION
+I
+NTELLIGENT transportation systems (ITS) developed
+rapidly over the last decades. The main purpose of ITS is to
+enhance the transportation system’s safety, efﬁciency, and cost
+effectiveness [1], [2]. Trafﬁc surveillance provides valuable
+Manuscript received February 19, 2020; revised June 9, 2020 and July 27,
+2020; accepted September 8, 2020. This work was supported in part by the
+National Key Research and Development Program of China under Grant
+2019YFB1600100, in part by the Nationa l Natural Science Foundation of
+China under Grant 61921003 and Grant 61972043, and in part by the BUPT
+Ph.D. Short-Term Overseas Study Project. The Associate Editor for this article
+was M. Zhou. (Corresponding author: Guoqiang Mao.)
+Yimeng Feng is with the State Key Laboratory of Networking and Switching
+Technology, Beijing University of Posts and Telecommunications, Beijing
+100088, China, and also with the School of Electrical and Data Engineering,
+University of Technology Sydney, Ultimo, NSW 2007, Australia (e-mail:
+fyimeng@bupt.edu.cn).
+Guoqiang Mao is with the School of Te lecommunications Engineering,
+Xidian University, Xi’an 710071, China (e-mail: g.mao@ieee.org).
+Bo Cheng and Junliang Chen are with the State Key Laboratory of
+Networking and Switching Technology, Beijing University of Posts and
+Telecommunications, Beijing 100088, China (e-mail: chengbo@bupt.edu.cn;
+chjl@bupt.edu.cn).
+Changle Li and Yilong Hui are with the State Key Laboratory of Inte-
+grated Services Networks, Xidian University, Xi’an 710071, China (e-mail:
+clli@xidian.edu.cn; ylhui@xidian.edu.cn).
+Zhigang Xu is with the School of Information Engineering, Chang’an
+University, Xi’an 710071, China (e-mail: xuzhigang@chd.edu.cn).
+Digital Object Identiﬁer 10.1109/TITS.2020.3024652
+trafﬁc ﬂow information for ITS through various kinds of
+trafﬁc sensors, such as LiDar, microwave sensors and magnetic
+sensors [3]–[5]. The trafﬁc surveillance information can then
+be used by ITS to improve trafﬁc management [6].
+The ﬁne-grained monitoring of vehicle speed plays an
+important role in ITS. The U.S. National Highway Trafﬁc
+Safety Administration (NHTSA) reported 37,461 trafﬁc fatal-
+ities in 2016, 26% of which are speed-related [7]. Many
+trafﬁc surveillance technologies are introduced and have been
+studied for trafﬁc data collection, such as inductive loops [8],
+video based image processing methods [9], etc. Particularly,
+urban areas have many complex environments, trafﬁc situation
+awareness and estimation needs accurate vehicle speed data.
+In this paper, we focus on the problem of accurate vehicle
+speed estimation using a single on-road magnetic sensor.
+Recently, magnetic sensors are considered for vehicle speed
+estimation [10]. Current vehicle speed acquisition methods
+using magnetic sensors often employ more than one magnetic
+sensors [11], [12]. However, using two or more well separated
+magnetic sensors for speed estimation, requires these magnetic
+sensor units to be very well synchronized and their data to
+be communicated in real-time, which signiﬁcantly increases
+both the energy consumption and communication overheads.
+Both the energy consumption and communication overhead are
+main considerations for small and energy-constrained Internet
+of Things (IoT) devices. Furthermore, the use of two or more
+magnetic sensor units will signiﬁcantly increase the size of
+the IoT device, which also prohibits its easy installation and
+hence widespread use.
+To this end, in this paper we consider a new approach, which
+uses a single magnetic sensor to classify vehicle types and
+estimate vehicle speeds. The underlying idea is to measure
+the local magnetic ﬁeld perturbations when vehicles passing
+by the roadside magnetic sensor. Several challenges arise in the
+design of the proposed approach. First, using only one sensor
+to estimate the aforementioned parameters needs a thorough
+understanding of a metal object’s magnetic characteristics.
+Second, accurate modelling of the local magnetic ﬁeld pertur-
+bation caused by various types of vehicles is essential. Finally,
+the magnetic sensor readings are noisy and the environment
+noise needs to be considered and removed to obtain accurate
+estimation.
+This paper presents MagMonitor, a novel real-time traf-
+ﬁc surveillance technique that provides vehicle classiﬁcation
+and speed estimation using a single small magnetic sensor.
+1524-9050 © 2020 IEEE. Personal u se is perm itted, but republication/redistri bution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+2 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+It identiﬁes vehicle magnetic characteristics by modelling
+various types of vehicles using multiple magnetic dipoles.
+For each type of vehicle, we estimate the speeds through
+their separate magnetic waveforms. A ﬁlter of raw magnetic
+data is employed for reducing the environmental noise, and
+yield an accurate magnetic output caused by moving vehi-
+cles. The magnetic sensor used in the experiment is easy to
+install and cost efﬁcient to implement on road, which is also
+relatively environmental-friendly. Experiments are conducted
+in Xi’an, China to establish the effectiveness of the proposed
+technique.
+Speciﬁcally, our key contributions are threefold :
+• We propose a method of monitoring the on-road vehicle
+types and obtain vehicle speeds through observations on
+magnetic perturbations. The magnetic sensor used in the
+experiment is tiny, cost-effective, and wireless-connected
+to capture real-time trafﬁc conditions.
+• We conduct simulations on the magnetic dipole models.
+Combined with vehicle dynamics, we present a motion
+model which illustrates the local magnetic ﬁeld perturba-
+tion caused by a moving vehicle and validate the results
+using the measured magnetic perturbations caused by
+moving vehicles.
+• We develop signal processing technique for data process-
+ing, which provides ﬁltered magnetic waveforms for
+vehicle counting and speed estimation. Road experiments
+are conducted to validate the effectiveness of the proposed
+technique.
+The rest of the paper is organized as follows: Section II
+brieﬂy reviews related works on real-time road surveillance.
+Section III describes the design of multiple magnetic models
+and vehicle motion characteristics. Section IV introduces the
+sensor model based experimental results and discussions for
+vehicle classiﬁcation and speed estimation. Finally, Section V
+concludes the paper and discusses our future work.
+II. R
+EVIEW OF RELA TED WORK FOR REAL -T IME
+ROAD SURVEILLANCE
+In this section, we review current methods for vehicle speed
+estimation, which is divided into two sub-sections. One is
+general methods of on-road trafﬁc information acquisition,
+the other is vehicle classiﬁcation and speed estimation using
+magnetometers.
+A. General Methods of Real -Time Road Surveillance
+Many techniques are used on highways or urban roads for
+speed estimation, such as inductive loops, vision based image
+processing method, and Globa l Positioning System (GPS) on
+smartphone [13].
+Inductive loop detectors embedded into the road surface
+are considered as intrusive methods [8]. These detectors
+are required to be installed underneath the road surface,
+which results in very high installation and maintenance costs.
+To reduce installation and maintenance costs, vision based
+trafﬁc camera systems have been adopted [9]. However,
+the resulting data transmission volume is large and the esti-
+mation accuracy is weather and visibility dependent. In other
+words, the accuracy of vision based system suffers in poor
+weather conditions, low illumina tion and visibility conditions.
+Radar is used to detect objects in a distance and estimate
+their speed [14], but it takes more time to lock on an object.
+Although LiDar can detect objects on the ground precisely, it is
+very expensive. Reference [15] developed a technique using
+GPS on smartphone to obtain vehicle speed. The limitation
+of technique is that it suffers from urban canyon environment
+and the performance of the sampling-based estimation may
+also suffer in environment with a small number of samples
+only.
+B. Road Condition Surveillance Using Magnetometers
+Recently, a number of researchers considered vehicle detec-
+tion and speed estimation methods using magnetic sensors
+[10], [16]–[21]. Balid [22] deployed multiple on-road sensors
+for trafﬁc surveillance. Their work can successfully detect
+vehicles and estimate varying speeds of vehicles through a
+set of magnetic sensors deployed along the road.
+Reference [23] reported 90% of the average speed esti-
+mation precision through measuring magnetic length using
+a roadside node with an accelerometer and magnetic sensor.
+Taghvaeeyan in [10] proposed applying four magnetic sensors
+for vehicle counting and vehicl e speed measurement, respec-
+tively, which resulted in 95% classiﬁcation accuracy and the
+maximum error of the speed estimates is less than 2.5% over
+the entire range of 5–27 m/s. The technique in [11] adopted
+two magnetic sensors for vehicle speed estimation and a third
+magnetic sensor for data fusion, which resulted in a speed esti-
+mation accuracy of 80%. Studies in [24] and [25] developed
+algorithms for speed estimation using two magnetometers. It
+is worth noting that these methods needed to ﬁrst estimate the
+average speed based on the number of passing vehicles over
+time, which could be difﬁcult to acquire. V ehicle detection
+and classiﬁcation through an improved support vector machine
+classiﬁer was proposed in [26] using magnetic sensors. They
+used magnetic signatures to distinguish different types of
+vehicles, such as heavy trucks and light-wheeled vehicles.
+However, the algorithm is time-consuming, which required
+high processing capability to get 80% to 90% accuracy. The
+work in [21] ﬁrst analyzed the magnetic effect of vehicle’s
+metal body and simulated a scenario to detect a vehicle using
+magnetic sensors. Cheung, Ergen and V araiya in [27] devel-
+oped a feature selection model for vehicle classiﬁcation by a
+line of wireless sensors. There are also works on using combi-
+nation of magnetic sensors for vehicle information acquisition.
+Studies in [19], [24], [28]–[30] proposed vehicle classiﬁcation
+based on machine learning of the signal waveforms.
+Obtaining the vehicle speed is becoming increasingly impor-
+tant in supporting real-time trafﬁc management. In the afore-
+mentioned studies, speed was estimated using two or more
+magnetic sensors. References [22] and [31] focused on vehicle
+classiﬁcation by multiple magnetic sensors or with the com-
+bination of accelerometers.
+Our work is distinct from the previous studies in that we
+investigate using a single magnetic sensor approach for vehicle
+classiﬁcation and speed estimation in a non-intrusive way.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+FENG et al. : MAGMONITOR: VEHICLE SPEED ESTIMA TION AND VEHICLE CLASSIFICA TION THROUGH A MAGNETIC SENSOR 3
+III. M ETHODOLOGY
+In this section, we present the design of the proposed
+system, MagMonitor, which d etects vehicles and estimates
+vehicle speeds through measuring and modelling local mag-
+netic ﬁeld perturbation caused by moving vehicles. The
+deployment of MagMonitor onl y requires a small magnetic
+sensor to be placed on the roadside. We ﬁrst explain the
+working mechanism of a metal object’s magnetic characteris-
+tics in Section A, then describe the motion process of moving
+vehicles in Section B and present the models for vehicle speed
+estimation. Signal processing to remove background noise
+and provide vehicle moving time is illustrated in Section C .
+We analyze the lateral effects in Section D and the impact
+of vehicle moving directions in Section E , and apply them to
+gain accurate estimates with real ﬁeld experimental data. After
+we gain the trafﬁc volumns from the magnetic perturbation,
+Section F explains the classiﬁcation of vehicle types from the
+magnetic perturbation dataset using image-based processing
+methods. In summary, we start from the methodology and
+experimental observation characteristics, and include consid-
+eration of the issues to separate vehicle perturbation, ﬁnally
+vehicle types and vehicle speed estimation will be achieved.
+A. Multiple Magnetic Dipole Models
+For a moving vehicle with a constant velocity, it comprises
+a huge amount of ferromagnetic materials and will induce
+a magnetic ﬁeld. With the development of modern sensor
+techniques, the electromagnetic ﬁeld B can be measured
+through a geomagnetic sensor.
+Based on the electromagnetic theory, if the distance to the
+metallic object is large enough in comparison to its character-
+istic length, the moving metallic object can be modeled as a
+magnetic dipole.
+For a magnetic dipole located at a distance r from the origin,
+its magnetic ﬁeld at the origin can be expressed as [32], [33]:
+B =
+⎛
+⎝
+3x
+2 − r 2 3xy 3xz
+3xy 3y2 − r 2 3yz
+3xz 3yz 3z2 − r 2
+⎞
+⎠ • u
+0 m
+4πr 5 . (1)
+where m is the magnetic moment of a dipole, u0 is magnetic
+permeability with a value of 4 π× 10− 7 H/m, r is the distance
+between the measurement position at the origin and the mag-
+netic dipole at coordinate (x, y, z), with r 2 = x2+ y2+z2.T h e
+tensor notation of the equation in the orthogonal coordinate
+system will take the following form with the expansion of
+magnetic vector being m = ( mx m y mz
+)T ,w h e r emx , m y ,
+mz are the component of the magnetic moment on the x− axis ,
+y − axis , z − axis , respectively, and • means dot product.
+It follows from (1) that the three magnetic component along
+the x − axis , y − axis ,a n d z − axis can be written as :
+Bx =
+((
+3x2 − r 2
+)
+· mx + 3xy · m y + 3xz · mz
+)
+· u0
+4πr 5 ,
+By =
+(
+3xy · mx +
+(
+3y2 − r 2
+)
+· m y + 3yz · mz
+)
+· u0
+4πr 5 ,
+Bz =
+(
+3xz · mx + 3yz · m y +
+(
+3z2 − r 2
+)
+· mz
+)
+· u0
+4πr 5 .
+(2)
+Fig. 1. Magnetic perturbatio n caused by a vehicle [22].
+For the magnetic ﬁeld value of x − axis , y − axis and
+z − axis , respectively, we expand the value of r and simplify
+the expression of Bx, By, Bz as follows:
+Bx =
+((
+2x2 − y2 − z2
+)
+· mx + 3xy · m y + 3xz · mz
+)
+· u0
+4π (x2 + y2 + z2)5
+2
+,
+By =
+(
+3xy · mx +
+(
+2y2 − x2 − z2
+)
+· m y + 3yz · mz
+)
+· u0
+4π
+(
+x2 + y2 + z2)5
+2
+,
+Bz =
+(
+3xz · mx + 3yz · m y +
+(
+2z2 − x2 − y2
+)
+· mz
+)
+· u0
+4π
+(
+x2 + y2 + z2)5
+2
+. (3)
+Considering a small vehicle with a certain speed driving on
+the road along the +x − axis , it leads to perturbations of the
+local magnetic ﬁelds and the small vehicle can be modelled as
+a magnetic dipole [34]. Fig. 1 (in Section II) [22] illustrates
+the magnetic distribution of the magnetic ﬂux lines when the
+earth’s magnetic ﬁeld is temporarily changed by a car. It shows
+that the magnetic ﬁelds are highly distorted at the wheels and
+slightly distorted at other parts. The unit for time measurement
+in this paper is second.
+Furthermore, for multiple magnetic dipole case, the equation
+becomes :
+B(L) = ∑
+i Bi(L) (4)
+where i is the magnetic dipole index of the i − th dipole.
+Because the magnetic moment has a direction and it has values
+along x − axis , y − axis ,a n d z − axis , we can set a default
+m = (1, 1, 1) for initial simulation [32], [35]–[37] to focus on
+studying the magnetic ﬁeld variation.
+Intuitively, the longer the vehicle is, the more number of
+magnetic dipoles should be used. For heavy and long vehicles
+with a certain speed, each vehicle can be modelled by two
+or more magnetic dipoles in order to represent its magnetic
+ﬁeld perturbation accurately. The simulations of each axis
+are displayed as in Figs. 2 (a) - (d) to present the effect of
+the varying numbers of magnetic dipoles. The total magnetic
+moment for vehicles can’t be m easured directly. According
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+4 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+Fig. 2. Using one, two, three and four magnetic dipoles for vehicle
+simulation.
+to [21], a typical U.S. automobile has a magnetic moment in
+the range 100-300 A/m 2(Ampere-meter2), while for a school
+bus it is about 2000 A/m 2. So we consider an average value
+200 A/m2 in the range 100-300 A /m2 [16] for simulation of a
+small car. Through the modelling from (4), we demonstrated
+that the variations of magnetic waveforms provide evidence
+for the length of vehicles. For SUVs and van, two magnetic
+dipoles should be enough. For a small bus, three magnetic
+dipoles are more appropriate. For a long bus and truck, they
+should be represented by four magnetic dipoles. The intuition
+are veriﬁed by the results of real experiment magnetic data.
+Please see the example in Fig. 20 from Appendix.
+B. Moving V ehicle Motion Models
+In this part, we establish and analyze the motion model for
+a driving vehicle. The discrete state space model of a moving
+vehicle is illustrated as follows :
+r
+k+1 = rk + t · vk + t2
+2 · wk,
+vk+1 = vk + t · wk,
+mk+1 = mk. (5)
+where rk means the position vector for a target vehicle, with
+speed vk and acceleration wk for the k − th state, t is the time
+interval between the k − th state and the k + 1 − th state,
+mk is the magnetic moment. A three-dimensional Cartesian
+coordinate system is set up from the view of the magnetic
+sensor, which is at the origin (0, 0, 0). Consider a vehicle
+driving on a straight road with a speed of v
+k (vk > 0) along the
+x − axis , and an initial position (x0, y0, z0). Only the x − axis
+has speed, so vk = vx . The initial value of x0 is negative and it
+is the ﬁrst position that causes the local magnetic perturbation,
+the initial value of y
+0 is zero and the initial value of z0 is a
+small and non-negative value, representing that the sensor is
+placed on the roadside and hence has some distances from
+the vehicle. After a period of time t (t > 0), the vehicle’s
+location becomes (x0 + vx · t, y0, z0). The magnetic moments
+of the vehicle, denoted by mk =
+(mx my mz
+)
+, observed at
+the sensor position become :
+y = u0
+4πr 5 ·
+⎛
+⎝
+mx
+my
+mz
+⎞
+⎠ •
+⎛
+⎝
+3(x
+0 + vx · t)2 − r 2 3(x0 + vx · t)y0 3(x0 + vx · t)z0
+3(x0 + vx · t)y0 3y2
+0 − r 2 3y0z0
+3(x0 + vx · t)z0 3y0z0 3z2
+0 − r 2
+⎞
+⎠
+(6)
+Then, the expansion for y
+x is given by :
+yx = 2(x0 + vx · t)2 · mx · u0
+4π (
+(x0 + vx · t)2 + D)5
+2
++ 3vx · t · y0 · m y · u0
+4π
+(
+(x0 + vx · t)2 + D
+)5
+2
++ 3vx /squaresmallsolidt · z0 · mz · u0
+4π
+(
+(x0 + vx · t)2 + D
+)5
+2
++ C · u0
+4π (
+(x0 + vx · t)2 + D)5
+2
+= A · (x0 + vx · t)2 + B · vx · t + C
+(x0 + vx · t)5 + D
+(7)
+where A = 2 mx ·u0
+4π ,
+B = 3 z0 · mz · u0
+4π ,
+C = 3x0 · z0 · mz · u0 − z2
+0 · mx · u0
+4π ,
+D =
+(
+(x0 + vx · t)2 + z2
+0
+)5
+2
+− (x0 + vx · t)5
+Since z0 can be assumed to be small, the values of B and C
+are also small and can be neglected. Thus, an approximation
+can be applied and yx can be rewritten as :
+yx = A · (x0 + vx · t)2
+(x0 + vx · t)5 + D
+(8)
+Let h(t) = yx , and let the reciprocal of h(t) be g(t) = 1
+h(t) ,
+then
+g(t) = (x0 + vx · t)5 + D
+A · (x0 + vx · t)2 (9)
+Meanwhile, letting vx · t = x, x reﬂects the change of
+positions with a speed vx during the time period. Because
+vx > 0a n d t > 0, so x > 0, so we have
+g(x) = 1
+A(x0 + x)3 + D
+A(x0 + x)2
+= 1
+A x3 + 3x0
+A x2 + 3x0
+A x + x03
+A + D
+A(x0 + x)2 (10)
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+FENG et al. : MAGMONITOR: VEHICLE SPEED ESTIMA TION AND VEHICLE CLASSIFICA TION THROUGH A MAGNETIC SENSOR 5
+Fig. 3. Simulation of x a x i sf r o m2 0k m / ht o5 0k m / h .
+As the value of x (x > 0) increases, 1
+A x3 + 3x0
+A x2 + 3x0
+A x +
+x03
+A increases, and D
+A(x0+x)2 decreases. There is a turning point
+that g(x) reaches its minimum value at x = 5√
+ − D − x0.
+If x < 5√
+− D− x0, the dominating term for g(x) is D
+A(x0+x)2 ,
+thus g(x) = D
+A(x0+x)2 + ε1,w h e r eε1 is the residual error.
+If x = 5√
+ − D − x0, g(x) = 0.
+If x > 5√
+− D − x0, the dominating term for g(x) is
+1
+A (x0 + x)3, thus g(x) = 1
+A (x0 + x)3 + ε2,w h e r e ε2 is
+the residual error. Based on the above analysis, (12) can be
+rewritten as:
+g(x) =
+⎧
+⎪⎪
+⎪
+⎨
+⎪⎪⎪⎩
+D
+A(x0 + x)2 + ε1 x < 5√
+ − D − x0
+0 x = 5√
+ − D − x0
+1
+A(x0 + x)3 + ε2 x > 5√
+ − D − x0
+(11)
+Through the analysis of g(x), there are four approximations
+models of f (t) given as follows:
+M o d e l1 :p o w e rf o r m
+f1(t) = at b + c + ε1 (12)
+Model 2: polynomial form
+f2(t) = a0 + a1t + a2t2 + a3t3 + ... + an tn + ε2 (13)
+Model 3: rational form
+f3(t) = p1
+t3 + q1t2 + q2t + q3
++ ε3 (14)
+Model 4: combination of polynomial form and rational form
+f4(t) = λ1t3 + λ2t2 + λ3t + λ4 + λ5(t(− 3)) + ε4 (15)
+Fig. 3 gives the magnetic waveform corresponding to dif-
+ferent speed of a magnetic dipole moving along the x − axis ,
+which varies between 20 km/h to 50 km/h. As can be seen
+from the ﬁgure, with different vehicle speeds, the time window
+for the detected magnetic distortion is changing.
+Here we analyze whether there is a turning point to ensure
+B
+x induced by a vehicle reach es its minimum. Deﬁning Bx =
+n1(t)
+n2(t)
+= A·(x0+vx ·t)2
+(x0+vx ·t)5+D , the derivative of Bx then can be given
+by:
+∂B
+∂t =
+( n′
+1(t)n2(t) − n1(t)n′
+2
+(t)
+[n2(t)]2
+)
+(16)
+For x,w eh a v e
+n′
+1
+(t)n2(t) − n1(t)n′
+2
+(t)
+=[ 2 A (x0 + vx t) · vx][(x0 + vx t)5 + D]
+−[ A · (x0 + vx t)2][5vx (x0 + vx t)4]
+=[ 2 Avx (x0 + vx t)6 + D]− 5 Avx (x0 + vx t)6
+=− 3 Avx (x0 + vx t)6 + 2 AD vx (x0 + vx t) (17)
+Because
+∂B
+∂t = 0 ⇒ n′
+1
+(t)n2(t) − n1(t)n′
+2
+(t) = 0
+it follows that
+3 (x0 + vx t)5 = 2D
+x0 + vx t =
+√
+2D
+3
+t =
+5
+√
+2D
+3 − x0
+vx
+(18)
+Since it is the ﬁfth-order polynomial, there is at least one
+solution of t to make ∂B
+∂t = 0. Consequently, there is a t
+resulting in Bx reaching its minimum/ma ximum, and in Fig. 3,
+it is veriﬁed as a minima/maxima. For the derivatives of By
+and Bz , they are similar to Bx .
+Now the relationships between time and the magnetic
+ﬁeld perturbation caused by a moving vehicle are given in
+equations (16) - (18). If we combine the models with time t,
+the parameters above can be calcu lated accordingly. There is
+av a l u et0 resulting in Bx = 0, which is the point that allows
+f (t) = 0. For different speeds, t0s are different, which reﬂects
+the intervals between the beginning of x-axis and the time at
+Bx = 0. Given different t0s, it then relates to the driving speed
+of the vehicles respectively, which leads to the estimation of
+vehicle speed. Note that the t0s are obtained from real-time
+trafﬁc data after ﬁltering of environmental noise. The signal
+processing technique and ﬁlter techniques are introduced in
+the next section. Experimental results for the models are given
+in Section IV . From the above analysis, −
+x0
+vx can reﬂect the
+magnetic vibration response time for vehicles, while different
+x0s depends on different types of vehicles. So for different
+vehicle types, speed estimation can be achieved given the time-
+varying magnetic perturbation vectors.
+C. Signal Processing Model
+Measurements in real road c ondition are full of background
+noises and are affected by earth’s magnetic ﬁeld [34]. It makes
+the signals hard to distinguish for the passing vehicles. So a
+low-pass ﬁlter is ﬁrst applied [26].
+The local earth’s magnetic value are Bx0, By0, Bz0,w h i c h
+are relatively stable values in t his paper. Moreover, the values
+can be obtained from the roadside magnetic sensor when
+there is no vehicle passing by.
+(
+B
+xk , Byk , Bzk
+)
+are the values
+recorded by the magnetic sensor when a vehicle is passing.(
+Bv x, Bv y, Bv z
+)
+is the perturbation caused by a passing vehi-
+cle, then:
+(
+Bv x, Bv y, Bv z
+)
+=
+(
+Bxk − Bx0, Byk − By0, Bzk − Bz0
+)
+(19)
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+6 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+Fig. 4. An example of the signal processing with real magnetic data of a
+30 km/h vehicle. We ﬁrst apply equation (20) and remove the local earth’s
+magnetic value, here Bx0, By0, Bz0 = (− 185, 310, 347) from (a). Then,
+we apply low-pass ﬁlter to gain a pure vehicle magnetic vibration waveforms
+as shown in (b).
+Fig. 5. Simulation on a magnetic dipole moving from 30 km/h to 50 km/h.
+Fig. 6. Filtered and normalized real-time data from 30 km/h to 50 km/h.
+Fig. 4 (a) shows the waveform of
+(
+Bxk , Byk , Bzk
+)
+for a
+vehicle travelling at 30 km/h speed. There are lots of noises
+in real environment. Besides reducing the
+(
+Bx0, By0, Bz0
+)
+,
+we apply Fast Fourier Transform (FFT) and on that basis
+develop a ﬁrst-order low pass ﬁlter with a cut off frequency
+at 5 Hz for
+(
+B
+v x, Bv y, Bv z
+)
+to remove noise effect, which
+allows low frequency signals in frequency domain to pass.
+So after the FFT signal processing, Fig. 4 (b) shows the
+ﬁltered and normalized waveforms by FFT for a vehicle at
+a speed of 30 km/h. Fig. 5 and Fig. 6 are the simulations of
+av e h i c l ew i t hs p e e dv a r y i n gf r o m3 0k m / ht o5 0k m / ha n d
+the corresponding ﬁltered normalized real data of respectively.
+Through signal processing, it aims to easier extraction of t
+0.
+Fig. 7. Magnetic data combination.
+D. Lateral Effect Inﬂuences on Magnetic Perturbation
+What needs to be considered to count vehicles in the real
+world ﬁeld test is, the vehicles driving in the adjacent road can
+always be calculated as wrong detection. So the combination
+of three axis signals would be employed to reduce the false
+vehicle detection.
+B
+combination =
+√
+(Bx)2 + (By
+)2 + (Bz)2 (20)
+Here, we process experimental data applying the proposed
+method in Figs. 7 (a) and (b) for easy understanding. There
+are multiple vehicles driving on the experimental road, as seen
+after the combination processing, the vehicle magnetic signa-
+ture above the threshold will be counted.
+For a driving vehicle, the distance between the sensor and
+the vehicle is a crucial issue affecting the vibration of the
+vehicle. We consider a vehicle driving along a line parallel
+to the roadside. For vehicles in different lanes, the lateral
+distances are changed. So we add lateral in ﬂuences into
+consideration, and Figs. 8 reﬂects how the factor has an
+inﬂuence on the signal changes.
+Here we want to know the effects of lateral distances
+changing from a small value to a relative big value. d = 0.2m
+is chosen to represent the sensor mounted on the lane in which
+a vehicle is moving, and d = 2 m is chosen to approximately
+represent the vertical distance between the roadside sensor
+and the center of the closest lane to the sensor. d = 4m
+is approximate the distance bet ween the side of the adjacent
+lane and the sensor, and d = 6 m is the approximate distance
+between the side line of the adjacent lane to the sensor.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+FENG et al. : MAGMONITOR: VEHICLE SPEED ESTIMA TION AND VEHICLE CLASSIFICA TION THROUGH A MAGNETIC SENSOR 7
+Fig. 8. Lateral effects between the sensor and the vehicle.
+Fig. 9. V ehicle driving in different directions.
+Note that as the value of d increases, the order of magnetic
+perturbation decreases, which makes it easy to separate the
+perturbations. In other words, if a vehicle drives on the
+adjacent lane, then its magnetic perturbation waveforms will
+be ﬂat as shown in Figs. 8 (c) - (d).
+E. V ehicle Moving Direction Analysis
+There is a practical interfere nce needing to be considered:
+the relative position of the magnetic sensor and the passing
+vehicles. If the vehicle moving direction is not aligned with
+the coordinate system, corresponding magnetic perturbation is
+changed. Figs. 9 is a visual reﬂection for the aforementioned
+problem. It shows that for a vehicle driving at a constant
+speed, the direction of perturbation changes with the driving
+directions.
+F . V ehicle Type Classiﬁcation Method
+The principle of vehicle type classiﬁcation is based on
+image processing. After we obtain vehicle volume from the
+previous section, we put the magnetic perturbation images
+into the vehicle perturbation dataset. As mentioned in the
+magnetic dipole models part, magnetic perturbations differ
+from the various number of the magnetic dipoles and response
+time of driving vehicles, which results in different signal
+shapes such as the number of maxima and length of vibration.
+These features can be used for veh icle type classiﬁcation. For
+example, when using the vehicle magnetic perturbation images
+to train, the image-based classi ﬁcation can directly extract the
+features in each types. Then, we put the test images to test
+the classiﬁcation rate, we can get the score of its likelihood
+in each type directly, which is convenient.
+Algorithm 1 is the algorithm for vehicle type classiﬁcation.
+The training dataset consists of magnetic signal images caused
+by driving vehicles, and the testing dataset is separate from
+the training dataset for vehicle information. It can output
+the labels of predicted types of vehicles. Through loading
+training dataset, resizing the images and extracting histogram
+of oriented gradients (HOG) features, the classiﬁer is estab-
+lished for feature testing. Then loading the testing dataset,
+do the same resizing and extracting features as the training
+dataset. We apply the ﬁtcecoc in Matlab to construct the
+classiﬁer, which is a function that suits multi-class models for
+classiﬁers like support vector machines (SVM). Then we use
+the classiﬁer trained by the training dataset, and compare the
+features with each label. Therefore the magnetic perturbations
+caused by different categories of vehicles are classiﬁed.
+Algorithm 1 The Algorithm for V ehicle Type Classiﬁcation
+Input : The training dataset imdsTrain ;
+The testing dataset imdsTest
+Output : V ehicle type prediction index n
+1: Load imdsTrain and imdsTest into imageDataStore
+2: for images in imdsTrain
+3: Image resize imresize in each label
+4: through feature extraction extract H OGFeature
+5: Feature train fe a t u r e s Tr a i n
+6: end for
+7: Use f itcecoc to build classi f i er
+8: for images in imdsTest
+9: Image resize imresize
+10: through feature test extract H OGFeature
+11: Test with classi f i er
+12: end for
+IV . E VA L UAT I O N
+In this section, we present the evaluation of our vehicle
+classiﬁcation and vehicle speed estimation technique, Mag-
+Monitor, with real driving environments. Here we describe
+the experiment setup, the results of assumption models and
+evaluate vehicle speed estimation errors. Contrast experiments
+for the speed estimation error with techniques in the literature.
+A. Experiment Setup
+We evaluate MagMonitor, in real driving environments in a
+road in Xi’an, China. Fig. 10 (a) is a RM3100 magnetic sensor,
+which outputs magnetic vibration along three axes. The size
+of the chip is only as large as a coin and the overall size of
+the sensor is tiny, which is portable for trafﬁc surveillance.
+In addition, a magnetic sensor costs as cheap as 30 dollars.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+8 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+Fig. 10. Sensor design and a sedan test.
+Fig. 11. Experiment setup on the left and the display board on the right.
+Also, a camera is put on roadside to record the overall driving
+period. Fig.10 (b) shows an experiment setup on the road,
+which is an example for the test of a sedan type vehicle from
+our previous work in [38].
+After the initial experiment for the sedan type vehicle,
+multiple experiments are conducte d. In Fig. 11, the left records
+the road for vehicle magnetic signatures, and the right is the
+real-time sensor’s display board recording magnetic values for
+driving vehicles. The right side of Fig.11, magnetic perturba-
+tion matches the theoretical an alysis in Sec. III well. The real
+vehicle speeds are measured by a speedometer.
+Our previous work in [39] introduced the detection methods
+and the experiment of the vehicle numbers. According to the
+standard of [7], we classify the recorded vehicles into four
+types: sedan, SUV and van, bus and truck. After the magnetic
+data is preprocessed, the measured vehicles’ magnetic signals
+are extracted into separate images for classiﬁcation. Overall,
+115 vehicle proﬁle is randomly selected into a training dataset
+of 58 vehicles and a testing dataset of 57 vehicles.
+Furthermore, we have also conducted the experiments at
+different locations, in different seasons and weathers. There is
+no evidence that the season and weather affects much during
+our experiments.
+B. Experimental Results
+Here we classify our experiment results into two parts:
+vehicle classiﬁcation and vehicle speed estimation.
+For vehicle classiﬁcation, as shown in Table I, the diagonal
+values are the classiﬁcation rates for testing dataset. Through
+applying the vehicle type classiﬁcation technique mentioned
+in III. F, we then get the correct classiﬁcation rate of 87%,
+TABLE I
+VEHICLE CLASSIFICA TION RESUL T IN FOUR TYPES
+TABLE II
+VEHICLE CLASSIFICA TION RESUL T IN THREE TYPES
+initially. As shown in the table, the classiﬁcation rate for sedan,
+bus and truck are all more than 90%, but the classiﬁcation rate
+for SUV and van is much lower compared to other vehicle
+types. The reason for the low classiﬁcation results is that
+these two types of vehicles are similar. So here we combine
+the middle two types into one type. After applying that
+strategy, the classiﬁcation performance is shown in Table II.
+For comparison, the work in [26] evaluates BPNN and KNN
+classiﬁers for heavy tracked vehi cle, light tracked vehicle, light
+wheeled vehicle. For BPNN classiﬁer, three types’ recognition
+rates are 81.5%, 78.6%, 76.3% and KNN classiﬁer 77.8%,
+71.4%, 71.1% respectively. In comparison, our image-based
+classiﬁcation rates are 91% , 96%, 93%, which signiﬁcantly
+outperforms the BPNN and KNN classiﬁers.
+To gain the estimated vehicle speeds, we separate the
+speed estimation models in section III and contrast them with
+real speeds. In three vehicle types, we estimate values of
+each ﬁtting models through separating the times of driving
+vehicles. The parameters are calculated by Matlab R2019 on
+windows 10 as follows.
+(1) The vehicle speed estim ation models for sedan:
+For power form, f
+1(t) = at b + ε1. Coefﬁcients (with 95%
+conﬁdence bounds): a = 29.54, b =− 0.8788.
+For polynomial form, f2(t) = a0 + a1t + a2t2 + a3t3 +
+ε2. Coefﬁcients (with 95% conﬁdence bounds): a0 = 93.09,
+a1 =− 112.8, a2 = 59.26, a3 =− 12.19.
+For rational form, f3(t) = p1
+t 3+q1t 2+q2t+q3
++ ε3.C o e f -
+ﬁcients (with 95% conﬁdence bounds): p1 = 16.61,
+q1 =− 2.415, q2 = 2.365, q3 =− 0.4033.
+For combination form, f (t) = λ1t3 + λ2t2 + λ3t + λ4 +
+λ5(t(− 3)) + ε4. Coefﬁcients (with 95% conﬁdence bounds):
+λ1 = 293.3,λ2 =− 962.8,λ3 = 1032,λ4 =− 345,
+λ5 = 11.58.
+(2) The vehicle speed estima tion models for SUVs and vans:
+For power form, f1(t) = at b + c + ε1. Coefﬁcients (with
+95% conﬁdence bounds): a = 203.3, b =− 0.14, c =− 165.5.
+For polynomial form, f2(t) = a0 + a1t + a2t2 + a3t3 +
+ε2. Coefﬁcients (with 95% conﬁdence bounds): a0 = 78.25,
+a1 =− 47.13, a2 = 4.742, a3 = 2.2181.
+For rational form, f3(t) = p1
+t 3+q1t 2+q2t+q3
++ ε3.C o e f -
+ﬁcients (with 95% conﬁdence bounds): p1 = 709.3,
+q1 = 0.1174, q2 = 11.06, q3 = 6.543.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+FENG et al. : MAGMONITOR: VEHICLE SPEED ESTIMA TION AND VEHICLE CLASSIFICA TION THROUGH A MAGNETIC SENSOR 9
+Fig. 12. CDF of the speed estimation errors for sedans.
+For combination form, f (t) = λ1t3 + λ2t2 + λ3t + λ4 +
+λ5(t(− 3)) + ε4. Coefﬁcients (with 95% conﬁdence bounds):
+λ1 = 53.81,λ2 =− 225.1,λ3 = 287.9,λ4 =− 85.27,
+λ5 = 7.508.
+(3) The vehicle speed estimation models for buses and
+trucks:
+For power form, f1(t) = at b + ε1. Coefﬁcients (with 95%
+conﬁdence bounds): a = 58.04, b =− 0.8677.
+For polynomial form, f2(t) = a0 + a1t + a2t2 + a3t3 +
+ε2. Coefﬁcients (with 95% conﬁdence bounds): a0 = 92.92,
+a1 =− 46.63, a2 = 9.722, a3 =− 0.8219.
+For rational form, f3(t) = p1
+t 3+q1t 2+q2t+q3
++ ε3.
+Coefﬁcients (with 95% conﬁdence bounds): p1 =
+391200, q1 = 1746, q2 =− 92.31, q3 = 5483.
+For combination form, f (t) = λ1t3 + λ2t2 + λ3t + λ4 +
+λ5(t(− 3)) + ε4. Coefﬁcients (with 95% conﬁdence bounds):
+λ1 =− 11.79,λ2 = 83.32,λ3 =− 210.8,λ4 = 217.6,
+λ5 =− 24.64.
+In addition, the vehicle estimation model is based on
+the training dataset and test on the testing dataset. The
+mis-classiﬁed vehicles have an impact on the speed estima-
+tion accuracy. In other words, th e mis-classiﬁed vehicles are
+calculated using the types that they are considered as.
+C. Discussion
+Here we ﬁrst discuss the proposed models for speed esti-
+mation in sedan, because the number of sedans is larger than
+other vehicle types. Fig. 12 plots the cumulative distribution
+function (CDF) of the speed estimation errors (km/h) for
+the proposed technique, Derivative Dynamic Time Warping
+(DDTW) [40] and GPS. The results explain that we achieve
+high speed estimation performance in the proposed models.
+For example, 80% of estimation errors are lower than 4 km/h if
+using the four proposed models, and 50% of estimation errors
+are less than 2.5 km/h. In addition, only 8% of the estimated
+speed errors exceeds 10 km/h. The average estimation errors
+include all the vehicle types mentioned in this paper. Thus,
+Fig. 13. Sedan speed experiments comparison.
+Fig. 14. SUVs and vans speed experiments comparison.
+Fig. 15. Buses and trucks speed experiments comparison.
+the proposed ﬁtting models are robust for vehicle speed
+estimation. In the meantime, we compare the four proposed
+models with DDTW and GPS. From Fig. 12, it can be seen
+that the ﬁtting models outperforms GPS in speed estimation.
+Compared with DDTW , the ﬁtting models still outperforms.
+For example, 90% of DDTW’s estimation errors are less than
+11 km/h. By contrast, 90% of the estimation errors for the
+proposed models are lower than 7.5 km/h.
+D. V ehicle Speed Estimation Error Analysis
+Figs.13-15 compares the estimated speed and real speed in
+each type. In addition, the histograms of our proposed models
+in three types are presented to show the distribution of errors.
+As in Fig 16-18, the observation of the four model’s estimation
+error distributions are clearly seen. Among all the three types
+of vehicles, the speed estimation in model 4 has the closest
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+10 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+Fig. 16. Histograms for sedans.
+Fig. 17. Histograms for SUVs and vans.
+Fig. 18. Histograms for buses and trucks.
+match with the theoretical analysis in (11), and it has the best
+performance in all models.
+V. C ONCLUSION
+In this paper, we addressed the problems of driving vehi-
+cles classiﬁcation and accurate vehicle speed estimation in
+Fig. 19. For a bus with a length of 12 m, the wave perturbations in 20 km/h,
+30 km/h, 40 km/h, 50 km/h speeds, respectively.
+Fig. 20. The real-time magnetic perturbation caused by a bus driving
+in 50 km/h.
+urban environments through a magnetic sensor. In particular,
+we developed a vehicle classiﬁcation and speed estimation
+technique, MagMonitor, which utilized vehicle magnetic char-
+acteristics to classify vehicle types and through normalized and
+ﬁltered magnetic waveform characteristics to estimate vehicle
+types and speeds. Also, road experiments were conducted
+to validate the effectiveness of the proposed technique. The
+magnetic sensor in our experiment is tiny, cost-effective, and
+environmental-friendly. It is part of our future work to combine
+with other sensor information to improve the performance of
+the ﬁne-grained speed estimation. We will also study vehicle
+classiﬁcation on multiple lanes in the future.
+A
+PPENDIX
+Here, for a bus with a length of 12 m, combined with
+real experiment knowledge, we assume the vehicle can be
+modeled by four magnetic dipoles and we list the respective
+w a v ep a t t e r n sf o rt h es p e e dv a r y i n gf r o m2 0k m / ht o5 0k m / h .
+(Figs. 19 (a) - (d)).
+Fig. 20 shows the magnetic perturbation caused by a bus.
+It is obvious to see that using four magnetic dipoles to simulate
+a long vehicle is reasonable.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 11 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+FENG et al. : MAGMONITOR: VEHICLE SPEED ESTIMA TION AND VEHICLE CLASSIFICA TION THROUGH A MAGNETIC SENSOR 11
+ACKNOWLEDGMENT
+The authors would like to thank the students from Xidian
+University for the road experiment assistance. They also would
+like to thank the anonymous reviewers for their comments.
+REFERENCES
+[1] W. Xu et al. , “Internet of vehicles in big data era,” IEEE/CAA J.
+Automatica Sinica, vol. 5, no. 1, pp. 19–35, Jan. 2018.
+[2] Y . Lv, Y . Duan, W. Kang, Z. Li, and F.-Y . Wang, “Trafﬁc ﬂow prediction
+with big data: A deep learning approach,” IEEE Trans. Intell. Transp.
+Syst., vol. 16, no. 2, pp. 865–873, Apr. 2015.
+[3] K. Garg, N. Ramakrishnan, A. Prakash, and T. Srikanthan, “Rapid
+and robust background modeling tec hnique for low-cost road trafﬁc
+surveillance systems,” IEEE Trans. Intell. Transp. Syst. , vol. 21, no. 5,
+pp. 2204–2215, May 2020.
+[4] B.-L. Y e et al. , “A survey of model predictive control methods for
+trafﬁc signal control,” IEEE/CAA J. Automatica Sinica , vol. 6, no. 3,
+pp. 623–640, May 2019.
+[5] M. Zhou, H. Dong, P . A. Ioannou, Y . Zhao, and F.-Y . Wang, “Guided
+crowd evacuation: Approaches and challenges,” IEEE/CAA J. Automat-
+ica Sinica , vol. 6, no. 5, pp. 1081–1094, Sep. 2019.
+[6] R. O. Chavez-Garcia and O. Aycard, “Multiple sensor fusion and
+classiﬁcation for moving object detection and tracking,” IEEE Trans.
+Intell. Transp. Syst. , vol. 17, no. 2, pp. 525–534, Feb. 2016.
+[7] National Center for Statistics and Analysis , National Highway Trafﬁc
+Safety Administration, Wa shington, DC, USA, Mar. 2018.
+[8] C. Sun and S. G. Ritchie, “Individual vehicle speed estimation using
+single loop inductive waveforms,” J. Transp. Eng. , vol. 125, no. 6,
+pp. 531–538, Nov. 1999.
+[9] T. N. Schoepﬂin and D. J. Dailey, “Dynamic camera calibration of
+roadside trafﬁc management cameras for vehicle speed estimation,”
+IEEE Trans. Intell. Transp. Syst. , vol. 4, no. 2, pp. 90–98, Jun. 2003.
+[10] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[11] Q. Wei and B. Y ang, “Adaptable vehicle detection and speed estimation
+for changeable urban trafﬁc with anisotropic magnetoresistive sensors,”
+IEEE Sensors J. , vol. 17, no. 7, pp. 2021–2028, Apr. 2017.
+[12] W. Balid, H. Taﬁsh, and H. H. Refai, “Development of portable wireless
+sensor network system for real-time trafﬁc surveillance,” in Proc. IEEE
+18th Int. Conf. Intell. Transp. Syst. , Sep. 2015, pp. 1630–1637.
+[13] C. Wang, Z. Xie, L. Shao, Z. Zhang, and M. Zhou, “Estimating travel
+speed of a road section through sparse crowdsensing data,” IEEE Trans.
+Intell. Transp. Syst. , vol. 20, no. 9, pp. 3486–3495, Sep. 2019.
+[14] S.-L. Jeng, W.-H. Chieng, and H.-P . Lu, “Estimating speed using a side-
+looking single-radar vehicle detector,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 15, no. 2, pp. 607–614, Apr. 2014.
+[15] H. Han et al., “SenSpeed: Sensing driving conditions to estimate vehicle
+speed in urban environments,” in Proc. IEEE INFOCOM - IEEE Conf.
+Comput. Commun. , Apr. 2014, pp. 727–735.
+[16] E. J. Wang, T.-J. Lee, A. Mariakakis, M. Goel, S. Gupta, and S. N. Patel,
+“Magniﬁsense: Inferring device in teraction using wrist-worn passive
+magneto-inductive sensors,” in Proc. ACM Int. Joint Conf. Pervasive
+Ubiquitous Comput. , 2015, pp. 15–26.
+[17] A. Haoui, R. Kavaler, and P . V araiya, “Wireless magnetic sensors for
+trafﬁc surveillance,” Transp. Res. C, Emerg. Technol. , vol. 16, no. 3,
+pp. 294–306, Jun. 2008.
+[18] S. Y . Cheung, S. Coleri, B. D undar, S. Ganesh, C.-W. Tan, and
+P . V araiya, “Trafﬁc measurement and vehicle classiﬁcation with single
+magnetic sensor,” Transp. Res. Rec., J. Transp. Res. Board, vol. 1917,
+no. 1, pp. 173–181, Jan. 2005.
+[19] Q. Wang, J. Zheng, H. Xu, B. Xu, and R. Chen, “Roadside magnetic
+s
+ensor system for vehicle detection in urban environments,” IEEE Trans.
+Intell. Transp. Syst. , vol. 19, no. 5, pp. 1365–1374, May 2018.
+[20] R. Hostettler, W. Birk, and M. L. Nordenvaad, “Feasibility of road
+vibrations-based vehicle property sensing,” IET Intell. Transp. Syst. ,
+vol. 4, no. 4, pp. 356–364, 2010.
+[21] S. V . Marshall, “V ehicle detection using a magnetic ﬁeld sensor,” IEEE
+Trans. Veh. Technol., vol. 27, no. 2, pp. 65–68, May 1978.
+[22] W. Balid, H. Taﬁsh, and H. H. Refa i, “Intelligent vehicle counting
+and classiﬁcation sensor for real-time trafﬁc surveillance,” IEEE Trans.
+Intell. Transp. Syst. , vol. 19, no. 6, pp. 1784–1794, Jun. 2018.
+[23] D. Obertov, V . Bardov, and B. Andrievsky, “V ehicle speed estimation
+using roadside sensors,” in Proc. 6th Int. Congr . Ultra Modern Telecom-
+mun. Control Syst. Workshops (ICUMT) , Oct. 2014, pp. 111–117.
+[24] H. Li, H. Dong, L. Jia, D. Xu, and Y . Qin, “Some practical vehicle speed
+estimation methods by a single trafﬁc magnetic sensor,” in Proc. 14th
+Int. IEEE Conf. Intell. Transp. Syst. (ITSC) , Oct. 2011, pp. 1566–1573.
+[25] X. Deng, Z. Hu, P . Zhang, and J. Guo, “V ehicle class composition iden-
+tiﬁcation based mean speed estimation algorithm using single magnetic
+sensor,” J. Transp. Syst. Eng. Inf. Technol. , vol. 10, no. 5, pp. 35–39,
+Oct. 2010.
+[26] J. Lan, Y . Xiang, L. Wang, and Y . S hi, “V ehicle detection and classi-
+ﬁcation by measuring and processing magnetic signal,” Measurement,
+vol. 44, no. 1, pp. 174–180, Jan. 2011.
+[27] S. Y . Cheung, S. C. Ergen, and P . V araiya, “Trafﬁc surveillance with
+wireless magnetic sensors,” in Proc. 12th ITS World Congr . , vol. 1917,
+2005, p. 173181.
+[28] D. Kleyko, R. Hostettler, W. Birk, and E. Osipov, “Comparison of
+machine learning techniques for vehicle classiﬁcation using road side
+sensors,” in Proc. IEEE 18th Int. Conf. Intell. Transp. Syst. , Sep. 2015,
+pp. 572–577.
+[29] H. Liu, M. Zhou, and Q. Liu, “An embedded feature selection method for
+imbalanced data classiﬁcation,” IEEE/CAA J. Automatica Sinica ,v o l .6 ,
+no. 3, pp. 703–715, May 2019.
+[30] P . Zhang, S. Shu, and M. Zhou, “An online fault detection model
+and strategies based on SVM-grid in clouds,” IEEE/CAA J. Automatica
+Sinica, vol. 5, no. 2, pp. 445–456, Mar. 2018.
+[31] N. Wahlstrom, R. Hostettler, F. Gustafsson, and W. Birk, “Classiﬁcation
+of driving direction in trafﬁc surveillance using magnetometers,” IEEE
+Trans. Intell. Transp. Syst. , vol. 15, no. 4, pp. 1405–1418, Aug. 2014.
+[32] J. Xie et al. , “The simulations and experiments of the electromagnetic
+tracking system based on magnetic dipole model,” IEEE Trans. Appl.
+Supercond., vol. 24, no. 3, pp. 1–4, Jun. 2014.
+[33] N. Wahlstrom and F. Gustafsson, “Magnetometer modeling and valida-
+tion for tracking metallic targets,” IEEE Trans. Signal Process. , vol. 62,
+no. 3, pp. 545–556, Feb. 2014.
+[34] S. Gontarz, P . Szulim, J. Se´ nko, and J. Dybała, “Use of magnetic mon-
+itoring of vehicles for proactive strategy development,” Transp. Res. C,
+Emerg. Technol., vol. 52, pp. 102–115, Mar. 2015. [Online]. Available:
+http://www.sciencedirect.com/science/article/pii/S0968090X1400357X
+[35] Q. Zhou, G. Tong, B. Li, and X. Y uan, “A practicable method for fer-
+romagnetic object moving direction identiﬁcation,” IEEE Trans. Magn. ,
+vol. 48, no. 8, pp. 2340–2345, Aug. 2012.
+[36] S. Gontarz and S. Radkowski, “Imp act of various factors on relationships
+between stress and eigen magnetic ﬁeld in a steel specimen,” IEEE
+Trans. Magn., vol. 48, no. 3, pp. 1143–1154, Mar. 2012.
+[37] Y . Ren, C. Hu, S. Xiang, and Z . Feng, “Magnetic dipole model
+in the near-ﬁeld,” in P
+ roc. IEEE Int. Conf. Inf. Autom. , Aug. 2015,
+pp. 1085–1089.
+[38] Y . Feng, G. Mao, B. Cheng, B. Huang, S. Wang, and J. Chen,
+“MagSpeed: A novel method of vehicle speed estimation through a
+single magnetic sensor,” in Proc. IEEE Intell. Transp. Syst. Conf. (ITSC) ,
+Oct. 2019, pp. 4281–4286.
+[39] Z. Chen et al. , “Roadside sensor based vehicle counting incomplex
+trafﬁc environment,” in Proc. IEEE Globecom Workshops (GC Wkshps) ,
+Dec. 2019, pp. 1–5.
+[40] G. Chandrasekaran et al. , “Tracking vehicular speed variations by
+warping mobile phone signal strengths,” in Proc. IEEE Int. Conf. Pervas.
+Comput. Commun. (PerCom) , Mar. 2011, pp. 213–221.
+Yimeng Feng (Graduate Student Member, IEEE)
+received the B.S. degree from the Beijing University
+of Posts and Telecommunications, Beijing, China,
+and the Queen Mary University of London, London,
+U.K., in 2016. She is currently pursuing the dual
+Ph.D. degree program with the State Key Laboratory
+of Networking and Switching Technology, Beijing
+University of Posts and Telecommunications, and the
+School of Electrical and Data Engineering, Univer-
+sity of Technology Sydney, Ultimo, NSW, Australia.
+Her current research interests include intelligent
+transportation systems, the Internet of Things, and wireless sensor network
+technology. She has served as a TPC member and a reviewer in a number of
+international conferences.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 12 =====
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+12 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS
+Guoqiang Mao (Fellow, IEEE) was with the
+University of Technology Sydney and the University
+of Sydney. He is currently a Distinguished Professor
+with Xidian University. He has published more than
+200 articles in international conferences and jour-
+nals, which have been cited more than 9000 times.
+His research interests include intelligent transport
+systems, applied graph theory and its applications in
+telecommunications, the Internet of Things, wireless
+sensor networks, wireless localization techniques
+and network modeling, and performance analysis.
+He is a fellow of IET. He received the Top Editor Award for outstanding
+contributions to the IEEE T
+RANSACTIONS ON VEHICULAR TECHNOLOGY
+in 2011, 2014, and 2015. He was the Co-Chair of the IEEE Intelligent Trans-
+port Systems Society Technical Committee on Communication Networks.
+He has served as the chair, the co-chair, and a TPC member in a number of
+international conferences. He was an Editor of the IEEE T
+RANSACTIONS ON
+WIRELESS COMMUNICA TIONS from 2014 to 2019. He has been an Editor of
+the IEEE T RANSACTIONS ON INTELLIGENT TRANSPORT A TION SYSTEMS
+since 2018 and the IEEE T RANSACTIONS ON VEHICULAR TECHNOLOGY
+since 2010.
+Bo Cheng (Member, IEEE) r eceived the Ph.D.
+degree in computer science and engineering from the
+University of Electronic Science and Technology of
+China, in 2006. He has been with the Beijing Univer-
+sity of Posts and Telecommunications (BUPT) since
+2008, where he is currently a Full Professor with the
+Research Institute of Networking Technology. His
+current research interests include network services
+and intelligence, the Internet of Things technology,
+and multimedia communications.
+Changle Li (Senior Member, IEEE) r eceived the
+Ph.D. degree in communication and information sys-
+tem from Xidian University, China, in 2005. He con-
+ducted his Post-Doctoral Research in Canada and
+the National Institute of Information and Communi-
+cations Technology, Japan. He has been a Visiting
+Scholar with the University of Technology Sydney.
+He is currently a Professor with the State Key
+Laboratory of Integrated Services Networks, Xidian
+University. His research interests include intelligent
+transportation systems, vehicular networks, mobile
+ad-hoc networks, and wireless sensor networks.
+Yilong Hui (Member, IEEE) r eceived the Ph.D.
+degree from Shanghai University, China, in 2018.
+He is currently a Lecturer with the State Key
+Laboratory of Integrated Services Networks, Xidian
+University, China. His research interests are in the
+general area of wireless network architecture, vehic-
+ular networks, and smart city transportation.
+Zhigang Xu (Member, IEEE) r eceived the B.S.
+degree in automation and the M.S. and Ph.D. degrees
+in trafﬁc information engineering and control from
+Chang’an University, China, in 2002, 2005, and
+2012, respectively. He has been a Visiting Scholar
+with the University of California, Davis, CA, USA,
+since 2015. He is currently a Professor with the
+School of Information Engineering, and the Director
+of the Laboratory of Trafﬁc information Sensing and
+Control, Chang’an University. His research focuses
+on connected and autonomous vehicles, trafﬁc ﬂow
+analysis, transportation optimization, and intelligent transportation systems.
+He is also a member of the IEEE ITS Society and ASCE and the Chair of
+CA Vs Committee of World Transportation Convention.
+Junliang Chen (Senior Member, IEEE) received the
+B.S. degree in electrical engineering from Shanghai
+Jiao Tong University, China, in 1955, and the Ph.D.
+degree in electrical engineering from the Moscow
+Institute of Radio Engineering, in 1961. He has been
+with the Beijing University of Posts and Telecommu-
+nications (BUPT) since 1955, where he is currently
+the Chairman and a Professor with the Research
+Institute of Networking and Switching Technology.
+His research interests are in the area of communica-
+tion networks and next-generation service creation
+technology. He was elected as a member of the Chinese Academy of Science
+in 1991 and the Chinese Academy of Engineering in 1994.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on December 25,2020 at 11:00:48 UTC from IEEE Xplore.  Restrictions apply. 

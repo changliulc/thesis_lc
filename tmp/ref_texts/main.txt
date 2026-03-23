@@ -1,0 +1,657 @@
+
+
+===== PAGE 1 =====
+
+Vehicle detection and classiﬁcation by measuring and processing
+magnetic signal
+Jinhui Lan a,⇑, Yong Xiang b, Liping Wang a, Yuqiao Shi a
+a Department of Measurement and Control Technologies, School of Information Engineering, University of Science and Technology Beijing, Beijing, P. R. China
+b School of Engineering, Deakin University, Geelong, Victoria 3217, Australia
+article info
+Article history:
+Received 22 August 2009
+Received in revised form 10 May 2010
+Accepted 27 September 2010
+Available online 25 October 2010
+Keywords:
+MEMS magnetic sensor
+Vehicle detection
+Vehicle classiﬁcation
+Improved SVM
+abstract
+This paper presents novel vehicle detection and classiﬁcation method by measuring and pro-
+cessing magnetic signal based on single micro-electro-mechanical system (MEMS) magnetic
+sensor. When a vehicle moves over the ground, it generates a succession of impacts on the
+earth’s magnetic ﬁeld, which can be detected by single magnetic sensor. The magnetic signal
+measured by the magnetic sensor is related to the moving direction and the type of the vehi-
+cle. Generally, the recognition rate using single sensor detector is not high. In order to
+improve the recognition rate, a novel feature extraction algorithm and a novel vehicle clas-
+siﬁcation and recognition algorithm are presented. The concavity and convexity areas, and
+the angles of concave and convex parts of the waveform are extracted. An improved support
+vector machine (ISVM) classiﬁer is developed to perform vehicle classiﬁcation and recogni-
+tion. The effectiveness of the proposed approach is veriﬁed by outdoor experiments.
+/C2112010 Published by Elsevier Ltd.
+1. Introduction
+In recent years, Intelligent Transportation System (ITS)
+programs have been initiated in many countries [1–3].A s
+a part of ITS, moving vehicle detection and classiﬁcation
+system plays an important role since it gathers all parts
+of the data used in ITS. Video image, acoustic, seismic,
+and infrared sensors are used in vehicle detection and clas-
+siﬁcation systems. However, the detection and classiﬁca-
+tion systems based on video image, acoustic, seismic and
+infrared sensors are expensive and large in size due to
+the usage of extra hardware. Furthermore, their perfor-
+mance is often affected by Doppler effects and noise intro-
+duced by moving vehicles and atmospheric and terrain
+variations. In contrast, magnetic sensors are less sensitive
+to noise and Doppler effects. Moreover, magnetic sensors
+do not require the ‘line of sight’ assumption and are rela-
+tively immune from weather conditions. They can detect
+objects through obstacles such as foliage. Among various
+magnetic sensors, the micro-electro-mechanical system
+(MEMS) magnetic sensors have advantages in terms of
+cost, size, weight and power consumption [4–7]. Hence,
+applying MEMS magnetic sensors to vehicle detection,
+classiﬁcation and recognition is a promising research topic.
+Currently, some methods on vehicle detection and clas-
+siﬁcation using magnetic sensors have been reported in lit-
+erature. These methods are either based on the fusion of
+magnetic and other kinds of sensing techniques or based
+on the fusion of magnetic arrays. Ding et al. proposed a
+vehicle detection algorithm called the Adaptive Threshold
+algorithm based on acoustic sensor and magnetic sensor
+[8].I n [9], Casalegno proposed a vehicle classiﬁcation
+method based on magnetometer arrays. Their recognition
+rates are between 80% and 90%. Since multiple sensors
+and fusion techniques are used, these methods are usually
+complicated.
+In this paper, a new approach is proposed to detect and
+classify vehicles by measuring and processing magnetic
+signal based on single MEMS sensor. It is superior to the
+existing methods in terms of reliability, installation and
+maintenance. The feasibility of the approach is based on
+the magnetic signal which is closely related to the
+0263-2241/$ - see front matter /C2112010 Published by Elsevier Ltd.
+doi:10.1016/j.measurement.2010.09.044
+⇑ Corresponding author. Fax: +86 10 62334491.
+E-mail address: jh.lan@263.net (J. Lan).
+Measurement 44 (2011) 174–180
+Contents lists available at ScienceDirect
+Measurement
+journal homepage: www.elsevier.com/locate/measurement
+
+
+===== PAGE 2 =====
+
+characteristics of the vehicle. By exploiting the features of
+the magnetic signal, our approach can recognize the mov-
+ing direction and the type of vehicle with high recognition
+rate. It is also computationally efﬁcient as it uses an im-
+proved one-against-all classiﬁcation algorithm based on
+SVM. Outdoor experiments have been conducted to test
+the performance of the new approach.
+2. Foundation of vehicle detection and recognition
+using single magnetic sensor
+The sensor considered in this paper is the 1-axis MEMS
+magnetic sensor from Honeywell [10]. It is made of Perm-
+alloy (NiFe) thin ﬁlm deposited onto a silicon substrate and
+patterned to form a Wheatstone resistor bridge (see Fig. 1)
+which can generate a differential output voltage. In the
+bridge, the opposite elements are identical. If the magnetic
+ﬁeld in the sensitive axis increases, the Vb to Out+ and
+Out/C0 to GND elements will slightly decrease in resistance
+while the other two elements will increase in resistance.
+This results in an increase of voltage at Out+ and a decrease
+of voltage at Out /C0 , or equivalently an increase of voltage
+from Out+ to Out /C0 . Similarly, if the magnetic ﬁeld in the
+sensitive axis decreases, the voltage across Out+ and Out /C0
+will decrease. Hence, by measuring the voltage across Out+
+and Out/C0 , one can detect the change of the magnetic ﬁeld
+in which the sensor is placed.
+The magnetic ﬁeld disturbance produced by a moving
+vehicle can be measured by a single axis magnetic sensor.
+The distortion in the earth’s magnetic ﬁeld concentrates
+mainly at locations near the engine and wheels. However,
+it can also vary depending on the internal distribution of
+the ferrous materials used in other parts of the vehicle, such
+as rooftop and trunk locations. The net result is a character-
+istic distortion to the earth’s magnetic ﬁeld that is unique to
+the shape of the vehicle. To verify this view point, we used a
+MEMS magnetic sensor to detect typical vehicle targets. The
+measurement system is shown in Fig. 2 which includes a
+power unit, a MEMS magnetic sensor and conditioning cir-
+cuit, a high-speed A/D–D/A data acquisition card and a com-
+puter. The sensor was installed by the side of a road and the
+vehicles ran beside it (see Fig. 3).
+The test was carried out on a straight concrete road that
+is 2-km long and 12-m wide. The vehicles tested include
+heavy tracked vehicles, light tracked vehicles and light
+wheeled vehicles. It was a sunny day with 30–35 /C176C
+temperature and 1–2 wind force level. The sensor is in-
+stalled in the way that its sensitive axis is parallel with
+the directions of moving vehicles. The direction of sensitive
+axis of the sensor is called ‘‘forward direction” and the re-
+verse direction of sensitive axis is called ‘‘reverse direc-
+tion”. The speeds of target vehicles were not the same
+but each vehicle passed by the sensor with a uniform
+speed. Also, the vehicles moved passed the sensor within
+a distance of three meters to ensure that the vehicles were
+in the detection range of the sensor. The sensor signal was
+sampled at the frequency of 2000 Hz.
+Fig. 4 shows the signal waveforms generated by a heavy
+tracked vehicle traveling in different directions. It can be
+seen from Fig. 4b that when there is no vehicle in the sen-
+sor’s detection range, the output of the sensing circuit is
+initially zero. When the vehicle is traveling in forward
+direction, the output will ﬁrst decrease below the initial
+value. Then it increases and reaches the initial value at
+the time when the vehicle is in front of the sensor. When
+the vehicle moves further, the ﬂux lines will bend toward
+the vehicle. As a result, the signal value increases and be-
+comes positive. It will return to the initial value again
+when the vehicle moves out of the sensor’s detection
+range. Fig. 4a shows the signal waveform when the vehicle
+travels in the reverse direction. It is easy to see that the
+waveform in Fig. 4 a is approximately a mirror reﬂection
+Fig. 1. Magneto-Resistive Wheatstone bridge elements.
+Fig. 2. Structure of the detection system.
+J. Lan et al. / Measurement 44 (2011) 174–180 175
+
+===== PAGE 3 =====
+
+of that in Fig. 4b. Clearly, the polarity of the waveform can
+be used to detect the moving direction of the vehicle.
+Fig. 5 shows the voltage waveforms of the magnetic sig-
+nals generated respectively by a heavy tracked vehicle, a
+light tracked vehicle and a light wheeled vehicle, where
+the vehicles were traveling in the same direction (reverse
+direction). Clearly, these waveforms are quite different
+and thus their features can be exploited to classify and rec-
+ognize the vehicle types. These observations lay a founda-
+tion for target classiﬁcation and recognition. In the
+remainder of this paper, we shall focus on how to deter-
+mine the types of vehicles by exploiting the features of
+the magnetic signals. An efﬁcient algorithm will be pro-
+posed to carry out vehicle classiﬁcation and recognition.
+3. Vehicle recognition based on the features of magnetic
+signals
+The vehicle recognition process is shown in Fig. 6 .I t
+consists of four steps: noise elimination, signal segmenta-
+tion, feature extraction, and vehicle classiﬁcation and
+recognition.
+3.1. Noise elimination
+In some cases, relatively strong additive noise appears
+and affects the measurements. The noise signals could be
+caused by environmental factors and/or by the operations
+of electronic circuits, such as the data transmission from
+the acquisition card to the host computer. The spectrum
+analysis shows that the periods of the noise signals
+encountered in this application are less than several micro
+seconds. In contrast, as shown in Figs. 4 and 5 , the length of
+a vehicle signal waveform is much greater than the periods
+of noise signals. As a result, a low-pass ﬁlter can be used to
+effectively remove noise signals. Here we use the digital ﬁl-
+tering technique to eliminate noise [11–14]. The effective-
+ness of this technique can be demonstrated by the example
+shown in Fig. 7 . It is clear that after noise elimination, the
+useful information of the magnetic signal is well reserved.
+This technique is applied to ﬁltering magnetic signals gen-
+erated by various vehicles and satisfactory results are ob-
+tained in all cases.
+3.2. Signal segmentation
+It can be seen from the plots of magnetic signals that
+only a small portion of the waveform contains useful
+Magnetic 
+sensor 
+Vehicle direction
+Fig. 3. Sensor installation diagram.
+0 5 10 15
+-10
+-5
+0
+5
+time/s
+voltage/mv
+(a)
+0 5 10 15-5
+0
+5
+10
+time/s
+voltage/mv
+(b)
+Fig. 4. Magnetic signals of a heavy tracked vehicle versus different
+moving directions: (a) reverse direction and (b) forward direction.
+(b)
+0 2 4 6 8-5
+0
+5
+time/s
+voltage/mv
+(c)
+0 5 10 15 20
+-5
+0
+5
+time/s
+voltage/mv
+(a)
+0 10 20 30 40-5
+0
+5
+time/s
+voltage/mv
+Fig. 5. Magnetic signals generated by different types of vehicles: (a)
+heavy tracked vehicle; (b) light tracked vehicle and (c) light wheeled
+vehicle.
+176 J. Lan et al. / Measurement 44 (2011) 174–180
+
+===== PAGE 4 =====
+
+information of the vehicle passing by the sensor. The rest
+of the waveform is almost static. The static part of the
+waveform should be removed to save computing time. This
+can be done by means of signal segmentation. Fig. 8 shows
+an example of signal segmentation conducted on the mag-
+netic signal from a heavy tracked vehicle.
+3.3. Feature extraction
+In order to numerically identify the type of a vehicle,
+some quantitative indices need to be proposed to reﬂect
+the features of the magnetic signal. These indices should
+have high correlations with the shape of the signal wave-
+form and can be easily computed. The feature indices pro-
+posed for vehicle classiﬁcation and recognition are the
+concavity and convexity areas, and the angles of the con-
+cave and convex parts of the waveform. Before introducing
+the deﬁnitions of these feature indices, some important
+points are labeled on the segmented signal shown in
+Fig. 8 b. The coordinates of the four points corresponding
+to the beginning, the maximum value, the minimum value
+and the end of the segmented signal are denoted by ( x1, y1),
+(x2, y2), ( x3, y3) and ( x4, y4), respectively. In practice, the
+points ( x2, y2) and ( x3, y3) can be determined by looking
+at the maximum and minimum of the signal while points
+(x1, y1) and ( x4, y4) can be determined by looking at the
+slope of the signal or its magnitude. Between the points
+(x
+2, y2) and ( x3, y3), there exists one point corresponding
+to the voltage of zero volt which is denoted by ( x5, y5).
+Clearly, y5 =0 .
+Based on these notations, the convexity area can be
+approximately computed through discrete data integral as
+S1 /C25
+X
+x1 6 i 6x5
+yi ð1Þ
+where yi > 0. Similarly, the concavity area is
+S2 /C25
+X
+x5 6 i 6x4
+ð/C0 yiÞð 2Þ
+where yi < 0. Let K1 ¼ ðy2 /C0 y1 Þ
+ðx2 /C0 x1 Þ ; K2 ¼ ðy3 /C0 y2 Þ
+ðx3 /C0 x2 Þ and K3 ¼ ðy4 /C0 y3 Þ
+ðx4 /C0 x3 Þ.
+Then the angles of the convex and concave parts are de-
+ﬁned respectively as
+tanðh1Þ¼ ðK2 /C0 K1Þ
+ð1 þ K2 /C1 K1Þ
+/C12/C12
+/C12
+/C12
+/C12/C12
+/C12
+/C12 ð3Þ
+and
+tanðh2Þ¼ ðK3 /C0 K2Þ
+ð1 þ K3 /C1 K2Þ
+/C12/C12
+/C12
+/C12
+/C12/C12
+/C12
+/C12 ð4Þ
+where, h1 represents the convex angle, h2 represents the
+concave angle. Fig. 9 shows the distribution of the concav-
+ity and convexity areas of three types of vehicles. The dis-
+tribution of the angles of concave part and convex part is
+Noise 
+Elimination
+Signal 
+Segmentation
+Feature 
+Extraction
+Vehicle 
+Classification
+Fig. 6. Flow chart of the vehicle recognition.
+0 5 10 15 20
+-5
+0
+5
+time/s
+voltage/mv
+(b)
+0 5 10 15 20
+-5
+0
+5
+time/s
+voltage/mv
+(a)
+Fig. 7. An example of noise elimination: (a) original signal and (b) signal
+after noise elimination.
+0 5 10 15 20
+-5
+0
+5
+time/s
+voltage/mv
+(a)
+0 5 10 15 20
+-5
+0
+5
+time/s
+voltage/mv
+(b)
+Fig. 8. Signal segmentation for a magnetic signal: (a) signal before
+segmentation and (b) signal after segmentation.
+J. Lan et al. / Measurement 44 (2011) 174–180 177
+
+===== PAGE 5 =====
+
+shown in Fig. 10 . From Fig. 9 , it is clear that the convexity
+areas of light tracked vehicles are much larger than those
+of heavy tracked vehicles and light wheeled vehicles. By
+exploiting this property, light tracked vehicles can be eas-
+ily separated from the others. In addition, as shown in
+Fig. 10, the angles of convex part of light wheeled vehicles
+are much smaller than those of light and heavy tracked
+vehicles. This property can be exploited to separate light
+wheeled vehicles from the others. Therefore, vehicle classi-
+ﬁcation and recognition can be achieved by jointly exploit-
+ing these properties.
+3.4. Vehicle classiﬁcation and recognition
+The support vector machine (SVM) is a statistical learn-
+ing method based on the structure risk minimization prin-
+ciple. Its efﬁciency has been proved in many pattern
+recognition applications and can be used to classify and
+recognize vehicles. To classify more than two types of vehi-
+cles, a multi-class SVM must be used. The two widely used
+multi-class SVMs are the one-against-all method and the
+one-against-one method [15–17]. In the one-against-all
+method, a set of binary classiﬁers are ﬁrst trained to be
+able to separate each class from the others. Then each data
+object is classiﬁed to the class for which the largest deci-
+sion value was determined. To classify M classes, this
+method needs M classiﬁers. Differently, in the
+one-against-one method, a series of classiﬁers is applied
+to each pair of classes, with the most commonly computed
+class kept for each object. Then a max-win operator is used
+to determine to which class the object will be ﬁnally as-
+signed. This method requires
+MðM/C0 1Þ
+2 classiﬁers. So the
+one-against-all method is, in general, superior to the one-
+against-one method as it requires much less classiﬁers.
+However, the one-against-all method is computation-
+ally demanding. The reason is that in the testing process,
+all M classiﬁers must be used to determine the class of a
+data object. Another drawback of the method is that every
+data object will be classiﬁed to one of the M classes. If a
+data object does not belong to any of the M classes, a clas-
+siﬁcation error will occur. Next, we shall propose an im-
+proved one-against-all algorithm that overcomes these
+drawbacks. The classiﬁer based on the improved one-
+against-all algorithm is named as improved SVM classiﬁer,
+or ISVM classiﬁer.
+We ﬁrst consider the construction of the M binary SVM
+classiﬁers using N training samples { x1, y1}, ..., {xN, yN}.
+Here, xi e Rk is a k-dimensional feature vector correspond-
+ing to the i-th training sample, and yi e {1, 2, ..., M} is the
+class label of xi. When constructing the m-th classiﬁer,
+we re-write the class label of xi to be ym
+i , where ym
+i ¼ 1i f
+yi = m and ym
+i ¼/C0 1i f yi – m. Then based on the concept
+of the two-class SVM method, the decision function for
+the m-th classiﬁer is
+Fig. 9. Distribution of concavity and convexity areas.
+Fig. 10. Distribution of the angles of concave part and convex part.
+178 J. Lan et al. / Measurement 44 (2011) 174–180
+
+===== PAGE 6 =====
+
+f mðxÞ¼ sign
+X
+i
+am
+i ym
+i
+Kðxi; xÞþ b
+m
+ !
+ð5Þ
+where, am
+i is a weighting factor and am
+i P 0; b
+m
+i is a bias and
+K(xi, x) is a known symmetric positive function called ker-
+nel. Since ym
+i ðwT
+i xi þ b
+m
+Þ/C0 1 P 0 where m =1 ,2 , ... , M and
+wi is the vertical vector of hyper plane, we can use the La-
+grange method to search for the maximum value of the
+classiﬁcation interval. That is to search the minimum of
+Lðwi; niÞ¼ 1
+2 kwi k2 þ CPN
+i¼1ni, where C is a penalty factor
+(the greater C, the greater punishment for wrong classiﬁca-
+tion) and ni is a relaxation factor reﬂecting the distance be-
+tween xi and hyper plane. Then we can get the equationPn
+i¼1ym
+i am
+i
+¼ 0. Under the conditions Pn
+i¼1ym
+i am
+i
+¼ 0 and
+am
+i P 0, the best value of am can be found by maximizing
+HðamÞ¼ Pn
+i¼1am
+i /C0 1
+2
+Pn
+i;j¼1am
+i am
+j
+ym
+i
+ym
+j
+Kðxi; xjÞ. Then substi-
+tuting a feature vector belonging to the m-th class, say
+xa, into (5) yields f mðxaÞ¼ sign P
+iam
+i ym
+i
+Kðxi; xaÞþ b
+m/C0/C1
+¼ 1,
+from which the value of bm can be determined.
+In the testing process, the decision function in (5) is
+used to determine whether a data object x belongs to the
+m-th class, according to the value of fm(x). Fig. 11 shows
+the ﬂow chart of the testing process. The data object x is
+ﬁrst tested by the SVM classiﬁer 1 (SVM1). If f1(x) = 1, the
+data object x is recognized as class 1. If not, it will be sent
+to classiﬁer SVM2 to determine whether it belongs to class
+2. Following the same procedure, the algorithm can ﬁnd
+out which class the data object x belongs to. Clearly, in
+most cases, the number of classiﬁers needed to classify a
+data object is less than M. Hence this algorithm is more
+efﬁcient in computation than the normal one-against-all
+method.
+If fm(x)= /C0 1 for all m =1 ,2 , ... , M, it means that x be-
+longs to a class that is different from the M classes given
+by the N training samples. In contrast, the normal one-
+against-all method will yield a wrong classiﬁcation result
+for this data object.
+4. Experimental results and analysis
+4.1. Experimental results
+The experiments were conducted on a straight road that
+is 2-km long and 12-m wide. The surface of the road is
+reinforced concrete. The sensor was properly installed to
+ensure that its sensitive axis was parallel with the direc-
+tions of moving vehicles. The proposed vehicle detection
+and classiﬁcation approach was tested using 93 vehicles,
+including 27 heavy tracked vehicles, 28 light tracked vehi-
+cles and 38 light wheeled vehicles. The vehicles passed the
+sensor within a distance of three meters to ensure that the
+vehicles were in the detection range of the sensor. The sen-
+sor signal was sampled at the frequency of 2000 Hz. The
+structure of the detection system and the sensor installa-
+tion diagram are shown in Figs. 2 and 3 , respectively. Dur-
+ing the test period, the weather was ﬁne, with 30–35 /C176C
+temperature and 1–2 wind force level.
+In the experiments, the features of concavity area, con-
+vexity area, the angle of concave part, and the angle of con-
+vex part of the waveform are extracted for vehicle
+detection and classiﬁcation. The successful vehicle detec-
+tion rate is 100%. Then the ISVM classiﬁer which is based
+on the improved one-against-all algorithm is used to clas-
+sify and recognize the vehicles. The results of vehicle
+detection and recognition using the ISVM classiﬁer are
+shown in Table 1 . Given the same extracted features, we
+also use other classiﬁers to classify and recognize vehicles,
+including the support vector machine (SVM), the back-
+propagation neural networks (BPNN) and the k-nearest
+neighbor (KNN) classiﬁers. The recognition rates on these
+classiﬁers are shown in Table 2 .
+4.2. Experimental analysis
+Due to complex environment and some uncertain inter-
+ference, errorless recognition cannot be guaranteed at this
+stage. We can see from Table 1 that the recognition rates of
+the proposed ISVM classiﬁer are higher than 92% for the
+heavy tracked vehicles and light tracked vehicles, while
+its recognition rate on the light wheeled vehicles is
+89.5%. The relatively lower recognition rate on the light
+wheeled vehicle result from the smaller size and volume
+Fig. 11. Flow chart of the improved one-against-all algorithm.
+Table 1
+Results of vehicle detection and recognition using the ISVM classiﬁer.
+Heavy
+tracked
+vehicle
+Light tracked
+vehicle
+Light
+wheeled
+vehicle
+Number of vehicles 27 28 38
+Number of correct
+recognition
+25 26 34
+Number of incorrect
+recognition
+22 4
+Recognition rate (%) 92.6 92.86 89.5
+Table 2
+Recognition rates of SVM, BPNN and KNN classiﬁers.
+Recognition rate Heavy tracked
+vehicle (%)
+Light tracked
+vehicle (%)
+Light wheeled
+vehicle (%)
+SVM classiﬁer 88.9 85.7 84.2
+BPNN classiﬁer 81.5 78.6 76.3
+KNN classiﬁer 77.8 71.4 71.1
+J. Lan et al. / Measurement 44 (2011) 174–180 179
+
+===== PAGE 7 =====
+
+of light wheeled vehicles, compared to the other two types
+of vehicles. Thus, the amplitudes of magnetic signals gen-
+erated by the light wheeled vehicles are smaller. Conse-
+quently, when a light wheeled vehicle is not close to the
+sensor, the magnetic features about the concavity and con-
+vexity areas fall outside the normal range.
+From Table 2, it can be seen that the recognition rates of
+the SVM classiﬁer are higher than those of the BPNN and
+KNN classiﬁers, regardless of the types of vehicles. This is
+because the SVM classiﬁer is robust to small sample set,
+which is the case in our experiments. Nevertheless, the
+ISVM classiﬁer outperforms all the other classiﬁers as it ob-
+tains the highest recognition rates for all types of vehicles.
+This veriﬁes the effectiveness of the ISVM classiﬁer in vehi-
+cle recognition and classiﬁcation.
+5. Conclusion
+This paper shows that the signal measured by a MEMS
+magnetic sensor contains useful features of the vehicle
+passing by the sensor. By exploiting the features of the
+magnetic signal, a novel approach is proposed to detect,
+classify and recognize the moving vehicles. This approach
+is simple as only one magnetic sensor is used and efﬁcient
+in computation thanks to the usage of the ISVM classiﬁer
+which is based on an improved one-against-all algorithm.
+Our experiments show that the recognition rate of the pro-
+posed approach is about 90%. Compared with the commer-
+cial vehicle detection devices, our experimental system can
+not only detect the passage of vehicles but also classify and
+recognize the types of vehicles with high recognition rate.
+References
+[1] Luo Qi, Research on intelligent transportation system technologies
+and applications, in: 2008 Workshop on Power Electronics and
+Intelligent Transportation System, 2008, pp. 529–531.
+[2] F.H. Somda, H. Cormerais, J. Buisson, Intelligent transportation
+systems: a safe, robust and comfortable strategy for longitudinal
+monitoring, IET Intelligent Transport Systems 3 (2) (2009) 188–197.
+[3] M. Tubaishat, P. Zhuang, Q. Qi, et al., Wireless sensor networks in
+intelligent transportation systems, Wireless Communications &
+Mobile Computing 9 (3) (2009) 287–302.
+[4] A. Platil, J. Kubik, M. Vopalensky, P. Ripka, Precise AMR
+magnetometer for compass, in: Proc. IEEE Sens. 2003, pp. 472–476.
+[5] J.E. Lenz, A review of magnetic sensors, Proceedings of the IEEE 78 (6)
+(1990) 973–989.
+[6] W.J. Fleming, Overview of automotive sensors, IEEE Sensors Journal 1
+(4) (2001) 296–308.
+[7] D. Eddy, D. Sparks, Application of MEMS technology in automotive
+sensors and actuators, Proceedings of the IEEE 86 (1998) 1747–1755.
+[8] Jiagen (Jason) Ding, Sing-Yiu Cheung, Chin-Woo Tan, Pravin Varaiya,
+Signal processing of sensor node data for vehicle detection, in:
+International IEEE Conference on Intelligent Transportation Systems,
+2004, pp. 70–75.
+[9] James W. Casalegno, All-weather vehicle classiﬁcation using
+magnetometer arrays, in: Proceedings of SPIE, vol. 4743, 2002, pp.
+205–212.
+[10] 1- and 2-Axis Magnetic Sensors HMC1001/1002/1021/1022. < http://
+www.magneticsensors.com>.
+[11] J. Chapa, M. Raghuveer, Algorithms for designing wavelets to match
+a speciﬁed signal, IEEE Transactions on Signal Processing 48 (12)
+(2000) 3395–3406.
+[12] O. Rioul, M. Vetterli, Wavelet and signal processing, IEEE Signal
+Processing 8 (4) (1991) 14–38.
+[13] D.L. Donoho, De-noising by soft-thresholding, IEEE Transactions on
+Information Theory 41 (3) (1995) 613–627.
+[14] Mao Yanfen, Shi Pengfei, Noise reduction algorithm of vehicle
+detection in intelligent transportation system, in: Proceedings of
+the 2003 IEEE International Conference on Intelligent Transportation
+Systems, vol. 2, 2003, pp. 1368–1371.
+[15] J. Zhou, D.S. Gao, D. Zhang, Moving vehicle detection for automatic
+trafﬁc monitoring, IEEE Transactions on Vehicular Technology 56 (1)
+(2007) 51–59.
+[16] C. Hsu, C. Lin, A comparison of methods for multi-class support
+vector machines, IEEE Transactions on Neural Networks 13 (2)
+(2002) 415–425.
+[17] O.L. Mangasarian, D.R. Musicant, Successive overrelaxation for
+support vector machines, IEEE Transactions on Neural Networks 10
+(5) (1999) 1032–1037.
+180 J. Lan et al. / Measurement 44 (2011) 174–180

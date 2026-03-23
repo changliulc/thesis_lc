@@ -1,0 +1,871 @@
+[
+  {
+    "key": "R02",
+    "bib_type": "online",
+    "title": "2024年度中国城市交通报告",
+    "author": "{百度地图}",
+    "year": "2024",
+    "doi": "",
+    "url": "https://huiyan.baidu.com/reports/landing?id=180",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "R02.pdf",
+    "occurrences": [
+      {
+        "line": 248,
+        "context": "随着城市化进程的持续推进和机动车保有量的不断增长，道路交通运行压力持续加大，交通拥堵、停车资源紧张以及道路异常事件处置不及时等问题日益突出。百度地图发布的《2024年度中国城市交通报告》显示，北京、上海等超大城市通勤时间仍位居全国前列，表明国内主要城市在高峰时段的交通运行压力与通行效率问题依然突出\\cite{R02}。面向安全、高效、绿色与可持续交通运行的智能交通系统研究已成为交通治理的重要技术路径，相关技术体系正由单一信息化支撑向感知、通信与计算协同方向演进\\cite{wang2023transportation5}。与此同时，工业和信息化部等五部门围绕智能网联汽车车路云一体化应用试点发布通知，提出推动智能化路侧基础设施和云控基础平台建设，进一步为道路侧感知技术的发展提供了明确政策牵引\\cite{R01}。"
+      }
+    ]
+  },
+  {
+    "key": "wang2023transportation5",
+    "bib_type": "article",
+    "title": "Transportation 5.0: The {DAO} to Safe, Secure, and Sustainable Intelligent Transportation Systems",
+    "author": "Wang, Fei{-}Yue and Lin, Yunqing and Ioannou, Petros A. and Vlacic, Ljubo and Liu, Xiaoming and Eskandarian, Azim and Lv, Yisheng and Na, Xiaoxiang and Cebon, David and Ma, Jiaqi and Li, Lingxi and Olaverri{-}Monreal, Cristina",
+    "year": "2023",
+    "doi": "10.1109/TITS.2023.3305380",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "wang2023transportation5.pdf",
+    "occurrences": [
+      {
+        "line": 248,
+        "context": "随着城市化进程的持续推进和机动车保有量的不断增长，道路交通运行压力持续加大，交通拥堵、停车资源紧张以及道路异常事件处置不及时等问题日益突出。百度地图发布的《2024年度中国城市交通报告》显示，北京、上海等超大城市通勤时间仍位居全国前列，表明国内主要城市在高峰时段的交通运行压力与通行效率问题依然突出\\cite{R02}。面向安全、高效、绿色与可持续交通运行的智能交通系统研究已成为交通治理的重要技术路径，相关技术体系正由单一信息化支撑向感知、通信与计算协同方向演进\\cite{wang2023transportation5}。与此同时，工业和信息化部等五部门围绕智能网联汽车车路云一体化应用试点发布通知，提出推动智能化路侧基础设施和云控基础平台建设，进一步为道路侧感知技术的发展提供了明确政策牵引\\cite{R01}。"
+      }
+    ]
+  },
+  {
+    "key": "R01",
+    "bib_type": "online",
+    "title": "关于开展智能网联汽车“车路云一体化”应用试点工作的通知",
+    "author": "{工业和信息化部等五部门}",
+    "year": "2024",
+    "doi": "",
+    "url": "https://wap.miit.gov.cn/jgsj/zbys/wjfb/art/2024/art_140d86b63e494628ae039dd23a3cc539.html",
+    "pdf_status": "not_found",
+    "pdf_filename": "R01.pdf",
+    "occurrences": [
+      {
+        "line": 248,
+        "context": "随着城市化进程的持续推进和机动车保有量的不断增长，道路交通运行压力持续加大，交通拥堵、停车资源紧张以及道路异常事件处置不及时等问题日益突出。百度地图发布的《2024年度中国城市交通报告》显示，北京、上海等超大城市通勤时间仍位居全国前列，表明国内主要城市在高峰时段的交通运行压力与通行效率问题依然突出\\cite{R02}。面向安全、高效、绿色与可持续交通运行的智能交通系统研究已成为交通治理的重要技术路径，相关技术体系正由单一信息化支撑向感知、通信与计算协同方向演进\\cite{wang2023transportation5}。与此同时，工业和信息化部等五部门围绕智能网联汽车车路云一体化应用试点发布通知，提出推动智能化路侧基础设施和云控基础平台建设，进一步为道路侧感知技术的发展提供了明确政策牵引\\cite{R01}。"
+      }
+    ]
+  },
+  {
+    "key": "ch2_bernas2018lowcost",
+    "bib_type": "article",
+    "title": "A Survey and Comparison of Low-Cost Sensing Technologies for Road Traffic Monitoring",
+    "author": "Bernas, Marcin and P{\\l}aczek, Bart{\\l}omiej and Korski, Wojciech and Loska, Piotr and Smy{\\l}a, Jaros{\\l}aw and Szyma{\\l}a, Piotr",
+    "year": "2018",
+    "doi": "10.3390/s18103243",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "ch2_bernas2018lowcost.pdf",
+    "occurrences": [
+      {
+        "line": 250,
+        "context": "在智能交通系统框架下，智慧道路和路侧感知网络是实现连续交通状态获取的重要载体。面向道路侧长期在线部署，感知节点不仅需要具备较好的环境适应性，还需要兼顾成本、功耗、维护和通信开销。Bernas 等\\cite{ch2_bernas2018lowcost}对低成本道路交通监测技术的比较表明，视频、雷达、感应线圈和磁传感等方案在信息丰富度、部署复杂度和环境适应性方面存在明显权衡。Haoui 等\\cite{R09}的研究进一步说明，无线磁传感器能够以较低成本支撑道路交通监测，较适合节点数量多、供电条件受限且需要长期运行的分布式部署场景。因此，在道路侧轻量感知体系中，如何利用单节点连续观测稳定获取有效车辆信息，具有明显的工程意义。"
+      }
+    ]
+  },
+  {
+    "key": "R09",
+    "bib_type": "article",
+    "title": "Wireless Magnetic Sensors for Traffic Surveillance",
+    "author": "Haoui, Amine and Kavaler, Robert and Varaiya, Pravin",
+    "year": "2008",
+    "doi": "10.1016/j.trc.2007.10.004",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R09.pdf",
+    "occurrences": [
+      {
+        "line": 250,
+        "context": "在智能交通系统框架下，智慧道路和路侧感知网络是实现连续交通状态获取的重要载体。面向道路侧长期在线部署，感知节点不仅需要具备较好的环境适应性，还需要兼顾成本、功耗、维护和通信开销。Bernas 等\\cite{ch2_bernas2018lowcost}对低成本道路交通监测技术的比较表明，视频、雷达、感应线圈和磁传感等方案在信息丰富度、部署复杂度和环境适应性方面存在明显权衡。Haoui 等\\cite{R09}的研究进一步说明，无线磁传感器能够以较低成本支撑道路交通监测，较适合节点数量多、供电条件受限且需要长期运行的分布式部署场景。因此，在道路侧轻量感知体系中，如何利用单节点连续观测稳定获取有效车辆信息，具有明显的工程意义。"
+      }
+    ]
+  },
+  {
+    "key": "taghvaeeyan2014portable",
+    "bib_type": "article",
+    "title": "Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement",
+    "author": "Taghvaeeyan, Saber and Rajamani, Rajesh",
+    "year": "2014",
+    "doi": "10.1109/TITS.2013.2273876",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "taghvaeeyan2014portable.pdf",
+    "occurrences": [
+      {
+        "line": 252,
+        "context": "在道路运行评估和交通组成分析中，车型信息是表征交通组成结构的重要基础数据，道路车辆计数、分类与测速也常被作为交通监测系统的核心输出\\cite{taghvaeeyan2014portable}。Feng 等在 MagMonitor 中联合研究了车辆速度估计与车型分类问题，说明单节点磁扰动波形能够承载上层交通信息提取任务\\cite{feng2022magmonitor}。Sarcevic 等\\cite{ch3_sarcevic2022singlemag}进一步提出了基于单磁力计的实时车辆分类系统，再次验证了单节点磁场观测在车型识别中的应用可行性。然而，单地磁节点无法直接获取车辆外观、尺寸和轨迹等显性特征，可用于判别的信息主要隐含在事件波形的时间结构和幅值变化之中。在自然车流条件下，同一车型又会因运行状态变化而表现出时间尺度变化和局部结构差异，这使得单地磁车型识别并不是简单的特征堆叠问题，而是对事件表示和时序结构利用能力的综合考验。"
+      }
+    ]
+  },
+  {
+    "key": "feng2022magmonitor",
+    "bib_type": "article",
+    "title": "MagMonitor: Vehicle Speed Estimation and Vehicle Classification Through A Magnetic Sensor",
+    "author": "Feng, Yimeng and Mao, Guoqiang and Cheng, Bo and Li, Changle and Hui, Yilong and Xu, Zhigang and Chen, Junliang",
+    "year": "2022",
+    "doi": "10.1109/TITS.2020.3024652",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "feng2022magmonitor.pdf",
+    "occurrences": [
+      {
+        "line": 252,
+        "context": "在道路运行评估和交通组成分析中，车型信息是表征交通组成结构的重要基础数据，道路车辆计数、分类与测速也常被作为交通监测系统的核心输出\\cite{taghvaeeyan2014portable}。Feng 等在 MagMonitor 中联合研究了车辆速度估计与车型分类问题，说明单节点磁扰动波形能够承载上层交通信息提取任务\\cite{feng2022magmonitor}。Sarcevic 等\\cite{ch3_sarcevic2022singlemag}进一步提出了基于单磁力计的实时车辆分类系统，再次验证了单节点磁场观测在车型识别中的应用可行性。然而，单地磁节点无法直接获取车辆外观、尺寸和轨迹等显性特征，可用于判别的信息主要隐含在事件波形的时间结构和幅值变化之中。在自然车流条件下，同一车型又会因运行状态变化而表现出时间尺度变化和局部结构差异，这使得单地磁车型识别并不是简单的特征堆叠问题，而是对事件表示和时序结构利用能力的综合考验。"
+      },
+      {
+        "line": 280,
+        "context": "除人工特征路线外，Li 等\\cite{ch3_li2020singlemag}将单磁传感器采集的车辆信号转换为灰度图像并结合卷积神经网络进行七类车辆分类，实验中车辆分类准确率达到 97.83\\%，速度区间估计准确率达到 96.85\\%。Feng 等\\cite{feng2022magmonitor}在 MagMonitor 中将车辆速度估计与车型分类联合考虑，强调车辆速度变化会直接改变单磁传感器波形的时间结构。Kolukisa 等\\cite{R26}则进一步从单个 3-D 磁传感器节点出发讨论深度学习车型分类方法，表明数据驱动方法能够减少对人工特征设计的依赖，并更充分利用波形时序模式。与特征工程路线相比，时序建模方法更有利于挖掘原始波形结构信息，但通常也需要更高的数据规模、训练开销和模型复杂度，在道路侧低资源部署条件下仍面临工程实现压力。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_sarcevic2022singlemag",
+    "bib_type": "article",
+    "title": "Real-Time Vehicle Classification System Using a Single Magnetometer",
+    "author": "Sarcevic, Peter and Pletl, Szilveszter and Odry, Akos",
+    "year": "2022",
+    "doi": "10.3390/s22239299",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "ch3_sarcevic2022singlemag.pdf",
+    "occurrences": [
+      {
+        "line": 252,
+        "context": "在道路运行评估和交通组成分析中，车型信息是表征交通组成结构的重要基础数据，道路车辆计数、分类与测速也常被作为交通监测系统的核心输出\\cite{taghvaeeyan2014portable}。Feng 等在 MagMonitor 中联合研究了车辆速度估计与车型分类问题，说明单节点磁扰动波形能够承载上层交通信息提取任务\\cite{feng2022magmonitor}。Sarcevic 等\\cite{ch3_sarcevic2022singlemag}进一步提出了基于单磁力计的实时车辆分类系统，再次验证了单节点磁场观测在车型识别中的应用可行性。然而，单地磁节点无法直接获取车辆外观、尺寸和轨迹等显性特征，可用于判别的信息主要隐含在事件波形的时间结构和幅值变化之中。在自然车流条件下，同一车型又会因运行状态变化而表现出时间尺度变化和局部结构差异，这使得单地磁车型识别并不是简单的特征堆叠问题，而是对事件表示和时序结构利用能力的综合考验。"
+      }
+    ]
+  },
+  {
+    "key": "R49",
+    "bib_type": "article",
+    "title": "A Survey of Intelligent Car Parking System",
+    "author": "Faheem and Mahmud, S. A. and Khan, G. M. and Rahman, M. and Zafar, H.",
+    "year": "2013",
+    "doi": "10.1016/S1665-6423(13)71580-3",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "R49.pdf",
+    "occurrences": [
+      {
+        "line": 254,
+        "context": "与车型信息相对应，停车与占用状态信息也是道路运行监管中的关键数据。Faheem 等\\cite{R49}在智能停车系统综述中将停车状态感知视为智慧停车管理的基础环节。对于开放道路侧场景而言，停车检测不仅需要识别车辆是否由通过转入停留，还需要进一步判断占用状态何时建立、如何维持以及何时释放，其结果直接关系到异常停车发现、路侧占用监管和道路空间治理。Paidi 等\\cite{R52}对开放停车场感知技术的综述进一步指出，随着场景开放程度提高，停车与占用状态检测更容易受到动态交通流和环境扰动影响。受连续车流、邻道干扰、环境慢漂移和伪稳态等因素影响，开放道路条件下的停车与占用状态边界往往并不清晰，这也使得道路侧停车与占用判定成为与传统车位监测不同的一类独立问题。"
+      },
+      {
+        "line": 287,
+        "context": "停车与占用检测是智慧停车管理和道路异常事件监测中的重要研究内容。与车辆通过检测不同，停车检测更关注车辆由通过状态转入停留状态的确认过程，而占用检测则更强调某一位置或区域被车辆持续占据后的状态建立、维持与释放。Faheem 等\\cite{R49}在智能停车系统综述中将停车状态感知视为智慧停车管理的基础环节。这说明磁传感器已经成为停车与占用感知中较为重要的一类基础手段，但停车确认与占用状态维持仍属于两个密切相关而又不完全相同的判定问题。"
+      }
+    ]
+  },
+  {
+    "key": "R52",
+    "bib_type": "article",
+    "title": "Smart Parking Sensors, Technologies and Applications for Open Parking Lots: A Review",
+    "author": "Paidi, Vijay and Fleyeh, Hasan and H{\\aa}kansson, Johan and Nyberg, Roger G.",
+    "year": "2018",
+    "doi": "10.1049/iet-its.2017.0406",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R52.pdf",
+    "occurrences": [
+      {
+        "line": 254,
+        "context": "与车型信息相对应，停车与占用状态信息也是道路运行监管中的关键数据。Faheem 等\\cite{R49}在智能停车系统综述中将停车状态感知视为智慧停车管理的基础环节。对于开放道路侧场景而言，停车检测不仅需要识别车辆是否由通过转入停留，还需要进一步判断占用状态何时建立、如何维持以及何时释放，其结果直接关系到异常停车发现、路侧占用监管和道路空间治理。Paidi 等\\cite{R52}对开放停车场感知技术的综述进一步指出，随着场景开放程度提高，停车与占用状态检测更容易受到动态交通流和环境扰动影响。受连续车流、邻道干扰、环境慢漂移和伪稳态等因素影响，开放道路条件下的停车与占用状态边界往往并不清晰，这也使得道路侧停车与占用判定成为与传统车位监测不同的一类独立问题。"
+      },
+      {
+        "line": 289,
+        "context": "停车与占用检测的难度与应用场景密切相关。Lin 等\\cite{ch4_lin2017surveyparking}总结的智能停车方案主要面向封闭停车位或边界明确的停车区域，此类场景中检测区域稳定、背景变化较缓，车辆进出逻辑也相对清晰。Zhang 等\\cite{ch4_gu2013streetparking}则将无线磁传感网络用于街道停车系统，表明停车感知已逐步从封闭车位扩展到路侧管理场景。Paidi 等\\cite{R52}针对开放停车场传感技术的综述进一步指出，随着场景开放程度提高，动态交通流和环境扰动会显著增加停车感知难度。因此，开放道路侧停车与占用检测并不是传统车位占用检测问题的简单平移，而是对稳态证据提取、参考量维护和状态转移机制提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch2_ding2004signal",
+    "bib_type": "inproceedings",
+    "title": "Signal Processing of Sensor Node Data for Vehicle Detection",
+    "author": "Ding, Jiagen and Cheung, Sing Yiu and Tan, Chin-Woo and Varaiya, Pravin",
+    "year": "2004",
+    "doi": "10.1109/ITSC.2004.1398874",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch2_ding2004signal.pdf",
+    "occurrences": [
+      {
+        "line": 267,
+        "context": "车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、路侧系统实现和多源融合增强等思路展开。Ding 等\\cite{ch2_ding2004signal}较早从传感节点数据处理出发研究车辆检测中的信号处理问题，为后续基于磁扰动特征的事件检测提供了方法基础。Lou 等\\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。"
+      }
+    ]
+  },
+  {
+    "key": "R13",
+    "bib_type": "article",
+    "title": "A Novel Vehicle Detection Method Based on the Fusion of Radio Received Signal Strength and Geomagnetism",
+    "author": "Lou, Liangliang and Zhang, Jinyi and Xiong, Yong and Jin, Yanliang",
+    "year": "2019",
+    "doi": "10.3390/s19010058",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "R13.pdf",
+    "occurrences": [
+      {
+        "line": 267,
+        "context": "车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、路侧系统实现和多源融合增强等思路展开。Ding 等\\cite{ch2_ding2004signal}较早从传感节点数据处理出发研究车辆检测中的信号处理问题，为后续基于磁扰动特征的事件检测提供了方法基础。Lou 等\\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。"
+      }
+    ]
+  },
+  {
+    "key": "R17",
+    "bib_type": "article",
+    "title": "Traffic Measurement and Vehicle Classification with a Single Magnetic Sensor",
+    "author": "Cheung, Sing Yiu and Coleri, Sinem and Dundar, Baris and Ganesh, Sumitra and Tan, Chin-Woo and Varaiya, Pravin",
+    "year": "2005",
+    "doi": "10.1177/0361198105191700119",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R17.pdf",
+    "occurrences": [
+      {
+        "line": 274,
+        "context": "车型分类是道路交通信息采集中的重要任务，不同类型车辆在道路占有特性、通行能力、能耗水平和安全风险等方面存在明显差异，因此车型识别结果可为交通规划、收费管理、拥堵治理和道路运行评估提供重要依据。Cheung 等\\cite{R17}利用单个磁传感器同时实现交通量测量与车辆分类，较早证明了单节点磁扰动波形具有车型判别潜力。Kaewkamnerd 等\\cite{R21}随后将无线磁传感器用于自动车型分类，说明低成本无线部署条件下同样可以开展车辆类别识别。Lan 等\\cite{R22}进一步通过测量和处理磁场信号联合实现车辆检测与分类，表明单节点磁场测量可以同时承载事件检测和类别判别两类任务。"
+      }
+    ]
+  },
+  {
+    "key": "R21",
+    "bib_type": "inproceedings",
+    "title": "Automatic Vehicle Classification Using Wireless Magnetic Sensor",
+    "author": "Kaewkamnerd, Saowaluck and Pongthornseri, Ronachai and Chinrungrueng, Jatuporn and Silawan, Teerapol",
+    "year": "2009",
+    "doi": "10.1109/IDAACS.2009.5342949",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R21.pdf",
+    "occurrences": [
+      {
+        "line": 274,
+        "context": "车型分类是道路交通信息采集中的重要任务，不同类型车辆在道路占有特性、通行能力、能耗水平和安全风险等方面存在明显差异，因此车型识别结果可为交通规划、收费管理、拥堵治理和道路运行评估提供重要依据。Cheung 等\\cite{R17}利用单个磁传感器同时实现交通量测量与车辆分类，较早证明了单节点磁扰动波形具有车型判别潜力。Kaewkamnerd 等\\cite{R21}随后将无线磁传感器用于自动车型分类，说明低成本无线部署条件下同样可以开展车辆类别识别。Lan 等\\cite{R22}进一步通过测量和处理磁场信号联合实现车辆检测与分类，表明单节点磁场测量可以同时承载事件检测和类别判别两类任务。"
+      }
+    ]
+  },
+  {
+    "key": "R22",
+    "bib_type": "article",
+    "title": "Vehicle Detection and Classification by Measuring and Processing Magnetic Signal",
+    "author": "Lan, Jinhui and Xiang, Yong and Wang, Liping and Shi, Yuqiao",
+    "year": "2011",
+    "doi": "10.1016/j.measurement.2010.09.044",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R22.pdf",
+    "occurrences": [
+      {
+        "line": 274,
+        "context": "车型分类是道路交通信息采集中的重要任务，不同类型车辆在道路占有特性、通行能力、能耗水平和安全风险等方面存在明显差异，因此车型识别结果可为交通规划、收费管理、拥堵治理和道路运行评估提供重要依据。Cheung 等\\cite{R17}利用单个磁传感器同时实现交通量测量与车辆分类，较早证明了单节点磁扰动波形具有车型判别潜力。Kaewkamnerd 等\\cite{R21}随后将无线磁传感器用于自动车型分类，说明低成本无线部署条件下同样可以开展车辆类别识别。Lan 等\\cite{R22}进一步通过测量和处理磁场信号联合实现车辆检测与分类，表明单节点磁场测量可以同时承载事件检测和类别判别两类任务。"
+      }
+    ]
+  },
+  {
+    "key": "R18",
+    "bib_type": "article",
+    "title": "Intelligent Vehicle Counting and Classification Sensor for Real-Time Traffic Surveillance",
+    "author": "Balid, Wissam and Tafish, Hatem and Refai, Hazem H.",
+    "year": "2018",
+    "doi": "10.1109/TITS.2017.2741507",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R18.pdf",
+    "occurrences": [
+      {
+        "line": 276,
+        "context": "从任务设定看，现有单地磁车型分类研究在类别划分、采集条件和样本组织方式上存在较大差异。Balid 等\\cite{R18}将道路检测、路侧检测、速度估计和基于长度的车型分类集成在同一传感器系统中，上述任务均取得较高准确率，均在 97\\% 以上，反映出部分工作更强调综合交通信息提取。Chen 等\\cite{R19}则从磁场测量角度联合研究车辆检测与分类，说明不同研究在任务边界和评价口径上并不一致。与此同时，不同研究在传感器安装位置、采样频率、交通场景和类别粒度上的设定并不统一；在车辆事件边界截取、样本长度组织和输入表示方式上的差异，也进一步削弱了不同方法之间的可比性。"
+      }
+    ]
+  },
+  {
+    "key": "R19",
+    "bib_type": "article",
+    "title": "Road Vehicle Detection and Classification Using Magnetic Field Measurement",
+    "author": "Chen, Xiao and Kong, Xiaoying and Xu, Min and Sandrasegaran, Kumbesan and Zheng, Jiangbin",
+    "year": "2019",
+    "doi": "10.1109/ACCESS.2019.2908006",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "R19.pdf",
+    "occurrences": [
+      {
+        "line": 276,
+        "context": "从任务设定看，现有单地磁车型分类研究在类别划分、采集条件和样本组织方式上存在较大差异。Balid 等\\cite{R18}将道路检测、路侧检测、速度估计和基于长度的车型分类集成在同一传感器系统中，上述任务均取得较高准确率，均在 97\\% 以上，反映出部分工作更强调综合交通信息提取。Chen 等\\cite{R19}则从磁场测量角度联合研究车辆检测与分类，说明不同研究在任务边界和评价口径上并不一致。与此同时，不同研究在传感器安装位置、采样频率、交通场景和类别粒度上的设定并不统一；在车辆事件边界截取、样本长度组织和输入表示方式上的差异，也进一步削弱了不同方法之间的可比性。"
+      }
+    ]
+  },
+  {
+    "key": "R20",
+    "bib_type": "article",
+    "title": "Vehicle Detection and Classification for Low-Speed Congested Traffic With Anisotropic Magnetoresistive Sensor",
+    "author": "Yang, Bo and Lei, Yiqun",
+    "year": "2015",
+    "doi": "10.1109/JSEN.2014.2359014",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R20.pdf",
+    "occurrences": [
+      {
+        "line": 278,
+        "context": "在特征工程路线方面，Yang 和 Lei\\cite{R20}面向低速拥堵交通场景，在各向异性磁阻传感器基础上研究车辆检测与分类问题，说明单磁传感器在拥堵工况下仍可通过人工特征实现类别判别。Li 等\\cite{R23}提出单多功能磁传感器与 CART 分类器相结合的车型分类方法，体现了轻量分类器与人工特征结合的工程可部署性。Zhang 和 Huang\\cite{ch3_zhang2019featureselection}则进一步讨论了单磁传感器条件下的特征筛选问题，说明特征构造与特征选择仍是该路线的重要环节。这类方法普遍依赖人工构造的幅值、持续时间、能量或形态统计量，再配合轻量分类器完成判别，优点是实现简单、推理代价低，更适合道路侧端侧部署；但其跨场景稳定性通常依赖于特征设计与采集条件的一致性。"
+      }
+    ]
+  },
+  {
+    "key": "R23",
+    "bib_type": "article",
+    "title": "Vehicle Classification with Single Multi-Functional Magnetic Sensor and Optimal MNS-Based CART",
+    "author": "Li, Haijian and Dong, Honghui and Jia, Limin and Ren, Moyu",
+    "year": "2014",
+    "doi": "10.1016/j.measurement.2014.04.028",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R23.pdf",
+    "occurrences": [
+      {
+        "line": 278,
+        "context": "在特征工程路线方面，Yang 和 Lei\\cite{R20}面向低速拥堵交通场景，在各向异性磁阻传感器基础上研究车辆检测与分类问题，说明单磁传感器在拥堵工况下仍可通过人工特征实现类别判别。Li 等\\cite{R23}提出单多功能磁传感器与 CART 分类器相结合的车型分类方法，体现了轻量分类器与人工特征结合的工程可部署性。Zhang 和 Huang\\cite{ch3_zhang2019featureselection}则进一步讨论了单磁传感器条件下的特征筛选问题，说明特征构造与特征选择仍是该路线的重要环节。这类方法普遍依赖人工构造的幅值、持续时间、能量或形态统计量，再配合轻量分类器完成判别，优点是实现简单、推理代价低，更适合道路侧端侧部署；但其跨场景稳定性通常依赖于特征设计与采集条件的一致性。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_zhang2019featureselection",
+    "bib_type": "article",
+    "title": "Vehicle Classification Based on Feature Selection With Anisotropic Magnetoresistive Sensor",
+    "author": "Zhang, Xiaoyu and Huang, Haonan",
+    "year": "2019",
+    "doi": "10.1109/JSEN.2019.2928828",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch3_zhang2019featureselection.pdf",
+    "occurrences": [
+      {
+        "line": 278,
+        "context": "在特征工程路线方面，Yang 和 Lei\\cite{R20}面向低速拥堵交通场景，在各向异性磁阻传感器基础上研究车辆检测与分类问题，说明单磁传感器在拥堵工况下仍可通过人工特征实现类别判别。Li 等\\cite{R23}提出单多功能磁传感器与 CART 分类器相结合的车型分类方法，体现了轻量分类器与人工特征结合的工程可部署性。Zhang 和 Huang\\cite{ch3_zhang2019featureselection}则进一步讨论了单磁传感器条件下的特征筛选问题，说明特征构造与特征选择仍是该路线的重要环节。这类方法普遍依赖人工构造的幅值、持续时间、能量或形态统计量，再配合轻量分类器完成判别，优点是实现简单、推理代价低，更适合道路侧端侧部署；但其跨场景稳定性通常依赖于特征设计与采集条件的一致性。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_li2020singlemag",
+    "bib_type": "article",
+    "title": "Vehicle Classification and Speed Estimation Based on a Single Magnetic Sensor",
+    "author": "Li, Wengang and Liu, Zhen and Hui, Yilong and Yang, Liuyan and Chen, Rui and Xiao, Xiao",
+    "year": "2020",
+    "doi": "10.1109/ACCESS.2020.3008483",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "ch3_li2020singlemag.pdf",
+    "occurrences": [
+      {
+        "line": 280,
+        "context": "除人工特征路线外，Li 等\\cite{ch3_li2020singlemag}将单磁传感器采集的车辆信号转换为灰度图像并结合卷积神经网络进行七类车辆分类，实验中车辆分类准确率达到 97.83\\%，速度区间估计准确率达到 96.85\\%。Feng 等\\cite{feng2022magmonitor}在 MagMonitor 中将车辆速度估计与车型分类联合考虑，强调车辆速度变化会直接改变单磁传感器波形的时间结构。Kolukisa 等\\cite{R26}则进一步从单个 3-D 磁传感器节点出发讨论深度学习车型分类方法，表明数据驱动方法能够减少对人工特征设计的依赖，并更充分利用波形时序模式。与特征工程路线相比，时序建模方法更有利于挖掘原始波形结构信息，但通常也需要更高的数据规模、训练开销和模型复杂度，在道路侧低资源部署条件下仍面临工程实现压力。"
+      }
+    ]
+  },
+  {
+    "key": "R26",
+    "bib_type": "article",
+    "title": "Deep Learning Approaches for Vehicle Type Classification with a Single 3-D Magnetic Sensor Node",
+    "author": "Kolukisa, Burak and Yildirim, Vedat C. and Elmas, Burak and Ayyildiz, Cagri and Gungor, Vehbi C.",
+    "year": "2022",
+    "doi": "10.1016/j.comnet.2022.109326",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R26.pdf",
+    "occurrences": [
+      {
+        "line": 280,
+        "context": "除人工特征路线外，Li 等\\cite{ch3_li2020singlemag}将单磁传感器采集的车辆信号转换为灰度图像并结合卷积神经网络进行七类车辆分类，实验中车辆分类准确率达到 97.83\\%，速度区间估计准确率达到 96.85\\%。Feng 等\\cite{feng2022magmonitor}在 MagMonitor 中将车辆速度估计与车型分类联合考虑，强调车辆速度变化会直接改变单磁传感器波形的时间结构。Kolukisa 等\\cite{R26}则进一步从单个 3-D 磁传感器节点出发讨论深度学习车型分类方法，表明数据驱动方法能够减少对人工特征设计的依赖，并更充分利用波形时序模式。与特征工程路线相比，时序建模方法更有利于挖掘原始波形结构信息，但通常也需要更高的数据规模、训练开销和模型复杂度，在道路侧低资源部署条件下仍面临工程实现压力。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_lin2017surveyparking",
+    "bib_type": "article",
+    "title": "A Survey of Smart Parking Solutions",
+    "author": "Lin, Trista and Rivano, Herv{\\'e} and Le Mou{\\\"e}l, Fr{\\'e}d{\\'e}ric",
+    "year": "2017",
+    "doi": "10.1109/TITS.2017.2685143",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_lin2017surveyparking.pdf",
+    "occurrences": [
+      {
+        "line": 289,
+        "context": "停车与占用检测的难度与应用场景密切相关。Lin 等\\cite{ch4_lin2017surveyparking}总结的智能停车方案主要面向封闭停车位或边界明确的停车区域，此类场景中检测区域稳定、背景变化较缓，车辆进出逻辑也相对清晰。Zhang 等\\cite{ch4_gu2013streetparking}则将无线磁传感网络用于街道停车系统，表明停车感知已逐步从封闭车位扩展到路侧管理场景。Paidi 等\\cite{R52}针对开放停车场传感技术的综述进一步指出，随着场景开放程度提高，动态交通流和环境扰动会显著增加停车感知难度。因此，开放道路侧停车与占用检测并不是传统车位占用检测问题的简单平移，而是对稳态证据提取、参考量维护和状态转移机制提出了更高要求。"
+      },
+      {
+        "line": 1342,
+        "context": "道路侧停车与持续占用会压缩道路有效通行空间，降低道路运行效率，并可能诱发追尾、擦碰等次生安全风险。因此，面向开放道路场景，及时、准确地完成停车确认与占用状态上报，对交通管理与应急处置具有重要意义。已有研究表明，地磁传感器已被应用于街边停车和道路侧停车监测等场景\\cite{ch4_lin2017surveyparking,ch4_gu2013streetparking}。围绕智慧停车系统的节点布设、数据汇聚与平台接入，相关工作也对停车网络的系统组织进行了研究\\cite{ch4_bagula2015networks,ch4_wu2023iotparking}。长期部署结果进一步说明，该类方案具备低功耗、易部署和适于长期运行等工程优势\\cite{ch4_huang2017easydeploy}。然而，与停车场车位占用监测相比，开放道路场景中的交通流密度波动更大，邻道车辆扰动更频繁，停车行为也更容易发生在连续车流背景下，因而对检测方法的实时性与鲁棒性提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_gu2013streetparking",
+    "bib_type": "article",
+    "title": "A Street Parking System Using Wireless Sensor Networks",
+    "author": "Zhang, Zusheng and Li, Xiaoyun and Yuan, Huaqiang and Yu, Fengqi",
+    "year": "2013",
+    "doi": "10.1155/2013/107975",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_gu2013streetparking.pdf",
+    "occurrences": [
+      {
+        "line": 289,
+        "context": "停车与占用检测的难度与应用场景密切相关。Lin 等\\cite{ch4_lin2017surveyparking}总结的智能停车方案主要面向封闭停车位或边界明确的停车区域，此类场景中检测区域稳定、背景变化较缓，车辆进出逻辑也相对清晰。Zhang 等\\cite{ch4_gu2013streetparking}则将无线磁传感网络用于街道停车系统，表明停车感知已逐步从封闭车位扩展到路侧管理场景。Paidi 等\\cite{R52}针对开放停车场传感技术的综述进一步指出，随着场景开放程度提高，动态交通流和环境扰动会显著增加停车感知难度。因此，开放道路侧停车与占用检测并不是传统车位占用检测问题的简单平移，而是对稳态证据提取、参考量维护和状态转移机制提出了更高要求。"
+      },
+      {
+        "line": 1342,
+        "context": "道路侧停车与持续占用会压缩道路有效通行空间，降低道路运行效率，并可能诱发追尾、擦碰等次生安全风险。因此，面向开放道路场景，及时、准确地完成停车确认与占用状态上报，对交通管理与应急处置具有重要意义。已有研究表明，地磁传感器已被应用于街边停车和道路侧停车监测等场景\\cite{ch4_lin2017surveyparking,ch4_gu2013streetparking}。围绕智慧停车系统的节点布设、数据汇聚与平台接入，相关工作也对停车网络的系统组织进行了研究\\cite{ch4_bagula2015networks,ch4_wu2023iotparking}。长期部署结果进一步说明，该类方案具备低功耗、易部署和适于长期运行等工程优势\\cite{ch4_huang2017easydeploy}。然而，与停车场车位占用监测相比，开放道路场景中的交通流密度波动更大，邻道车辆扰动更频繁，停车行为也更容易发生在连续车流背景下，因而对检测方法的实时性与鲁棒性提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_zhang2015amr",
+    "bib_type": "article",
+    "title": "A Parking Occupancy Detection Algorithm Based on AMR Sensor",
+    "author": "Zhang, Zusheng and Tao, Ming and Yuan, Huaqiang",
+    "year": "2015",
+    "doi": "10.1109/JSEN.2014.2362122",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_zhang2015amr.pdf",
+    "occurrences": [
+      {
+        "line": 291,
+        "context": "从具体判定机制看，传统基于地磁的停车与占用检测方法多以阈值差分、幅值判决和基准线更新为核心。Zhang、Tao 和 Yuan\\cite{ch4_zhang2015amr}提出基于 AMR 传感器的停车占用检测算法，通过磁场差分和阈值判定完成占用识别。针对复杂电磁干扰环境，Zhang、He 和 Yuan\\cite{ch4_zhang2020railway}又进一步提出抗电气化铁路磁场干扰的鲁棒停车检测算法，说明传统规则方法正在从静态阈值判别向抗干扰增强方向演化。这类方法结构简单、计算开销较低，在背景相对稳定、车辆进出节奏较清晰的停车位场景中具有较好的工程实现性；但当环境磁场存在慢漂移、扰动平台不稳定或车辆通过过程与停靠过程边界交叠时，固定参考或单一阈值往往容易失效。"
+      },
+      {
+        "line": 1344,
+        "context": "现有基于地磁的停车检测与占用判定方法，多以阈值比较、差分响应或稳态判断为基础，并结合一定的抗干扰策略提升检测性能\\cite{ch4_zhang2015amr,ch4_zhang2020railway}。在停车位或背景相对稳定的场景中，这类方法通常能够取得较好的效果；但当检测场景由封闭车位扩展到开放道路后，环境磁场缓慢漂移、连续车流对稳定证据的打断，以及邻道车辆与低速停走引起的局部伪稳态现象，都会显著增加判定难度\\cite{R43}。具体而言，慢漂移会导致固定参考逐渐失效，连续车流会使停车后稳定证据难以及时形成，伪稳态则会使仅依赖单一稳态判据的方法更易产生误检。由此可见，道路停车与占用检测不能仅依赖固定参考与事件结束后的瞬时观测，而需要在稳态证据提取、参考量动态维护与状态转移逻辑之间进行协同设计。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_zhang2020railway",
+    "bib_type": "article",
+    "title": "A Robust Parking Detection Algorithm Against Electric Railway Magnetic Field Interference",
+    "author": "Zhang, Zusheng and He, Xianmang and Yuan, Huaqiang",
+    "year": "2020",
+    "doi": "10.1109/TITS.2019.2923465",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_zhang2020railway.pdf",
+    "occurrences": [
+      {
+        "line": 291,
+        "context": "从具体判定机制看，传统基于地磁的停车与占用检测方法多以阈值差分、幅值判决和基准线更新为核心。Zhang、Tao 和 Yuan\\cite{ch4_zhang2015amr}提出基于 AMR 传感器的停车占用检测算法，通过磁场差分和阈值判定完成占用识别。针对复杂电磁干扰环境，Zhang、He 和 Yuan\\cite{ch4_zhang2020railway}又进一步提出抗电气化铁路磁场干扰的鲁棒停车检测算法，说明传统规则方法正在从静态阈值判别向抗干扰增强方向演化。这类方法结构简单、计算开销较低，在背景相对稳定、车辆进出节奏较清晰的停车位场景中具有较好的工程实现性；但当环境磁场存在慢漂移、扰动平台不稳定或车辆通过过程与停靠过程边界交叠时，固定参考或单一阈值往往容易失效。"
+      },
+      {
+        "line": 1344,
+        "context": "现有基于地磁的停车检测与占用判定方法，多以阈值比较、差分响应或稳态判断为基础，并结合一定的抗干扰策略提升检测性能\\cite{ch4_zhang2015amr,ch4_zhang2020railway}。在停车位或背景相对稳定的场景中，这类方法通常能够取得较好的效果；但当检测场景由封闭车位扩展到开放道路后，环境磁场缓慢漂移、连续车流对稳定证据的打断，以及邻道车辆与低速停走引起的局部伪稳态现象，都会显著增加判定难度\\cite{R43}。具体而言，慢漂移会导致固定参考逐渐失效，连续车流会使停车后稳定证据难以及时形成，伪稳态则会使仅依赖单一稳态判据的方法更易产生误检。由此可见，道路停车与占用检测不能仅依赖固定参考与事件结束后的瞬时观测，而需要在稳态证据提取、参考量动态维护与状态转移逻辑之间进行协同设计。"
+      },
+      {
+        "line": 1554,
+        "context": "在漂移抑制与参考更新方面，开放道路场景中的环境磁场会随温度、电源状态及外部电磁条件缓慢漂移。若长期保持固定参考，则停车确认与释放判定的基准会逐渐偏移；同时，阶跃型外源干扰还可能导致参考量发生突变式误更新\\cite{ch4_zhang2020railway}。因此，本文对环境参考 $\\mathbf{S}_{\\mathrm{pre}}$ 采用门控更新策略：仅当系统处于空闲状态且已获得满足稳定窗判据的稳定点 $\\mathbf{S}(k^\\ast)$ 时，才允许环境参考更新。记候选增量为："
+      }
+    ]
+  },
+  {
+    "key": "R47",
+    "bib_type": "article",
+    "title": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making",
+    "author": "Zhu, Hongmei and Feng, Shengzhong and Yu, Fengqi",
+    "year": "2018",
+    "doi": "10.1109/JSEN.2018.2871869",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R47.pdf",
+    "occurrences": [
+      {
+        "line": 293,
+        "context": "为提升复杂工况下的鲁棒性，部分研究开始引入更丰富的状态证据和协同信息。Zhu、Feng 和 Yu\\cite{R47}提出基于有限状态机与协同决策的停车检测方法，将停车检测划分为有限状态机初判和协同决策复核两个阶段，实测中车辆进入和离开停车位的检测准确率分别达到 99.8\\% 和 99.9\\%。Lou 等\\cite{R45}提出基于磁传感器和无线信号强度的路侧停车占用检测方法，通过融合磁场信息和无线信号强度提高占位判定稳定性，说明多源协同能够在一定程度上弥补单一磁场证据的不足。Zhang 等\\cite{ch4_zhang2020tracking}进一步提出基于无线磁传感网络的协同停车跟踪系统，通过融合相邻停车位的磁场信息实现停车跟踪，实测停车检测准确率达到 99.54\\%。与单一阈值路线相比，这类方法通过增加稳定性判据、状态转移逻辑或辅助信息提高了占用判断可靠性，但也带来更高的协同复杂度和额外成本。"
+      }
+    ]
+  },
+  {
+    "key": "R45",
+    "bib_type": "article",
+    "title": "An Improved Roadside Parking Space Occupancy Detection Method Based on Magnetic Sensors and Wireless Signal Strength",
+    "author": "Lou, Liangliang and Zhang, Jinyi and Xiong, Yong and Jin, Yanliang",
+    "year": "2019",
+    "doi": "10.3390/s19102348",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "R45.pdf",
+    "occurrences": [
+      {
+        "line": 293,
+        "context": "为提升复杂工况下的鲁棒性，部分研究开始引入更丰富的状态证据和协同信息。Zhu、Feng 和 Yu\\cite{R47}提出基于有限状态机与协同决策的停车检测方法，将停车检测划分为有限状态机初判和协同决策复核两个阶段，实测中车辆进入和离开停车位的检测准确率分别达到 99.8\\% 和 99.9\\%。Lou 等\\cite{R45}提出基于磁传感器和无线信号强度的路侧停车占用检测方法，通过融合磁场信息和无线信号强度提高占位判定稳定性，说明多源协同能够在一定程度上弥补单一磁场证据的不足。Zhang 等\\cite{ch4_zhang2020tracking}进一步提出基于无线磁传感网络的协同停车跟踪系统，通过融合相邻停车位的磁场信息实现停车跟踪，实测停车检测准确率达到 99.54\\%。与单一阈值路线相比，这类方法通过增加稳定性判据、状态转移逻辑或辅助信息提高了占用判断可靠性，但也带来更高的协同复杂度和额外成本。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_zhang2020tracking",
+    "bib_type": "article",
+    "title": "Collaborative Sensing-Based Parking Tracking System with Wireless Magnetic Sensor Network",
+    "author": "Zhang, Z. and Mao, X. and Zhou, K. and others",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_zhang2020tracking.pdf",
+    "occurrences": [
+      {
+        "line": 293,
+        "context": "为提升复杂工况下的鲁棒性，部分研究开始引入更丰富的状态证据和协同信息。Zhu、Feng 和 Yu\\cite{R47}提出基于有限状态机与协同决策的停车检测方法，将停车检测划分为有限状态机初判和协同决策复核两个阶段，实测中车辆进入和离开停车位的检测准确率分别达到 99.8\\% 和 99.9\\%。Lou 等\\cite{R45}提出基于磁传感器和无线信号强度的路侧停车占用检测方法，通过融合磁场信息和无线信号强度提高占位判定稳定性，说明多源协同能够在一定程度上弥补单一磁场证据的不足。Zhang 等\\cite{ch4_zhang2020tracking}进一步提出基于无线磁传感网络的协同停车跟踪系统，通过融合相邻停车位的磁场信息实现停车跟踪，实测停车检测准确率达到 99.54\\%。与单一阈值路线相比，这类方法通过增加稳定性判据、状态转移逻辑或辅助信息提高了占用判断可靠性，但也带来更高的协同复杂度和额外成本。"
+      }
+    ]
+  },
+  {
+    "key": "R43",
+    "bib_type": "inproceedings",
+    "title": "Geomagnetic Sensor Based Abnormal Parking Detection in Smart Roads",
+    "author": "He, Runsen and Mao, Guoqiang and Hui, Yilong and Cheng, Qingwei",
+    "year": "2023",
+    "doi": "10.1109/GLOBECOM54140.2023.10437955",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "R43.pdf",
+    "occurrences": [
+      {
+        "line": 295,
+        "context": "与上述多面向停车位或相对静态场景的研究不同，开放道路环境中的停车与占用检测更为复杂。He 等\\cite{R43}面向智慧道路提出基于地磁传感器的异常停车检测方法，表明相关研究已开始将关注点从固定车位占用识别扩展到开放道路异常停车场景。进一步来看，开放道路侧场景至少存在三类典型困难：其一，环境磁场会随温度、电源状态和外部电磁条件缓慢漂移，固定参考容易逐渐失效；其二，连续车流可能在短时间内多次触发扰动事件，导致停车事件被正常通过事件打断，使可靠稳态证据难以及时获得；其三，邻道车辆、缓行停走或局部波形平台等情况可能产生伪稳态，使仅依赖单一稳定判据的方法更容易出现误判。总体来看，现有停车与占用检测研究在封闭停车位或相对静态场景中已积累较多成果，但在道路侧单地磁节点条件下，如何在连续车流、慢漂移和伪稳态背景下获得可靠稳态证据，并据此维护动态参考、保持停车确认与占用状态判定的一致性，仍是值得进一步研究的关键问题。面向开放道路场景下停车与占用检测中的上述困难，本文从事件结束后的稳态证据提取出发，进一步研究停车确认、占用维持与释放判定的一体化方法。"
+      },
+      {
+        "line": 1344,
+        "context": "现有基于地磁的停车检测与占用判定方法，多以阈值比较、差分响应或稳态判断为基础，并结合一定的抗干扰策略提升检测性能\\cite{ch4_zhang2015amr,ch4_zhang2020railway}。在停车位或背景相对稳定的场景中，这类方法通常能够取得较好的效果；但当检测场景由封闭车位扩展到开放道路后，环境磁场缓慢漂移、连续车流对稳定证据的打断，以及邻道车辆与低速停走引起的局部伪稳态现象，都会显著增加判定难度\\cite{R43}。具体而言，慢漂移会导致固定参考逐渐失效，连续车流会使停车后稳定证据难以及时形成，伪稳态则会使仅依赖单一稳态判据的方法更易产生误检。由此可见，道路停车与占用检测不能仅依赖固定参考与事件结束后的瞬时观测，而需要在稳态证据提取、参考量动态维护与状态转移逻辑之间进行协同设计。"
+      }
+    ]
+  },
+  {
+    "key": "wang2018roadside",
+    "bib_type": "article",
+    "title": "Roadside Magnetic Sensor System for Vehicle Detection in Urban Environments",
+    "author": "Wang, Qing and Zheng, Jianying and Xu, Hao and Xu, Bin and Chen, Rong",
+    "year": "2018",
+    "doi": "10.1109/TITS.2017.2723908",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "wang2018roadside.pdf",
+    "occurrences": [
+      {
+        "line": 336,
+        "context": "随着智慧交通系统的发展，道路侧车辆信息的连续获取在交通状态监测、运行评估和管理优化中发挥着越来越重要的作用。与视频、毫米波雷达等道路侧感知方式相比，地磁传感器具有体积小、功耗低、便于长期在线部署等特点，在低成本、分布式的道路侧监测场景中具有较好的应用基础\\cite{wang2018roadside}。对于单地磁节点而言，只有先从连续三轴地磁观测中稳定检测车辆扰动事件，才能为后续车型分类以及停车与占用判定提供可靠的数据基础。"
+      }
+    ]
+  },
+  {
+    "key": "marshall1978vehicle",
+    "bib_type": "article",
+    "title": "Vehicle Detection Using a Magnetic Field Sensor",
+    "author": "Marshall, S. V.",
+    "year": "1978",
+    "doi": "10.1109/T-VT.1978.23725",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "marshall1978vehicle.pdf",
+    "occurrences": [
+      {
+        "line": 346,
+        "context": "地磁车辆检测的基本依据在于：在传感器所在的局部空间范围内，短时间尺度上的地磁场可近似视为相对稳定的背景场；当车辆进入传感器邻域时，车体中的铁磁性材料及其磁化效应会改变局部磁场分布，从而在传感器输出的三轴磁场序列中形成可观测的扰动特征。已有研究表明，可以利用这种磁异常实现车辆检测\\cite{marshall1978vehicle}。因此，对连续三轴地磁序列进行分析，本质上是在背景场与噪声干扰中识别车辆扰动事件，并稳定定位其起止边界。"
+      }
+    ]
+  },
+  {
+    "key": "liu2017threeaxis",
+    "bib_type": "article",
+    "title": "Vehicle Detection Using Three-Axis AMR Sensors Deployed Along Travel Lane Markings",
+    "author": "Liu, Mingshe and Hua, Wen and Wei, Qifan",
+    "year": "2017",
+    "doi": "10.1049/iet-its.2017.0100",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "liu2017threeaxis.pdf",
+    "occurrences": [
+      {
+        "line": 363,
+        "context": "其中 $\\hat{\\mathbf{r}}=\\mathbf{r}/r$。该表达式主要用于说明：车辆扰动会随距离迅速衰减，并因车辆姿态、传感器安装方向以及局部磁化结构差异而在三轴上呈现不同响应。基于这一特点，后续检测不宜依赖单轴阈值判决，而应结合三轴信息进行联合分析\\cite{liu2017threeaxis}。车辆经过传感器邻域时的磁场扰动示意见图~\\ref{fig:mag_disturbance}。"
+      }
+    ]
+  },
+  {
+    "key": "ch2_sifuentes2011wakeup",
+    "bib_type": "article",
+    "title": "Wireless Magnetic Sensor Node for Vehicle Detection With Optical Wake-Up",
+    "author": "Sifuentes, Ernesto and Casas, Oscar and Pallas-Areny, Ramon",
+    "year": "2011",
+    "doi": "10.1109/JSEN.2010.2103937",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch2_sifuentes2011wakeup.pdf",
+    "occurrences": [
+      {
+        "line": 567,
+        "context": "在工作流程上，节点以 $f_s=\\Fs$ 对连续三轴地磁序列 $\\mathbf{B}(k)$ 进行采样，并在端侧执行第~\\ref{sec:vehicle_detection}节给出的一阶差分特征提取、平滑处理、概率融合与有限状态机判决流程，在线提取车辆事件起止边界及其持续量。与持续回传原始波形相比，节点侧先完成事件检测、再进行结果上报的方式能够显著降低通信链路负载与系统功耗，更适合道路侧长时在线部署场景\\cite{ch2_sifuentes2011wakeup}。同时，辅助监测与存储单元为节点运行状态判断和后续维护提供支撑，使检测模块不仅能够完成事件感知，还具备工程部署所要求的可靠性保障。"
+      }
+    ]
+  },
+  {
+    "key": "ch2_wang2011easitia",
+    "bib_type": "article",
+    "title": "EasiTia: A Pervasive Traffic Information Acquisition System Based on Wireless Sensor Networks",
+    "author": "Wang, Rui and Zhang, Lei and Sun, Rongli and Gong, Jibing and Cui, Li",
+    "year": "2011",
+    "doi": "10.1109/TITS.2010.2096467",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch2_wang2011easitia.pdf",
+    "occurrences": [
+      {
+        "line": 581,
+        "context": "在路侧检测模块基础上，本文所使用的车辆信息检测平台由地磁车辆检测节点、通信基站、云平台和前端可视化界面组成，平台总体架构如图~\\ref{fig:platform_arch} 所示。类似的交通信息采集系统通常采用由感知节点、汇聚转发层和后端管理层构成的分层组织方式\\cite{ch2_wang2011easitia}。道路沿线可按车道或路段需求部署多个地磁检测节点。工程部署中，检测节点通常沿车道线等间隔布设，相邻节点间距可根据路段长度、监测需求和通信覆盖条件进行调整，一般为 $8\\sim 15\\,\\mathrm{m}$。各节点在边缘侧独立完成车辆事件检测，并通过 LoRa 无线链路将结果上传至通信基站；基站完成多节点数据汇聚后，再将结果转发至云平台进行统一接入、解析、存储和管理。由此，本文平台的数据链路可概括为节点侧事件生成、基站侧汇聚转发和云平台侧统一管理三个环节。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_yang2011amrtraffic",
+    "bib_type": "article",
+    "title": "异向性磁阻传感器检测车流量的新方法",
+    "author": "杨波 and 邹富强",
+    "year": "2011",
+    "doi": "",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 619,
+        "context": "车型信息是道路交通运行评估、货车通行管理和道路资源配置中的重要基础数据。相较于视频和多传感器方案，单地磁传感器具有成本低、功耗低、易于地埋部署以及适合长期在线运行等优势\\cite{ch3_yang2011amrtraffic}，因而在道路侧分布式车辆感知场景中具有较好的应用前景。然而，单地磁节点能够直接获取的信息维度有限，难以像视频或多传感器系统那样直接获得车辆外观、尺寸和轨迹等显性特征，因此车型识别所依赖的信息主要隐含在车辆经过时产生的三轴地磁扰动波形之中。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_mps_ga8022019",
+    "bib_type": "standard",
+    "title": "GA-802-2019. 道路交通管理机动车类型",
+    "author": "{中华人民共和国公安部}",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "pdf_status": "not_found",
+    "pdf_filename": "ch3_mps_ga8022019.pdf",
+    "occurrences": [
+      {
+        "line": 639,
+        "context": "考虑到单地磁节点仅能观测车辆通过时的局部三轴磁场扰动，无法直接获得车长、总质量和乘坐人数等显式物理量，过细的车型划分难以在单地磁条件下形成稳定且可复现的判别边界。为兼顾交通管理中的分类依据、现场样本的可标注性以及单地磁信号的可观测性，本文参考道路交通管理中的机动车分类标准\\cite{ch3_mps_ga8022019}，将现场可辨识的细粒度车型归并为小型车、中型车和大型车三类标签，用于后续模型训练与评测。三类标签的判据边界与典型车辆类型如表~\\ref{tab:ch3_label_rule}所示。"
+      }
+    ]
+  },
+  {
+    "key": "breiman2001randomforests",
+    "bib_type": "article",
+    "title": "Random Forests",
+    "author": "Breiman, Leo",
+    "year": "2001",
+    "doi": "10.1023/A:1010933404324",
+    "url": "",
+    "pdf_status": "downloaded",
+    "pdf_filename": "breiman2001randomforests.pdf",
+    "occurrences": [
+      {
+        "line": 807,
+        "context": "在候选特征构建完成后，本文进一步从特征判别能力、冗余性和部署开销三个方面进行筛选。首先，在训练集上利用随机森林估计候选统计特征的重要性，并据此获得候选特征的初始排序\\cite{breiman2001randomforests}。图~\\ref{fig:ch3_feat_importance} 给出了对应的重要性结果。可以看出，$x$ 轴绝对面积、事件持续时间以及模值能量等特征具有较高的重要性，这说明车辆持续尺度、整体扰动强度及主导轴向的面积贡献对车型分类均具有较强判别价值。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_xu2018imbalanced",
+    "bib_type": "article",
+    "title": "Vehicle Classification Using an Imbalanced Dataset Based on a Single Magnetic Sensor",
+    "author": "Xu, Chang and Wang, Yingguan and Bao, Xinghe and Li, Fengrong",
+    "year": "2018",
+    "doi": "10.3390/s18061690",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "ch3_xu2018imbalanced.pdf",
+    "occurrences": [
+      {
+        "line": 833,
+        "context": "结合统计特征输入形式与道路侧节点的运行条件，并参考单地磁车辆分类研究中对 KNN、SVM 和 BPNN 等传统分类器的比较结果\\cite{ch3_xu2018imbalanced}，本文首先对候选轻量分类方法进行筛选。实例型方法如 KNN 在预测阶段需要保留全部训练样本并执行在线距离计算，其存储和推理开销会随样本规模增加而明显上升，不适合作为道路侧节点的常态在线方案。相比之下，BPNN 等模型虽然具有一定非线性拟合能力，但参数调节与训练开销相对更高，也不利于低功耗节点的简洁实现。综合上述考虑，本文在轻量范围内选择 Softmax 回归、线性支持向量机和决策树作为候选分类器，并在相同特征输入条件下进行比较。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_feng2019magspeed",
+    "bib_type": "inproceedings",
+    "title": "MagSpeed: A Novel Method of Vehicle Speed Estimation Through a Single Magnetic Sensor",
+    "author": "Feng, Yimeng and Mao, Guoqiang and Cheng, Bo and Huang, Baoqi and Wang, Shangbo and Chen, Junliang",
+    "year": "2019",
+    "doi": "10.1109/ITSC.2019.8917515",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 871,
+        "context": "尽管端侧统计特征方法能够满足低开销部署需求，但其对局部时序结构的利用仍较有限。对于单地磁波形，车辆通过速度的变化会引起明显的时间伸缩：即使是相同结构车辆，事件持续时间也会随速度变化而压缩或拉伸，局部峰谷和转折点在时间轴上的相对位置也会发生偏移\\cite{ch3_feng2019magspeed}。在实际分类任务中，同类样本还会叠加通过位置和局部工况带来的形态波动。因此，若仅依赖固定时间索引下的逐点比较，或仅通过简单的全局线性归一化处理变长事件，波形之间的结构对应关系仍可能被削弱，进而影响分类稳定性。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_sakoe1978dtw",
+    "bib_type": "article",
+    "title": "Dynamic Programming Algorithm Optimization for Spoken Word Recognition",
+    "author": "Sakoe, Hiroaki and Chiba, Seibi",
+    "year": "1978",
+    "doi": "10.1109/TASSP.1978.1163055",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch3_sakoe1978dtw.pdf",
+    "occurrences": [
+      {
+        "line": 943,
+        "context": "在第\\ref{subsec:ch3_offline_base}节给出的全局线性定长卷积网络基线基础上，本文进一步引入动态时间规整，以恢复局部关键结构在时间轴上的非线性对应关系\\cite{ch3_sakoe1978dtw}。本节分别讨论单模板和多模板两类 DTW 增强链路：前者用于分析单模板原型路由与 DTW 对齐组合是否能够改善分类性能，后者用于进一步扩大类内时间尺度和波形形态的覆盖范围。两类方法共享相同的 DTW 距离定义、路径约束和卷积层级配置，仅模板组织方式与输入张量构造不同。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_petitjean2011dba",
+    "bib_type": "article",
+    "title": "A Global Averaging Method for Dynamic Time Warping, with Applications to Clustering",
+    "author": "",
+    "year": "2011",
+    "doi": "10.1016/j.patcog.2010.09.013",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch3_petitjean2011dba.pdf",
+    "occurrences": [
+      {
+        "line": 990,
+        "context": "在此基础上，本文首先构建单模板对齐增强方法。设第 $c$ 类样本集合为 $\\mathcal{S}_c$，其参考模板记为 $\\mathbf{X}_{\\mathrm{ref}}^{(c)}\\in\\mathbb{R}^{4\\times L_{\\mathrm{uni}}}$。模板构造方式包括两类：一类是将同类训练样本线性定长归一化后逐点求平均得到的均值模板；另一类是采用 DTW Barycenter Averaging 迭代更新得到的 DBA 模板\\cite{ch3_petitjean2011dba}。由于路径搜索仅基于模值通道进行，本文首先定义第 $c$ 类参考模板的模值通道为："
+      }
+    ]
+  },
+  {
+    "key": "wei2017adaptable",
+    "bib_type": "article",
+    "title": "Adaptable Vehicle Detection and Speed Estimation for Changeable Urban Traffic With Anisotropic Magnetoresistive Sensors",
+    "author": "Wei, Qifan and Yang, Bo",
+    "year": "2017",
+    "doi": "10.1109/JSEN.2017.2654501",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "wei2017adaptable.pdf",
+    "occurrences": [
+      {
+        "line": 1242,
+        "context": "由表~\\ref{tab:ch3_overall}可见，在端侧统计特征链路内部，Softmax 回归在 Accuracy 和宏平均 $F_1$ 两项指标上均取得最优结果，因此可将其视为端侧正式基线，线性支持向量机和决策树则作为传统轻量对照。进一步从整体结果看，分类性能沿端侧 Softmax 回归、线性定长一维卷积网络和 DTW 多模板增强方法呈现逐级提升趋势。其中，线性定长一维卷积网络相较于端侧 Softmax 回归取得了小幅提升，而 DTW 多模板增强方法进一步将 Accuracy 和宏平均 $F_1$ 分别提升至 96.10\\% 和 95.80\\%。相较于端侧 Softmax 回归，最终方法的 Accuracy 和宏平均 $F_1$ 分别提升了 6.34 和 7.41 个百分点；相较于线性定长一维卷积网络基线，分别提升了 5.37 和 5.83 个百分点。这表明，在不显式估计车速的条件下，时间对齐与多模板表征能够缓解自然车流条件下由速度变化及局部结构差异带来的时序不一致，从而提升单地磁车型三分类的整体稳定性。这一结果也与已有磁传感研究中关于交通状态变化会影响波形时间尺度的观察相一致\\cite{wei2017adaptable}。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_bagula2015networks",
+    "bib_type": "article",
+    "title": "On the Design of Smart Parking Networks in the Smart Cities: An Optimal Sensor Placement Model",
+    "author": "Bagula, Antoine and Castelli, Lorenzo and Zennaro, Marco",
+    "year": "2015",
+    "doi": "10.3390/s150715443",
+    "url": "",
+    "pdf_status": "skipped_existing",
+    "pdf_filename": "ch4_bagula2015networks.pdf",
+    "occurrences": [
+      {
+        "line": 1342,
+        "context": "道路侧停车与持续占用会压缩道路有效通行空间，降低道路运行效率，并可能诱发追尾、擦碰等次生安全风险。因此，面向开放道路场景，及时、准确地完成停车确认与占用状态上报，对交通管理与应急处置具有重要意义。已有研究表明，地磁传感器已被应用于街边停车和道路侧停车监测等场景\\cite{ch4_lin2017surveyparking,ch4_gu2013streetparking}。围绕智慧停车系统的节点布设、数据汇聚与平台接入，相关工作也对停车网络的系统组织进行了研究\\cite{ch4_bagula2015networks,ch4_wu2023iotparking}。长期部署结果进一步说明，该类方案具备低功耗、易部署和适于长期运行等工程优势\\cite{ch4_huang2017easydeploy}。然而，与停车场车位占用监测相比，开放道路场景中的交通流密度波动更大，邻道车辆扰动更频繁，停车行为也更容易发生在连续车流背景下，因而对检测方法的实时性与鲁棒性提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_wu2023iotparking",
+    "bib_type": "article",
+    "title": "基于物联网技术的智能停车场系统",
+    "author": "吴蕊 and 殷婷婷 and 杜悦 and 任新旺 and 杨荣根",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 1342,
+        "context": "道路侧停车与持续占用会压缩道路有效通行空间，降低道路运行效率，并可能诱发追尾、擦碰等次生安全风险。因此，面向开放道路场景，及时、准确地完成停车确认与占用状态上报，对交通管理与应急处置具有重要意义。已有研究表明，地磁传感器已被应用于街边停车和道路侧停车监测等场景\\cite{ch4_lin2017surveyparking,ch4_gu2013streetparking}。围绕智慧停车系统的节点布设、数据汇聚与平台接入，相关工作也对停车网络的系统组织进行了研究\\cite{ch4_bagula2015networks,ch4_wu2023iotparking}。长期部署结果进一步说明，该类方案具备低功耗、易部署和适于长期运行等工程优势\\cite{ch4_huang2017easydeploy}。然而，与停车场车位占用监测相比，开放道路场景中的交通流密度波动更大，邻道车辆扰动更频繁，停车行为也更容易发生在连续车流背景下，因而对检测方法的实时性与鲁棒性提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch4_huang2017easydeploy",
+    "bib_type": "inproceedings",
+    "title": "Toward an Easy Deployable Outdoor Parking System---Lessons from Long-Term Deployment",
+    "author": "Huang, Yu and Chen, Yi-Chao and You, Chuang-Wen and Wu, Dian-Xuan and Chen, Yi-Ling and Hua, Kai-Lung and Hsu, Jane Yung-Jen",
+    "year": "2017",
+    "doi": "10.1109/PERCOM.2017.7917869",
+    "url": "",
+    "pdf_status": "paywalled_or_no_public_pdf",
+    "pdf_filename": "ch4_huang2017easydeploy.pdf",
+    "occurrences": [
+      {
+        "line": 1342,
+        "context": "道路侧停车与持续占用会压缩道路有效通行空间，降低道路运行效率，并可能诱发追尾、擦碰等次生安全风险。因此，面向开放道路场景，及时、准确地完成停车确认与占用状态上报，对交通管理与应急处置具有重要意义。已有研究表明，地磁传感器已被应用于街边停车和道路侧停车监测等场景\\cite{ch4_lin2017surveyparking,ch4_gu2013streetparking}。围绕智慧停车系统的节点布设、数据汇聚与平台接入，相关工作也对停车网络的系统组织进行了研究\\cite{ch4_bagula2015networks,ch4_wu2023iotparking}。长期部署结果进一步说明，该类方案具备低功耗、易部署和适于长期运行等工程优势\\cite{ch4_huang2017easydeploy}。然而，与停车场车位占用监测相比，开放道路场景中的交通流密度波动更大，邻道车辆扰动更频繁，停车行为也更容易发生在连续车流背景下，因而对检测方法的实时性与鲁棒性提出了更高要求。"
+      }
+    ]
+  },
+  {
+    "key": "ch5_salvador2007fastdtw",
+    "bib_type": "article",
+    "title": "Toward Accurate Dynamic Time Warping in Linear Time and Space",
+    "author": "Salvador, Stan and Chan, Philip",
+    "year": "2007",
+    "doi": "10.3233/IDA-2007-11508",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 1825,
+        "context": "（1）本文提出的车型分类方法当前主要面向大、中、小三类机动车识别，分类粒度仍然较粗，对更细粒度车型类别的区分能力尚未充分验证。同时，端侧正式方案虽然能够满足低开销部署需求，但其分类性能仍明显低于离线增强链路；第3章提出的 DTW 多模板增强方法更适合作为离线增强与性能上限验证方案，其多模板对齐和动态规划开销仍难以直接满足低功耗节点的实时部署需求。此外，当前研究对复杂道路环境因素的覆盖仍然有限，在更强邻道扰动、异常电磁干扰以及更复杂车速波动条件下，不同车型波形的类间可分性仍需进一步验证。后续可进一步研究适合端侧部署的轻量化时间对齐、模板压缩与特征增强方法\\cite{ch5_salvador2007fastdtw}，在保持对自然车流条件下时序尺度变化和类内波动适应性的同时，逐步扩展到更细粒度的车型分类任务\\cite{ch3_xu2017featuresets}，并提高方法在复杂道路条件下的实时性、鲁棒性和实用性。"
+      }
+    ]
+  },
+  {
+    "key": "ch3_xu2017featuresets",
+    "bib_type": "article",
+    "title": "Vehicle Classification under Different Feature Sets with a Single Anisotropic Magnetoresistive Sensor",
+    "author": "Xu, Chang and Wang, Yingguan and Zhan, Yunlong",
+    "year": "2017",
+    "doi": "10.1587/transfun.E100.A.440",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 1825,
+        "context": "（1）本文提出的车型分类方法当前主要面向大、中、小三类机动车识别，分类粒度仍然较粗，对更细粒度车型类别的区分能力尚未充分验证。同时，端侧正式方案虽然能够满足低开销部署需求，但其分类性能仍明显低于离线增强链路；第3章提出的 DTW 多模板增强方法更适合作为离线增强与性能上限验证方案，其多模板对齐和动态规划开销仍难以直接满足低功耗节点的实时部署需求。此外，当前研究对复杂道路环境因素的覆盖仍然有限，在更强邻道扰动、异常电磁干扰以及更复杂车速波动条件下，不同车型波形的类间可分性仍需进一步验证。后续可进一步研究适合端侧部署的轻量化时间对齐、模板压缩与特征增强方法\\cite{ch5_salvador2007fastdtw}，在保持对自然车流条件下时序尺度变化和类内波动适应性的同时，逐步扩展到更细粒度的车型分类任务\\cite{ch3_xu2017featuresets}，并提高方法在复杂道路条件下的实时性、鲁棒性和实用性。"
+      }
+    ]
+  },
+  {
+    "key": "ch5_cao2020magcal",
+    "bib_type": "article",
+    "title": "Real-Time Calibration of Magnetometers Using the {RLS/ML} Algorithm",
+    "author": "Cao, Guangzhong and Xue, Xudong and Xu, Dan",
+    "year": "2020",
+    "doi": "10.3390/s20020535",
+    "url": "",
+    "pdf_status": "",
+    "pdf_filename": "",
+    "occurrences": [
+      {
+        "line": 1827,
+        "context": "（2）本文提出的停车确认与占用状态段判定方法已经在一般工况以及连续车流、慢漂移等典型复杂工况下验证有效，但在极端连续车流、缓行停走和长时间波形重叠条件下仍存在一定局限性。一方面，在极端拥堵和缓行场景下，车辆事件之间的时间间隔进一步缩短，波形变化趋缓且相互叠加，稳定点可能长期不可得，从而引入较大的确认时差和边界误差；另一方面，在强重叠和高密度通行条件下，若前序事件边界定位或事件分割不够准确，也会进一步影响后续停车确认与占用释放判定的稳定性。与此同时，$D_{\\mathrm{th}}$、$D_{\\mathrm{free}}$ 等部分参数在跨道路、跨季节及不同安装条件下仍具有一定场景依赖性，实际部署时可能需要少量重新标定。后续可进一步完善停车与占用检测中的参数自适应、在线校准和异常参考检测机制\\cite{ch5_cao2020magcal}，并结合更丰富的事件分割特征、相邻节点信息或车道级先验，提高复杂场景下停车确认与占用状态段判定的一致性与稳定性。"
+      }
+    ]
+  }
+]

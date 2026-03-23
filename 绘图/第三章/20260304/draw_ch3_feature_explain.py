@@ -8,11 +8,31 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib import font_manager as fm
 from scipy.io import loadmat
 
 
-def pick_font() -> list[str]:
-    return ["Microsoft YaHei", "SimHei", "Noto Sans CJK SC", "Arial Unicode MS", "DejaVu Sans"]
+FONT_FAMILIES = ["Times New Roman", "SimSun", "STSong", "DejaVu Serif"]
+
+
+def configure_matplotlib() -> None:
+    plt.rcParams["font.family"] = FONT_FAMILIES
+    plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams["axes.linewidth"] = 1.0
+    plt.rcParams["xtick.direction"] = "in"
+    plt.rcParams["ytick.direction"] = "in"
+    plt.rcParams["mathtext.fontset"] = "custom"
+    plt.rcParams["mathtext.rm"] = "Times New Roman"
+    plt.rcParams["mathtext.it"] = "Times New Roman:italic"
+    plt.rcParams["mathtext.bf"] = "Times New Roman:bold"
+    plt.rcParams["mathtext.sf"] = "Times New Roman"
+
+
+def mixed_font(size: float | None = None) -> fm.FontProperties:
+    props = fm.FontProperties(family=FONT_FAMILIES)
+    if size is not None:
+        props.set_size(size)
+    return props
 
 
 def all_zero_crossings(t: np.ndarray, y: np.ndarray) -> list[tuple[float, float]]:
@@ -29,7 +49,9 @@ def all_zero_crossings(t: np.ndarray, y: np.ndarray) -> list[tuple[float, float]
     return pts
 
 
-def pick_main_zero_crossing(t: np.ndarray, y: np.ndarray, t_left: float, t_right: float) -> tuple[float, float] | None:
+def pick_main_zero_crossing(
+    t: np.ndarray, y: np.ndarray, t_left: float, t_right: float
+) -> tuple[float, float] | None:
     pts = all_zero_crossings(t, y)
     if not pts:
         return None
@@ -78,7 +100,9 @@ def load_event_from_csv(csv_path: Path) -> tuple[np.ndarray, np.ndarray]:
     return t, dz
 
 
-def load_full_event_from_mat(mat_path: Path, class_id: int, sample_index: int, fs: float, n0: int) -> tuple[np.ndarray, np.ndarray]:
+def load_full_event_from_mat(
+    mat_path: Path, class_id: int, sample_index: int, fs: float, n0: int
+) -> tuple[np.ndarray, np.ndarray]:
     mat = loadmat_safe(mat_path)
     processed = np.ravel(mat["ProcessedData"][class_id - 1])
     lengths = np.ravel(mat["targetLength"][class_id - 1]).astype(int)
@@ -96,8 +120,9 @@ def load_full_event_from_mat(mat_path: Path, class_id: int, sample_index: int, f
 
 
 def build_figure(t: np.ndarray, dz: np.ndarray, out_path: Path) -> None:
-    t_cut = 2.0
-    keep = t <= t_cut
+    configure_matplotlib()
+
+    keep = t <= 2.0
     t = t[keep]
     dz = dz[keep]
     t, dz = trim_to_outer_zero_crossings(t, dz)
@@ -115,85 +140,91 @@ def build_figure(t: np.ndarray, dz: np.ndarray, out_path: Path) -> None:
     z_min = float(dz[z_min_idx])
     zero_cross = pick_main_zero_crossing(t, dz, min(z_max_t, z_min_t), max(z_max_t, z_min_t))
 
-    plt.rcParams["font.sans-serif"] = pick_font()
-    plt.rcParams["axes.unicode_minus"] = False
     arrow_color = "#444444"
-
-    fig, ax = plt.subplots(figsize=(7.0, 4.2), facecolor="white")
+    fig, ax = plt.subplots(figsize=(7.4, 4.6), facecolor="white")
     ax.grid(True, alpha=0.20, linewidth=0.8)
     ax.set_xlim(0.0, t_end + x_pad)
 
-    y_pad = 0.16 * max(abs(z_max), abs(z_min), 1.0)
-    y_top = z_max + y_pad
+    y_pad = 0.20 * max(abs(z_max), abs(z_min), 1.0)
+    y_top = z_max + 1.10 * y_pad
     y_bottom = min(z_min - y_pad * 1.35, -72.0)
+    span = y_top - y_bottom
 
-    ax.plot(t, dz, color="#4f81bd", linewidth=2.2, zorder=3)
+    ax.plot(t, dz, color="#4F81BD", linewidth=2.35, zorder=3)
     ax.axhline(0.0, color="#888888", linewidth=1.0, linestyle="--", zorder=1)
-    ax.fill_between(t, 0.0, dz, where=(dz >= 0), color="#f6b26b", alpha=0.28, zorder=2, interpolate=True)
-    ax.fill_between(t, 0.0, dz, where=(dz < 0), color="#f6b26b", alpha=0.28, zorder=2, interpolate=True)
+    ax.fill_between(t, 0.0, dz, where=(dz >= 0), color="#F6B26B", alpha=0.28, zorder=2, interpolate=True)
+    ax.fill_between(t, 0.0, dz, where=(dz < 0), color="#F6B26B", alpha=0.28, zorder=2, interpolate=True)
 
-    ax.scatter([z_max_t, z_min_t], [z_max, z_min], s=42, color="#d62728", zorder=4)
+    ax.scatter([z_max_t, z_min_t], [z_max, z_min], s=46, color="#D62728", zorder=4)
 
+    # Keep z_max label inside the axes even when the peak is close to the top border.
+    zmax_text_x = max(t_start + 0.04 * (t_end - t_start), z_max_t - 0.10)
+    zmax_text_y = min(z_max + 0.18 * span, y_top - 0.05 * span)
     ax.annotate(
         r"$z_{\max}$",
         xy=(z_max_t, z_max),
-        xytext=(z_max_t - 0.13, z_max + 0.17 * (y_top - y_bottom)),
-        fontsize=12,
+        xytext=(zmax_text_x, zmax_text_y),
+        fontsize=14,
         arrowprops=dict(arrowstyle="->", lw=1.0, color=arrow_color),
     )
+
+    zmin_text_x = min(t_end - 0.08 * (t_end - t_start), z_min_t + 0.15)
+    zmin_text_y = max(z_min + 0.12 * span, y_bottom + 0.10 * span)
     ax.annotate(
         r"$z_{\min}$",
         xy=(z_min_t, z_min),
-        xytext=(z_min_t + 0.16, z_min + 0.12 * (y_top - y_bottom)),
-        fontsize=12,
+        xytext=(zmin_text_x, zmin_text_y),
+        fontsize=14,
         arrowprops=dict(arrowstyle="->", lw=1.0, color=arrow_color),
     )
 
     if zero_cross is not None:
         cross_t, cross_y = zero_cross
-        ax.scatter([cross_t], [cross_y], s=40, color="#d62728", zorder=4)
+        ax.scatter([cross_t], [cross_y], s=42, color="#D62728", zorder=4)
         ax.annotate(
             r"$N_{zc}^{(z)}$",
             xy=(cross_t, cross_y),
-            xytext=(cross_t + 0.06, 0.12 * (y_top - y_bottom)),
-            fontsize=12,
-            color="#d62728",
+            xytext=(cross_t + 0.06, 0.12 * span),
+            fontsize=14,
+            color="#D62728",
             arrowprops=dict(arrowstyle="->", lw=1.0, color=arrow_color),
         )
 
     ax.annotate(
         "",
-        xy=(t_end, y_bottom + 0.12 * (y_top - y_bottom)),
-        xytext=(t_start, y_bottom + 0.12 * (y_top - y_bottom)),
+        xy=(t_end, y_bottom + 0.12 * span),
+        xytext=(t_start, y_bottom + 0.12 * span),
         arrowprops=dict(arrowstyle="<->", lw=1.1, color=arrow_color),
     )
     ax.text(
         t_start + 0.46 * (t_end - t_start),
-        y_bottom + 0.145 * (y_top - y_bottom),
+        y_bottom + 0.145 * span,
         r"$T_{\mathrm{evt}}$",
         ha="center",
         va="bottom",
-        fontsize=12,
+        fontsize=14,
     )
 
     ax.text(
         t_start + 0.60 * (t_end - t_start),
-        y_top - 0.18 * (y_top - y_bottom),
+        y_top - 0.18 * span,
         r"$A_{z}$",
-        color="#8a4b08",
-        fontsize=12,
+        color="#8A4B08",
+        fontsize=14,
     )
     ax.text(
         t_start + 0.03 * (t_end - t_start),
-        0.0 + 0.05 * (y_top - y_bottom),
+        0.0 + 0.05 * span,
         "零参考线",
         color="#666666",
-        fontsize=11,
+        fontsize=13,
+        fontproperties=mixed_font(13),
     )
 
-    ax.set_xlabel("时间 / s")
-    ax.set_ylabel(r"$\Delta B_z[n]$ / nT")
+    ax.set_xlabel("时间 / s", fontsize=15, fontproperties=mixed_font(15))
+    ax.set_ylabel(r"$\Delta B_z[n]$ / nT", fontsize=15)
     ax.set_ylim(y_bottom, y_top)
+    ax.tick_params(labelsize=13.5, length=5.0, width=1.0)
 
     fig.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -206,7 +237,7 @@ def main() -> None:
     script_dir = Path(__file__).resolve().parent
     repo_root = script_dir.parents[2]
 
-    parser = argparse.ArgumentParser(description="Draw a Xiang-style feature explanation figure for Chapter 3.")
+    parser = argparse.ArgumentParser(description="Draw the Chapter 3 feature explanation figure.")
     parser.add_argument(
         "--input",
         type=Path,

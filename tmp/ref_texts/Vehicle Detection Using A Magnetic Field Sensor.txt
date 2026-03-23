@@ -1,0 +1,324 @@
+
+
+===== PAGE 1 =====
+
+Missouri University of Science and Technology Missouri University of Science and Technology 
+Scholars' Mine Scholars' Mine 
+Electrical and Computer Engineering Faculty 
+Research & Creative Works Electrical and Computer Engineering 
+01 Jan 1978 
+Vehicle Detection Using A Magnetic Field Sensor Vehicle Detection Using A Magnetic Field Sensor 
+Stanley V. Marshall 
+Missouri University of Science and Technology 
+Follow this and additional works at: https://scholarsmine.mst.edu/ele_comeng_facwork 
+ Part of the Electrical and Computer Engineering Commons 
+Recommended Citation Recommended Citation 
+S. V. Marshall, "Vehicle Detection Using A Magnetic Field Sensor," IEEE Transactions on Vehicular 
+Technology, vol. 27, no. 2, pp. 65 - 68, Institute of Electrical and Electronics Engineers, Jan 1978. 
+The definitive version is available at https://doi.org/10.1109/T-VT.1978.23725 
+This Article - Journal is brought to you for free and open access by Scholars' Mine. It has been accepted for 
+inclusion in Electrical and Computer Engineering Faculty Research & Creative Works by an authorized administrator 
+of Scholars' Mine. This work is protected by U. S. Copyright Law. Unauthorized use including reproduction for 
+redistribution requires the permission of the copyright holder. For more information, please contact 
+scholarsmine@mst.edu. 
+
+===== PAGE 2 =====
+
+IEEE  TRANSACTIONS  ON  VEHICULAR  TECHNOLOGY,  VOL.  VT-27, NO. 2,  MAY 1978 
+Vehicle Detection Using  a  Magnetic Field Sensor 
+STANLEY v. MARSHALL, MEMBER, IEEE 
+65 
+Absfrucr-The measurement of vehicle magnetic moments and the 
+results from use of a fluxgate magnetic sensor to actuate a lighting 
+system from the magnetic fields of passing vehicles is reported. A 
+typical U.S. automobile has a magnetic moment  of about 200 A-m2 
+(Ampere-metersz), while for a school bus it is’about 2000 A-mz. When 
+the vehicle is modeled as an ideal magnetic dipole with a moment  of 
+200 A-mz, the predicted results from an analysis of the sensor-vehicle 
+geometry agree closely with observations of the system response to 
+automobiles. 
+I. INTRODUCTION 
+T 
+HIS PAPER  results  directly  from  experimental  work  by 
+the  author  during  the  last  four  Christmas seasons  in con- 
+nection  with  the use  of a  fluxgate  magnetic  sensor as a  traffic 
+sensor  for  automatic  switching of  Christmas  lights in front 
+of  the  author’s  residence. The object has  been to have the 
+lights turn on just as the  people in the  car  are  in  a  good  position 
+to appreciate  the  scene,  and to switch  off  after  they pass by. 
+Cars on either side of the  street,i.e., travelingin  either  direction, 
+actuate  the  lights. 
+Initially,  the  results were not  too  satisfactory,  primarily 
+because the vehicle  magnetic field was not properly  under- 
+stood.  To  measure  the vehicles, a  sensor was located on an 
+overpass directly above a traffic  lane  of a city  street.  It  im- 
+mediately  became  evident  that all vehicles  measured  were 
+magnetized  with a south pole on top,  and  that  the  strength of 
+the field is roughly  proportional  to  the size of  the  vehicle.  The 
+polarity is  as expected  for an earth  induced  fieldin  the  northern 
+hemisphere.  From  the  quantitative field measurements  and  the 
+known  height  of  the  sensor above the  traffic  the  magnetic 
+moments were computed  for  each  vehicle,  making  it possible 
+to then  predict  traffic  sensor  performance  for given locations 
+and  orientations of the  sensor.  Predicted  performance  quite 
+closely matched  the  observed  performance,  i.e.,  a visual check 
+of  the  position  of  the  vehicle  when  the  lights  were  switched  on 
+compared  to  that  predicted  from  calculations. This  has  led to  a 
+somewhat  tutorial  treatment of the  magnetic traffic sensor, 
+following  a  brief  description  of  the  Christmas  lighting  system. 
+11. DESCRIPTION OF CHRISTMAS  LIGHTING  SYSTEM 
+The  system  block  diagram is shown in Fig. 1. The  sensor 
+is located  at  curbside  directly in front of the scene to be lighted, 
+about 10-20 feet (3-6  meters)  from  the  two  lanes  of  traffic 
+and  below  the  centers  of  the  vehicles by about 0.75 meter. 
+The  sensor  assembly  includes a permanent  magnet  on  the 
+Manuscript received January 25, 1977; revised September 6,  1977. 
+The author is with the Electrical Engineering Department, Univer- 
+sity of Missouri-Rolla, Rolla, MO 65401, Telephone  (314)  341-4506. 
+I fo uwrs 
+t 
+110 VAL 
+Fig. 1. Block diagram of vehicle-actuated Christmas lighting system. 
+sensor  axis  for  compensating  for  the  earth’s  magnetic  field. 
+The  magnetic is spring  loaded  against an adjusting  screw  for 
+fine adjustment of the  compensating  field. The  sensor  assembly 
+was  buried  just  beneath  the  ground  surface  for  protection 
+against  misalignment  and  with  the  sense  axis  nearly  vertical. 
+The  fluxgate  sensor  and  sensor  electronics  used in this 
+experiment have  been  described in a previous publication [ 11 . 
+The  dc output from  the  sensor  electronics  required  additional 
+amplification to actuate  a small  relay at the  arbitrary field 
+level of 0.016  Ampere/meter (20 gammas)  chosen as the best 
+compromise  between  sensitivity to passing  vehicles and  insensi- 
+tivity to movements  of  cars in neighboring  driveways.  The 
+small  relay in turn  operated  a larger  relay  used for  switching 
+the few kilowatts of  power  required to  operate  the  lights. 
+Solid-state  components  could  of  course have  been  used in 
+place  of the  mechanical  relays. 
+111. MAGNETIC FIELD FROM A VEHICLE 
+The  magnetic fields from highway  vehicles  were studied 
+using a  sensor  located  on an  overpass twenty-one  feet  directly 
+above a  traffic  lane. Field  readings  were  recorded for  each 
+vehicle as it reached  a  point  directly  beneath  the  sensor.  From 
+the  known  distance  of  the  sensor  from  the  vehicles,  the 
+magnetic  moments were computed.  From these measurements, 
+it was concluded  that  a  typical US. automobile  has  a  magnetic 
+moment in the range 100-300  A-m2  (Ampere-meter2) in SI 
+units. The moment is vertical  with the  south  magnetic pole on 
+top (this is  as expected in the  northern  hemisphere),  and  the 
+magnitude  of  the  moment  appears  to be somewhat  propor- 
+tional to  the size of the  vehicle,  although  the  magnetic 
+moment  for  a  school  bus is ten  times  that  for an automobile 
+while its  weight is only five to six times as great.  It  should also 
+be mentioned  that  this  moment, which is induced  from  the 
+earth’s  field,  should be a  function of latitude, being maximum 
+0018-9545/78/0500-0065$00.75 0 1978  IEEE 
+Authorized licensed use limited to: Missouri University of Science and Technology. Downloaded on July 07,2023 at 13:25:47 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+66 IEEE  TRANSACTIONS ON  VEHICULAR  TECHNOLOGY, VOL. VT-27,  NO. 2, MAY 1978 
+Fig, 2. Sensor-vehicle geometry. 
+at  the  magnetic poles and  zero  at  the  magnetic  equator. In 
+subsequent  calculations involving  the magnetic field from  a 
+highway  vehicle,  the  vehicle is modeled as an ideal magnetic 
+dipole  having a moment of 200  A-m2,  with  a vertical  axis and 
+with  its  south pole on top. 
+Referring to Fig. 2  for defining  the  variables, the field from 
+a dipole is  given by [2] 
+Im I Ampere (2 cos e; + sin ei} ___ H=- 
+4rrr3 meter 
+where Im j is the  magnitude of the  magnetic  moment in am- 
+pere-m2  and His measured in amperes/meter. 
+For h = 0 and  with  the sense axis vertical,  the  magnitude of 
+the sensed  field is 
+and when  (2) is solved for  r  for H = 0.016  Ampere/meter, 
+= 9.98  meters 4n(0.016) 
+= 32.7  feet. 
+A correction  for  the  location of the  sensor  being about  0.75  m 
+below  the vehicle  centerline gives a value  of 29.75  feet  for  the 
+critical  distance  for  triggering  the  circuit  for  the  Christmas 
+lights.  For  a very small car,  let us say 50  A-m2, or a  truck,  let 
+us say 800  A-m2,  the  critical distances  would be 19  feet  and 
+47  feet, respectively.  Observations of the  vehicle  positions  for 
+relay acutation  tended  to  confirm  the above  calculations. A 
+small  car on the far side of the  street barely  triggered  the 
+system. 
+Calculated  fields  versus time are the Gaussian shaped pulses 
+shown in  Fig. 3 for  a vehicle  travelingpast  the  sensor  at  20 mph, 
+where d is either 10 feet or 20  feet,  and  for h = 0. The critical 
+field of 0.016  Ajm is exceeded  for 2.1 seconds  and 1.8 seconds, 
+respectively. 
+t SECONDS 
+Fig. 3. Responses curves for 20-mph vehicle. 
+IV. SENSOR  LOCATION 
+Sensor  response is a  function of its  direction  from  the 
+vehicle magnetic  moment as well as orientation  of  the sensor 
+axis. h this  discussion the sensor  axis is assumed to be vertical, 
+thus Only the  vertical component of the  field  from  the vehicle 
+will  be sensed.  Referring to Fig. 2, 
+Hvert =He sin 8 - H, cos e 
+Im I 
+4nr3 
+-- - [-2  cos2 e + sin2 e]. (3 1 
+Plots  of Hvert for  various  values of d and h are given in  Figs. 4 
+and 5. Note  that  the  polarity of the sensed  field  reverses as e 
+changes from 0" to 90". The angle at which  this reversal 
+occurs,  i.e.,  where Hvert = 0 is 54.75",  and is found  by  setting 
+Hvert equal  to  zero  and solving for e from  (3). This is the case 
+depicted in  Fig. 5 ford = 3.6 m, h = 2.59 m, and also  in  Fig. 6 
+for  the field from vehicle no. 2 where the sensor is directly 
+above  vehicle no. 1  and whose  axis is orthogonal to  the field 
+lines from vehicle no. 2. 
+For  a  curbside  sensor,  the  maximum  response is obtained 
+for h = 0, i.e.,  the sensor should be at  the same  height as the 
+center  of  the vehicle. When the  sensor is 3.05  m (10 feet)  from 
+a traffic lane, a change in sensor  height  from h = 0 to h = 1 
+meter will reduce the sensed  field from  700  to  430 gammas, a 
+reduction of 39  percent. This is shown by plots  in Fig. 5. Maxi- 
+mum response is for  a sensor to be located  directly above  or 
+below  the traffic lane.  The  effect of the vehicle  deviating  by 
+0.5  m  and 1.0 m  from  the  center of the  traffic  lane is shown 
+by the  set of curves  of  Fig. 4  for a height of 2.59 m for  the 
+sensor. When the  traffic  lane is 3.66 meters (12 feet)  from  a 
+line  2.59 m  directly above  or beneath  the  sensor,  the sensed 
+Authorized licensed use limited to: Missouri University of Science and Technology. Downloaded on July 07,2023 at 13:25:47 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+MARSHALL:  VEHICULAR  DETECTION BY MAGNETIC  FIELD 
+S METERS 
+Fig. 4. Response for sensor above or below vehicle, showing effect of 
+offset from vehicle path. 
+1 bo 
+0 
+-/M 
+a 2 -- I 
+3 
+< -JM 
+-444 
+2 .no 
+- Clo 
+-7m 
+Fig. 5. Response curves for various heights and offsets of sensor 
+from  traffic  lane. 
+Fig. 6. Illustrating  location of sensor for rejecting signals from 
+adjacent  lane. 
+67 
+field is exactly  zero  at  the  point  of  closest  approach  although 
+there is a field  of about 30-40 gammas  sensed  when  the vehicle 
+is four or five meters  either side  of this  point.  Refer again to 
+the d = 3.6, h = 2.59 curve of Fig. 5. Advantage may be taken 
+of  this  feature  to  locate sensors  such that  they will sense 
+traffic  in  one  lane  and be  very  insensitive to traffic  in  an  adja- 
+cent  lane. The threshold  could be set  at 200 gammas  which 
+would  actuate  the  system  for  everything  in  the  traffic lane 
+except possibly a small motorcycle,  and  would  not  actuate 
+even for  a large truck  in  an  adjacent  lane. 
+V.  TIMING  APPLICATIONS 
+The author is aware  that in at least one  application  where 
+the  time  period  between successive signals from  two  different 
+sensors was very  critical as it was used to  determine  the speed 
+of  the vehicle,  magnetic  sensors  were  rejected [3]. One  can 
+gain some  insight into  this  problem  by  referring  to Fig. 4. If 
+for  example  the vehicle passed directly above one  sensor  and 
+one  meter  to  the  left  or right  of a  point  directly above the 
+other  sensor,  the  threshold level of  say 200 gammas  would be 
+reached at S = -2.6  m for  the first  sensor  and  at S = -2.4  m 
+for  the  second  sensor. If the sensors  were twelve feet  apart, 
+this  could cause an error in A7 on the  order  of 5 percent  and 
+the same proportional  error  in  the  computation  of  speed. The 
+lower  the  threshold  setting,  the smaller the  error in A7 due  to 
+a change in vehicle path. 
+If the  sensor is too close to  the vehicle, it can sense indi- 
+vidual  magnetic  moments  within  the overall framework  of  the 
+total vehicle, and  the field  pulse  due to  motion of  the vehicle 
+past  the  sensor will then have multiple  peaks or at least be 
+broadened over  those  plotted in this paper. This might be 
+undesirable  for  any  timing  application. The minimum  distance 
+for  the  sensor  for  good  response pulse  shape has  not  been 
+determined in this  study  but is probably on the  order  of  1.5 
+meters  for  the average automobile. 
+VI. SOME ADDITIONAL  CONSIDERATIONS 
+A few years  ago the  fluxgate  magnetometer was mass- 
+produced  and widely deployed  for  detecting  weapons  at  airport 
+security  gates.  Traffic  sensor  applications  could  use  much  of 
+the same basic components. The fluxgate  sensor is inherently  a 
+simple and rugged  sensor,  and  although  publications have dealt 
+with  the  extreme  effort  required to  produce  a  stable  sensor  for 
+space  applications  [4] ~ sensors for  traffic  applications, as  was 
+the case for  airport  security,  may be constructed  from  com- 
+mercial  grade tape  cores. 
+The  fluxgate  sensor  can be easily packaged  in  a  container 
+smaller than  a  pack  of  cigarettes.  No active components are 
+required  in  the  sensor  assembly. The power  consumed  by  the 
+sensor  electronics is almost  entirely  that  required  for  the 
+amplifiers as the basic excitation  and  detection  requires  only 
+on the  order  of  a  100  milliwatts. Since no contact  with  the 
+vehicle is required,  the  sensor can  be protected  from  the 
+weather. 
+The  fluxgate  sensor is basically a dc device or  presence 
+indicator,  i.e.,  it  does  not  require  motion  to  produce an output. 
+Authorized licensed use limited to: Missouri University of Science and Technology. Downloaded on July 07,2023 at 13:25:47 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+68 IEEE  TRANSACTIONS  ON  VEHICULAR  TECHNOLOGY,  VOL.  VT-21,  NO. 2, MAY 1978 
+This  can be a  problem if a vehicle parks  near  the  sensor, 
+creating  a  continuous  “trigger.” However, it is simple to ac 
+couple  the  output of  the  detector to the  amplifier?  or  where 
+long  time  stability is critical  and  where  presence  indication  for 
+stationary  vehcles is undesired to use a  long  time  constant 
+integrator in a  feedback  loop to provide  an automatic  zeroing 
+compensate field by  supplying  current to  a solenoidal  com- 
+pensate  winding around  the  sensor. This replaces  the permanent 
+magnet  earth field compensation used  by  the author  and 
+would be more  practical  for  highway  installation. In fact,  with 
+the  electronics  one  could  program to zero  the  sensor  for  a 
+trigger signal greater than  a specified number of seconds in 
+duration. 
+VII. CONCLUSION 
+A fluxgate  magnetic  sensor  used as a  traffic  sensor to  auto- 
+matically  trigger  some  Christmas  lights  has  provided  a 
+demonstration relatively  easy to visually  verify.  Calculations, 
+based on measured  magnetic  moments of vehicles,  provide a 
+much  more  complete  picture of  the  potential of the  magnetic 
+sensor and  some of the  important  considerations  such as the 
+orientation of  the  sensor  and  its  distance  from  the  vehicle. 
+Applications  may be suggested to the  reader for which he did 
+not previously have the necessary  quantitative  data to consider. 
+It is conceded  that  for  certain precise  timing  applications 
+magnetic sensors  may not be able to meet all the  requirements, 
+but  the  convenience of a small concealed  weatherproof  flux- 
+gate  sensor should  not be overlooked as a possible option  for 
+counting  or sensing  the  presence  of  highway  vehicles. 
+REFERENCES 
+[ 11 Stanley V. Marshall, “A gamma-level portable ring-core magnetom- 
+eter,” ZEEE Trans. Magn., vol. MAG7, no. 1, pp. 183-185, Mar. 
+1971. 
+[2] Ramo, Whinnery, and Van Duzer, Fields  and Waves in Communi- 
+cation  Electronics. New York: Wiley, 1965, sec. 2.31. 
+[ 31 Informal Conversation with Developers of the ORBIS 111 System, 
+1972. 
+[4] D. I. Gordon, R. H. Lundsten, R. A. Chiarado, and H.  H. Helms, 
+Jr., “A fluxgate sensor of high stability for low field magnetrom- 
+etry,” IEEE Trans. on Magn., vol. MAG4, pp.  397-401, Sept. 
+1968. 
+Stanley V. Marshall (”57) was born  in Long 
+Lane, MO, on October 3, 1927. He received the 
+B.S. degree in electrical engineering from 
+Oregon State University, Corvallis, in 1954,  and 
+the M.S. and F’h.D. degrees in electrical engi- 
+neering from the University of Missouri, 
+Columbia, in 1965  and  1967. 
+During World War 11 he served as an Elec- 
+tronics  Technician in the U.S.  Navy. Upon 
+joining Bell Telephone  Laboratories in 1954, 
+he became associated with the development 
+and testing of radars for the Nike guided missile systems. From 1961 
+to  1963  he was engaged in evaluation of the performance of the Nike 
+Zeus system at Kwajalein, Marshall Islands. He joined  the Electrical 
+Engineering Department of the University of Missouri-Rolla in 1967, 
+where he has  been  conducting  developmental work with  fluxgate mag- 
+netic field sensors. 
+Authorized licensed use limited to: Missouri University of Science and Technology. Downloaded on July 07,2023 at 13:25:47 UTC from IEEE Xplore.  Restrictions apply. 

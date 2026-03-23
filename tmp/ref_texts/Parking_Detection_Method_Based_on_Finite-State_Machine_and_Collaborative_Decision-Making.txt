@@ -1,0 +1,997 @@
+
+
+===== PAGE 1 =====
+
+IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018 9829
+Parking Detection Method Based on Finite-State
+Machine and Collaborative Decision-Making
+Hongmei Zhu, Shengzhong Feng, and Fengqi Yu
+Abstract— A high-accurate parking detection method for
+wireless magnetic sensor networks is proposed in this paper,
+which is based on the combination of ﬁnite-state machine and
+collaborative decision-making. The magnetic disturbance induced
+by a vehicle can be sensed and processed to obtain the availability
+of a parking space by a magnetic sensor. However, the main
+challenge lies in the difﬁculty of eliminating the interferences
+from adjacent vehicles that decrease the accuracy. The vehicles
+include moving vehicles on adjacent roads and parking vehi-
+cles in adjacent parking spaces. For simplicity and low-energy
+consumption, a multi-interim ﬁnite-state machine (MiFSM) is
+proposed to deal with the interferences from moving vehicles.
+Our method contains preliminary detection and ﬁnal detection.
+Using MiFSM, most of the parking vehicles can be correctly
+detected in the preliminary detection. However, the adjacent
+parking vehicles may cause more complicated interferences. It is
+hard to distinguish these interferences from the disturbances
+induced by “weak-magnetic” vehicles above on the detecting
+sensor. The “weak-magnetic” vehicles cause small magnetic
+disturbance because of their high chassis or short car-body.
+Therefore, by using the collaborative information of adjacent
+sensors, a Dempster–Shafer evidence theory-based collaborative
+decision-making is developed to cope with these complicated
+interferences in the ﬁnal detection. The experimental results
+show that our work has a signiﬁcant improvement in detection
+accuracy, as about 99.8% for vehicle arrival and 99.9% for
+vehicle departure. The proposed method can also be extended
+for moving vehicle detection, speed estimation, and vehicle
+classiﬁcation in the applications of intelligent trafﬁc system.
+Index Terms— Parking detection, vehicle detection, ﬁnite state
+machine, collaborative decision making, WSN.
+I. I NTRODUCTION
+P
+ARKING difﬁculty becomes one of the serious issues
+for sustainable urban development with the increased
+number of cars [1]. The effort to deploy smart parking
+system (SPS) is always a strategic solution for resolving the
+parking problem [2]. For administrators, the SPS manages and
+maximizes the utilization of parking lots. For users, it provides
+the availability info rmation of parking spaces and dynamic
+Manuscript received July 20, 2018; revised September 9, 2018; accepted
+September 18, 2018. Date of publicatio n September 24, 2018; date of current
+version November 13, 2018. This work was supported in part by the National
+Key R&D Plan under Grant 2016YFC0105002 and Grant 61674162, in part
+by the Shenzhen Key Lab for RF Integr ated Circuits, Shenzhen Shared
+Technology Service Center for Inte rnet of Things, Guangdong Government
+Funds, under Grant 2015B010104005, in part by Shenzhen Government
+Funds under Grant JCYJ20160331192843950, and in part by the Shenzhen
+Peacock Plan. The associate editor coordinating the review of this paper and
+approving it for publication was Dr. Rosario Morello. (Corresponding author:
+Fengqi Yu.)
+The authors are with the Shenzhen Institutes of Advanced Technol-
+ogy, Chinese Academy of Sciences, Shenzhen 518055, China (e-mail:
+fq.yu@siat.ac.cn).
+Digital Object Identiﬁer 10.1109/JSEN.2018.2871869
+driving guide. It has been reported that the SPS is efﬁciently
+implemented via sensor-based vehicle detectors [3]. These
+detectors connect with each ot her though wireless sensor
+networks (WSNs) and update the status of parking space in
+real-time [4].
+Different types of detectors, such as inductive-loop, ultra-
+sonic, camera, and magnetic sensor, have been used to monitor
+the status of parking spaces. The inductive-loop detector is a
+mature technology which is usually installed in trafﬁc intersec-
+tion and parking entrance [5]. However, it needs to cut road-
+surface and interrupt trafﬁc which are the obvious drawbacks.
+The ultrasonic-based solution has many advantages, such as
+high-accuracy and easy installation. However, it is sensitive
+to extreme air turbulence and temperature ﬂuctuation [6].
+With the development of image processing technology, video
+detection gains a growing attention in nowadays [7]. Video
+detection has many special advantages, such as rich infor-
+mation and visibility. However, its performance is affected
+by light condition that largely limits its application of the
+SPS. Compared with these sensors, the magnetic sensor merits
+in low cost, small size, excellent privacy, weather immunity,
+and easy for large-scale deployment [8]. Numerous research
+works based on magnetic sensors were proposed for vehicle
+detection [9]. The methods used in these works can be roughly
+divided into four categories: threshold based, cross-correlation
+based, machine learning based, and data fusion based method.
+Due to the simplicity and efﬁciency of the threshold based
+method, it becomes the most popular one. S. Y . Cheung et al.
+veriﬁed the validity and practicability of the magnetic sensor
+for vehicle detection [10]. In their work, a total of 330 out
+of 332 vehicles were detected by using a threshold-based state
+machine method in the California PATH Program. However,
+this method is vulnerable, susceptive to noises and base-
+line drift. To remove baseline drift, an adaptive threshold
+method was proposed in [11]. Besides, Yang and Lei [12]
+introduced a ﬁxed threshold state machine method for low-
+speed vehicle detection with a high accuracy of 99.05%.
+A magnetic ﬁeld model based detection method was designed
+for vehicle detection in [13]. The accuracy was up to 99%.
+A second adaptive double window vehicle detection algorithm
+(SA-DWVDA) with an accuracy about 98% was proposed
+in [14]. Furthermore, Q. Wang et al. proposed a novel
+adapted threshold state machine algorithm for street parking
+detection [15]. An accuracy of 97.5% was observed in their
+work. In [16] a dynamic threshold detection method was
+provided with an accuracy of 97.92%. Although a number of
+studies have been done, as described above, the accuracy of
+1558-1748 © 2018 I EEE. Personal u se is perm itted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+9830 IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018
+Fig. 1. The two types of interference induced by the adjacent parking vehicle
+and the moving vehicle respectively.
+threshold-based method needs to be improved in order to meet
+the requirements of real applications.
+To improve the accuracy, the cross-correlation based method
+was presented in several works. Wang et al. [17] proposed a
+cross-correlation method for moving vehicle detection, where
+a vehicle was modeled as a magnetic dipole and the reference
+was based on the sensed magnetic disturbance by the vehicle.
+A reference based on K-means clustering was proposed for
+parking vehicle detection in our previous work [18]. Recently,
+a fusion algorithm based on waveform similarity was presented
+by Zhang et al. [19]. Nonetheless, the difﬁculty lies in obtain-
+ing an optimal reference signal which determines the detection
+accuracy.
+In addition, the machine learning based method was also
+proposed to improve the performance. A signal classiﬁcation
+based method, where the status of a parking space was divided
+into “occupied” and “vacant”, was developed for parking
+detection [20]. The structure and theoretical model were built
+in [21]. However, because of the heavy calculation burden,
+this method is difﬁcult to be implemented on a sensor node.
+Moreover, many research works applying sensor fusion
+technique were proposed to improve the detection accuracy.
+In order to achieve low-energy consumption, an optical-waked
+magnetic sensor node for parking detection was provided
+in [22]. A fusion of magnetic sensor and camera was pro-
+posed for vehicle detection in [23]. To achieve high accuracy,
+fusion method attracts more and more attentions for parking
+detection [24], [25]. However, this method increases the cost
+and do not satisfy the need of large-scale deployment in SPS.
+We can conclude that the threshold-based method is the
+most efﬁcient and simplest way implemented on a magnetic
+sensor node. However, its detection accuracy needs to be
+improved. The disturbances fro m adjacent vehicles, including
+moving vehicles and parking vehicles, may induce mistakes in
+detection, as shown in Fig. 1. Few publications have taken the
+interferences into considerati on. Therefore, our work focuses
+on dealing with the interfere nces from adjacent vehicles.
+Our work contains two modules: multi-interim ﬁnite-state
+machine (MiFSM) for preliminar y detection and collaborative
+decision-making based on Demps ter-Shafer evidence theory
+(DS-CDM) for ﬁnal detection. The state machine is proven to
+be both high-efﬁcient and computationally simple [26]. Most
+of vehicles can be correctly det ected because the disturbances
+are usually strong enough for decision. However, because of
+the interferences, a few vehicles are missed or false alarmed.
+So, the D-S theory is used to deal with the uncertainty. The
+D-S theory is a mathematical theory of evidence proposed by
+Dempster [27] and developed by G. Shafer in the 1970’s. Due
+to its effectiveness in processing uncertain information, it has
+been widely applied to the ﬁelds of decision analysis, diagnos-
+tics, and statistical inference [28]. Therefore, the combination
+of MiFSM and DS-CDM is proposed in our work. The main
+contributions of our paper are listed as following.
+First, by eliminating the in terferences from adjacent vehi-
+cles, our work provides a high-accurate solution without
+adding any other sensors. It simpliﬁes the system and lowers
+the power consumption. Secondly, due to the simplicity of the
+MiFSM and efﬁciency of the DS-CDM, our method achieves a
+good balance between the accura cy and energy-consumption.
+Finally, the performance of this method is immune to the
+conditions of weather and light. In addition, the convenience
+of installation and maintenance is also remarkable since there
+is no need for cutting road-surface and interrupting trafﬁc.
+The proposed method has been tested in a real parking
+lot. To ensure the reliability of the proposed method, our
+test includes different driver behaviors and different types of
+vehicles.
+The remaining of this paper is organized as follows.
+Section II provides an overview of the proposed parking
+detection method. The detailed procedure of the combina-
+tion of MiFSM and DS-CDM are presented in Section III.
+Section IV describes the har dware setup and testing plat-
+form. The experimental veriﬁcation is presented in Section V .
+Finally, Section VI contains the conclusion and future research
+work.
+II. T
+HE OVERVIEW OF THE PROPOSED SOLUTION
+A. Fundamental Principle of Parking Detection by Using
+Magnetic Sensors in WSN
+All vehicles have signiﬁcant amount of ferrous metal which
+can produce a disturbance to the Earth’s magnetic ﬁeld. This
+disturbance can be sensed and processed by a magnetic sensor
+node. In our work, a three-axis magnetic sensor node is
+used to measure the magnetic ﬁeld in X, Y , and Z axes
+simultaneously. As shown in Fig. 2, the X-axis is parallel to
+the direction of vehicle moving, Y-axis is perpendicular to the
+X-axis, and the Z-axis is perpendicular to the earth surface and
+upward.
+It was reported that the measurement is related to vehicle’s
+metallic structure and size [10]. In General, the engine and
+axle steels make a signiﬁcant distortion to magnetic ﬁeld
+since they contain a great mount of ferromagnetic material,
+as shown in Fig. 3. So, the waves induced by a same vehicle
+and measured by different sensors are similar based on a
+great number of experiments. Therefore, the collaborative
+information of adjacent senso r nodes can be used for vehicle
+detection.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+ZHU et al.: PARKING DETECTION METHOD BASED ON FINITE-STATE MACHINE AND COLLABORATIVE DECISION-MAKING 9831
+Fig. 2. The direction of vehicle and magnetic sensor node.
+Fig. 3. Different parts of a vehicle cause different distortions to the magnetic
+ﬁeld.
+Fig. 4. The original signal and pre-pr ocessed signal of magnetic ﬂuctuation
+sensed by a tri-axial magnetic sensor.
+B. Parking Detection Method
+In order to eliminate the inﬂuence induced by different
+sensitivity of axis, the signal pre-processing is carried out after
+data sampling according to Eq. (1). An example of the original
+signal and pre-processed signal is demonstrated in Fig. 4.
+M =
+√
+(x − x0)2 + (y − y0)2 + (z − z0)2 (1)
+where, x, y,a n d z are sampled data in X, Y , and Z axis
+respectively, x0, y0,a n dz0 are the baseline values accordingly.
+Using the pre-processed signal, the parking detection has
+two steps: MiFSM for preliminary detection and DS-CDM
+for ﬁnal detection.
+(1) MiFSM: Due to the temporary feature, the interferences
+induced by adjacent moving vehicles can be ﬁltered by a state
+Fig. 5. The state transition diagram of the MiFSM.
+machine with several “transient” states. Therefore, four “ tran-
+sient” states have been designed as the interim states in the
+MiFSM module. In this preliminary detection, most of parking
+vehicles can be correctly detected. However, the adjacent
+parking vehicle may cause the complicated interference which
+is difﬁcult to be distinguished from the disturbance induced by
+a “weak-magnetic” vehicle above on the detecting node. The
+“weak-magnetic” vehicles are a few vehicles that cause small
+ﬂuctuations because of their high chassis or short car-body.
+Therefore, two “ critical” states ( possible-arrivalor possible-
+departure) are designed for these uncertain states. Therefore,
+the output of MiFSM may be still uncertain or already reach a
+conclusion. If it is a decided state, the output is considered as
+the ﬁnal result. Otherwise, the DS-CDM nodule is triggered
+to deal with the uncertainty for ﬁnal detection.
+(2) DS-CDM: Taking the advantages of effectiveness
+and practicability in processing uncertain information, the
+DS-CDM module based on adjacent sensors is developed
+to cope with these complicat ed interferences from adjacent
+parking vehicles. In this step, the uncertainty results (“critical”
+states) are transferred to ﬁnal detections ( occupied or vacant).
+III. T
+HE PROPOSED PARKING DETECTION METHOD
+A. The MiFSM Module for Preliminary Detection
+1) The State Transition of MiFSM: A MiFSM method intro-
+ducing multi interim states is proposed. As shown in Fig. 5,
+there are nine states in the MiFSM. The deﬁnition of each
+state is listed in Table I.
+In brief, at ﬁrst the MiFSM is started for preliminary
+detection. All parameters are reset to initial values in S0.
+It is assumed that there is no vehicle parked in the parking
+space in the initial state. S1is the “occupied” state which is
+a decided state. Because, the interferences from the adjacent
+moving vehicles usually appear in a short time. The ﬁrst
+“interim” state for arrival-decision ( S2) and for departure-
+decision (S6) are designed for dealing with these interferences.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+9832 IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018
+TABLE I
+THE STATES OF MIFSM
+TABLE II
+STATISTICAL RESULTS FOR PARAMETER SELECTION
+The second “ interim” state for arrival-decision ( S3) and for
+departure-decision (S7)are designed for further reconﬁrmation
+due to interferences. During the arrival or departure detection,
+the short-lived interferences from other vehicles or background
+noise can be ﬁltered out. Most of vehicles can be correctly
+recognized as a decided state ( S1 or S5).
+However, due to the complicated interferences from adjacent
+parking vehicles, the “ critical” states S4 and S8 are deﬁned
+for arrival-decision and departu re-decision, respectively. The
+“critical” states are uncertain states which is expected to be
+transferred into decided states through the DS-CDM module.
+2) Discussion of the Parameter Selection: As described
+above, the transition conditions of MiFSM depend on several
+pre-deﬁned thresholds. Therefore, the selection of the thresh-
+olds is the key in the design of state-machine.
+In order to collect real experimental data, our system is
+deployed in a commercial parking lot for six years. More than
+two thousand vehicles have been recorded. The typical mag-
+netic ﬂuctuations caused by 30 vehicles are shown in Fig. 6.
+The tested vehicles are classiﬁed as mini car (Minicar), small
+car (SmallCar), and sports utility vehicle (SUV). In this work,
+2379 vehicles, including 352 minicars, 1448 small cars, and
+579 SUVs, have been recorded by our system in the past six
+years. The statistical results are shown in Table II. Three kinds
+of information are recorded in Fig. 6.
+1) First, the average amplitude of magnetic ﬂuctuations
+caused by vehicle-arrivals and veh icle-departures is recorded.
+This information help u s select the thresholds T
+max and
+Tmin . In order to distinguish the magnetic disturbance
+caused by “weak-magnetic” vehicle and interferences, two
+thresholds Tmax and Tmin are deﬁned. From the statisti-
+cal results in Table II we can see that the amplitudes
+of the magnetic disturbance caused by most of the vehi-
+cles are stronger than 80 mGS. However, a few vehicles
+cause small ﬂuctuations (40 ∼60 mGS) which are hard to
+be distinguished from some int erferences caused by adjacent
+vehicles.
+As an example shown in Fig. 7, there are 7 disturbances.
+Disturbances 1 and 2 are induced by the parking vehicles,
+which are a “weak-magnetic” vehicle and a normal vehicle
+respectively, on the detected sensor node. The average ampli-
+tude of the disturbance 1 is 75 mGS. Disturbances 3 ∼7a r e
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+ZHU et al.: PARKING DETECTION METHOD BASED ON FINITE-STATE MACHINE AND COLLABORATIVE DECISION-MAKING 9833
+Fig. 6. The typical average amplitude of the magnetic ﬂuctuations cau sed by 30 vehicles and the number of interim states accordingly.
+Fig. 7. The average amplitude of magnetic ﬂuctuations caused b y 30 vehicles and the number of interim states accordingly.
+caused by adjacent vehicles. Am ong these disturbances, most
+of them are lower than 40 mGS, e.g. the interferences 1 ∼4.
+However, if the adjacent vehicle is very close to the sensor
+node, it can cause a strong disturbance. The amplitude may
+reach 40∼80 mGS, e.g. the interference 7. Therefore we set
+the T
+max = 80 mGS and Tmin = 40 mGS.
+2) Second, the amplitude of ma gnetic ﬂuctuations caused
+by interim states, which may be interferences or parking-
+events, is presented. This information help us choose the
+thresholds for interim states Thavl and Thdpt .I no r d e rt o
+improve the accuracy of parking d etection, the interim states
+are designed for capturing the transient information which
+is used to suppress the background noises and interferences
+from moving vehicles. So, Th
+avl and Thdpt are thresholds for
+deﬁning the interim states for arrival-decision and departure-
+decision, respectively. From the statistical results, Th
+avl and
+Thdpt are set as 25 mGS.
+3) Third, the number of interim states is recorded for
+selecting the thresholds Navl1, Navl2, Ndpt 1 and Ndpt 2.T h e s e
+parameters are deﬁned for counting the interim states. And
+their values are related to the sampling frequency which is set
+as 10 Hz. In our work, N
+avl1, Navl2, Ndpt 1 and Ndpt 2 are set
+as 5.
+B. The DS-CDM Module for the Final Detection
+1) Different Situations for Critical States: Three situations
+of “ critical” state for possible-arrival on sensor i are taken
+into consideration, as shown in Fig. 8.
+In situation 1 and 3, the “ critical” states are caused by the
+parking vehicle in adjacent parking space i − 1o r i + 1.
+The adjacent parking vehicles are a little off the center of
+their parking spaces and close to sensor i. In these situa-
+tions, the “ critical” states should be transferred to “ vacant”
+state ( S1) in the ﬁnal detection step by using DS-CDM
+module.
+In situation 2, the “ critical” state induced by a “weak-
+magnetic” vehicle above sensor i should be transferred to
+“occupied” state. Actually, the possibility of two vehicles
+parking next to each other at the same time is very small.
+So, the disturbances detected by sensor i and adjacent sensors
+at the same time are considered to be induced by a same
+vehicle.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+9834 IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018
+Fig. 8. The parking “ critical” states on magnetic sensor i.
+The situations of “ critical” state for possible-departure on
+sensor i are similar. The only difference is that the ﬂuctuation
+is produced by the vehicle departure.
+2) D-S Evidence Theory: The D-S evidence theory is an
+efﬁcient method to process uncertain information by fusing
+several evidences into a new one. As a result, based on
+the combination of the evidences, a more reliable decision
+can be made. The theory is based on the nonempty dis-
+cernment frame which is a ﬁnite -set containing all possi-
+ble answers for a certain problem domain. The “ critical”
+states aim to be transferred to the “ occupied” state or the
+“vacant” state. Therefore, the discernment frame is expressed
+as /Theta1={ occupied, vacant}. Suppose that E
+1,E 2,..., En
+are n evidences, m1, m2,..., mn are n basic probability
+assignment (BPA) functions resulted from each evidence. The
+BPA function m
+i that is also named mass function with the
+mapping 2 /Theta1→[ 0, 1], and mi(φ) = 0, /Theta1∑
+x⊆ mi (x) = 1.
+When ∀x ⊆ /Theta1, D-S combination rule for n mass functions on
+/Theta1is shown in
+P = (m1 ⊕ m2 ⊕···⊕ mn)( x)
+= 1
+K
+∑
+x1∩x2∩···∩xn=x
+m1 (x1) · m2 (x2) ··· mn (xn) (2)
+where, K is the normalization constant and can be obtained
+by
+K =
+∑
+x1∩x2∩···∩xn̸=∅
+m1 (x1) · m2 (x2) ··· mn (xn)
+= 1 −
+∑
+x1∩x2∩···∩xn=∅
+m1(x1) · m2(x2) ··· mn(xn) (3)
+According to the combination of different evidences on the
+same discernment frame, the calculated ﬁnal result can be
+taken as a basis of decision for uncertainty. In order to deal
+with the interferences from adjacent vehicles, the collaborative
+information from adjacent senso rs is provided for ﬁnal deci-
+sion making. Because the vehicle arrival and departure have
+different signal structures, the different evidences of vehicle
+arrival and departure are introduced as follows.
+3) Evidences for Possible-Arrival: The discernment frame
+is expressed as /Theta1={ occupied, vacant}. Through observation
+and analysis of large number of experimental results, four
+evidences are deﬁned and corresponding mass functions are
+constructed as following.
+1) E
+1a: The sensor i is the detection target. If there is a
+vehicle arriving at the parking spacei, a signiﬁcant disturbance
+will be measured. Otherwise, the disturbance will be relatively
+weak. Therefore, the amplitude of magnetic ﬂuctuation sensed
+by sensor i is introduced for the ﬁrst evidence for arrival
+detection, E 1a. Accordingly, the mass function m1acan be
+deﬁned as
+⎧
+⎨
+⎩
+m1a (occupied) =
+ Mi − Tmin
+Tmax − Tmin
+γ
+m1a (vacant) = 1 − m1a (occupied)
+(4)
+where
+ Mi is the average of pre-processed value described
+i nE q .( 1 ) ,s e n s e db ys e n s o ri.T h e Tmax and Tmin are the
+pre-deﬁned maximum and minimum thresholds for “ criti-
+cal” states in the MiFSM, as Tmin ≤
+ Mi ≤ Tmax . The
+m1a(occupied) denotes the BPA for “ occupied” state by the
+E1a.I nt h es a m ew a y ,t h em1a(vacant) denotes the BPA for
+“vacant” state by E 1a. Usually, the different mass functions
+have different contributions to the ﬁnal decision. Some evi-
+dences take more weight on decision. A factor γ is used to
+adjust the weighting in BPA for E 1.
+2) E2a: The collaborative information between the adjacent
+magnetic sensor nodes is introduced as an evidence. So, the
+amplitude of magnetic ﬂuctua tion sensed by the adjacent
+sensor in space i-1 is used for the second evidence E 2a.I t s
+mass function is described as (5).
+⎧
+⎪⎪
+⎪
+⎪
+⎪
+⎪⎨
+⎪⎪
+⎪
+⎪
+⎪⎪⎩
+m
+2a (occupied) =
+⎧
+⎪⎪
+⎪
+⎪
+⎨
+⎪⎪
+⎪
+⎪
+⎩
+Mi−1
+Tmin
+α, 0 ≤
+ Mi−1 < Tmin
+Mi−1
+M
+α, Tmin ≤
+ Mi−1 < Tmax
+0,
+ Mi−1 ≥ Tmax
+m2a (vacant) = 1 − m2a (occupied)
+(5)
+where
+ Mi−1 is the average of pre-processed value sensed by
+sensor i − 1. The ratio of
+ Mi−1 and
+ Mi is introduced as the
+basic probability for “ occupied” state. If 0 ≤
+ Mi−1 < Tmin ,
+the sensed signal is lower than the minimum threshold for
+“critical” states. In this situation, there is no vehicle arrival in
+space i − 1. It can be considered as the interference induced
+by an adjacent parking vehicl e or another moving vehicle.
+If T
+min ≤
+ Mi−1 < Tmax , it is in the range of “ critical” state.
+Therefore, the sensed signal can be caused by an adjacent
+parking vehicle or a “weak-magnetic” parking vehicle in space
+i − 1. If
+ Mi−1 ≥ Tmax , it is stronger than the
+ Mi . So, it is
+considered that there may be a vehicle arrival parking in space
+i − 1 by this evidence. Thus, the BPA for “ occupied” of Space
+i is set to zero. Similarly, a factor α is used to adjust the
+weighting in BPA for E 2 and E3.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+ZHU et al.: PARKING DETECTION METHOD BASED ON FINITE-STATE MACHINE AND COLLABORATIVE DECISION-MAKING 9835
+3) E 3a:A st h eE 2a, the amplitude of magnetic ﬂuctuation
+sensed by the other adjacent sensor in space i + 1i su s e df o r
+the third evidence E 3a. The mass function can be obtained as
+⎧
+⎪⎪
+⎪
+⎪
+⎪
+⎪⎨
+⎪⎪
+⎪
+⎪
+⎪⎪⎩
+m
+3a (occupied) =
+⎧
+⎪⎪
+⎪
+⎪
+⎨
+⎪⎪
+⎪
+⎪
+⎩
+Mi+1
+Tmin
+α, 0 ≤
+ Mi+1 < Tmin
+Mi+1
+M
+α, Tmin ≤
+ Mi+1 < Tmax
+0,
+ Mi+1 ≥ Tmax
+m3a (vacant) = 1−m3a (occupied)
+(6)
+where
+ Mi+1 is the average of pre-processed value sensed by
+sensor i + 1. As the same as Eq. (5), the ratio of
+ Mi+1 and
+Mi is introduced as the basic probability for “ occupied” state.
+4) E4a: It has been proven that the signals generated by the
+same vehicle are similar. So, the cross-correlation of the signal
+sensed by sensor i and that by an adjacent sensor is introduced
+for the fourth evidence E 4a. The greater ﬂuctuation amplitude
+between the two adjacent sensors ( i − 1a n d i + 1) is chosen
+for calculating the mass function m4a, as shown in (7).
+⎧
+⎨
+⎩
+m4a (occupied) = cov(Xi, Xadj )
+σXi · σXadj
+· β
+m4a (vacant) = 1 − m4a (occupied)
+(7)
+where Xi and Xadj are the feature vectors sensed by Sensor
+i and the adjacent sensor respect ively. Four features including
+the number of peak-value, maximum, minimum and average
+value are chosen. The cov(Xi · Xadj ) is the covariance of Xi
+and Xadj ,a n d σXi · σXadj is their standard deviation. Like
+the α, β is a parameter used to ad just the weighting on BPA
+of E4. However, the basic probability for arrival and departure
+should satisfy the condition: mia (occupied)+mia (vacant) = 1
+(i = 1∼4).
+4) Evidences for Possible-Departure:
+1) E
+1d: As the same as the possible-arrival, the amplitude of
+magnetic ﬂuctuation sensed by sensor i is introduced for the
+ﬁrst evidence for departure detection, E 1d. The mass function
+m1d can be obtained by Eq. (4).
+2) E2d: The amplitude of magnetic ﬂuctuation sensed by the
+adjacent sensor in space i − 1 is the second evidence E 2d.T h e
+mass function m2d can be obtained by Eq. (5).
+3) E3d: The amplitude of magnetic ﬂuctuation sensed by the
+adjacent sensor in space i + 1 is the third evidence E 3d.T h e
+mass function m3d can be obtained by Eq. (6).
+4) E 4d: The arrival information has been recorded during
+departure detection. Because th e ﬂuctuations recorded in the
+arrival detection and the departure detection are produced
+by the same vehicle. Thus, the matching-degree between
+the arrival and departure signals is used as an evidence for
+departure decision. The mass function m
+4d can be calculated
+as
+⎧
+⎪⎨
+⎪⎩
+m4d (occupied) = 1 −
+⏐⏐
+⏐
+Mi −
+ M
+′
+i
+⏐⏐
+⏐
+max (
+Mi,
+ M
+′
+i)
+m4d (vacant) = 1 − m4d (occupied )
+(8)
+where
+ Mi and
+ Mi′ are the average of ﬂuctuation-amplitudes
+sensed by sensor i for arrival and departure decision respec-
+tively, which are induced by the same vehicle.
+Fig. 9. The magnetic sensor node for parking detection.
+5) DS-CDM for Final Detection: After the BPA of each
+evidence, a combination result ( P) can be obtained by Eq. (2).
+The ﬁnal decision is made by (9).
+Status =
+{ 1, Pa (occupied) ≥ TH or Pd (vacant) < TH
+0, Pa (occupied) < TH or Pd (vacant) ≥ TH
+(9)
+where the Pa(occupied) is the probability of vehicle arrival for
+a vacant parking space. Similarly, Pd (vacant) is the probability
+of a vehicle departure of a occupied parking space. The TH
+is the deﬁned threshold for the ﬁnal decision.
+IV . HARDWARE AND TEST PLATFORM
+A. The Magnetic Sensor Node
+The magnetic sensor node is installed in each parking space.
+All nodes construct a WSN. The Honeywell HMC5983 is
+chosen to sense the disturbance of the magnetic ﬁeld. It is
+a high-resolution magneto-resistive sensor which works well
+in sensing the Earth’s magnetic ﬁeld. Due to the temperature
+compensated integrated magnetometer, it provides a high sen-
+sitivity under wide operating temperature range. In addition,
+it is in a small size (3 .0 × 3.0 × 0.9mm) LCC surface mount
+package. Moreover, it has low operating voltage (2.16 to 3.6V)
+and low power consumption. As shown in Fig. 9, besides
+the magnetic sensor, MCU, RF module, and a battery is also
+included in our sensor node.
+The STM8L151C8 is an ultra-low-power MCU which sup-
+ports ﬁve low-power modes to achieve the best compro-
+mise between low-power consumption, short startup. Silicon
+Laboratories Si4438 is a high-performance and low-power
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+9836 IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018
+Fig. 10. The test platform used in the parking lot at the SIAT.
+dissipation transceiver working in a wide frequency range from
+425 to 525 MHZ. Our solution provides robust communication
+links due to the exceptional output power of up to +20dBm
+with outstanding TX efﬁciency. In addition, the choice of
+battery is important since it directly determines the lifetime
+of the node.
+B. The Test Platform
+To evaluate the performance, a test platform, including
+sensor nodes, upper system, indicator, data presentation,
+and video veriﬁcation, has been built up in the under-
+ground parking lot at Shenzhen Institutes Advanced Tech-
+nology (SIAT), Chinese Acad emy of Sciences, as shown
+in Fig. 10.
+Using the test platform, our experiments were carried out.
+Through WSN, the detection results are sent to base station
+which is connected with upper computer system. The status
+of parking space is presented on the upper system that also
+displays the network information. At the same time, the color
+of parking indication light is updated to remind the drivers.
+In order to calculate the accuracy of the proposed method,
+the data presentation system and video veriﬁcation system are
+designed.
+V. V
+ERIFICATION
+A. Parameter Setup
+The parameters are listed in Table III.
+TABLE III
+PARAMETERS
+TABLE IV
+EXAMPLE OF COLLABORATED DECISION
+B. An Example for Applying the Proposed Method
+An example of applying MiFSM is illuminated in Fig. 11.
+In the MiFSM module, four arrivals (status = 1) and four
+departures (status = 0) have been correctly detected by the
+sensor in Space i.H o w e v e r ,a“critical” state (status = 2)
+occurs. Therefore, DS-CDM module is triggered for ﬁnal
+detection. The detection result can be veriﬁed by checking
+the surveillance video.
+The
+Mi = 79 mGS,
+ Mi−1 = 21 mGS,
+ Mi+1 = 6m G S ,
+Xi =[ 7, 0.45, 4, 25], Xadj =[ 4, 0.15, 5, 8] for the “ critical”
+state. The calculation steps are listed as follows.
+(1) The
+ Mi = 79 mGS, Tmin = 40 mGS, and Tmax = 80
+mGS are substituted into the Eq. (4) to calculate the m1a(o)
+and m1a(v). According to the parameters in Table I, m1a(o) =
+0.98 and m1a(v) = 0.02 are obtained.
+(2) Using Eq. (5), the
+ Mi−1 = 21 is substituted into
+(
+Mi−1/Tmin ) ∗α, we obtain m2a(o) = 0.42 and m2a(v) =
+0.58.
+(3) In the same way, the
+ Mi+1 = 6 is substituted into
+Eq. (5), the m3a(o) = 0.12 and m3a(v) = 0.88 are obtained.
+(4) The Xi =[ 7, 0.45, 4, 25], Xadj =[ 4, 0.15, 5, 8] are put
+into Eq. (6), m4a(o) = 0.86 and m4a(v) = 0.14 are obtained.
+(5) Based on the calculated results, the normalization con-
+stant K = 2.63 can be obtained using Eq. (3).
+(6) The ﬁnal results are obtained by substituting the calcu-
+lated values into Eq. (2). The results are listed in Table IV .
+According to Eq. (9), the “ critical” state ﬁnally reaches the
+“occupied” state.
+C. Veriﬁcation
+The detection accuracy is eval uated by calculating the ratio
+of the number of parking even ts correctly-detected and the
+total number of parking events.
+Accuracyj =
+( CN j
+TN j
+)
+× 100%, j = 0 or 1 (10)
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+ZHU et al.: PARKING DETECTION METHOD BASED ON FINITE-STATE MACHINE AND COLLABORATIVE DECISION-MAKING 9837
+Fig. 11. The example of MiFSM detection. The measurement of ma gnetic data for three axes and the result of states includes “ vacant” state (status = 0),
+“occupied” state (status = 1), and “ critical” state (status = 2).
+TABLE V
+RESULTS OF COLLABORATIVE DECISION FOR POSSIBLE -ARRIVAL
+where the CNj is the number of correctly detected parking
+vehicles. The TNj is the total number of parking vehicles.
+The j = 0 represents arrival detection and j = 1 departure
+detection.
+In our test, a total of 1834 vehicles have been tested
+during two months by using ten magnetic sensor nodes in
+the under-ground parking lot at the SIAT. The test vehicles
+consist of minicars, common 4-seat sedan cars, SUV cars, and
+commercial vans.
+As mentioned above, most of the vehicles were correctly
+detected by MiFSM. There were only 13 “ critical” states for
+possible-arrival and 7 “ critical” states for possible-departure.
+Besides, three out of 1834 vehicles (2 for arrival and 1 for
+departure) were missed in total. Using DS-CDM in the ﬁnal
+detection, all of these “ critical” states were transferred to cor-
+rect decided states and the results have been listed in Table V
+and VI. In the “ result” column, “1” denotes the parking
+space being “occupied” and “0” denotes “vacant”. The outputs
+of DS-CDM for possible-arrival and possible-departure are
+shown in Fig. 12 and Fig. 13, respectively.
+In Fig. 12, in the x-axis, the m
+1a(o), m2a(o), m3a(o),a n d
+m4a(o) are the support rate of each evidence for possible-
+arrival according to Table V . They-axis represents the resultant
+of support rate obtained by equation (6) for arrival decision,
+described as P
+a(occupied). In Fig. 13, in the x-axis, the
+m1d(v), m2d(v), m3d(v),a n d m4d(v) are the support rate of
+each evidence for possible-depa rture according to Table VI.
+In the same way, the y-axis is the resultant of support rate for
+departure decision, described as Pd (vacant).
+The detection results are shown in Table VII. In the prelimi-
+nary detection, the accuracy of the MiFSM reaches 98.36% for
+arrival and 99.13% for departure. The accuracy of arrival and
+departure are improved to 99.78% and 99.89% for departure
+using the ﬁnal DS-CDM detection.
+D. Discussion
+Comparing with the other parking detection methods based
+on magnetic sensors, because of the low computational com-
+plexity of the state machine, our MiFSM has the advantage of
+low energy-consumption. Beside, by using the collaborative
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+
+9838 IEEE SENSORS JOURNAL, VOL. 18, NO. 23, DECEMBER 1, 2018
+TABLE VI
+RESULTS OF COLLABORATIVE DECISION FOR POSSIBLE -D EPARTURE
+Fig. 12. The ﬁnal result of DS-CDM for possible-arrival.
+Fig. 13. The ﬁnal result of DS- CDM for possible-departure.
+information, the DS-CDM impro ves the detection accurate.
+Although the computational complexity of DS-CDM is a little
+higher, it runs on upper computer system. Thus, the lifetime
+of sensor node can reach more than 5 years. Therefore the
+proposed method achieves dual goals of high accuracy and
+energy-consumption.
+However, because the magnetic sensor is expensive, the cost
+of this solution is relatively high. With the development of
+TABLE VII
+DETECTION RESULTS
+sensor technology, the cost may be reduced in the future. In
+addition, the sensor node is packaged and buried underground
+in each parking space. The replacement of the node battery is
+difﬁcult. We can only count on the low-power consumption
+technology to achieve long lifetime. Moreover, the detection
+accuracy needs to be further improved.
+Very rarely, our system falls into a false negative or false
+positive state which are caused by two situations: (1) system
+malfunction (runaway). In this situation, the system should be
+reset by a remote reset signal which is implemented in our
+updated sensor node. According our sampled data in the past
+few years, we have not observed the system malfunction (run-
+away) happening. (2) algorithmic problems. In this situation,
+our upper system can correct part of the mistakes. This is an
+issue of detection accuracy. It does not cause to system to
+halt. The system continues working for next round detection.
+As for the accuracy of our system, described in Section V ,
+only 3 false negatives out of 1834 tests occurred and they
+have been corrected by the upper system though reset.
+VI. C
+ONCLUSION
+In this paper, we have proposed a high accurate park-
+ing occupancy detection method by using magnetic sensors.
+To improve the detection accuracy, our work focuses on
+dealing with the interferences from adjacent vehicles, includ-
+ing moving and parking vehicles. The performance of the
+proposed method, which combines MiFSM and DS-CDM
+together, has been veriﬁed in the parking lot at the SIAT
+(Chinese Academy of Sciences). The experimental results have
+shown that our method achieves dual goals of high-accuracy
+and low-power consumption. In the preliminary detection of
+MiFSM, we have tested 1834 vehicles. The detection accuracy
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 11 =====
+
+ZHU et al.: PARKING DETECTION METHOD BASED ON FINITE-STATE MACHINE AND COLLABORATIVE DECISION-MAKING 9839
+reaches 98.36% for vehicle arrival and 99.13% for vehicle
+departure. In the ﬁnal detection of DS-CDM, 13 “ critical”
+states for arrival and 7 “ critical” states for departure are trans-
+ferred to decided states by using the collaborative information
+between the adjacent sensor nodes. So, the ﬁnal detection
+accuracy reaches 99.8% for vehicle arrival and 99.9% for
+vehicle departure.
+In our future studies, we intend to extend the collabora-
+tive decision-making mechanism to moving vehicle detection,
+speed estimation, and vehicle cla ssiﬁcation in the application
+of intelligent trafﬁc system.
+A
+CKNOWLEDGMENT
+The authors would like to thank the anonymous reviewers
+for their valuable comments. Th ey also sincerely appreciate
+Songde Qiu, and Jun Shen for their assistance with the
+experiments.
+R
+EFERENCES
+[1] J.-H. Shin and H.-B. Jun, “A study on smart parking guidance algo-
+rithm,” Transp. Res. C, Emerg. Technol., vol. 44, pp. 299–317, Jul. 2014.
+[2] A. O. Kotb, Y .-C. Shen, and Y . Huang, “Smart parking guidance,
+monitoring and reservations: A review,” IEEE Intell. Transp. Syst. Mag.,
+vol. 9, no. 2, pp. 6–16, Apr. 2017.
+[3] T. O. Olasupo, C. E. Otero, L. D. Ot ero, K. O. Olasupo, and I. Kostanic,
+“Path loss models for low-power, low-data rate sensor nodes for smart
+car parking systems,” IEEE Trans. Intell. Transp. Syst. , vol. 19, no. 6,
+pp. 1774–1783, Jun. 2018.
+[4] S. Chakraborty, S. Chakrabor ty, S. Nandi, and S. Karmakar,
+“ADCROSS: Adaptive data collection from road surveilling sensors,”
+IEEE Trans. Intell. Transp. Syst. , vol. 15, no. 5, pp. 2049–2062,
+Oct. 2014.
+[5] S. S. M. Ali, B. George, L. Vanajakshi, and J. Venkatraman, “A multiple
+inductive loop vehicle detection sys tem for heterogeneous and lane-less
+trafﬁc,” IEEE Trans. Instrum. Meas. , vol. 61, no. 5, pp. 1353–1360,
+May 2012.
+[6] Y . Jo, J. Choi, and I. Jung, “Trafﬁc information acquisition system with
+ultrasonic sensors in wireless sensor networks,” Int. J. Distrib. Sensor
+Netw., vol. 10, p. 961073, May 2014.
+[7] S.-E. Shih and W.-H. Tsai, “A convenient vision-based system for
+automatic detection of parking spaces in indoor parking lots using
+wide-angle cameras,” IEEE Trans. Veh. Technol. , vol. 63, no. 6,
+pp. 2521–2532, Jul. 2014.
+[8] C. Trigona et al. , “Implementation and characterization of a smart
+parking system based on 3-axis magnetic sensors,” in Proc. IEEE Int.
+Instrum. Meas. Technol. Conf. , May 2016, pp. 1–6.
+[9] V . Markevicius, D. Navikas, M. Zilys, D. Andriukaitis, A. Valinevicius,
+and M. Cepenas, “Dynamic vehicle detection via the use of magnetic
+ﬁeld sensors,” Sensors, vol. 16, no. 1, p. 78, Jan. 2016.
+[10] S. Y . Cheung and P. Varaiya, “Trafﬁc surveillance by wireless sensor
+networks: Final report,” Inst. Transp. Stud., Univ. California, Berkeley,
+Berkeley, CA, USA, Tech. Rep. UCB-ITS-PRR-2007-4, Jan. 2007.
+[11] B. Yang and W. Ni, “Vehicle detection and classiﬁcation algorithm based
+on anisotropic magnetoresistive sensor,” C h i n .J .S c i .I n s t r u m ., vol. 34,
+no. 3, pp. 537–544, 2013.
+[12] B. Yang and Y . Lei, “Vehicle detection and classiﬁcation for low-
+speed congested trafﬁc with anisotropic magnetoresistive sensor,” IEEE
+Sensors J., vol. 15, no. 2, pp. 1132–1138, Feb. 2015.
+[13] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[14] X. Bao, H. Li, D. Xu, L. Jia, B. Ran, and J. Rong, “Trafﬁc vehicle
+counting in jam ﬂow conditions using low-cost and energy-efﬁcient
+wireless magnetic sensors,” Sensors, vol. 16, no. 11, p. 1868, 2016.
+[15] Q. Wei and B. Yang, “Adaptable vehicle detection and speed estimation
+for changeable urban trafﬁc with anisotropic magnetoresistive sensors,”
+IEEE Sensors J. , vol. 17, no. 7, pp. 2021–2028, Apr. 2017.
+[16] Q. Wang, J. Zheng, H. Xu, B. Xu, and R. Chen, “Roadside magnetic
+sensor system for vehicle detection in urban environments,” IEEE Trans.
+Intell. Transp. Syst. , vol. 19, no. 5, pp. 1365–1374, May 2018.
+[17] R. Wang, L. Zhang, R. Sun, J. Gong, and L. Cui, “EasiTia: A per-
+vasive trafﬁc information acquisition system based on wireless sensor
+networks,” IEEE Trans. Intell. Transp. Syst., vol. 12, no. 2, pp. 615–621,
+Jun. 2011.
+[18] H. Zhu and F. Yu, “A cross-correla tion technique for vehicle detections
+in wireless magnetic sensor network,” IEEE Sensors J., vol. 16, no. 11,
+pp. 4484–4494, Jun. 2016.
+[19] Z. Zhang, J. Deng, T. Zhao, and H. Yuan, “A fusion algorithm for vehicle
+detection based on waveform similarity,”Chin. J. Sens. Actuators,v o l .3 ,
+no. 1004-1699, p. 14, Mar. 2018.
+[20] Z. Zhang, M. Tao, and H. Yuan, “A parking occupancy detection
+algorithm based on AMR sensor,” IEEE Sensors J. , vol. 15, no. 2,
+pp. 1261–1269, Feb. 2015.
+[21] W. Jian and X. Bin, “Design and veriﬁcation of parking space detection
+based on AMR sensor,” in Proc. 4th Int. Conf. Transp. Inf. Saf. ,
+Aug. 2017, pp. 968–973.
+[22] E. Sifuentes, O. Casas, and R. Pallas-Areny, “Wireless magnetic sensor
+node for vehicle detection with optical wake-up,” IEEE Sensors J. ,
+vol. 11, no. 8, pp. 1669–1676, Aug. 2011.
+[23] R. Wang, L. Zhang, K. Xiao, R. Sun, and L. Cui, “EasiSee: Real-time
+vehicle classiﬁcation and counting via low-cost collaborative sensing,”
+IEEE Trans. Intell. Transp. Syst., vol. 15, no. 1, pp. 414–424, Feb. 2014.
+[24] F. Garcia, D. Martin, A. de la Escalera, and J. M. Armingol, “Sensor
+fusion methodology for vehicle detection,” IEEE Intell. Transp. Syst.
+Mag., vol. 9, no. 1, pp. 123–133, Jan. 2017.
+[25] F. Li and Z. Lv, “Reliable vehicle type recognition based on information
+fusion in multiple sensor networks,” Comput. Netw., vol. 117, pp. 76–84,
+Apr. 2017.
+[26] C. Cuevas, R. Martinez, D. Berjón, and N. Garcia, “Detection of
+stationary foreground objects using multiple nonparametric background-
+foreground models on a ﬁnite state machine,” IEEE Trans. Image
+Process., vol. 26, no. 3, pp. 1127–1142, Mar. 2017.
+[27] A. P. Dempster, “Upper and lower probabilities induced by a multivalued
+mapping,” Ann. Math. Statist. , vol. 38, no. 2, pp. 325–339, 1967.
+[28] Z. Jiao, H. Gong, and Y . Wang, “A D-S evidence theory-based relay
+protection system hidden failures detection method in smart grid,” IEEE
+Trans. Smart Grid, vol. 9, no. 3, pp. 2118–2126, May 2018.
+Hongmei Zhu received the B.S. degree in elec-
+tronics and information e ngineering from Central
+China Normal University in 2005, the M.S. degree
+in communication and information systems from the
+Huazhong University of Science and Technology,
+Hubei, China, in 2010, and the Ph.D. degree in
+pattern recognition and intelligent system with the
+University of Chinese Academy of Sciences, China,
+in 2016. In 2016, she joined the Shenzhen Institutes
+of Advanced Technology, Chinese Academy of Sci-
+ences, in a post-doctoral position. Her research inter-
+ests include intelligent transportation systems and wireless sensor networks.
+Shengzhong Feng received the Ph.D. degree from
+the Beijing Institute of Technology, China. Since
+1997, he has been with the Research Centre for
+High Performance Computing, Institute of Advanced
+Computing and Digital Engineering, Shenzhen Insti-
+tutes of Advanced Technology, Chinese Academy
+of Sciences, as a Professor. From 2005 to 2007,
+he was with the University of Toronto, Canada,
+as a Visiting Scholar. His research interests include
+high performance computing, network computing,
+and information biology.
+Fengqi Yu received the Ph.D. degree in integrated
+circuit and system from the University of California
+at Los Angeles, USA. He worked in the U.S. indus-
+try for ten years. He joined the Shenzhen Institutes
+of Advanced Technology, Chinese Academy of Sci-
+ences, in 2006, where he is currently a Professor. His
+research interests include wireless sensor networks
+and integrated circuits and systems.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:25:11 UTC from IEEE Xplore.  Restrictions apply. 

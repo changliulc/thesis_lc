@@ -1,0 +1,18 @@
+{
+  "source_excel": "G:\\地磁组路段数据\\路段统计\\20240506南三环\\20240506南三环.xlsx",
+  "sheet": 1,
+  "sigma0": [
+    1.0235,
+    1.0176,
+    0.8763
+  ],
+  "theta_arr": 0.9,
+  "theta_lea": 0.5,
+  "narr": 10,
+  "nlea": 10,
+  "td": 8,
+  "event_count": 175,
+  "false_lens_count": 412,
+  "drop_lens_count": 380,
+  "note": "Preview only. Current thesis image was not overwritten."
+}

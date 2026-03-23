@@ -1,0 +1,2913 @@
+
+
+===== PAGE 1 =====
+
+HAL Id: hal-01501556
+https://inria.hal.science/hal-01501556v1
+Submitted on 4 Apr 2017
+HAL is a multi-disciplinary open access archive
+for the deposit and dissemination of scientific re-
+search documents, whether they are published or not.
+The documents may come from teaching and research
+institutions in France or abroad, or from public or pri-
+vate research centers.
+L’archive ouverte pluridisciplinaire HAL, est des-
+tinée au dépôt et à la diffusion de documents scien-
+tifiques de niveau recherche, publiés ou non, émanant
+des établissements d’enseignement et de recherche
+français ou étrangers, des laboratoires publics ou
+privés.
+HAL Authorization
+A Survey of Smart Parking Solutions
+Trista Lin, Hervé Rivano, Frédéric Le Mouël
+To cite this version:
+Trista Lin, Hervé Rivano, Frédéric Le Mouël. A Survey of Smart Parking Solutions. IEEE Transactions on
+Intelligent Transportation Systems, 2017, 18 (12), pp. 3229-3253. ⟨10.1109/TITS.2017.2685143⟩. ⟨hal-01501556⟩
+
+===== PAGE 2 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 1
+A Survey of Smart Parking Solutions
+Trista Lin, Herv ´e Rivano and Fr ´ed´eric Le Mou ¨el
+Abstract—Considering the increase of urban population and
+trafﬁc congestion, smart parking is always a strategic issue to
+work on, not only in the research ﬁeld but also from economic
+interests. Thanks to information and communication technology
+evolution, drivers can more efﬁciently ﬁnd satisfying parking
+spaces with smart parking services. The existing and ongoing
+works on smart parking are complicated and transdisciplinary.
+While deploying a smart parking system, cities, as well as
+urban engineers, need to spend a very long time to survey and
+inspect all the possibilities. Moreover, many varied works involve
+multiple disciplines, which are closely linked and inseparable. To
+give a clear overview, we introduce a smart parking ecosystem
+and propose a comprehensive and thoughtful classiﬁcation by
+identifying their functionalities and problematic focuses. We go
+through the literature over the period of 2000-2016 on parking
+solutions as they were applied to smart parking development
+and evolution, and propose three macro-themes: information
+collection, system deployment, and service dissemination. In each
+macro-theme, we explain and synthesize the main methodologies
+used in the existing works and summarize their common goals
+and visions to solve current parking difﬁculties. Lastly, we give
+our engineering insights and show some challenges and open
+issues. Our survey gives an exhaustive study and a prospect in
+a multidisciplinary approach. Besides, the main ﬁndings of the
+current state-of-the-art throw out recommendations for future
+research on smart cities and the Internet architecture.
+Index Terms —Smart parking; Sensor development; Driver
+assistance; System engineering for trafﬁc management systems;
+Trafﬁc control; Signal systems; Detection systems; Driver behav-
+ior; Micro-simulation; Impact Assesment; ADAS; A VCSS; Driver
+information systems; Data mining; Trafﬁc management; Online
+application; Driver assistance; Inter-vehicle communications
+I. I NTRODUCTION
+Parking coordinates land use and transportation in urban
+areas, and it is also one of the most important assets, bringing
+revenues to cities. Manville et al. [1] surveyed the percentage
+of total parking areas in the central business district of different
+cities. Averagely, parking coverage takes 31% of land use in
+big cities, like San Francisco, and even more, 81% in Los
+Angeles and 76% in Melbourne, while at the lower end we
+ﬁnd New York (18%), London (16%), and Tokyo (7%). Such
+a super high parking coverage density in Los Angeles can be
+a constraint on urban redevelopment and lead to an increase
+of vehicles as well as a reduction of public transportation [2].
+Hence, the removal of unnecessary parking areas is the ﬁrst
+task for municipalities to create a better urban planning.
+Understanding and improving the legacy parking search can
+help achieve this goal, e.g., 98% of automobile trips within the
+Los Angeles metropolitan area start or end with free parking
+(California household travel survey, 2013). 100% of Parisian
+Trista Lin is with the Assystem, Saint-Priest, France. Herv ´e Ri-
+vano and Fr ´ed´eric Le Mou ¨el are with the INRIA, Universit ´e de Lyon,
+INSA-Lyon, CITI-INRIA, Villeurbanne, France (E-mail: tristalin@mail.com;
+herve.rivano@inria.fr; frederic.le-mouel@insa-lyon.fr)
+This work was supported by the French Rh ˆone-Alpes Region under grants
+Explora’Pro and ARC 07 n o7075.
+Digital Object Identiﬁer 10.1109/TITS.2017.2685143
+drivers ever abandoned their trips because of annoying and
+endless parking searches and some drivers park their cars on
+unauthorized areas (Association for European Transport 2006).
+Accordingly, if drivers can have real-time parking availability
+information, they will be able to adjust their traveling sched-
+ule without spending time cruising the city in vain. Many
+cities have started smart parking projects. Smart parking is
+a way to help drivers ﬁnd more efﬁciently satisfying parking
+spaces through information and communications technology ,
+especially for occidental countries. Big American cities, like
+Los Angeles and San Francisco, have respectively 63% [3] and
+75.5% [4] of on-street parking among all the parking spaces,
+European cities averagely have 37% [5], Beijing [6] only has
+5%, and Tokyo has scarce on-street parking. Cities with more
+on-street parking spaces need comparatively to adopt smart
+parking to avoid drivers cruising for free parking.
+In addition, cities deploy smart parking services on an eco-
+nomic initiative basis. First, drivers can shorten their parking
+search time, reduce environmental pollution, reduce costs with
+less fuel consumption and alleviate trafﬁc congestion through
+information from smart parking apps. That also increases
+public transportation use rate and cities’ revenues as well.
+Second, if drivers can rapidly ﬁnd a parking space, the idle
+time for on-street parking is shorter and the parking revenues
+increase. Installing sensors on unauthorized areas where peo-
+ple frequently park their car can help detect illegal parking
+and can issue in a penalty charge, as with electric vehicles
+and disabled parking stalls. Third, once the trafﬁc is ﬂuent,
+it increases urban mobility and expands cities’ capacities. It
+brings more population, activities and business opportunities.
+Evenepoel et al. [7] made a study about the on-street parking
+sensor networks cost model in Ghent and compared the annual
+reduction in city-wide congestion cost with the annual cost of
+the entire network. The ﬁgures show that all deployments up
+to 5000 sensor nodes are economically viable. Xerox, involved
+in a smart parking project in Los Angeles, gives the idea of
+LEAN SMART PARKING 1 by illustrating the tradeoff between
+the costs and the beneﬁts from smart parking systems. Thus,
+smart parking or even smart city deployment is strategically
+proﬁtable when the system scale is limited and well positioned.
+Moreover, smart parking deployment intends to deploy many
+sensors in cities and overcome current sensor management
+problems. It can become a leading paradigm of smart cities [8].
+The goal of this survey is to give a comprehensive guide
+to the state-of-the-art in smart parking. To the best of our
+knowledge, there exist ﬁve previous efforts in smart parking
+solutions [9–13]. Idris et al. [10] and Revathi et al. [9] both
+did a survey on smart parking systems using different parking
+sensors and the afﬁliated functionalities, e.g., centralized or
+opportunistic information storage systems, park-and-ride facil-
+ities, E-parking, automated parking, payment systems, reser-
+vation systems, parking assist or guidance systems and vehicle
+license plate recognition. Polycarpou et al. [11] presented
+a survey on drivers’ needs for parking infrastructures, e.g.,
+public parking, drivers’ behaviors, parking availability moni-
+1www.services.xerox.com/transportation-solutions/resources/parking-
+management
+
+===== PAGE 3 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 2
+toring, guidance and information systems, reservation systems,
+dynamic pricing, and municipal deployments. The authors also
+emphasized the importance of information dissemination. De-
+lot et al. [12] introduced several existing parking information
+dissemination systems, e.g., crowdsensing, peer-to-peer com-
+munication, multi-agent systems, the time-varying traveling
+salesman problem, gravity-based parking competition, park-
+ing meter networks, parking automats, parking information
+dissemination using roadside units, opportunistically assisted
+parking searches, mobile storage and reservation. The authors
+then compared their own protocol with the above. Faheem
+et al. [13] classiﬁed the current smart parking systems and
+explained their features: agent-based for dynamic and complex
+trafﬁc environment to deﬁne the interaction between drivers
+and parking systems; fuzzy-based for human-like intelligence
+and expertise; wireless sensor-based for the detection and mon-
+itoring of the parking facilities; GPS-based to provide real-
+time location and guidance systems; vehicular communication
+for parking information distribution services among mobile
+vehicles; vision based for lot occupancy detection and space
+recognition. These surveys gave interesting preliminary studies
+on some existing smart parking solutions. But none of them
+gives a so comprehensive classiﬁcation on all the existing
+research projects, patents, commercial solutions and municipal
+deployments.
+This article surveys the parking solutions literature over the
+period 2000-2016 focusing on the development and evolution
+of smart parking. The contribution of this survey is threefold.
+First, we study many and varied academic publications, urban
+development projects and commercial products. We propose
+an exhaustive classiﬁcation with an overview of different
+disciplines. We believe that our survey extends all these works
+and gives a more comprehensive assortment on the actual
+development of smart parking. Second, we categorize the
+smart parking literature and visualize in detailed tables and
+ﬁgures. We synthesize the main methodologies used in the
+existing works and give a very comparable outlook. Third,
+we provide our engineering insights on the challenges of the
+current proposals and the subsequent open issues. Our insights
+can help cities decide which technology they want to apply and
+avoid repeating bad try and error processes while deploying
+a large-scale smart parking system. The work presented in
+this paper focuses on the methodologies adopted in the vast
+literature rather than the results. In the same spirit, we give pre-
+category tables to provide a snapshot of these varied works. We
+summarize the nature of their works and the research topics
+they address in the following section according to different
+functionalities.
+II. O VERVIEW OF THE RESEARCH FIELD
+Since smart parking that integrates knowledge from differ-
+ent disciplines seems to be a feasible solution for our cities,
+sensor and service deployment technology has been maturing
+through a densiﬁcation of large-scale deployments all over the
+word. We sketch the evolution of smart parking in Section II-A
+and reveal the induced research directions. In Section II-B, we
+propose a classiﬁcation of the existing smart parking solutions
+Fig. 1. Smart Parking use case
+and explain their corresponding disciplines. Finally, we outline
+the organization of this survey in Section II-C.
+A. Causes of evolution
+Before going into technical details, we ﬁrst provide an use
+case of smart parking service, including eight actors from the
+administrative and operational viewpoints, in Fig. 1 in which
+are clearly illustrated how different data sources can support
+potential services as well as the huge need for parking data
+acquisition and management. Nowadays, the Internet is turning
+more and more dynamic, dense and heterogeneous. To support
+such a real-time service, conventional system architectures
+cannot satisfy any more drivers. Endless parking conﬂicts are
+happening every moment and we have to reconsider the system
+from all different perspectives, as a smart parking ecosystem.
+An essential smart parking ecosystem includes two ﬂows:
+information and trafﬁc. The trafﬁc ﬂow happens on the path-
+way to ﬁnd parking, shown in the azure lower triangle in
+Fig. 2. Vehicle drivers receive parking availability information,
+steer to their desired parking areas and then park. When there
+are many drivers looking for a parking space, a competition
+occurs and results in cumulative parking conﬂicts. Parking
+behaviors also vary considering the information drivers have
+and how long they are cruising on the street. Once a vehi-
+cle arrives in or departs from a parking space, the parking
+availability information changes and is advertised to other
+drivers looking for a parking space. The parking information,
+from the moment when they are detected by sensors to the
+moment when they appeare on driver’s terminals, is called the
+information ﬂow, shown in the upper pink triangle in Fig. 2.
+To get the occupancy status of parking spaces, sensors are
+installed on on-street parking to detect vehicular events. Then,
+
+===== PAGE 4 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 3
+Fig. 2. Smart Parking ecosystem overview
+sensors form a network and send the latest information to data
+storage devices. Drivers can obtain the latest information from
+variable message signs (VMS) or their handheld smart devices
+that exchange messages with roadside infrastructure (RSI) or
+base transceiver stations (BTS).
+Although there are many deployment projects and apps,
+still very few drivers can really beneﬁt from smart parking.
+SFpark (San Francisco) and LA Express Park (Los Angeles)
+are two most famous successful stories. But if we tried to
+deploy the same system in another city, it is always essential to
+make a preliminary test, choose the most suitable technology
+and then adjust the system according to the city street layout
+and inhabitants’ habits. Nice is the ﬁrst French city where
+a smart parking project was launched. Ten thousand sensors
+are installed in 13 different parking areas. A smartphone app
+was developed so that drivers can check parking availability
+information. Parking sensors are connected to nearby multi-
+service parking meters. Non-smartphone users can pay their
+parking spaces, get current parking availability in the city,
+and obtain tourism or public transportation information simply
+by multi-service parking meters. The deployment cost is
+estimated at 15 million euros, but most drivers are not satisﬁed
+at all. The initiative of the project is undoubtedly good, but this
+technology still has to be improved from different perspectives:
+• The robustness of sensor devices – Sensor devices are
+embedded systems that process sensed data into useful
+information and always evaluate their own health status,
+i.e., lifetime or malfunction, to inform system adminis-
+tration of any problem.
+• The stability and timeliness of sensor networks – The
+sensed information on sensor devices shall be collected
+through wireless networks. When there are lots of sensor
+devices, the spectrum is often limited and a transmission
+scheduling is needed [14]. When a vehicle parks on
+a sensor-equipped parking space, it might block the
+radio communication and the status change will not be
+broadcasted on time.
+• The quality and agility of city service – Smart parking
+system uses sensed information to offer real-time parking
+information to drivers. The system has to manage all of
+the parking resources, maintenance, and payments. It has
+to efﬁciently ﬁlter parking information through drivers’
+interests. If the drivers’ interests are not well deﬁned, the
+system shall be able to adapt and still provides a minimal
+level of service quality.
+• The user-centric information dissemination and assign-
+ment – Currently all the smart parking apps provide the
+same information to all drivers, but real-time parking
+availability data is useful only when the driver is very
+close to the parking location [15]. Hence, the information
+shall be broadcasted to drivers considering their mobility
+and location.
+• Uncertainty of drivers’ behaviors and traveling traces –
+Drivers’ behaviors are strongly related to the informa-
+tion they have from smart parking systems, personal
+preferences, and the city street layout. Before getting
+drivers’ data, their behavior can only be obtained from
+payment information or questionnaires. Thanks to sensors
+deployment in cities, scientists will be able to analyze
+the measured data and reproduce them in a large-scale
+simulation.
+Considering all the key factors identiﬁed above, research
+on smart parking appears promising and beneﬁcial to cities’
+sustainable development. The survey summarizing existing
+works will evolve into a useful engineering guideline in this
+transdisciplinary domain.
+B. Literature classiﬁcation
+Smart parking solutions literature is very diversiﬁed. Har-
+monizing the relevant works in transdisciplinarity is not trivial.
+We ultimately decide to categorize them by their function-
+alities. The general outline of the proposed classiﬁcation is
+in Fig. 3. At the top level, we identify three macro-themes
+according to the goals of the research ﬁelds: they manage
+information collection, system deployment, and service dis-
+semination. Within each macro-theme, a tree of sub-topics
+is germinated and developed. Next, we give an overview
+of the three macro-themes with all the topics named in our
+classiﬁcation.
+Information collection takes a technical overview of all the
+existing sensing techniques to identify parking spaces status.
+Two major research focuses are on the identiﬁcation and
+transmission of vehicular information. The former involves
+various stationary and mobile sensors, including their detection
+methods and installation. The latter explains how sensors and
+cities’ infrastructures collaborate together to gather informa-
+tion efﬁciently. We introduce two emerging urban services, i.e.,
+crowdsensing and gaparking, applied in smart parking. Both
+of them consider citizens as parking detectors that contribute
+to accessible parking information on the Internet.
+System deployment deals with the software system ex-
+ploitation and the statistical analysis of the collected data.
+
+===== PAGE 5 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 4
+Smart Parking Solutions
+Information Collection System Deployment Service Dissemination
+Software System
+Large-Scale
+Data Analysis
+Sensors
+Crowdsensing
+Sensor Network
+Prediction
+Information dissemination
+Parking Competition Parking behavior
+E-Parking
+Info management
+Strategies
+Guidance
+  Physics
+Parking Choice
+Vehicular Activities
+Infrastructure-based
+Infrastructure-free
+  Sociology
+  Economics
+  ICT
+  Usability
+Dynamic Pricing
+Parking Meter
+Gaparking
+Fig. 3. Proposed categories of smart parking solutions and the spectrum of disciplines related to topics. (ICT: information and communications technology.)
+Software generally involves E-Parking, reservation, guidance
+and monitoring information for administration and users. With
+the collected data, an analysis is often performed by data
+scientists to study drivers’ behaviors so as to improve the
+system performance and help municipalities make a better
+urban planning.
+Service dissemination investigates the relationship between
+information and social features. Two major research focuses
+are information dissemination and parking competition caused
+by individual behavior. Information dissemination is mainly
+related to communication techniques between vehicles and
+information. Municipalities can choose where and how to
+install urban infrastructure according to their planning and
+budget. Parking competition always happens when more than
+two drivers contend the same parking space. With the infor-
+mation assisted smart parking service, drivers’ decisions are
+even more complicated to predict. Thus, studies on parking
+behaviors are important while designing a smart parking
+system.
+The classiﬁcation in Fig. 3 shows that all the sub-themes
+involve at least two disciplines by their nature. We can remark
+that smart parking research highly contributes on different
+inter-disciplines and attracts a variety of participation on urban
+development.
+C. Survey organization
+As previously mentioned, we introduce smart parking solu-
+tion on three different themes. We ﬁrst start by explaining how
+to obtain parking information from different networked sensors
+in Section III. Information collection is an important step to
+visualize vehicle’s activities. It is also a converter between
+trafﬁc and information ﬂows. We discuss all the different
+sensors in Section III-A and the required network to gather
+their sensed information in Section III-B. Parking meters are
+often the most important component of user interfaces. We also
+introduce some parking meters patents in Section III-C. For
+companies or academic projects, large-scale sensor networks
+deployment is costly. Hence, we introduce the crowdsensing
+method used in smart parking applications in Section III-D.
+Next, in Section III-E, we present the gaparking, voluntarily
+sponsored by parking owners, which does take advantage of
+idle parking resources. Then, we present a way to deploy
+a smart parking service system considering different service
+types, e.g., payment, monitoring, reservation, guidance, and
+information presentation, in Section IV. We start by studying
+the software system in Section IV-A. Drivers cannot only be
+guided or advised by smart parking system but also reserve
+or pay their parking spaces through the Internet. Then, we
+investigate the existing large-scale deployment projects and
+compare them with the technologies mentioned in Section III
+to examine how cities adopt their smart parking solutions IV-B.
+To provide good quality of information and even to apply a
+better parking policy, data analysis is often a must, as well as
+information aggregation and prediction. Section IV-C presents
+some forecasting methods used in the current literature.
+After that, we discuss how to spread information and the
+side effects in Section V. The approach evoked in this section
+often imply a social analysis since human activities are often
+difﬁcult to precisely capture and estimate in complicated real
+life with ambiguous information. Information dissemination
+is the ﬁrst key point to inﬂuence trafﬁc ﬂow by an informa-
+tion system. In Section V-A, we show different information
+spreading ways according to cities’ infrastructures and sensor
+transceiver modules. Drivers’ mobility is also affected by
+the new information-assisted parking search. There are two
+major research themes, on the one hand, parking occupancy
+improvement and drivers’ satisfaction, and on the other hand,
+parking competition and drivers’ behaviors. We present the
+current works on parking competitions in Section V-B. Some
+methods are proposed to ease drivers’ conﬂicts. Section V-B
+is often linked with historical data mentioned in Section IV-C
+depending on whether drivers have complete or incomplete
+information of the system. Later, in Section V-C, we show
+some works on drivers’ parking behaviors. Finally, we give a
+
+===== PAGE 6 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 5
+general overview of the three different themes and conclude
+our work in Section VI. We also provide our insights and some
+perspectives on our contributions and the vast literature.
+III. P ARKING INFORMATION COLLECTION
+Here, we introduce different sensors and the ways to deploy
+them, then we present some works on the sensors and parking
+meters networks. Additionally, we reveal the crowdsensing
+detection manner. More and more parking apps try to gather
+parking information without deploying thousands of sensors
+in urban areas. Except for municipal and academic projects,
+we also present gaparking services proposed by individual
+parking owners. We organized the literature related to in-
+formation collection in Table I. Information sensing lists all
+the sensor designs applied to smart parking system. Most of
+them transmit sensed information via 802.15.4 for its rapid
+installation without any subscription to mobile operators. WSN
+extends sensor designs works but mainly on network protocols
+and network performance (sensor lifetime and latency) of
+short-range communication networks. Crowdsensing focuses
+on the app development for smartphone users to ensure parking
+information and location accuracy. Long-range communication
+networks, parking meters, and gaparking are not dedicated to
+this table. Even though they are ﬂourishing on the market, we
+do not ﬁnd any academic publication.
+A. Information sensing
+Information sensing relies on sensors to collect real-time
+parking availability information. Stationary and mobile collec-
+tion are two types of methods. The former instinctively adds
+sensing ability on parking spaces. When the occupancy status
+changes, a sensor can detect a vehicle’s presence or absence
+and updates the information in a short time, e.g., SFpark [4], in
+San Francisco, allows that 85% of events are received within
+60 seconds on large-scale roadside parking sensor networks.
+The latter takes advantage of the vehicle’s mobility to collect
+information along the route with fewer sensors. Mobile sensors
+can detect the occupancy status when they pass through a
+parking space, so the information might not be updated for
+a long while, e.g., ParkNet [57–59], also in San Francisco.
+In ParkNet, taxi cabs collect data from GPS receivers and
+ultrasonic sensors and then transmit it over a cellular uplink
+to the central server. Such a mobile parking sensor system
+requires much less installation, yet needs a longer average
+inter-polling time, to wit, 25 minutes for 80% of the cells in
+the business downtown area with 300 cabs. Several potential
+positions to install sensors are shown in the bottom left circle
+in Fig. 2. Different sensors have distinct manners to detect a
+vehicle’s presence. Table II gives a general idea of different
+types of sensors, and we explain them in detail as below.
+Passive infrared sensors receive heat radiated from the
+human body and are often used collaboratively with other
+sensors [17, 18] to know if a driver parks and gets off
+his/her car. Active infrared sensors measure the distance to
+any obstacle in front [30, 32, 34, 60–62]. Infrared sensors are
+very sensitive to sun and any kind of environmental object so
+that the sensing accuracy is not so good. Similar to infrared
+sensors, ultrasonic sensors use sound instead of light and work
+better in outdoor environments. Ultrasonic sensors provide a
+more complex signal pattern with a possibility of multiple
+detections in ﬁxed [24, 32, 63] or mobile [55, 58, 64] scenar-
+ios. Accelerators measure the instantaneous ground vibrations.
+Since vehicles are usually the heaviest objects on the street,
+accelerators can infer that a vehicle comes and parks, with
+the aid of other sensors, e.g., optical sensors [65], which
+detect the change in light. Optical sensors must be installed
+where light can be obscured by a parked vehicle [25, 32, 66–
+69]. However, optical sensors are vulnerable to any light
+source and transient staying objects, so their accuracy is still
+questionable. Magnetometers are, so far, the most common
+stationary parking detection sensors, especially for municipal
+deployment [3, 4, 6, 67, 70–73]. It measures the current
+magnetic ﬁelds and detects huge metal objects presence. Its
+signal pattern is easy to read and precise but cannot support
+multiple detections. It is also more expensive than the above-
+mentioned sensors. Alternatively, [26] installed magnetometers
+along the driving pathway and compared the different counts
+between any two adjacent sensors to know roughly how many
+vehicles are parked between them.
+Cameras [16, 27–29, 74, 75] and acoustic sensors [31, 32]
+provide a much more complicated signal pattern than ultra-
+sonic. Both of them require image and sonar processing in
+order to extract the desired information from the background
+noise. Nevertheless, they have aroused certain research inter-
+ests because of some extra information, concerning criminal
+scenes or personal privacy. Inductive loops and piezoelectric
+sensors are both contactive and installed on road surface.
+Inductive loop technology is considered mature, and is widely
+used for trafﬁc surveillance. It simply detects if a vehicle is
+passing [24, 76]. Piezoelectric sensors are similar to inductive
+loops but able to read more detailed information from the pres-
+sure exerted on it [77]. Such kind of contact sensors require an
+intrusive installation and they are easy to be worn-out because
+of their frequent use. RFID is often proposed in smart parking
+payment solutions thanks to its identiﬁcation tag. As the
+popularity of electronic toll collection (ETC) increases, many
+vehicles, equipped with RFID tags, can be detected by RFID
+readers installed on parking spaces [21, 23, 35, 36]. Laser
+rangeﬁnder is often used to build a 1/2/3D map, especially
+for environmental perception. Normally installed on vehicles,
+it emits a laser beam and calculates the time of ﬂight to
+measure the distances from different objects in order to know
+if there are parked vehicles [78]. Intelligent robots cruising
+on the street can also be used to recognize available parking
+spaces [79].
+Mobile crowdsensing via smartphone is the most economi-
+cal way to obtain parking availability information from drivers
+themselves [49, 51]. However, it yields privacy issues if
+smartphones automatically collects data from users according
+to their movements [44, 52, 80], Bluetooth connection [81],
+WiFi signatures [41], 3D compass [43] or all of them [42],
+and then updates in a public database. If users can choose to
+contribute information on mobile applications, the system will
+be sensitive to free-riders [50] and selﬁsh liars [54, 82, 83].
+QR codes might be installed on parking spaces to help drivers
+
+===== PAGE 7 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 6
+TABLE I
+SMART PARKING SOLUTION FOR INFORMATION COLLECTION
+Reference Info source Deployment Storage Service Parking game Network
+Type S/P NetS NetU C D:s/v D:I AU BC EP Rsv UB SG PD NP OT
+Information sensing
+B. Zhang [16] 5 1/6 - - - - - - - - - - - - - -
+U-Park [17] 1p,3 2/2 802.15.4 - - - - - - - - - - - - -
+M¨anni [18] 1p,3 - 802.15.4 - - - - - - √ √ - - - - -
+Z. Zhang [19, 20] 3 82/82 802.15.4 - √ - - - VMS - - - - - - -
+Abdullah [21] 10 - 802.15.4 - √ - - - VMS - - - - - - LT
+PGS [22] 3 */10 802.15.4 - √ - - Pois(1) VMS - - - - - √ LT
+W. Zhao [23] 3,10 (40/40)·2 802.15.4 Wiﬁ,CN √ - - - VMS - - - - - √ -
+Kianpisheh [24] 4,8 100/100 CB - √ - - - VMS - √ - - - - -
+Chinrungrueng [25] 7 2/1 WSN Wiﬁ,CN √ - - - - - - - - - - -
+Boda [26] 3 11/72 - - √ - - 171-183 - - - - - - - -
+Sevillano [27] 5 - - - - - - - - - - - - √ - -
+Nguyen [28] 5 - - - √ - - ≤5K - - - - - √ - -
+COINS [29] 5 - cable - √ - - - VMS - - - - - - -
+SmartSpaces [30] 1a,3,4 */36 RF,Wiﬁ - √ - - - - - - - - - - -
+Na [31] 5,6 35/35 802.15.4 - √ - - - - - - - - - - -
+Lee [32] 1a-7 - 802.15.4 - - - - - - - - - - - - LQ
+WSN
+Benson [33] 3 5/5 nRF24L01 - √ - - - - - - - - - √ LQ
+Urdiain [34] 1a 10/10 nRF24L01 - √ - - - - - - - - - √ -
+Bagula [35, 36] 4,10 13/* Zigbee,CB - √ - - - VMS - √ - - - √ -
+Asaduzzaman [37] 1a - Zigbee - - - - - - - - - - - √ LT
+Lin [14, 38, 39] 3 */12-120 802.15.4 - √ - - - - - - - - - √ LT
+W. Chen [40] 3 - WSN - - - - - - - √ - - - √ -
+Crowdsensing
+ParkSense [41] 14 - CN - √ - - - - - - - - - - -
+UPDetector [42] 14 - Wiﬁ,CN - - - - - - - - - - - - -
+Villanueva [43] 14 - Wiﬁ,CN - - - - - - - - - - - - -
+VeLoc [44] 14 4/445 Wiﬁ,CN - - - - - - - - - - - - -
+Gupte [45] 14 */480 Wiﬁ,CN √ - - Pois(60) - √ - √ - - - -
+Park Here! [46] 14 - Wiﬁ,CN √ √ - - VNT √ - - - - - -
+Farkas [47] 14 - Wiﬁ,CN √ - - 5000 - - - √ - - - -
+Krieg [48] 14 - Wiﬁ,CN √ - - - - - - - - - - -
+Rinne [49] 14 */138 areas Wiﬁ,CN √ - - - - √ - - - - - -
+X. Chen [50] 14 */810 Wiﬁ,CN - - - 1K - - - √ - - - -
+iPark (Yang) [51] 14 - Wiﬁ,CN √ - - 1G - - - - - - - -
+PocketParker [52] 14 105/* Wiﬁ,CN √ - - - - - - - - √ - -
+Kiﬂe [53] 14 */ 6 zones Wiﬁ,CN √ - - - - - - - - - - -
+ParkJam [54] 14 - Wiﬁ,CN √ - - - - √ - - - - - -
+Coric [55] 12 - Wiﬁ,CN √ - - - - - - - - - - -
+TruCentive [56] 14 - Wiﬁ,CN √ - - 131 - √ √ GT - - -
+†In the Type column: the type id is referred to Table II.
+†In the Info source columns: S/P is the ratio of sensors to parking places.
+†In the Deployment columns: NetS is the network of sensors. NetU is network of users (CN: cellular network; CB: cable; BT: bluetooth; PLC: power-line communication).
+†In the Storage columns: C is centralized. D is distributed (S/V/I: sensor/vehicle/infrastructure).
+†In the Service columns: AU is amount of service users (Pois: poisson - unit: vehicles/minute), BC is broadcast (VMS: variable message sign, VNT: vehicular network),
+EP is E-Parking (namely drivers can ﬁnd parking through telephone or the Internet). RSV: reservation.
+†In the Parking game columns: UB is user behavior, SG is strategy (GT: game theory).
+†In the Network columns: NP is network protocol, OT is others (LT: lifetime; SC: security; AG: aggregation; LQ: link quality; FW: framework; SA: search algorithm).
+identify and pay their parking spaces [84]. When a driver
+ends a parking session, the system will announce that his/her
+parking space is now available to other drivers looking for
+parking. However, this system cannot control if drivers do pay
+their parking spaces since QR codes cannot detect vehicles’
+presence.
+B. Sensor connectivity
+Once networked sensors are installed on parking spaces,
+they can form a network to send out their messages. There are
+two typical communication methods: either short-range, such
+as Bluetooth/BLE, 802.11ah (Wi-Fi HaLow) and Zigbee/Z-
+Wave/DigiMesh, or long-range, like Sigfox, LoRa, Weightless,
+Ingenu and NB-IoT/LTE-M. The long-range communication
+beneﬁts from the existing radio access network and can com-
+municate with infrastructures anytime and anywhere. Short-
+range communication is often implemented by WSN where
+messages have to be re-transmitted several times via relays,
+e.g., parking meters or other sensors, until they reach cities’
+infrastructures. The studies on WSN have been germinating
+for several years but few of them have been evaluated in an
+urban parking context considering lifetime, information delay,
+and wireless link quality constraints.
+1) Low-power wide-area network (LPWAN): Considering
+the rich functionality of 3G/4G is unnecessary for networked
+sensor devices, a long-range cellular link has to be adapted
+to the emerging IoT market. Long-range IoT communication
+technologies, namely cellular IoT, are designed for LPW AN.
+Because of their compatibility with the existing cellular net-
+works, no extra infrastructure is required. The three most
+famous standards are SigFox2, LoRa3 and Weightless4. French
+SigFox and Weightless SIG both tried to minimize the band-
+width in order to reduce the probability of interference. The
+narrow band (NB) technology is simple to implement and
+meets very low energy requirements. SigFox uses ultra narrow
+2www.sigfox.com
+3www.lora-alliance.org
+4www.weightless.org
+
+===== PAGE 8 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 7
+TABLE II
+DIFFERENT TYPES OF PARKING DETECTION SENSORS .
+N o Sensors Intrusive Flexible Environmental Small Privacy Installation Contact Accuracy Cost Multiple
+Impact Size Detection
+Stationary
+1a,1p Activea /passivep infrared [17, 18, 30, 32, 34, 60–62, 77] √ √ √ ⋆ ⋆⋆ ⋆ √
+2 Accelerator [65] √ √ ⋆ ⋆ ⋆ √
+3 Magnetometer [3, 4, 17–19, 22, 23, 26, 30, 32, 70, 71, 85] √ √ ⋆⋆ ⋆ ⋆ ⋆ ⋆⋆
+4 Ultrasonic [24, 30, 32, 63] √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆ √
+5 Camera [16, 27–29, 74, 75, 86] √ √ √ √ ⋆ ⋆⋆ ⋆ ⋆ ⋆ √
+6 Acoustic [31, 32] √ √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆ √
+7 Optical [25, 32, 65–69] √ √ √ ⋆ ⋆⋆ ⋆
+8 Inductive loop [24, 76] √ ⋆ ⋆ ⋆ √ ⋆ ⋆ ⋆ ⋆
+9 Piezoelectric sensor [77] √ √ ⋆ ⋆ ⋆ √ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆⋆ √
+10 RFID [21, 23, 35, 36], iButton [87] √ √ √ √ ⋆⋆ ⋆ ⋆ ⋆ ⋆⋆
+11 Radar [88] √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ √
+Mobile
+12 Ultrasonic [55, 58, 64] √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆ √
+13 Laser rangeﬁnder [78] √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ √
+14 Smartphone (GPS, human, microphone, Bluetooth [81], Wiﬁ [41], √ √ √ √ - - - √
+accelerator [44, 52, 80], magnetometer [43], QR code [84]) [42, 48–51, 54]
+15 Camera (on robot) [79] √ √ √ √ ⋆ ⋆ ⋆ ⋆ ⋆⋆ √
+band (UNB) technology and RFTDMA (random FDMA and
+TDMA), an ALHOA-based protocol without medium sensing,
+associated with UNB to handle transmission schedulings.
+Each device can only send 140 12-byte messages per day.
+Thus, it can consume very few energy and achieve a very
+long communication range (around 10km in urban areas).
+SigFox cooperates with WorldSensing to provide a long-range
+wireless connectivity to networked parking sensors. Weightless
+(formerly British Neul) provides 3 different models: UNB,
+NB, and DSSS (Direct Sequence Spread Spectrum) named
+respectively Weightless-N, Weightless-P, and Weightless-W,
+so as to address different users’ needs. V odafone adopted
+Weightless as its IoT solution works with Smart Parking Ltd in
+the UK and Australia to collect real-time parking information.
+UNB provides a better channel use so that there are much
+more simultaneous active users per channel than the famous
+LoRa. LoRa spreads spectrum to have an adaptive data rate.
+Its sensitivity and throughput are mainly related to bandwidth,
+coding rates and spreading factors. LoRa targets a wide range
+of applications but is not very popular yet in smart parking
+real deployment. A small LoRa equipped pilot project is being
+tested in Geneva. Libelium5 has implemented LoRa and Sigfox
+on their smart parking products.
+In addition, Ingenu (formerly) launched an IoT protocol
+with RPMA (random phase multiple access) technologies
+based on DSSS that can serve 1000 simultaneous users accord-
+ing to its high spreading factor. We do not yet ﬁnd existing
+smart parking solutions of Ingenu. 3GPP is also working
+on its IoT standards, namely NB-IoT and LTE-M, with NB
+technology. Many companies, such as Qualcomm, Huawei,
+Ericsson, and Mediatek are all developing their products on
+LTE-M.
+2) Wireless sensor network (WSN): Unlike LPW AN, WSN
+does not need a monthly fee per sensor. In order to coordinate
+a group of sensors, delay, and mesh networks energy efﬁciency
+are the main challenge. Urdiain et al. [34] tested the LEACH 6
+routing protocol on the Arduino platform 7 which is used as
+the parking sensor. Benson et al. [33] used the DSYS25 8
+sensing node to experience packet delivery rates with parked
+vehicles. If either senders or receivers are covered by parked
+5www.libelium.com/smart-parking-surface-sensor-lorawan-sigfox-lora-868-
+900-915-mhz/
+6nms.lcs.mit.edu/projects/leach
+7www.arduino.cc
+8www.ucc.ie/en/media/research/misl/2004publications/sensys04barroso.pdf
+cars, communication reliability in the range of 0 to 5 meters is
+good. If senders and receivers are both covered by parked cars,
+no communication is possible. Karbab et al. [36] implemented
+a car park management system and compared energy and
+cost efﬁciencies while deploying a WSN and serial connec-
+tions. Bagula et al. [35] formulated the optimal placement
+of ultrasonic sensors in smart parking as a multi-objective
+integer linear programming problem. W. Chen et al. [40]
+adopted a smart energy-efﬁcient sensor. While increasing
+the number of sensor nodes, the authors showed that smart
+sensors can consume less energy in a larger network scale.
+Asaduzzaman et al. [37] proposed an ARM-based sensor node
+equipped with Zigbee, Bluetooth or WiFi and compared their
+corresponding transmission time and energy consumption. The
+results showed that Zigbee is the best choice in terms of sensor
+lifetime and maximum connected nodes in mesh networks.
+Lin et al. [39] also formulated cities’ infrastructures optimal
+placements as a multiple-objective problem and solved it in
+real maps. Besides, four different MAC protocols in street
+parking scenarios are implemented to compare the perfor-
+mance evaluation of schedule, contention-based and hybrid
+bandwidth allocation methods [14, 38].
+C. Parking meter
+An important element seldom studied in smart parking
+research is parking meters. Yet, there are many companies
+working on the patents of parking meters for payments, e.g.,
+PhotoViolationMeter™ Solution [89] and IPS group [90].
+Parking meters are used by municipalities as a tool to pay
+on-street parking. With the rise of networked sensors, parking
+meters are turned into parking helpers, which establish a link
+between drivers and parking data. Single-space and multi-
+space meters are the two main automated payment machines.
+Multi-space meter manages several parking meters and can
+provide more functionalities than single-space ones. Thanks
+to WSN technology, introduced in Section III-B, parking
+meters are often used as relays for parking sensors. Thus,
+parking meters are not only basic payment machines but also
+transceivers, which can be integrated into existing relays and
+infrastructures for any communication devices [91]. Duncan
+Solutions [92, 93] has patents on parking meters’ wireless
+communications and control system. Parking meters might
+communicate with some mobile access points, such as taxis
+and buses, to enrich urban information and increase trans-
+
+===== PAGE 9 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 8
+mission opportunities [94]. Flextronics [95] has a patent on
+proposing a parking space ﬁnder in a vehicular environment.
+Vehicular on-board units (OBU) can communicate with road-
+side parking meters in order to gather availability parking
+information and ﬁnd a parking space. IPS group draws a
+lot of attention because of the famous smart parking project
+SFpark [4]. Drivers, who park their cars on on-street parking
+spaces, can easily extend their parking time and pay from
+the Internet. The payment information will be updated and
+showed on parking meters [96]. Besides, parking meters have
+an internal clock and are able to turn off themselves during
+parking time so as to reduce energy consumption. Some
+big companies work on service integration to enrich parking
+meters’ functionalities and their interaction with drivers, e.g.,
+Xerox PARC [97].
+D. Crowdsensing
+Crowdsourcing has been used in some smart parking ap-
+plications, especially in gathering the sensed available park-
+ing information from smartphone users. Thus, a new term
+crowdsensing is then proposed. The most common way is to
+design a smart parking app and motivate users to voluntarily
+share information, namely participatory crowdsensing , e.g.,
+ParkJam [54]. Rinne et al. [49] presented the pros and cons
+of mobile crowdsensing. Three high-level conclusions can
+be drawn by mobile sensors: if there was still space in the
+area, if the area is full, or if the area should no longer be
+full. Farkas [47] simulated crowdsensing activities for urban
+parking by using the MASON multi-agent simulation toolkit
+and displayed the results on OpenStreetMap. Five different
+spaces were determined to generate individuals’ behaviors,
+such as parking time and probability. Drivers who are not par-
+ticipating in crowdsensing and not using the decision support
+application, would still beneﬁt from this application. The best
+result was achieved from the Novi Sad simulation scenario
+with 5000 agents and 30% crowd-sensor participation, i.e.
+when 1500 drivers were sensing and sharing parking related
+events and enjoying the beneﬁts of 14% shorter cruising times.
+PhonePark [81] and Park Here! [46] both proposed a park-
+ing/unparking algorithm assisted by accelerometers, gyroscope
+sensors, and Bluetooth. With the aid of Bluetooth, users’
+transportation mode becomes easier to be detected. VeLoc [44]
+used smartphones’ accelerometer, gyroscope sensors, and the
+inertial data of pre-loaded maps in order to ﬁnd a parking
+space. PocketParker [52] detected users’ movements and de-
+rived the parking or unparking status by the accelerometer
+and GPS. ParkSense [41] detected the WiFi beacons to in-
+duct if the driver is back to the car or if he/she is mov-
+ing. UPDetector [42] (unparking/parking detector) detected
+drivers’ behaviors according to many different sensors on their
+smartphone: accelerometer, Bluetooth, microphone, gyro, GSP,
+WiFi, parking payment app, or users’ manual input. Villanueva
+et al. [43] introduced a vehicle detection method using the
+3D compass of drivers’ smartphone. Thus, smartphones can
+detect if drivers are parking and if there is any adjacent
+parked vehicle. Also, the 3D compass can sense available
+parking spaces in its vicinity. Krieg et al. [48] used all the
+available sensors on a smartphone in order to detect users’
+transportation mode. The authors proposed an algorithm to
+indicate 9 different transportation modes, i.e., bicycle, bus,
+car, pedestrian, subway, motorbike, train, tram and airplane,
+and then compared with ﬁve existing algorithms. The results
+can be used in smart parking application to know if users are
+parking or unparking.
+X. Chen et al. [50] showed that crowdsourcing-based smart
+parking applications can induce the following problems: infor-
+mation accuracy, participation rates, and freeriders. Gupte et
+al. [45] took users’ reputation scores into account in order to
+evaluate data’s reliability. Reputation scores increase each time
+a device sends non-corrupt data. TruCentive [56] is another
+crowdsourcing smart parking app. The authors implemented a
+game-theoretical framework that dynamically adjusts a bonus
+according to the fraction of honest players. Kiﬂe et al. [53]
+proposed a crowdsourcing smart parking application UW-
+ParkAssist working with UW-Police. UW-Police provides ex-
+pert data from the police department and can override incorrect
+data in UW-ParkAssist to reinforce the collected information
+reliability.
+Accordingly, to avoid uncertain artiﬁcial factors, oppor-
+tunistic crowdsensing is an alternative without user interven-
+tion. Coric et al. [55] use an ultrasonic sensor to collect street
+parking map, like ParkNet [57–59]. iPark (Yang et al. ) [51]
+built a parking map from vehicular trajectories without real-
+time occupancy status.
+E. Shared parking - Gaparking
+Gaparking takes the ideas of gap and parking to share one
+parking spot to more than one motorist at a different time. Prin-
+cipally, parking spot owners register their spare parking spots
+on a website through an app with proposed price and service
+time, and then drivers bid one appropriate space that meets
+their needs. Some commercial car parks might join to sell their
+parking spots as a single person. ParkingAuction, Mobypark,
+and JustPark are the most popular gaparking apps. We also
+ﬁnd many local websites specializing in speciﬁc cities, e.g.,
+sharedParking and Copark. Gaparking inherits the business
+model of Uberisation (shared economy) which allows peer-
+to-peer transactions between individuals’ needs and services.
+It provides adequate parking and reduces excessive land use
+by optimizing personal resources. Moreover, it fosters area
+development and citizens connections. To match the parking
+needs and spaces, Griggs et al. [98] proposed a private and
+randomized algorithm to allocate parking more efﬁciently and
+respect the QoS constraints.
+IV. P ARKING SYSTEM DEPLOYMENT
+System deployment is the main task of service providers.
+The essential element of smart parking system is the software
+that deals with all the E-parking service and data management.
+User interface and information processing shall be adapted to
+the service type. Then a large-scale evaluation shall be done
+to evaluate service ﬂexibility and scalability. Once the system
+is running in urban areas, information shall be stored and
+analyzed to improve its performance and make a better urban
+
+===== PAGE 10 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 9
+TABLE III
+SMART PARKING SOLUTION FOR SYSTEM DEPLOYMENT
+Reference Info source Deployment Storage Service Parking game Network
+Type S/P NetS NetU C D: s
+v D:I AU BC EP Rsv UB SG PD NP OT
+Software system
+Vishnubhotla [63] 4 6/6 Zigbee,CB - √ - - - - √ - - - - - -
+Tang [68] 7 80/80 802.15.4 - √ - - - - √ - - - - - -
+BeeParking [87] 10 24/14 BT,CB - √ - - 24 VMS √ - √ - - - -
+Gopalan [99] ﬁxed - Zigbee,CN - √ - - - - √ √ - - - - FW
+KATHODIGOS [100, 101] 3,5 2/unslotted CB,WSN - √ - - - - √ - - - - √ LT
+Jeffrey [69] 7 - Zigbee Wiﬁ,CN √ - - - - √ - - - - - LT
+SensCity [102, 103] 3 - WSN,GSM Wiﬁ,CN √ - - - - √ - - MAS - - -
+Yang [104] 7 - 802.15.4,Wiﬁ Wiﬁ,CN √ - - - - √ - - - - - -
+Calipso [105] 3 5/5 802.15.4 Wiﬁ,CN √ - - - VMS √ - - - - - -
+Grazioli [106] - - - Wiﬁ,CN √ - - - - √ - - - - - -
+Souissi [107] 3 5/5 Zigbee Wiﬁ,CN √ - - - - √ √ - - - - -
+Rico [108] 10 - 802.15.4 WiFi,CN √ - - - - √ √ - - - - FW
+Suryady [109] 3 - Zigbee WiFi,CN √ - - - - √ √ - - - - -
+Kumar [110] 1a 4/4 Zigbee Wiﬁ,CN √ - - 2 - √ √ - - - - -
+Pazos [111] 3,5 - 802.15.4 Wiﬁ,CN √ - - - - √ - - - - - FW
+Mainetti [112] 7,10 - 6LoWPAN Wiﬁ,CN,NFC √ - √ - - √ √ - - - √ -
+iParking [113] 3 2/80-90 RS232&485 Wiﬁ,CN √ - - ≥120 - √ √ √ - - - FW
+Venkateswaran [61] 1a - RS232 Wiﬁ,CN √ - - - - √ √ - - - - SC
+Ganchev [114, 115] ﬁxed */2000 - Wiﬁ,CN √ - √ 2000 - √ √ - MAS - - SC
+Pham [116] 10 */400 CB CN √ - - Pois(15,20) - √ √ - MC - - -
+Inaba [117] - - - CN √ - - - - √ √ - - - - SC
+Giuffre [8, 118] ﬁxed */30-150 - Wiﬁ,CN √ - - 10-80 - √ √ - - - - -
+PSOS [119] - - - Wiﬁ,CN √ - - - - √ √ - - - - FW
+Niculescu [120] - - - Wiﬁ,CN √ - - - - √ √ - - - - -
+ParkinGain [121] - - - - √ - - - - √ √ - - - - -
+Yao [122] 4 314/314 CB - √ - - - VMS - - - - - - -
+Bechini [84] 14 - Wiﬁ,CN √ - - - - √ √ - - - - -
+parkITsmart [123] 14 */100 Wiﬁ,CN √ - - 5,10 - √ - - - - - FW
+Rodier [124] ﬁxed 6/6 WSN Wiﬁ,CN √ - - - VMS √ √ √ - - - -
+Ducreux [125] 3 - WSN CN √ - - - - √ - - - - - FW
+SmartParking [77] 1a,9 */100-2800 Wiﬁ 802.11 √ √ Pois(20) VNT √ √ - MC √ - SC
+Hong [86] 1a 64/64 CB - √ - - Pois(λ) - - - - MC - - -
+Xerox PARC [97] - - - Wiﬁ,CN √ - √ - - √ √ - - - - -
+Jun [126] - - - - √ - - - VMS √ √ - - √ - FW
+SPARK (Srikanth) [127] 3,4 */20 Zigbee GSM √ - - 3 VMS √ √ - - - - -
+Shin [128] - */3500 - - √ - - 120K - √ √ √ UF - - -
+Large-scale
+ParkNet [57–59] 12 50-2000/2.8e5 Wiﬁ,CN - √ - - - - - - - - - - -
+Beijing [6] 3 */20000 433MHz - √ - - - - - - - - - - -
+SFpark [4, 129] 3 11900/8200 WSN Wiﬁ,CN √ - - - - √ - - DP √ - -
+LA ExpressPark [3, 85] 3 */6300 WSN Wiﬁ,CN √ - - - - √ - - MC,DP √ - -
+`Area Verda [67] 3,7 */50000 WSN Wiﬁ,CN √ - - - √ - - - - - -
+Nice Park [71] 3 */10000 Zigbee Wiﬁ,CN √ - - - - √ - - - - - -
+WSN-DPCM [66] 7 25/15 Zigbee Wiﬁ,CN √ - - - - √ √ - - - - -
+Optimod’Lyon [130] 11 */30 802.15.4 Wiﬁ,CN √ - √ - - √ - √ - √ - -
+SmartSantander [72] 3 400/400 Digimesh Wiﬁ,CN √ - - - - √ - - - - - -
+SIMERT Loja [131] 3 3948/1974 Digimesh Wiﬁ,CN √ - - - - √ - - - - - -
+Moscow Fastprk [70] 3 */50000 Sigfox Wiﬁ,CN √ - - - - √ - - - - - -
+Smart Canton [132] 3,4 16/* LoRa Wiﬁ,CN √ - - - - √ - - - - - -
+ParkRight London [60] 1a 3400/3400 Weightless Wiﬁ,CN √ - - - - √ - - - - - -
+Melbourne [73, 133] 3 7114/7114 Weightless Wiﬁ,CN √ - - - - √ - - - - - -
+Predication
+Pullola [134] ﬁxed - - GPS √ - - Pois(λ) √ - - - √ - -
+Klappenecker [135] ﬁxed */1000 - 802.11 - √ √ Pois(19.6) - - - - MC √ - -
+Richter [136] 3 */6215 WSN Wiﬁ,CN √ - - - - - - - - √ - -
+Vlahogianni [137, 138] 3 253/253 802.15,4 Wiﬁ,CN √ - - - - √ - √ - √ - -
+Zheng [139] 3 */8200+7114 - - √ - - - - - - - - √ - -
+E. Wu [140] - */260 lots - - √ - - - - - - - - √ - -
+Rajabioun [15, 141] - */1000 - CN(4G) √ - - - - √ - - - √ - -
+Ji [142] - */492 - - √ - - - - - - - - √ - -
+David (Mobinet) [76] 8 */2750 - - √ - - - - - - - - √ - -
+Y . Wu [143] - - - - √ - - - - - - - - √ - -
+Demisch [144] 3 */8200 WSN Wiﬁ,CN √ - - - - - - - - √ - -
+Koster [80] 14 - Wiﬁ,CN √ - - - - √ - √ MC √ - -
+Citypark Bordeaux [145] - - - Wiﬁ,CN √ - √ - - √ - √ - √ - -
+†In the Type column: the type id is referred to Table II.
+†In the Info source columns: S/P is the ratio of sensors to parking places.
+†In the Deployment columns: NetS is the network of sensors. NetU is network of users (CN: cellular network; CB: cable; BT: bluetooth; PLC: power-line communication).
+†In the Storage columns: C is centralized. D is distributed (S/V/I: sensor/vehicle/infrastructure).
+†In the Service columns: AU is amount of service users (Pois: poisson - unit: vehicles/minute), BC is broadcast (VMS: variable message sign, VNT: vehicular network),
+EP is E-Parking (namely drivers can ﬁnd parking through telephone or internet). RSV: reservation.
+†In the Parking game columns: UB is user behavior, SG is strategy (MC: Markov chain; MAS: multi-agent system; DP: dynamic pricing; UF: utility function). PD is prediction.
+†In the Network columns: NP is network protocol, OT is others (LT: lifetime; SC: security; AG: aggregation; LQ: link quality; FW: framework; SA: search algorithm).
+
+===== PAGE 11 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 10
+plan. Thus, we divide the parking system deployment into
+three parts and give an outline in Table III. Software system
+takes a huge part of the literature and manages information
+management and e-parking services. All of them suppose a
+centralized server is used to execute the service. Moreover,
+we also present some works on software package solutions
+and user interface. Large-scale deployments introduce existing
+projects including software system and sensor deployments.
+Unlike other literature, large-scale deployments adopt both
+short and long-range communication methods and their sen-
+sors choice is quite consistent. Prediction is mainly related
+from data analysis, which gains more and more attention
+thanks to large-scale deployments and parking meters exten-
+sion. By some improved machine learning algorithms, drivers
+can beneﬁt from studied data and know in advance if they
+have a chance to park their car at a certain time for a certain
+space.
+A. Software system
+1) Information management: Software systems are the in-
+terface between information and system users. We notice
+that there are many works on software systems because the
+interoperability of different systems is tough to handle. Several
+works began with building a software system for WSN-based
+smart parking systems. WSN provides detected information
+to smart parking systems and shall be well managed in order
+to reply drivers’ parking requests. Thus, the ﬁrst priority is
+a parking system to monitor and to process data. Jeffrey
+et al. [69] proposed a WSN-based park system not only to
+monitor the occupancy status but also sensor motes health
+situation. Drivers can get the billing information via SMS.
+Vishnubhotla et al. [63] introduced a parking vacancy moni-
+toring system with a ZigBee 9-based WSN to show the parking
+status in the entrance. Tang et al. [68] designed a parking
+detection demonstration system with a IEEE 802.15.4 10-based
+mesh network. Each parking space is equipped with a light
+sensor to detect a car’s presence in order to provide real-time
+occupancy information. Yang et al. [104] designed a WSN-
+based smart parking system that collects information totally
+wirelessly. User interfaces are developed on smartphones, a
+central web-server, and embedded web servers to guide users
+where available parking spaces are. SensCity [102, 103] imple-
+mented a Machine-to-Machine (M2M) architecture including
+parking sensors and parking applications. To improve smart
+parking system intelligence, a Multi-Agent System is used
+and modeled in MOISE 11. iParking [113] is a smart parking
+system that collects sensing information and then shows the
+current occupancy status through a social network, Twitter.
+KATHODIGOS [100] proposed a central parking information
+system integrating two different heterogeneous sensor net-
+works, namely wireless networked magnetometers and wired
+cameras. Then the authors tried to improve the precision of
+the information by using a fuzzy inference system [101].
+Mainetti et al. [112] also worked on heterogeneous sensor
+9www.zigbee.org
+10www.ieee802.org/15/pub/TG4.html
+11moise.sourceforge.net
+networks, including light sensors and RFID. The authors
+introduced a smart parking system with heterogeneous sensor
+networks, smart IoT gateway, a cloud platform and two differ-
+ent user interfaces, i.e., DriverApp and TrafﬁcApp. RESTful
+communication is used to exchange information between IoT
+smart gateway, Apps and the cloud platform. Calipso [105]
+is a European FP7 project targeting the development of IP
+connected smart objects. It proposed an architecture including
+several low-power IP stacks for protocol optimizations. Some
+authors might propose a wire sensor network due to the bad
+link quality of low-power wireless communications. Yao et
+al. [122] used CAN bus to connect all ultrasonic parking
+sensors and then provided a guidance service by an outer
+screen and light indicators. SmartParking [77] addressed a
+software and hardware architecture for their smart parking
+service. Also, a birth-death stochastic process is modeled
+to predict the revenues and pricing plans. Hong et al. [86]
+proposed a parking emulation platform for those who want to
+test their parking service with deployed sensors.
+2) E-Parking service: Once the data storage and informa-
+tion monitoring are done, cities can provide urban services
+by using the data they own. Since drivers can get the park-
+ing information in advance, a reservation system is often
+recommended. Kumar et al. [110] also presented a Zigbee-
+based smart parking system that provides parking monitoring,
+guidance, and parking reservation. Inaba et al. [117] intro-
+duced a smart parking prototype system supported by the
+Japanese telephone operator NTT. Telephone users can easily
+ﬁnd a parking space and make a reservation by using the
+Internet. Rico et al. [108] designed a smart parking system
+with different technologies. The system provided a reservation
+scheme and presented the process while coping with parking
+requests. Venkateswaran et al. [61] proposed a smart parking
+reservation system that assists drivers when they verify the
+current parking occupancy status and provides an anti-theft
+barrier gate with user authentication check. Giuffre et al. [8]
+presented an intelligent parking assistance architecture that tar-
+gets current parking management solutions through a wireless
+sensing technology. Withthe example of smart parking, the
+mobility quality in urban areas is improved. To improve smart
+parking system efﬁciency, some works proposed a method or
+platform to improve the system agility. Ganchev et al. [114]
+presented a parking locator service based on a multi-agent
+system. Infostations are used to relay the information between
+a central server and user-end mobile devices. ParkinGain [121]
+presents the concept of a smart parking application that helps
+drivers ﬁnd and reserve parking spaces using their OBUs or
+smartphones. Since smart parking technologies deploying cost
+is not negligible, other value-added services can beneﬁt from
+smart parking technologies to create business opportunities.
+Bechini et al. [84] suggested to install QR codes on parking
+spaces. Drivers can scan the QR codes in order to pay their
+parking spaces. When a driver ends a parking session, the
+system will announce that the parking space is from this
+moment on available to drivers looking for parking. The
+authors then studied the relationship between drivers’ parking
+requests and parking spaces’ current statuses. A full process
+from parking search, reservation, occupation, payment, and
+
+===== PAGE 12 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 11
+release is discussed from drivers’, administrators’, and data
+scientists’ point of views. This system is low-cost, but it cannot
+control if drivers do pay their parking spaces since QR codes
+cannot detect the presence of vehicles.
+3) Software solution: If the collected parking information
+is massive and intensively distributed, a reliable and scalable
+software will be required to deploy on servers in order to
+deal efﬁciently with all simultaneous drivers’ parking requests.
+Gopalan et al. [99] introduced an OSGi 12-based middleware
+with a Java-based standard Knopﬂerﬁsh for smart parking
+systems. The authors showed that OSGi helps having efﬁcient
+daily communication, data storage, and processing so that
+a bundle of services for a parking area can be supported
+by the database containing all the available parking spaces
+information. Except for OSGi, cloud on big data features are
+also very promising. Suryady et al. [109] introduced a smart
+parking system using cloud-based platforms. To achieve a
+rapid deployment, each gateway, collecting data from parking
+sensors, is equipped with a cellular upload link in order to
+store them in the cloud. Then, with RESTful web service
+and JSON data format, sensed information can be used to
+reply information requests or be pushed to subscribers through
+any IoT middleware. Ganchev et al. [115] extended their
+previous work [114] and proposed a number of software
+solutions, including Kafka/Storm/Hbase clusters, OSGi web
+applications with distributed NoSQL, a rule engine, and mo-
+bile applications, to support a Publish-subscribe service on
+a cloud-based infrastructure. Kafka, Storm, and Hbase work
+on distributed message collection and computing. OGSi, a
+bridge between cloud and user tiers, provides an environment
+that modularizes web applications by registering or moving
+in the execution context of the bundle. Pazos et al. [111]
+adopted a central IoT platform Stemys.io to manage all
+the OSGi-enabled gateways and sensors. In addition, MQTT
+broker is installed on a central server in order to deal with
+drivers’ parking demands by publishing/subscribing messaging
+paradigm. ParkITsmart [123] proposed a prototype of parking
+monitoring and management system, and two apps for end-
+users and parking providers, respectively. The end-user app
+is crowdsourced by drivers occupying or releasing parking
+spaces, the other is updated by parking providers or NFC
+tags. The authors constructed a stack of the user interface,
+the web, and platform frameworks by adopting and combining
+Apache Cordova, jQuery, and jQuery mobile. JSON is used
+for message formats and JSON-RPC for communications. Two
+scenarios are simulated to evaluate cruising situations to park
+in city centers and suburbs. Considering the high popularity
+(94%) of RFID eTag electronic toll collection (ETC) system
+in Taiwan, Pham et al. [116] proposed a smart parking
+system based on Arduino with RFID technology. The authors
+consider each car park as a standalone IoT network. The
+system contains three parts: a local unit in each car park
+to collect information, a cloud-based server implemented on
+Apache Hadoop and Hbase to store the information collected
+from local units and to allow drivers to ﬁnd the parking
+information, and the client application on Android. These local
+12www.osgi.org
+units constitute a geographical parking infrastructure network
+and allow drivers to access parking information from the cloud
+via 3G/4G or with local units via wireless networks. Each
+local unit also maintain a neighborhood table with the latest
+parking availability information. The authors then proposed an
+algorithm to describe the system operation to help drivers ﬁnd
+the best parking slot according to their cost functions, as well
+as a function of parking search time and walking distance.
+Ducreux [125] introduced a resource-based middleware LINC
+that integrates a rule engine. The goal of LINC is to develop a
+rapid prototyping platform that can integrate several types of
+equipment from different vendors and different protocols. A
+case study of smart parking is taken to present LINC ability
+and some extra tools that help build a rich user interface and
+debugging complex systems.
+4) User interface: User interface is an important factor to
+guide drivers to ﬁnd a parking space by using smart parking
+system. If the interface is badly designed, drivers might not
+be aware of the smart parking service or be badly guided
+by inappropriate information. Souissi et al. [107] focused
+on application layers development, to wit, how to obtain the
+sensed information from parking sensors and how to present
+them on a web server. BeeParking [87] adopted a portable
+identiﬁcation device, iButton, which is similar to RFID tag.
+The pre-installed iButton probes, on parking spaces, identify
+parked vehicles and then show the ambient information on
+a beehive-like display, which might help drivers to easily
+understand parking information. Rodier et al. [124] described
+a smart parking educational tool designed by ParkingCarma 13
+to facilitate system use. PSOS (parking space optimization
+service) [119] is an E-parking service including three different
+parts, that are: a channel manager, an integration manager and
+an application coordinator, to deal with the interoperability
+between different devices. Grazioli et al. [106] proposed a
+smart parking online service system, including web and mobile
+applications for drivers, parking operators, and controllers.
+Operators can draw parking areas with detailed information.
+Drivers can be guided to the most suitable parking area by
+describing their interests. Controllers can monitor all vehicles
+parked in their own area. Drivers can also share their knowl-
+edge about parking occupancy to add crowdsensing to the
+system. For some countries, such as Singapore, using mobile
+phones or tablets is strictly prohibited while driving. Niculescu
+et al. [120] proposed an intelligent driver assistant to help
+drivers ﬁnd quickly suitable parking in Singapore. The driver
+assistant uses speech to interact with drivers and becomes
+an active help during navigation by checking periodically the
+chosen car park availability.
+5) Guidance: Drivers using smart parking services always
+receive a lot of information. Guidance shall provide a driving
+path to several potential parking spaces to avoid conﬂict.
+Jun [126] presented active and passive parking guidance
+systems and proposed a system framework for active parking
+guidance. Since parking guidance is often limited by the dy-
+namically changing availability information and trafﬁc conges-
+tion, a negotiation ﬂow is analyzed to reveal some important
+13www.parkingcarma.com
+
+===== PAGE 13 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 12
+TABLE IV
+SMART PARKING CITY PROJECTS
+Project City #Parking Cost App Launched
+Stadtinfo K ¨oln Cologne 16000 - - 09/1996
+MOBINET Munich 2750 4Me - 09/1998
+SIMERT Loja 1974 - SIMERT Loja Ecuador 05/2002
+Area Verda (22@) Barcelona 50000 - apparkB 04/2005
+Cabspotting(ParkNet) San Francisco 281364 400$/veh - 04/2006
+PARK Smart New York City 177 - Parker 10/2008
+SFpark San Francisco 8200 23M$ SFpark 04/2011
+SmartSantander Santander 400 8.67Me SmartSantanderRA 06/2011
+Parking in Melbourne Melbourne 7114 537,817$A Street Parking 07/2011
+WSN-DPCM Madrid 15 3.3Me - 10/2011
+Nice Park Nice 10000 13-15Me Nice City Pass 01/2012
+Optimod’Lyon Lyon 30 7Me Optymod’Lyon 02/2012
+Smart Parking Pilot Beijing 20000 - - 03/2012
+Stockholm Parkering Stockholm 37000 - P-Stockholm 05/2012
+LA ExpressPark Los Angeles 6300 18.5M$ Parker,ParkMobile,ParkMe 06/2012
+ParkRight London 3400 889,395£ ParkRight 10/2012
+Moscow Fastprk Moscow 50000 - Parking Moscow 11/2012
+ParkChicago Chicago 36000 153M$a ParkChicago 04/2014
+ParkBoston Boston 8000 - ParkBoston 01/2015
+Smart Canton Geneva 16 - - 01/2015
+Berlin Pilot Berlin 50-70 - - 09/2015
+Citypark Bordeaux Bordeaux - 87,000e Citypark 10/2015
+aTotal project 153M$ for rapid transit bus and parking program
+technological problems. SPARK (Srikanth et al. ) [127] is a
+smart parking prototype with parking sensors, guiding node,
+information display, and GSM device. The parking status is
+sensed by parking sensors and a guiding node can make a
+reservation via GSM communication. Monitoring, reservation,
+and guidance modules are implemented to help drivers ﬁnd
+parking. Shin et al. [128] studied a smart parking guidance
+algorithm using parking spaces’ utility functions. Each park-
+ing utility function is calculated from driving duration from
+current car location to a parking facility, walking distance
+from a parking facility to a destination, parking cost, trafﬁc
+congestion caused by parking guidance itself, and the degree
+of availability.
+B. Large-Scale Deployment
+Since parking is a city-level problem, large-scale deploy-
+ments are spreading in different cities. Three main kinds of
+city-scale deployments are mobile sensing, ﬁxed-site sensing
+via short-range communication, and ﬁxed-site sensing via
+long-range communication. The typical example of mobile
+sensing is ParkNet [58, 59], which takes advantage of the
+Cabspotting trace [57] in San Francisco to install parking
+detection sensors on cabs in order to detect the available on-
+street parking spaces. Since each cab either cruises in the
+central business district (CBD) to ﬁnd passengers or drives
+towards the destination of the current passenger, the CBD has
+more chance to provide accurate information in ParkNet. With
+536 cabs, the successive location information can be updated
+within 60 seconds apart [58].
+Fixed-site sensing requires ﬁxed parking sensors on each
+parking space. Section III-A introduced many different types
+of sensors, and we know that most sensors are battery-powered
+and might sometimes be underground. To maximize sensor
+devices’ lifetime, short-range communication requiring less
+transmission power is often favorable. To ensure sensors’ con-
+nectivity, urban infrastructures, such as internet gateways and
+repeaters, have to be installed within sensors’ communication
+range in order to gather sensed information. The most famous
+project is SFpark [4], the smart parking municipal service in
+San Francisco covers 30% of street parking. Sensors and me-
+ters can both communicate wirelessly. One repeater at almost
+each intersection completes wireless mesh networks [4]. 85%
+of the events can be received in the central server within 60
+seconds. The main goal of SFpark is to guarantee a 75%
+occupancy rate in any parking area by a dynamic pricing
+policy. Millard-Ball et al. [146] took the project and evaluated
+its impacts of the two ﬁrst years. The results conclude that the
+rate changes have helped achieve the city’s on-street parking
+occupancy and reduced cruising by 50%. LA ExpressPark [3]
+cooperates with Streetline 14 as Park Smart pilot program 15
+in New York City. Streetline adopts a time synchronized
+mesh protocol (TSMP) to allocate bandwidth for each device
+according to an anticipated frequency-time schedule. The
+messages can be received by gateway in about 6-7 seconds.
+LA ExpressPark also applies a dynamic pricing policy to
+achieve 10-30% of the available parking spaces throughout
+the day [85].
+Nice Park [71] is a smart parking program launched in
+Nice, France. The wireless parking sensors detecting parking
+occupancy are provided by Urbiotica 16. Nice Park installed
+68 multi-service kiosks from Finnish Ensto 17 to collect park-
+ing information, and provide extra traveling information so
+that drivers can choose an alternative transport from their
+parking spaces. Beijing also launched a smart parking pilot
+program [6] in 2012 and used Timeloit’s parking sensors 18
+to transmit messages. 35% of on-street parking is covered in
+Beijing. Real-time parking information is currently used by the
+government to regulate trafﬁc but it is still not available for
+the public. Most Asian cities have very few on-street parking,
+like Beijing (only 5.1%) and Tokyo. Comparatively speaking,
+Los Angeles and San Francisco respectively have 75.5% and
+63% of on-street parking.
+WSN-DPCM [66] and SmartSantander [72] are both exper-
+imental platforms that deploy, analyze and reproduce different
+smart city technologies. WSN-DPCM [66] stands for Develop-
+ment, Planning, Commissioning, and Maintenance of WSN in
+a smart environment. It makes one smart parking demonstrator
+with 15 parking sensors in Madrid. SmartSantander [72]
+proposes a unique city-scale experimental research facility for
+different smart city applications. 400 Libelium 19 parking sen-
+sors were deployed to test smart parking service via Digimesh
+communication. Repeaters and gateways are equipped with
+Digimesh20 and 802.15.4 radios in order to communicate
+with sensors or other 802.15.4 devices. Digimesh is a power-
+optimized protocol for peer-to-peer WSN and can let all WSN
+nodes sleep.
+SIMERT [131] is an integrated parking system being de-
+ployed in Loja, Spain since 2002. 3948 Libelium parking sen-
+sors communicate with routers and gateways through Zigbee
+900MHz and Digimesh 2.4 GHz. Each parking is equipped
+14www.streetline.com
+15www.nyc.gov/html/dot/html/motorist/parksmart.shtml
+16www.urbiotica.com
+17www.ensto.com
+18www.timeloit.com/plus/view.php?aid=99755
+19www.libelium.com
+20www.digi.com
+
+===== PAGE 14 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 13
+with two sensors in order to detect parked vehicles. A parking
+application is designed to show real-time parking occupancy
+information to drivers. The authors then introduced a network
+topology, protocols, and ﬁrmware programming for large-scale
+sensors deployment. `Area Verda [67] is deployed in Barcelona.
+Parking sensors update the information to Barcelona Serveis
+Municipals (B:SM) via parking meters, connected to the
+existing ﬁber-optic network. Since 2014, 500 parking sensors
+equipped with long-range communication technology are be-
+ing tested as well.
+Thanks to Worldsensing 21, SigFox is already commercial-
+ized in smart parking markets and used in some cities, e.g.,
+Moscow parking 22 and it is being deployed in Barcelona.
+SigFox is an ultra narrow band technology to send small-
+size messages with a very small bandwidth via a cellular link.
+LoRa has a longer transmission range than cellular networks
+and provides different energy classes for different applications’
+needs. Geneva [132] has just launched a pilot project with
+16 parking sensors equipped with LoRa in January 2015, in
+order to evaluate the possibility to deploy LoRa equipped
+sensors for the Smart Canton initiative. Likewise, thanks to
+V odafone M2M23 and Smart Parking 24, Weightless is now
+deployed in London (ParkRight [60]) and Melbourne [73]. In
+addition, Dinh et al. [133] analyzed the on-street parking data
+in Melbourne to ﬁnd out parking violations, that is, all the
+parking behaviors that do not comply with the parking rules.
+The authors also proposed a system architecture to detect those
+kinds of parking violations.
+Table IV gives some information on the budgets while
+deploying large-scale smart parking systems and services.
+Thanks to these municipal projects and their corresponding
+open data, some companies can coordinate parking infor-
+mation and provide drivers a richer platform. Parkopedia 25
+also provides some on-street parking information via parking
+meters and some existing city resident parking maps. Park-
+Wise26 provides real-time on-street parking information by
+compiling American city regulations, such as Boston, Chicago,
+Los Angeles, Cambridge, Somerville, and soon, San Francisco.
+C. Parking Vacancy Prediction
+Except for reservation, parking prediction is the most com-
+mon way to forecast the occupancy rate of parking. From
+predictions, smart parking services can provide the possibility
+to get a parking space to drivers. That allows drivers to
+organize their transport before their departures or even during
+their trips. Many different prediction models can be used to
+forecast parking demands. Y . Wu [143] introduced ﬁve fore-
+casting methods: parking generation rate, vehicle population,
+land use and trafﬁc impact analysis, a trip attraction based
+on origin-destination data, and multivariate regression based
+on historical materials. Considering the lack of parking data
+21www.worldsensing.com
+22parking.mos.ru/en/
+23m2m.vodafone.com
+24www.smartparking.com
+25en.parkopedia.com
+26parkwise.us
+and deﬁcient survey precision, the vehicle population model
+is selected to predict the parking demand of the center area in
+Changping town, China. The author show a parking demand
+forecasting from 2011 to 2015 according to car and motorcycle
+populations. The parking demand is assumed to be directly
+proportional to vehicle population.
+The most popular prediction theory undertakes a Poisson
+arrival process, and then predicate the system capacity by
+Markov Chain. Pullola et al. [134] modeled the availability
+of a parking lot by a Poisson process and then proposed
+an algorithm to give the availability probability for each
+parking spot when the driver arrives. Klappenecker et al. [135]
+also presumed that the vehicle’s arrival follows a Poisson
+distribution and modeled the parking lot by a continuous-time
+Markov chain. Then, with the predicted occupancy status, each
+parking lot can provide cruising vehicles with the availability
+information via vehicular networks.
+Some realistic datasets are collected from large-scale de-
+ployments in urban areas. Vlahogianni et al. [137, 138] studied
+on-street parking data from SmartSantander and show that
+the occupancy and parking periods of four parking areas
+follow a Weibull distribution. Zheng et al. [139] analyzed two
+parking datasets from San Francisco (SFpark) and Melbourne
+and predicted the parking occupancy rate by three different
+methods, namely regression tree, neural network and support
+vector regression. X. Chen et al. [129] also studied SFpark
+parking data and tried to predict the parking occupancy status
+in order to provide a better service. Richter et al. [136]
+compared several different spatiotemporal clustering strategies
+by studying the parking availability data from SFpark project.
+Even spatial and temporal clusterings cannot provide a more
+accurate ﬁt than the 7-day model (from Monday to Sunday),
+they can reduce the required storage size. Demisch [144] also
+analyzed the parking data collected by smart parking meters.
+Since parking sensors lifetime is short, providing parking
+information on smart parking meters is essential, especially
+for the dynamic demand-responsive pricing. That is to say,
+the city uses historical data to develop an estimation model
+to predict parking occupation and adjust parking rate based
+on a sensor independent rate adjustment model. Rajabioun et
+al. [15, 141] used real-time parking data from San Francisco
+and Los Angeles and then proposed a multivariate autore-
+gressive model to predict temporal and spatial correlations of
+parking availability. Prediction errors are used to recommend
+the parking location with the highest probability of having at
+least one parking spot available at the estimated arrival time.
+Ji et al. [142] collected parking availability data in several off-
+street parking garages in Newcastle to investigate the changing
+characteristics of short-term available parking spaces. This
+forecasting model is based on the wavelet neural network
+method and compared with the largest Lyapunov exponents
+method in the aspects of accuracy, efﬁciency, and robustness.
+If you ever beneﬁted from Citymapper, you will not feel
+unfamiliar with Optimod’Lyon. Optimod’Lyon [130] is a
+project to optimize urban mobility when citizens are using
+public transport, sharing bikes, carpooling or driving their
+private cars. Smart parking is also one part of this project to
+provide real-time parking information and navigation. Opti-
+
+===== PAGE 15 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 14
+mod’Lyon’s principal partner, Parkeon27, beneﬁting from their
+ubiquitous parking meters, exploits a Big Data architecture
+to unveil the mask of on-street parking. Parkeon adopted
+Dataiku’s Data Science Studio 28, a machine learning method,
+to analyze historical data and build a predictive model to
+ﬁnd parking in cities. Besides, Optimod’Lyon also installed
+30 parking sensors in Lyon city center, a MicroRadar from
+Sensys Networks 29, that has a 3 meters detection range and
+better distinguishes the differences between vehicles, partial
+vehicles, and bicycles than the common magnetometer.
+Qucit, a French start-up, made the ﬁrst appearance with a
+public bike prediction app, ”Bike Predict”. This app provides
+possible available bike storage or parking on each bike sharing
+station from now to 45 minutes later in more than 30 French
+cities. The predicted information is expressed by probability.
+This algorithm does not only analyze when bike stations are
+ﬁlled or emptied, but also consider the weather effect, which
+usually changes the mood of citizens to circulate by bike.
+Citypark [145] is the second app from Qucit and it began in
+Bordeaux. Citypark inherited the idea of Bike Predict and it is
+proved that the ﬂow of ﬁlled or emptied public bikes stations
+is highly related to trafﬁc ﬂow. By integrating public bikes
+information with the existing connected parking meters, trafﬁc
+monitoring cameras, weather, special events and crowdsensed
+data, Citypark estimates the time required to ﬁnd on-street
+parking near your destination.
+Besides, drivers’ decisions can also be inﬂuenced by pre-
+diction. E. Wu et al. [140] proposed a cost model to inﬂuence
+users’ parking choice. The cost model is based on a probability
+of parking successfully, within a certain distance from the cur-
+rent location. Since the successful parking probability varies
+with time, a probability estimation method is proposed by
+using remaining available space count. Koster et al. [80] used
+smartphones as parking detection sensors and then studied
+the trafﬁc of NYC department in order to estimate park-
+ing lots occupancy status. Then, to calculate the availability
+probability of each parking space, the estimator considered
+all the properties of parking spaces (shade, sun, garage and
+cloudy) to know if the space had a higher chance to be taken.
+The smart parking system can then use the information to
+recommend drivers the most favorable parking space. David
+et al. [76] designed an event-oriented forecasting model as
+part of MOBINET project 30. The forecasting model considers
+the detected information (mainly for off-street parking) and
+estimated information from the online trafﬁc data (mainly for
+on-street parking).
+V. P ARKING SERVICE DISSEMINATION
+Once parking information is detected by sensors and stored
+in order to be accessible to the public, drivers access the
+same information and cruise in the same area where they
+often chase the same parking space. Thus, how to broadcast
+information and guide drivers to corresponding parking spaces
+27www.parkeon.com
+28www.dataiku.com
+29www.sensysnetworks.com
+30www.mobinet.de
+fairly becomes an important issue. In this section, we will
+introduce how to disseminate parking information and how
+drivers react according to the information they receive. We di-
+vide service dissemination into three parts as well: information
+dissemination, parking competition, and drivers’ behaviors,
+which are dedicated in Table V. Information dissemination
+involves the diverse technique choices. We have seen the
+centralized solutions in the previous literature. In this part, we
+will introduce distributed or opportunistic solutions inspired by
+vehicular networks. Parking competition presents the provoked
+decision making when drivers are connected to the parking
+availability information from the system’s viewpoint. Parking
+behavior inspects driver’s decision from the driver’s viewpoint.
+All the different individual behaviors can help model global
+parking competition and choose a better technique to display
+parking information.
+A. Information Dissemination
+In Section IV-B, all the existing large-scale deployments
+adopt a centralized method to provide parking information via
+cellular link or WiFi. Fig. 4 classiﬁes different parking infor-
+mation dissemination techniques. We categorize them into two
+macro groups: centralized and distributed. In Section IV-B, we
+notice that centralized information transmitted through BTS of
+3/4G or WiFi AP is the most intuitive choice of municipalities.
+We also deﬁne all the roadside infrastructures connected
+directly to centralized servers that are running a centralized
+technique. Then, vehicles executing a vehicle-to-infrastructure
+communication are also connected to the centralized server via
+one-hop. Next, the distributed techniques are more varied. The
+ﬁrst sub-group is determined by a roadside infrastructure. We
+deﬁne that VMS is distributed to one-hop roadside infrastruc-
+tures since they only provide local information and there is
+no communication between drivers. If vehicles can exchange
+messages, parking information, traveling from infrastructures
+to drivers, will be able to be retransmitted to other drivers in
+a multi-hop network. If there is no roadside infrastructure, we
+suppose that sensors and vehicles are able to communicate.
+It means that either ﬁxed sensors can execute a sensor-to-
+vehicle communication with passing cars, or cars equipped
+with sensors can exchange their detected information with
+other cars in a vehicle(sensor)-to-vehicle network. The latter
+usually can retransmit receipt messages in a multi-hop manner.
+Except for the existing cellular networks and for WiFi,
+a centralized information ﬂow supported by roadside in-
+frastructure and vehicular networks is also very common.
+CBPRS [168], namely city-based parking routing system,
+proposed a centralized parking system that links intelligent
+lampposts and parking sensors by power-line communication.
+The central parking service runs an ant colony optimization
+(ACO) to guide drivers from their current location to parking
+spaces. The results show that ACO outperforms the Dijkstra’s
+algorithm in reducing trafﬁc congestion and increasing city
+ﬂow. Piorkowski et al. [147] used TinyNodes 31 as parking
+sensors. Sensors periodically send available parking infor-
+mation to vehicles so that vehicles can ﬁnd parking spaces
+31www.tinynode.com
+
+===== PAGE 16 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 15
+TABLE V
+SMART PARKING SOLUTION FOR SERVICE DISSEMINATION
+Reference Info source Deployment Storage Service Parking game Network
+Type S/P NetS NetU C D:s/v D:I AU BC EP Rsv UB SG PD NP OT
+Information dissemination
+Piorkowski [147] 3 25/25 XE1205 - S - 2 VNT √ - - - - - -
+Lochert [148] 3 */real map 802.11 - S - 10K VNT - - - - - - AG
+SPARK (Lu) [149] 12 */1000 802.11 - V 3 Pois(6) VNT √ √ √ - - - SC
+Alhammad [150] 12 - 802.11 √ - √ - - √ √ - - - - -
+Bessghaier [151] 12 - 802.11 - V - ≤300 VNT - - - MAS - - -
+edPAS [152] mob */50000 802.11 √ - 1000 100K - √ - - SH - - -
+Panayappan [153] mob - 802.11 - - √ - - √ - - - - - SC
+iPark (Zhao) [154] mob */2000 802.11 - V - ≤2K VNT √ - √ - - - -
+Delot [12, 155–158] 14 */60 802.11 - V - 60-240 VNT - √ - - - √ -
+Kokolaki [83, 159] ﬁxed */25 802.11 √ S - 5-70 VNT - - √ - - - -
+Tasseron [160] 3,14 */96 S2V ,V2V - S,V - ≤96 VNT - √ - - - -
+Caliskan [161, 162] ﬁxed */∼129·70 - 802.11 - V 129 10K VNT √ - - MC √ √ AG
+Horng [163, 164] - */200-1200 - 802.11 √ - 100 300-1.8K VNT √ - - CA - - -
+PMNET [62] 1a - - 802.11 - - √ - VNT - √ - - - - -
+Vaghela [165] - - - 802.11 - - 100 100 - √ - - AD - - -
+Kim [166] - - - VLC - - - - VNT - - - - - - LQ
+PhonePark [81, 167] 14 */16 BT 802.11 - V - - VNT √ - - - √ - -
+Wang [65] 2,7 */real map 802.15.4 Wiﬁ,CN,BT √ S - Real trace VNT √ √ - - √ - -
+CBPRS [168] ﬁxed - WSN 802.11,PLC √ - √ 7.5K-10K VNT √ √ - ACO - - -
+Geng [169] 3,5 */2611 WSN 802.11,CN √ - - Pois(0.4) VMS √ √ √ - - - -
+Draskovic [170] 3,4 - WSN BT √ - - - - √ - - ES - - -
+Competition
+Zoeter [85] 3 */6300 WSN Wiﬁ,CN √ - - - - √ - - MC,DP - - -
+Millard-Ball [146] 3 11900/8200 WSN Wiﬁ,CN √ - - - - √ - - DP √ - -
+Song [171] - - - - - - - - - - - - GT - - -
+Verroios [64] 12 - 802.11 - V - 20 veh/km - √ - √ CT,TSP - - -
+Ayala [172–174] 12 */20-80 802.11,CN √ V - 40-80 - √ - - GT,SM,GPA - - -
+iParker [175] - - - - √ - - Pois(λ) - - √ - DP - - -
+Chou [176] - - - 802.11,CN √ - √ - - √ √ √ MAS - - -
+Dell’Orco [177] - - - - - - - - - - - √ MAS,FZ,DP - - -
+Karaliopoulos [178, 179] - - - Wiﬁ,CN √ - - - - √ - √ GT - - -
+Di Napoli [180] 10 - - Wiﬁ,CN √ - - - - √ √ - MAS - - -
+Schlote [181] - */100-160 - Wiﬁ,CN - - √ Pois(6) VNT - - - SH √ - -
+Jin [182] - - - - √ - - 1500 - √ √ - SH - - -
+PFLBS [183] - */73+32 - - √ - - - - √ - - FZ √ - -
+Teodorovi´c [184] - */100-350 - - - - - - - - √ - FZ,DP - - -
+Sarasua [185] - */5567 - - √ - - 5567 - √ √ - HTA - - -
+CGPS [186] mob */20-80 802.11 - V - 25-85 - √ - √ GT - - -
+Doulaims [187] mob - 802.11 √ - √ - - - √ - MIS,DP - - -
+Behavior
+Mei [188] ﬁxed - - - - - - - VMS - - √ GA - - -
+Caicedo [189, 190] 3 */∼600 - - - - - Pois(38-98) - - - √ - √ - -
+PARKAGENT [191] - */10340 - - - - - 11.6K - - - √ MAS - - -
+Joss´e [192] - */5-20 - - - - - 100 - - - √ - - - SA
+H. Guo [193] - */800 - - - - - ≤2K - - - √ CA - - -
+L. Guo [194] - */113+526 - - - - - ≤800 - - - √ - - - -
+Ma [195] - */604 - - - - - - - - - √ - - - -
+M. Chen [196] - */188 - - - - - - - - - √ - - - -
+Nurul Habib [197] - - - - - - - 46K - - - √ - - - -
+Glasnapp [198] 3 */6300 WSN Wiﬁ,CN √ - - - - √ - √ DP √ - -
+Chaniotakis [199] - - - - - - - 397 - - - √ - - - -
+Shaaban [200] - */4100+ - - - - - 816 - - - √ - - - -
+Yu [201] - - - - - - - - - - - √ - - - -
+†In the Type column: the type id is referred to Table II.
+†In the Info source columns: S/P is the ratio of sensors to parking places.
+†In the Deployment columns: NetS is the network of sensors. NetU is network of users (CN: cellular network; CB: cable; BT: bluetooth; PLC: power-line communication;
+VLC: visible light communication)
+†In the Storage columns: C is centralized. D is distributed (S/V/I: sensor/vehicle/infrastructure).
+†In the Service columns: AU is amount of service users (Pois: poisson - unit: vehicles/minute), BC is broadcast (VMS: variable message sign, VNT: vehicular network),
+EP is E-Parking (namely drivers can ﬁnd parking through telephone or the Internet). RSV: reservation.
+†In the Parking game columns: UB is user behavior, SG is strategy (ACO: ant colony optimization; AD: agent discovery; CA: cellular automata; CT: clustering algorithm;
+DP: dynamic pricing; ES: Expert System; FZ: fuzzy logic; GA: genetic algorithm; GPA: gravity-based parking algorithm; GT: game theory; HTA: Hitchcock transportation
+algorithm; MAS: multi-agent system; MC: Markov chain; MIS: maxima interval scheduling; SH: scheduling algorithm; SM: stable marriage; TSP: travelling salesman
+problem). PD is prediction.
+†In the Network columns: NP is network protocol, OT is others (LT: lifetime; SC: security; AG: aggregation; LQ: link quality; FW: framework; SA: search algorithm)
+from nearby ones. Alhammad et al. [150] also proposed a
+smart parking based on sensing vehicles. The difference is
+that plenty of infostations are installed for each parking area in
+order to gather/provide information from/to vehicles. Horng et
+al. [163, 164] proposed a V2I communication model between
+roadside infrastructure and vehicles to deal with parking
+demands. A cellular automata mechanism is used to describe
+the car society under a smart parking environment to allocate
+parking spaces more efﬁciently. Wang et al. [65] proposed a
+smart parking reservation system in a half distributed manner.
+Drivers get parking information from a central server but
+reserve their parking spaces directly with the nearby parking
+spaces. To test this system, the authors used a real-world trafﬁc
+trace to generate parking demands. The authors took a general
+assumption that real total trafﬁc for parking is proportional
+to highway trafﬁc and then classiﬁed the total highway trafﬁc
+
+===== PAGE 17 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 16
+Information Dissemination
+Centralized
+BTS, WiFi AP
+SFpark
+ExpressPark
+Nice Park
+Area Verda
+ParkRight
+SIMERT
+Park Smart
+FastPrk
+P-Stockholm
+V2I,I2V
+CBPRS’08
+Wang’11
+Alhammad’12
+Horng’12
+Draskovic’12
+Geng’13
+edPAS’14
+Distributed
+Roadside infrastructure
+Single-hop
+VMS*
+Rodier’10
+BeeParking’11
+Mei’11
+Calipso’14
+Bagula’15
+V2I,I2V
+Panayappan’07
+SPARK(Lu)’09
+Multi-hop
+V2I,I2V ,V2V
+PMNET’02
+Caliskan’06
+Vaghela’11
+Kim’14
+Infrastructure-free
+Single-hop
+S2V
+Piorkowski’06
+Lochert’07
+Tasseron’15
+Multi-hop
+S2V ,V2V
+Bessghaier’12
+iPark(Zhao)’12
+Delot’13
+PhonePark’13
+Kokolaki’13
+Fig. 4. The diagram of parking information dissemination classiﬁcation. BTS: base transceiver station; AP: access point; V2I: vehicle-to-infrastructure; I2V:
+infrastructure-to-vehicle; V2V: vehicle-to-vehicle; S2V: sensor-to-vehicle; V2S: vehicle-to-sensor; VMS: variable message sign.
+into incoming trafﬁc and outgoing trafﬁc, which represents the
+trafﬁc approaching the target area and leaving it. The incoming
+trafﬁc serves as reference of parking demands. After that, a
+real-world map in Los Angeles Downtown is imported into
+the simulator to calculate distance and path. Geng et al. [169]
+formulated a mixed-integer linear programming problem for
+smart parking demands and solved it with an optimal parking
+allocation method. Draskovic et al. [170] introduced a smart
+parking system using a search algorithm to ﬁnd the most
+suitable parking spaces as soon as possible.
+Since the information delay caused by network retransmis-
+sion is somehow long, the distributed information system is
+considered an appropriate solution to reduce network distance
+and network trafﬁc. VMS is an instinctive way to indicate
+the adjacent available parking information to drivers. Here,
+we classiﬁed VMS as distributed manner because VMS only
+shows the information in a certain nearby area. Alternatively,
+drivers can also receive information from roadside infrastruc-
+ture in one-hop. Panayappan et al. [153] proposed a V ANET-
+based infrastructure to provide available parking information,
+thus roadside units deployment is very important in order to
+cover each public or private parking area. Each vehicle can
+detect the occupancy status and send it to roadside units. Each
+vehicle can also get the update occupancy from roadside units.
+Data storage is distributed among different roadside units,
+which can be better protected to avoid some security problems.
+To extend the information popularity (more accessible),
+messages can travel for more than one-hop from infrastructure
+in order to reach some vehicles which are not in the city in-
+frastructure transmission range. We have seen parking meters’
+importance for industrial cycles in Section III-C. Most vehicle-
+to-vehicle communications can beneﬁt from these existing
+roadside parking meters to increase their packet transmission
+rates. Caliskan et al. [161, 162] presented a decentralized
+parking discovery method supported by automats, namely
+roadside parking payment terminals. Since automats deal with
+payments, they also have current occupancy information and
+can periodically broadcast available parking information to
+vehicles. Each vehicle aggregates received information before
+it distributes it to other vehicles. Vaghela et al. [165] also used
+parking meters (automats) to distribute parking information for
+passing vehicles. PMNET [62] means parking meter network.
+Infra-red sensors are installed on parking meters to detect the
+occupancy status, and then parking meters can announce the
+available parking information via direct communication with
+vehicles. Vehicles can also forward this information to further
+vehicles to increase parking usage rates. Another new highly
+anticipated technology is visual light communication (VLC),
+which exchanges messages through light. The VLC module
+includes a LED as a light transmitter and a photodetector as a
+light receiver. Since light travels in straight lines, VLC mod-
+ules can communicate in the light-of-sight. Kim et al. [166]
+proposed a smart parking information system supported by
+VLC. The authors installed these VLC modules on vehicles
+and in parking lots entrances, and then drivers could obtain
+parking information while passing the entrance. The packet
+reception rate is about 80% and the transmission range is
+limited to 1.7 meters.
+However, urban infrastructure installation is costly, so ve-
+hicles can also choose to communicate directly with sensors
+themselves. Lochert et al. [148] implemented an aggregation
+mechanism for data dissemination in vehicular networks.
+A real map is taken and TinyNodes parking sensors are
+supposed to be deployed on it. Similarly to [147], parking
+availability information is periodically broadcasted. SPARK
+(Lu et al.) [149] suggested that sensor-mounted vehicles could
+sense the parking status and disseminate it by their own.
+Tasseron et al. [160] compared two kinds of sensing methods
+in vehicular networks: sensor-to-vehicle (S2V) and vehicle-to-
+vehicle (V2V). In the S2V scenario, sensors are installed on
+parking spaces and transmit the occupancy status to nearby
+vehicles. In the V2V scenario, vehicles can detect their own
+status (parking or unparking) and send the information of an
+available parking space while unparking. The results show that
+
+===== PAGE 18 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 17
+S2V can improve parking search efﬁciency under almost all
+conditions. V2V can only outperform S2V in situations with
+almost full on-street occupancy levels.
+As previously mentioned, multi-hop can increase informa-
+tion popularity. Bessghaier et al. [151] studied a full dis-
+tributed inter-vehicular network to see if parking search time
+decreases, compared to current blind search. edPAS [152]
+stands for event-driven parking allocation system. Drivers can
+subscribe to an event place and then get the update from
+communicators if there is any change in the information they
+asked for. The authors compared two different parking demand
+allocations: ﬁrst come ﬁrst serve (FCFS) and priority (PR).
+The results show that PR outperforms FCFS. iPark (Zhao
+et al. ) [154] worked on parked vehicles that had searched
+available parking spaces while other vehicles could inherit
+the information in order to reduce parking time. Delot et
+al. [12, 155–158] proposed a reservation protocol to allocate
+parking spaces in a fully distributed environment. Each vehicle
+can release an available parking message to the network and
+look for a potential parker. If a vehicle gets a response, the
+parking space is then reserved. Otherwise, a new coordinator
+shall be chosen in order to look for a potential parker in a
+further area. PhonePark [81, 167] used sensors on drivers’
+smartphones to detect their activities, e.g., accelerometer,
+Bluetooth, and GPS. Both accelerometers, which can sense
+drivers’ movements, and Bluetooth, pairing between vehicular
+onboard units and smartphones, can indicate if a driver is in
+the car or not. GPS can provide a driver’s spatial and temporal
+information in order to charge parking fees. When a driver
+enters his/her car and is ready to leave, the parking space will
+be available for someone else. Thus, the car will advertise
+this information to other vehicles and a vehicular network is
+then formed to share parking information according to the
+detected drivers’ behaviors. Kokolaki et al. [159] proposed an
+opportunistically assisted parking search (OAPS) in S2V and
+V2V communications. Some results are shown by comparing
+blind and central assisted search. The central parking search
+can help drivers ﬁnd parking faster but OAPS can help drivers
+ﬁnd a closer parking space. Since information dissemina-
+tion is supported by drivers themselves, it is considered a
+crowdsourcing dissemination network. Drivers can decide to
+distribute the information they received (forwarder), to falsify
+the information and distribute it (selﬁsh liar), or do nothing
+(freerider) [83].
+B. Parking Competition
+Dynamic pricing is currently the most efﬁcient way to reg-
+ulate parking occupancy status and trafﬁc congestion. Unlike
+the dynamic pricing policy of SFpark, which changes the
+parking price on the average occupancy in a review period,
+Zoeter et al. [85] took LA ExpressPark deployment and pro-
+posed a dynamic pricing policy with a Markov Chain model.
+The model can then predict a number of parking demands
+and adjust the price before the car park is congested (occu-
+pancy rate > 90%) or underused (occupancy rate < 70%).
+Doulaims et al. [187] improved smart parking reservation
+policies by using maximal interval scheduling and dynamic
+pricing. iParker [175] proposed a mathematical optimization
+model while using dynamic pricing for smart parking. The
+objective of this model is to minimize drivers’ total monetary
+cost while maximizing parking resources use. Chou et al. [176]
+modeled the parking price negotiation in a multi-agent system.
+Each parking manager announces the parking spaces and waits
+for the bids from potential parkers. Thus, the parking price will
+dynamically change according to the intensity of competition.
+Dell’Orco et al. [177] also proposed to match parking demands
+and supplies under dynamic parking pricing by using a multi-
+agent system. The drivers’ perceived parking cost is described
+by a fuzzy set in order to present their imperfect knowledge on
+both parking and system status. Di Napoli et al. [180] adopted
+a software agent negotiation mechanism, which establishes an
+agreement between drivers and parking manager considering
+drivers’ preferences, e.g., location and cost.
+Fuzzy logic system can be used to describe drivers’ deci-
+sions. PFLBS [183], namely parking ﬁnding location-based
+service, is developed based on a case study of the Oats Street
+and Carlisle PnR facilities in Perth, Western Australia. Fuzzy
+logic forecast models were used to estimate the uncertainty of
+parking availability during the peak parking demand period.
+Teodorovi´c et al. [184] referred to the municipal parking
+projects, such as in San Francisco, Chicago, Seattle, and
+proposed a fuzzy logic system in order to know when to accept
+or reject a new parking request according to the pricing policy.
+Drivers might get a list of potential parking spaces and
+visit them one by one until they get one. Thus, the path
+between different parking spaces is quite important according
+to their locations and availability probability. Verroios et
+al. [64] targeted the traveling path planning while driving to
+parking spaces. When drivers send their parking requests to
+the roadside infrastructure, they get a list of available parking
+spaces with a probability of still-free. Each vehicle uses a
+clustering algorithm to classify parking spaces and then plan
+the trip as a time-varying traveling salesman problem.
+However, parking competition is interactive. If we try to
+look at the entire system from a bird’s eye view, each driver
+is involved in a parking game and each decision might have a
+butterﬂy effect. Song et al. [171] modeled parking search as
+a game and then analyzed if the municipal parking policy is
+suitable. Ayala et al. [172–174] focused on the parking com-
+petition. Drivers shall be assigned a parking space they prefer,
+otherwise, the parking assignment will not be stable, namely
+the marriage problem. The authors modeled the parking deci-
+sion by a gravity-based parking algorithm and a game theory
+model. That is to say, drivers will calculate the gravity value
+of each parking space with respect to themselves and their
+neighbors and take the parking space with a relative higher
+gravity value. Karaliopoulos et al. [178, 179] analyzed on-
+street parking and car park parking choice. By assuming that
+each driver can know how many competitors he/she has for
+on-street parking, drivers might change their mind and provoke
+a chain reaction. A game-theoretical model is formulated for
+drivers’ decisions. The authors show parking search efﬁciency
+between optimum, priority heuristic and Nash equilibrium.
+CGPS [186] stands for a collaborative game in parking lot
+search. The authors evaluated CGPS based on game theory in a
+
+===== PAGE 19 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 18
+Parking behavior
+Driver’s interests
+PARKAGENT’08
+Joss´e’13
+Parking choice
+Yu’09
+Mei’10
+M. Chen’11
+Nurul Habib’12
+iPark(Zhao)’12
+Alhammad’12
+L.Guo’13
+Ma’13
+Shin’14
+Karaliopoulos’14
+CGPS’14
+Koster’14
+Tasseron’15
+Chaniotakis’15
+Shaaban’15
+User interaction
+Dell’Orco’05
+Chou’08
+Caicedo’09
+BeeParking’11
+TruCentive’12
+X.Chen’12
+Glasnapp’14
+Vehicle arrival,
+departure
+& location
+(Trafﬁc ﬂow)
+Chinrungrueng’11
+Geng’11
+H.Guo’12
+Vlahogianni’14
+Fig. 5. The diagram of parking behavior classiﬁcation according to different
+focuses of drivers’ behaviors.
+distributed vehicular networks. To collaborate, not only did all
+vehicles receive their own cost but also opponents’ extra cost.
+Based on this, Nash equilibrium is generated by parking search
+efﬁciency increase. Sarasua et al. [185] presented a parking
+distribution way using the Hitchcock transportation algorithm.
+Since it considers network costs, very realistic solutions were
+given and the system equilibrium could be achieved through
+optimal parking assignment combined with pre- and post-
+game trafﬁc control strategies. Jin et al. [182] considered
+parking space assignment fairness. Since most drivers cannot
+arrive the assigned but too far parking spaces on time, the
+assignment scheme is not fair and shall take real-time trafﬁc
+information into account. The traditional First-Come-First-
+Served manner is not suitable to cope with parking competition
+in rush hours. The authors proposed an algorithm considering
+walking distance, driving direction and a time limit of arrival.
+Schlote [181] proposed a parking space assignment based on
+RED32-like scheduling algorithm. The authors assumed that
+vehicles only listen to broadcast information from car parks
+and then estimate the availability of a parking space. The
+authors extended the estimation model from a single car park
+to several distributed car parks considering feedback efforts to
+choose a car park.
+C. Driver’s Parking Behavior
+Fig. 5 shows different classiﬁcations while considering
+parking behaviors. Four categories are made according to
+the criteria used to analyze drivers’ behaviors. Trafﬁc ﬂow
+is often used in a mobility analysis because it is strongly
+related to urban layout. User interaction includes the literature
+previously mentioned on user interface design and the impact
+of different parking policies on drivers, e.g., dynamic pricing.
+Driver’s interests are usually used to build simulation platform,
+such as an agent-based system for publish-subscribe service.
+Parking choice is the most common method that investigates
+existing studies to induce all the limited possibilities. H. Guo
+32RED: random early detection, a scheduling algorithm, which accepts all
+the requests when the buffer is almost empty. But if the buffer grows, the
+probability of dropping an incoming packet increases as well.
+et al. [193] formulated the numerical models for through
+trafﬁc or parking and unparking vehicles and executed them
+in Monte-Carlo simulation. By changing the probabilities
+of (un)parking and vehicle arrival rates, trafﬁc and system
+capacity are also affected.
+Considering the parking game, all drivers have their prefer-
+ences. PARKAGENT [191] is an agent-based, spatially explicit
+model for city parking. It simulates drivers’ behaviors to
+generate distributions of key values, e.g., search time, walking
+distance, and parking costs over different driver groups. It
+also shows that additional parking supply linearly affects
+extreme values occurrences, but has only a weak impact on the
+average search time for a parking space or the average walking
+distance between the parking space and the destination. Joss ´e
+et al. [192] worked on a search algorithm while coping with
+parking queries. The authors generated 100 test cases on real
+world street map data in Munich containing 40186 nodes and
+96047 links. They compared greedy and brute-force search
+algorithms. Greedy search algorithm outperforms on runtime
+under all conditions and on accumulated vacancy probability
+when there are more than 20 parking spots. Glasnapp et
+al. [198] deﬁnes intercept and online surveys in the context of
+LA Express Park. The results determine, in an ethnographic
+point of view, if drivers are aware of the dynamic pricing
+policy.
+Depending on drivers’ preferences, they might repeat park-
+ing search until they get one or they give it up. M. Chen et
+al. [196] ﬁrstly introduced inﬂuencing parking space choice
+key factors and evaluated drivers’ micro-behaviors in parking
+lots. Then, the authors modeled an optimal parking space
+choices according to fuzzy multiple attribute decision making.
+Mei et al. [188] described a parking choice behavioral model
+incorporating drivers’ perceptions of waiting times at car parks
+based on VMS near Shanghai. Then, the arrival rates were
+estimated based on driver characteristics, car park attributes
+and availability information. By using a genetic algorithm,
+queue length and total travel time are reduced. Caicedo et
+al. [189] introduced a PARK (parking access and revenue
+control) system and tried to change the information for drivers
+in VMS, to see how drivers change their decisions and if
+parking search time is reduced. The authors also proposed
+a methodology to predict real-time parking space availabil-
+ity [190]. L. Guo et al. [194] proposed two kinds of parking
+choice models: a static game-theoretic model and a dynamic
+neo-additive capacity model in order to capture the compe-
+tition between drivers for limited parking spaces. The static
+game assumes that drivers make decisions simultaneously
+with perfect knowledge of the parking system characteristics.
+The dynamic model considers individual drivers’ psycho-
+logical characteristics under uncertainty, i.e., optimistic and
+pessimistic attitudes, and captures the impacts of the irrational
+side of parking behavior as well as the rational aspect. The
+results show that the dynamic neo-additive capacity model has
+a higher predictive accuracy than the parking system. Ma et
+al. [195] used six parking facilities in Beijing Lama Temple
+to investigate drivers’ parking behaviors around the tourist
+site. The authors developed a multinomial logistic regression
+model that reveals the relationship between parking decision
+
+===== PAGE 20 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 19
+and inﬂuential factors. Nurul Habib et al. [197] used a sample
+data set collected in Montreal, Canada. Since travel demand
+modeling has been undergoing a paradigm shift from the
+traditional trip-based approach to an activity-based approach,
+the authors gave strong evidence that the parking type choice
+inﬂuences the activity scheduling process. Yu et al. [201]
+focused on drivers’ parking choice behaviors while choosing
+an on-street or off-street parking space. The authors studied
+two groups. The ﬁrst group was collected from drivers with
+complete parking information, and the second from drivers
+with incomplete parking information. The results showed that
+compared with completely-informed drivers , incompletely-
+informed drivers prefer to pay less attention on walking time
+and safety but more on parking fee and some other factors.
+Chaniotakis et al. [199] made a survey to see how drivers
+choose their parking spaces according to the probability of
+having it. A higher availability of parking after 8 minutes of
+search time is more important than a lower parking availability
+upon arrival. Four essential factors in determining parking
+space decisions are, in order of importance, parking costs,
+uncertain parking availabilities (availability after 8 minutes),
+walking distance to destination, and parking availability upon
+arrival. Shaaban et al. [200] studied the survey data to under-
+stand drivers’ parking choices in commercial centers of Doha,
+Qatar. The authors chose four different parking lots around the
+city center mall and tried to understand the parking choices
+according to drivers’ gender, nationality, age, income, visit
+frequency and stay time. Since drivers have to walk under the
+sun at 50◦C in summer, the walking distance from parking lot
+to destination is a very important factor. The authors adopted
+binary classiﬁcation tree models and ﬁgured out the factors
+associated with different parking choices. The results show
+that smart parking affects drivers’ decisions signiﬁcantly more
+than amenities themselves.
+VI. C HALLENGES AND OPEN ISSUES
+Unquestionably, parking is really a pain for all drivers
+in the world. With the parking information, collected either
+from cities’ parking sensors or from crowdsensing apps, smart
+parking services can provide platforms with real-time parking
+status for drivers. Thanks to them, drivers can shorten their
+traveling time and cities can increase their revenues from
+parking fees and tickets. Most smart parking implementations
+focus on the sensing technology and mobile apps development.
+For this reason, cities’ deployments build a bridge between
+them. A Large-scale deployment is a good opportunity to
+test the sensing accuracy and sensors’ connectivity [4, 72].
+Sensed information can be stored in servers and provided to
+the current apps. In this paper, we proposed a comprehensive
+classiﬁcation of smart parking solutions. All works are visual-
+ized in detailed tables to show the different research focuses.
+The results presented in the earlier sections are numerous
+and diversiﬁed, covering different disciplines and topics. We
+understand how important it is to work on smart parking solu-
+tions and it induces many open questions. Our comprehensive
+survey puts us in a particular place to synthetize and analyze
+the existing works and to bring into some open questions. In
+this section, we give a summary and discussion along the line
+of our classiﬁcation.
+Sensing: We have introduced diverse parking detection
+sensors and their sensing techniques in Section III-A. Since
+cities intend to monitor and manage their own resources
+anywhere and anytime, ﬁxed sensors are usually preferable.
+Most municipal deployment projects embedded plenty of
+magnetometers on on-street parking spaces, and then gather
+parking availability information via wireless sensor networks
+or cellular links (Table III). But magnetometers are difﬁcult
+to be adopted in un-demarcated spaces and the installation
+and maintenance cost is signiﬁcant. Some new ﬁxed sensors
+are proposed and tested, such as mini radar or multi-sensor
+devices. Smartphones are alternative multi-sensor devices to
+detect empty on-street parking spaces from the user end, and
+they are often proposed by companies. But their wide range
+use is controversial because it involves personal privacy and
+information security, and requires popularity and incentive
+participation.
+Sensor connectivity: Sensors deployed in cities have
+to be managed through wireless networks. Short and long-
+range communication techniques are both used in municipal
+deployments in Section IV-B. Both of them are dedicated
+to sensors’ lifetime and autonomy, and information delay.
+Long-range communication can beneﬁt from the existing radio
+access network and gives a prompt connection when needed.
+But to be energy-efﬁcient, the amount and the size of data
+transmission are very restricted. The future extension requires
+the mature technology of the future generation of mobile
+network (5G), and packets often travel farther among many
+central units and are billed. Short-range communication allows
+some small-size deployment for local service. Data transmis-
+sion is often unlimited and compatible with present wireless
+networks. Moreover, it gives interesting features to maintain
+local information and can be the preliminary framework of
+smart cities. Although there are many types of research on
+short-range communication, very few of them aim at deploying
+parking spaces on a large-scale. On the contrary, long-range
+communication proposes a better business model and a simpler
+and prompt deployment to noticeably enter the market.
+Centralized or distributed: Fig. 4 shows different pos-
+sibilities to store and disseminate parking information. Is the
+infrastructure necessary for urban services? An infrastructure-
+based system usually relies on roadside infrastructure (usually
+distributed) or cellular base station (centralized) to provide
+information from parking detection sensors. Otherwise, sen-
+sors need to be able to communicate directly with drivers to
+tell their own status with more anticipated battery capacity in
+an infrastructure-free mode. Since cities always like to mo-
+nopolize urban data, centralized storage is normally favorable.
+Also, thanks to smartphones popularity and ubiquitous data
+network provided by mobile operators, drivers are able to
+beneﬁt from urban information simply via apps in a centralized
+manner. However, real-time parking availability data is useful
+only when drivers are very close to the parking location.
+The distributed storage and dissemination can keep local
+parking information, without traveling far, and can generate
+useless transmission. Moreover, omnipresent roadside parking
+
+===== PAGE 21 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 20
+meters owning real-time parking data are equipped with more
+interfaces and more computing power such as to communicate
+with parking sensors, passing vehicles and some WiFi APs
+intelligently. With the emerging concepts of ETSI LDM 33 and
+Cisco Fog computing, it will be interesting and possible to use
+them for new geolocalized urban services.
+Future data network: Today’s Internet is in a very differ-
+ent place, having turned into a constellation of massive data,
+cloud software, smartphone apps, e-commerce transactions,
+and social media. Concerning smart parking, networks are full
+of data, interests, and e-parkings. Data packets describe both
+parking and interests information one speciﬁes in a parking
+request. Smart parking system is an essential part to deal with
+all the parking resources and requests in order to achieve e-
+parking services. Some frameworks or architectures for the
+integration of different technologies and software packages
+are presented in Section IV-A. Most of them are cloudifying
+the system for the future Internet of everything. Such kind
+of network shall be capable of matching different interests to
+the most appropriate data, that is, the future data network 34.
+A simple data-interest matching has been implemented in
+several well-known apps, like Airbnb and Uber, which guide
+users to ﬁnd the particular information they need. Smart
+parking requires more intelligent data matching and interest
+adaptation since users have to drive their cars and use this app
+simultaneously, e.g., OMG’s Data distribution service (DDS)
+within ETSI LDM for vehicular communications.
+Data analysis: Since cities own parking spaces’ spa-
+tiotemporal information, studying data characteristics is essen-
+tial to improve system efﬁciency and parking policy. The ﬁrst
+purpose is often to propose a vacancy prediction model from
+collected data so as to show drivers simpliﬁed and understand-
+able information. Besides, the information can also be applied
+in service dissemination while drivers are completing limited
+parking spaces. Parking is a problem related to land use,
+vehicular trafﬁc, cities revenues and human ﬂow. The statistics
+on parking data will be able to indicate key factors for urban
+development from technical, economical and environmental
+perspectives. The emerging Big Data gives a hotbed for
+parking meter suppliers and data scientists to predict parking
+availability without installing physical sensors. Some machine
+learning algorithms have aimed at improving matching time
+and accuracy, e.g., deep learning for information retrieval and
+multimodal interaction, and Dataiku for parking prediction.
+However, we do not have an idea yet which algorithm is the
+best for geolocalized data and service.
+Connected vehicles: As the opportunity for the connected
+car market is huge and its compatibility with existing wireless
+network is promising, car manufacturers are now adapting
+their cars into CALM architecture 35. Current smartphone apps
+used by drivers cruising on the street are not proactive. A
+33European standard ETSI EN 302 895 – Intelligent Transport Systems
+(ITS); Vehicular Communications; Basic Set of Applications; Local Dynamic
+Map (LDM)
+34Named Data Network, a multi-campus research project for the future
+information-centric network. named-data.net
+35ISO 21217 Communications Access for Land Mobiles (CALM) architec-
+ture
+content-based and context-aware parking service facility will
+be needed, allowing to match drivers’ interests and display
+parking information in advanced drive assistance systems
+(ADAS) through the DDS messaging protocol. Also, vehicular
+networks are more sensitive to urban environment, especially
+on urban propagation, mobility, and drivers’ behaviors. The
+microscopic trafﬁc simulation seems a key point while propos-
+ing new inter-vehicular services. A more realistic dataset
+describing vehicular activities shall be collected and modeled
+to evaluate and improve smart parking systems from the user
+end.
+Parking competition: Large-scale deployment gives some
+real-world examples while integrating parking sensors with the
+software system. However, most drivers still have problems on
+ﬁnding parking because all drivers having the same informa-
+tion always chase the same parking space. Also, drivers often
+do not get the proper information, e.g., parking spaces that are
+not on their ways. Thus, the information dissemination shall
+reduce the trafﬁc ﬂow instead of making drivers cruise more
+for parking. Parking competition is then focused to understand
+how drivers’ decisions can affect the parking system perfor-
+mance. Most systems suggested drivers to make a reservation
+to avoid conﬂicts. Besides, dynamic pricing and game theory
+are currently the two most instinctive methods. To deﬁne the
+parking game, each driver’s individual behavior is signiﬁcant,
+e.g., a vehicle’s arrival and departure, a user interaction
+with the parking system through smartphone or VMS, the
+parking choice, and the driver’s interests. Vehicles’ arrivals
+and departures are often characterized by Markov Chain and
+combined with historical data for parking prediction.
+Municipal or individual: Although there are some non-
+governmental smartphone apps to gather parking information
+from everywhere in the world, such as Parkopedia, or crowd-
+sourcing apps (e.g., Apila), their popularity and convenience
+are still very limited. With the inﬂuence of Uberisation, cities
+are not the only urban service providers anymore. Gaparking
+rose up to offer idle private parking spaces for more than
+one user. Except on-street parking and car parks, drivers have
+one more choice to get a (usually indoor) parking space at
+a lower cost. Many cities are not willing to devote their
+energy to smart parking solution to discourage inhabitants
+from using their cars. Alternatively, an optimized transport
+solution to help people travel in cities, such as Citymapper, is
+commonly more supported by cities. In this case, Gaparking
+service provided by high motivated individuals can ease some
+drivers’ headache. As such, Gaparking optimizes land use and
+reduces the need for public parking spaces. It also stimulates
+the growth of local economies and urban capacity with such
+a new and interesting (quasi) peer-to-peer business model.
+Smart city: Smart parking systems manage real-time
+cities resources and geo-locally provides them to drivers. It in-
+volves on- and off-street parking management, shared parking,
+crowdsourced information, e-parking transactions, smartphone
+apps, data-interest matching, integration of existing and future
+platforms, join/leave of connected objects and cultural habits
+in different cities. That is why smart parking has been consid-
+ered a promising inception and a leading paradigm of smart
+city [8]. Even though we have seen several successful smart
+
+===== PAGE 22 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 21
+parking projects in San Francisco, Barcelona and Moscow, we
+shall not ignore the failed projects of Nice and Beijing. Nice
+gave up the smart parking solution because of the cultural
+habits of the French citizens. Differently, Beijing authorities
+did not consider the integration of diverse techniques. How-
+ever, these failed cases do not dampen citizens’ need for urban
+services. With the rise of open data and e-democracy, citizens
+expect all urban resources to be connected, informatized, and
+shared. The design of a smart city ecosystem inherits the
+open issues of smart parking, especially on urban mobility,
+which has a tremendous impact on resources status and cities
+capacities. Hence, it requires a complete consideration on
+different disciplines and human factors.
+VII. C ONCLUSION
+Considering the urban population and trafﬁc congestion
+increase and the reducing land, smart parking becomes a
+strategic issue to work on, not only in the research ﬁeld
+but also from economic interests. The existing and ongo-
+ing works on smart parking are also very complicated and
+transdisciplinary. Cities always need to spend a long time on
+inspecting all the possible solutions and problems in other
+cities just to make a decision. In this paper, we presented
+a survey of the literature on smart parking solutions from
+academic, commercial and municipal perspectives. The many
+and varied earlier works, spanning out several disciplines, are
+closely linked and inseparable. To give a bird’s-eye view of
+the literature, we introduced a smart parking ecosystem and
+proposed a comprehensive and thoughtful classiﬁcation by
+identifying their functionalities and problematic focuses. We
+proposed three macro-themes: information collection, system
+deployment, and service dissemination. Then, we categorized
+and visualized the literature in very detailed tables and ﬁgures
+in each macro-theme. We explained and synthesized the main
+methodologies used in the existing works and gave a sketch of
+similar concepts. We also summarized their common goals and
+visions by solving the current parking difﬁculties. Next, we
+provided our engineering insights on the challenges of actual
+proposals and open questions. Our insights help cities think
+carefully what techniques to apply and what technologies to
+deploy. Moreover, cities can avoid repeating bad try and error
+processes and choose the most proper solution at the prospect
+of their sustainability and future extension. Our survey gives
+a comprehensive guide to research and commercial products
+by proposing beneﬁcial smart parking solutions to cities. The
+main ﬁndings of the current state-of-the-art also throw out
+recommendations for future research on smart cities and future
+Internet architecture.
+SELECTED REFERENCES
+[1] M. Manville and D. Shoup, “Parking, people, and cities,” J. of Urban Planning
+and Development, vol. 131, no. 4, pp. 233–245, 2005.
+[2] M. Chester, A. Fraser, J. Matute, C. Flower, and R. Pendyala, “Parking infrastruc-
+ture: A constraint on or opportunity for urban redevelopment?” J. of the American
+Planning Association, vol. 81, no. 4, pp. 268–286, 2015.
+[3] “LA ExpressPark.[online],” www.laexpresspark.org.
+[4] “SFpark: Putting Theory into Practice,” sfpark.org/wp-content/uploads/2011/09/
+sfpark aug2011projsummary print-2.pdf, 2011.
+[5] “Data Collection - The Scope of Parking in Europe. European Parking Associa-
+tion,” www.europeanparking.eu, 2013.
+[6] “China Parking,” www.chinaparking.org.
+[7] S. Evenepoel, J. Van Ooteghem, S. Verbrugge, D. Colle, and M. Pickavet, “On-
+street smart parking networks at a fraction of their cost: performance analysis of a
+sampling approach,” Transactions on Emerging Telecommunications Technologies,
+vol. 25, no. 1, pp. 136–149, 2014.
+[8] T. Giuffre, M. Siniscalchi, and G. Tesoriere, “A novel architecture of parking
+management for smart cities,” Procedia Social and Behavioral Sciences - Sus-
+tainability of Road Infrastructures , vol. 53, pp. 16–28, 2012.
+[9] G. Revathi and S. Dhulipala, “Smart parking systems and sensors: A survey,” in
+Intl Conf on Computing, Communication and Applications , 2012, pp. 1–5.
+[10] M. Idris, Y . Leng, E. Tamil, N. Noor, and Z. Razak, “Car park system: A review
+of smart parking system and its technology,” Information Technology Journal ,
+vol. 8, no. 2, pp. 101–113, 2009.
+[11] E. Polycarpou, L. Lambrinos, and E. Protopapadakis, “Smart parking solutions
+for urban areas,” in IEEE Intl Symp and Wksp on a World of Wireless, Mobile
+and Multimedia Networks , 2013, pp. 1–6.
+[12] T. Delot, S. Ilarri, S. Lecomte, and N. Cenerario, “Sharing with caution: Managing
+parking spaces in vehicular networks,” Mobile Information Systems, vol. 9, no. 1,
+pp. 69–98, 2013.
+[13] F. Zafari, S. Mahmud, G. Khan, M. Rahman, and H. Zafar, “A survey of intelligent
+car parking system,” J. of Applied Research and Technology , vol. 11, no. 5, pp.
+714–726, 2013.
+[14] T. Lin, H. Rivano, and F. Le Mou ¨el, “How to choose the relevant mac protocol
+for wireless smart parking urban networks?” in ACM Symp on Performance
+Evaluation of Wireless Ad Hoc, Sensor & Ubiquitous Networks , 2014, pp. 1–8.
+[15] T. Rajabioun and P. A. Ioannou, “On-street and off-street parking availability
+prediction using multivariate spatiotemporal models,” IEEE Transactions on
+Intelligent Transportation Systems, vol. 16, no. 5, pp. 2913–2924, 2015.
+[16] B. Zhang, D. Jiang, F. Wang, and T. Wan, “A design of parking space detector
+based on video image,” in Intl Conf on Electronic Measurement Instruments, 2009,
+pp. 2:253–256.
+[17] N. Larisis, L. Perlepes, P. Kikiras, and G. Stamoulis, “U-Park: Parking manage-
+ment system based on wireless sensor network technology,” in Intl Conf on Sensor
+Technologies and Applications, 2012, pp. 170–177.
+[18] U. M ¨anni, “Smart sensing and time of arrival based location detection in parking
+management services,” in Baltic Electronics Conf , 2010, pp. 213–214.
+[19] Z. Zhang, X. Li, H. Yuan, and F. Yu, “A street parking system using wireless
+sensor networks,” Intl J. of Distributed Sensor Networks , vol. 9, no. 6, pp. 1–10,
+2013.
+[20] J. Gu, Z. Zhang, F. Yu, and Q. Liu, “Design and implementation of a street
+parking system using wireless sensor networks,” in IEEE Intl Conf on Industrial
+Informatics, 2012, pp. 1212–1217.
+[21] S. Abdullah, W. Ismail, Z. Halim, and C. Zulkiﬂi, “Integrating Zigbee-based
+mesh network with embedded passive and active rﬁd for production management
+automation,” in IEEE Intl Conf on RFID-Technologies and Applications , 2013,
+pp. 1–6.
+[22] S.-E. Yoo, P. K. Chong, T. Kim, J. Kang, D. Kim, C. Shin, K. Sung, and B. Jang,
+“PGS: Parking guidance system based on wireless sensor network,” in Intl Symp
+on Wireless Pervasive Computing , 2008, pp. 218–222.
+[23] W. Zhao, “Parking management system with rﬁd and sensor networks,” in Applied
+Mechanics and Materials , vol. 198-199, 2012, pp. 1690–1696.
+[24] A. Kianpisheh, N. Mustaffa, P. Limtrairut, and P. Keikhosrokiani, “Smart parking
+system (SPS) architecture using ultrasonic detector,” Intl J. of Software Engineer-
+ing and Its Applications , vol. 6, no. 3, pp. 55–58, 2012.
+[25] J. Chinrungrueng, U. Sunantachaikul, and S. Triamlumlerd, “Smart parking: An
+application of optical wireless sensor network,” in Intl Symp on Applications and
+the Internet Wksp , 2007, pp. 66–66.
+[26] V . Boda, A. Nasipuri, and I. Howitt, “Design considerations for a wireless sensor
+network for locating parking spaces,” in IEEE Southeast Conf, 2007, pp. 698–703.
+[27] X. Sevillano, E. Marmol, and V . Fernandez-Arguedas, “Towards smart trafﬁc
+management systems: Vacant on-street parking spot detection based on video
+analytics,” in Intl Conf on Information Fusion , 2014, pp. 1–8.
+[28] T. Nguyen and C. Nguyen, “An approach for building an intelligent parking
+support system,” in Symp on Information and Communication Technology , 2014,
+pp. 192–201.
+[29] D. Bong, K. Ting, and K. Lai, “Integrated approach in the design of car park
+occupancy information system (COINS),” IAENG Intl J. of Computer Science ,
+vol. 35, no. 1, pp. 7–14, 2008.
+[30] E. Moguel, M. Preciado, and J. Preciado, “Smart parking campus: An example
+of integrating different parking sensing solutions into a single scalable system,”
+ERCIM News Smart Cities , pp. 29–30, 2014.
+[31] K. Na, Y . Kim, and H. Cha, “Acoustic sensor network-based parking lot surveil-
+lance system,” in Wireless Sensor Networks , ser. LNCS. Springer, 2009, vol.
+5432, pp. 247–262.
+[32] S. Lee, D. Yoon, and A. Ghosh, “Intelligent parking lot application using wireless
+sensor networks,” in Intl Symp on Collaborative Technologies and Systems , 2008,
+pp. 48–57.
+[33] J. Benson, T. O’Donovan, P. O’Sullivan, U. Roedig, C. Sreenan, J. Barton,
+A. Murphy, and B. O’Flynn, “Car-park management using wireless sensor
+networks,” in IEEE Conf on Local Computer Networks , 2006, pp. 588–595.
+[34] L. Urdiain, C. Romero, J. Doggen, T. Dams, and P. Van Houtven, “Wireless
+sensor network protocol for smart parking application experimental study on the
+arduino platform,” in Intl Conf on Ambient Computing, Applications, Services and
+Technologies, 2012.
+[35] A. Bagula, L. Castelli, and M. Zennaro, “On the design of smart parking networks
+in the smart cities: An optimal sensor placement model,” Sensors, vol. 15, no. 7,
+pp. 15 443–15 467, 2015.
+
+===== PAGE 23 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 22
+[36] D. Djenouri, E. Karbab, S. Boulkaboul, and A. Bagula, “Networked wireless
+sensors, active rﬁd, and handheld devices for modern car park management: Wsn,
+rﬁd, and mob devs for car park management,” Intl J. of Handheld Computing
+Research, vol. 6, no. 3, pp. 33–45, 2015.
+[37] A. Asaduzzaman, K. Chidella, and M. Mridha, “A time and energy efﬁcient
+parking system using zigbee communication protocol,” in IEEE SoutheastCon ,
+2015, pp. 1–5.
+[38] T. Lin, H. Rivano, and F. Le Mou ¨el, “Performance comparison of contention- and
+schedule-based mac protocols in urban parking sensor networks,” in ACM Intl
+Wksp on Wireless and Mobile Technologies for Smart Cities , 2014, pp. 39–48.
+[39] ——, “Urban infrastructure deployment for wireless on-street parking sensor
+networks,” Procedia Engineering - Toward integrated modelling of urban systems,
+vol. 115, pp. 29–36, 2015.
+[40] W. Chen and B. Liu, “A smart roadside parking navigation system based on sensor
+networks for ITS,” in IET Intl Conf on Wireless, Mobile and Multimedia Networks,
+2006, pp. 1–4.
+[41] S. Nawaz, C. Efstratiou, and C. Mascolo, “ParkSense: A smartphone based sensing
+system for on-street parking,” in Annual Intl Conf on Mobile Computing &
+Networking, 2013, pp. 75–86.
+[42] S. Ma, O. Wolfson, and B. Xu, “UPDetector: Sensing parking/unparking activities
+using smartphones,” in ACM Intl Wksp on Computational Transportation Science,
+2014, pp. 76–85.
+[43] F. Villanueva, D. Villa, M. Santoﬁmia, J. Barba, and J. L ´opez, “Crowdsensing
+smart city parking monitoring,” in IEEE World Forum on Internet of Things ,
+2015.
+[44] M. Zhao, R. Gao, J. Zhu, T. Ye, F. Ye, Y . Wang, K. Bian, G. Luo, and M. Zhang,
+“VeLoc: Finding your car in the parking lot,” in ACM Conf on Embedded Network
+Sensor Systems, 2014, pp. 346–347.
+[45] S. Gupte and M. Younis, “Participatory-sensing-enabled efﬁcient parking man-
+agement in modern cities,” in IEEE Conf on Local Computer Networks , 2015,
+pp. 241–244.
+[46] R. Salpietro, L. Bedogni, M. D. Felice, and L. Bononi, “Park here! a smart parking
+system based on smartphones’ embedded sensors and short range communication
+technologies,” in IEEE World Forum on Internet of Things , 2015, pp. 18–23.
+[47] K. Farkas and I. Lendak, “Simulation environment for investigating crowd-sensing
+based urban parking,” in Intl Conf on Models and Technologies for Intelligent
+Transportation Systems, 2015, pp. 320–327.
+[48] J. Krieg, G. Jakllari, H. Toma, and A. Beylot, “Unlocking the smartphone’s senses
+for smart city parking,” in IEEE Intl Conf on Communications , 2016, pp. 1–7.
+[49] M. Rinne, S. T ¨orm¨a, and D. Kratinov, “Mobile crowdsensing of parking space
+using geofencing and activity recognition,” in ITS European Congress, 2014, pp.
+16–19.
+[50] X. Chen, E. Santos-Neto, and M. Ripeanu, “Crowdsourcing for on-street smart
+parking,” in ACM Intl Symp on Design and Analysis of Intelligent Vehicular
+Networks and Applications , 2012, pp. 1–8.
+[51] B. Yang, N. Fantini, and C. Jensen, “iPark: Identifying parking spaces from
+trajectories,” in Intl Conf on Extending Database Technology , 2013, pp. 705–708.
+[52] A. Nandugudi, T. Ki, C. Nuessle, and G. Challen, “PocketParker: Pocketsourcing
+parking lot availability,” in ACM Intl Joint Conf on Pervasive and Ubiquitous
+Computing, 2014, pp. 963–973.
+[53] B. Kiﬂe, J. Villalobos, D. Riley, and J. Quevedo-Torrero, “Crowdsourcing auto-
+mobile parking availability sensing using mobile phones,” in Midwest Instruction
+and Computing Symp , 2015, pp. 1–7.
+[54] J. Kopeck `y and J. Domingue, “ParkJam: crowdsourcing parking availability
+information with linked data,” in Extended Semantic Web Conf , 2012.
+[55] V . Coric and M. Gruteser, “Crowdsensing maps of on-street parking spaces,” in
+IEEE Intl Conf on Distributed Computing in Sensor Systems , 2013, pp. 115–122.
+[56] B. Hoh, T. Yan, D. Ganesan, K. Tracton, T. Iwuchukwu, and J. Lee, “Trucentive: A
+game-theoretic incentive platform for trustworthy mobile crowdsourcing parking
+services,” in IEEE Intl Conf on Intelligent Transportation Systems, 2012, pp. 160–
+166.
+[57] “Yellow cab of san francisco, location dataset,” cabspotting.org/.
+[58] S. Mathur, T. Jin, N. Kasturirangan, J. Chandrasekaran, W. Xue, M. Gruteser, and
+W. Trappe, “ParkNet: Drive-by sensing of road-side parking statistics,” in Intl
+Conf on Mobile Systems, Applications, and Services , 2010, pp. 123–136.
+[59] S. Mathur, S. Kaul, M. Gruteser, and W. Trappe, “ParkNet: A mobile sensor
+network for harvesting real time vehicular parking information,” in MobiHoc S3
+Wksp, 2009, pp. 25–28.
+[60] “ParkRight,” www.westminster.gov.uk/parkright.
+[61] V . Venkateswaran and N. Prakash, “Intelligent approach for smart car parking
+reservation and security maintenance system,” Intl J. of Research in Engineering
+and Technology, vol. 3, no. 2, 2014.
+[62] P. Basu and T. Little, “Networked parking spaces: architecture and applications,”
+in IEEE Vehicular Technology Conf, vol. 2, 2002, pp. 1153–1157.
+[63] R. Vishnubhotla, P. Rao, A. Ladha, S. Kadiyala, A. Narmada, B. Ronanki, and
+S. Illapakurthi, “Zigbee based multilevel parking vacancy monitoring system,” in
+IEEE Intl Conf on Electro/Information Technology , 2010, pp. 1–4.
+[64] V . Verroios, V . Efstathiou, and A. Delis, “Reaching available public parking spaces
+in urban environments using ad hoc networking,” in IEEE Intl Conf on Mobile
+Data Management, vol. 1, 2011, pp. 141–151.
+[65] H. Wang and W. He, “A reservation-based smart parking system,” in IEEE Conf
+on Computer Communications Wksp , 2011, pp. 690–695.
+[66] “WSN-DPCM,” www.wsn-dpcm.eu.
+[67] “Area Verda,” www.areaverda.cat.
+[68] V . Tang, Y . Zheng, and J. Cao, “Intelligent car park management system based on
+wireless sensor networks,” in Intl Symp on Pervasive Computing and Applications,
+2006, pp. 65–70.
+[69] J. Jeffrey, R. Patil, S. Narahari, Y . Didagi, J. Bapat, and D. Das, “Smart parking
+system using wireless sensor networks,” in Intl Conf on Sensor Technologies and
+Applications, 2012, pp. 306–311.
+[70] “FastPrk,” www.fastprk.com.
+[71] “NicePark,” nice.fr/fr/transports-et-deplacements/stationner-intelligent.
+[72] “SmartSantander,” www.smartsantander.eu.
+[73] “Melbourne Data,” data.melbourne.vic.gov.au.
+[74] A. Albiol, L. Sanchis, A. Albiol, and J. Mossi, “Detection of parked vehicles using
+spatiotemporal maps,” IEEE Transactions on Intelligent Transportation Systems ,
+vol. 12, no. 4, pp. 1277–1291, 2011.
+[75] O. Bulan, R. P. Loce, W. Wu, Y . Wang, E. A. Bernal, and Z. Fan, “Video-based
+real-time on-street parking occupancy detection system,” J. of Electronic Imaging,
+vol. 22, no. 4, 2013.
+[76] A. David, K. Overkamp, and W. Scheuerer, “Event-oriented forecast of the
+occupancy rate of parking spaces as part of a parking information service,” in
+World Congress on Intelligent Systems , vol. 6, 2000.
+[77] G. Yan, W. Yang, D. Rawat, and S. Olariu, “SmartParking: A secure and intelligent
+parking system,” IEEE Intelligent Transportation Systems Magazine, vol. 3, no. 1,
+pp. 18–30, 2011.
+[78] H. Jung, Y . Cho, P. Yoon, and J. Kim, “Scanning laser radar-based target
+position designation for parking aid system,” IEEE Transactions on Intelligent
+Transportation Systems, vol. 9, no. 3, pp. 406–424, 2008.
+[79] K. Petsch, P. Dotzlaf, C. Daubenspeck, N. Duthie, and A. Mock, “Automated
+parking space locator: RSM,” in ASSE North Central Section Conf , 2012.
+[80] A. Koster, A. Oliveira, O. V olpato, V . Delvequio, and F. Koch, “Recognition
+and recommendation of parking places,” in Ibero-American Conf on Advances in
+Artiﬁcial Intelligence, ser. LNCS. Springer, 2014, vol. 8864, pp. 675–685.
+[81] L. Stenneth, O. Wolfson, B. Xu, and P. Yu, “PhonePark: Street parking using
+mobile phones,” in IEEE Intl Conf on Mobile Data Management , 2012, pp. 278–
+279.
+[82] E. Kokolaki, M. Karaliopoulos, G. Kollias, M. Papadaki, and I. Stavrakakis,
+“Vulnerability of opportunistic parking assistance systems to vehicular node
+selﬁshness,”Computer Communications, vol. 48, pp. 159–170, 2014.
+[83] E. Kokolaki, G. Kollias, M. Papadaki, M. Karaliopoulos, and I. Stavrakakis,
+“Opportunistically-assisted parking search: A story of free riders, selﬁsh liars
+and bona ﬁde mules,” in Annual Conf on Wireless On-demand Network Systems
+and Services, 2013, pp. 17–24.
+[84] A. Bechini, F. Marcelloni, and A. Segatori, “Low-effort support to efﬁcient urban
+parking in a smart city perspective,” in Advances onto the Internet of Things , ser.
+AISC. Springer, 2014, vol. 260, pp. 233–252.
+[85] O. Zoeter, C. Dance, S. Clinchant, and J. Andreoli, “New algorithms for parking
+demand management and a city-scale deployment,” in ACM SIGKDD Intl Conf
+on Knowledge Discovery and Data Mining , 2014, pp. 1819–1828.
+[86] T. P. Hong, A. C. Soh, H. Jaafar, and A. J. Ishak, “Real-time monitoring system for
+parking space management services,” in IEEE Conf on Systems Process Control ,
+2013, pp. 149–153.
+[87] S. Gabrielli, R. Maimone, M. Marchesoni, and J. Mu ˜noz, “BeeParking: An ambi-
+ent display to induce cooperative parking behavior,” in Intl Conf on Multimodal
+Interfaces, 2011, pp. 295–298.
+[88] “Siemens smart parking,” www.siemens.com/press/smart-parking.
+[89] F. Mitschele, “Parking meter,” 2011, US Patent 7,874,482.
+[90] D. King, M. Hunter, M. Hall, and D. Jones, “Parking meter,” 2013, US Patent
+8,590,687.
+[91] F. Leung, “Programmable parking meter and integrated paging transmitter,” 2012,
+US Patent 8,138,950.
+[92] G. Jones, B. Subramanya, and M. Nickolaus, “Control system for wireless
+communication parking meter,” 2012, US Patent App. 13/468,876.
+[93] ——, “Wireless communication parking meter system and method,” 2012, US
+Patent App. 13/468,859.
+[94] G. Chauvin, N. Erksine, and G. Mackay, “Data collection system for electronic
+parking meters,” 2012, US Patent 8,339,281.
+[95] C. Ricci, “Parking space ﬁnder based on parking meter data,” 2013, US Patent
+App. 13/678,710.
+[96] D. King and C. Randall, “Parking meter communications for remote payment
+with updated display,” 2014, US Patent 8,749,403.
+[97] E. Isaacs and R. Hoover, “Testing a novel parking system: On-street reservations,”
+in CHI Extended Abstracts on Human Factors in Computing Systems , 2013, pp.
+2823–2824.
+[98] W. Griggs, J. Yu, F. Wirth, F. H ¨ausler, and R. Shorten, “On the design of
+campus parking systems with qos guarantees,” IEEE Transactions on Intelligent
+Transportation Systems, vol. 17, no. 5, pp. 1428–1437, 2016.
+[99] K. Gopalan, K. Sairam, R. Nandakrishnan, and V . Venkatesh, “Competent smart
+car parking: An OSGi approach,” J. of Artiﬁcial Intelligence , vol. 6, no. 9, pp.
+43–51, 2013.
+[100] I. Samaras, N. Evangeliou, A. Arvanitopoulos, J. Gialelis, S. Koubias, and
+A. Tzes, “KATHODIGOS - a novel smart parking system based on wireless sensor
+network,” Intelligent Transportation Systems, vol. 1, pp. 140–145, 2013.
+[101] I. Samaras, A. Arvanitopoulos, N. Evangeliou, J. Gialelis, and S. Koubias, “A
+fuzzy rule-based and energy-efﬁcient method for estimating the free size of
+parking places in smart cities by using wireless sensor networks,” in IEEE
+Emerging Technology and Factory Automation , 2014, pp. 1–8.
+[102] A. Lelah, F. Mathieux, D. Brissaud, and V . Gimeno, “SensCity: a new project
+opening the way for sustainable services in the city based on a mutualised m2m
+infrastructure,” in CIRP Industrial Product-Service Systems Conf , 2010, pp. 99–
+106.
+
+===== PAGE 24 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 23
+[103] M. Bilal, C. Persson, F. Ramparany, G. Picard, and O. Boissier, “Multi-agent
+based governance model for machine-to-machine networks in a smart parking
+management system,” in IEEE Intl Conf on Communications , 2012, pp. 6468–
+6472.
+[104] J. Yang, J. Portilla, and T. Riesgo, “Smart parking service based on wireless
+sensor networks,” in Annual Conf on IEEE Industrial Electronics Society , 2012,
+pp. 6029–6034.
+[105] P. Medagliani, J. Leguay, A. Duda, F. Rousseau, M. Domingo, M. Dohler,
+I. Vilajosana, and O. Dupont, “Bringing ip to low-power smart objects: The smart
+parking case in the CALIPSO project,” in Internet of Things Applications - From
+Research and Innovation to Market Deployment . The River Publishers Series in
+Communications, 2014, pp. 287–313.
+[106] A. Grazioli, M. Picone, F. Zanichelli, and M. Amoretti, “Collaborative mobile
+application and advanced services for smart parking,” in IEEE Intl Conf on Mobile
+Data Management, vol. 2, 2013, pp. 39–44.
+[107] R. Souissi, O. Cheikhrouhou, I. Kammoun, and M. Abid, “A parking management
+system using wireless sensor networks,” in Intl Conf on Microelectronics , 2011,
+pp. 1–7.
+[108] J. Rico, J. Sancho, B. Cendon, and M. Camus, “Parking easier by using context
+information of a smart city: Enabling fast search and management of parking
+resources,” in Intl Conf on Advanced Information Networking and Applications
+Wksp, 2013, pp. 1380–1385.
+[109] Z. Suryady, G. Sinniah, S. Haseeb, M. Siddique, and M. Ezani, “Rapid devel-
+opment of smart parking system with cloud-based platforms,” in Intl Conf on
+Information and Comunication Technology for The Muslim World , 2014, pp. 1–6.
+[110] P. Kumar and T. Siddarth, “A prototype parking system using wireless sensor
+networks,” in Intl Joint J. Conf on Engineering and Technology , 2010.
+[111] N. Pazos, M. M ¨uller, M. Favre-Bulle, K. Brandt-Dit-Grieurin, O. H ¨usser, M. Ae-
+berli, and N. Ouerhani, “Dynamic street-parking optimisation,” in IEEE Intl Conf
+on Advanced Information Networking and Applications , 2016, pp. 1020–1026.
+[112] L. Mainetti, L. Patrono, M. Stefanizzi, and R. Vergallo, “A smart parking system
+based on iot protocols and emerging enabling technologies,” in IEEE World Forum
+on Internet of Things , 2015, pp. 764–769.
+[113] J. Chinrungrueng, S. Dumnin, and R. Pongthornseri, “iParking: A parking
+management framework,” in Intl Conf on ITS Telecomunications, 2011, pp. 63–68.
+[114] I. Ganchev, M. O’Droma, and D. Meere, “Intelligent car parking locator service,”
+Intl J. Information Technologies and Knowledge , vol. 2, pp. 166–173, 2008.
+[115] Z. Ji, I. Ganchev, M. O’Droma, L. Zhao, and X. Zhang, “A cloud-based car parking
+middleware for iot-based smart cities: Design and implementation,” Sensors,
+vol. 14, no. 12, pp. 22 372–22 393, 2014.
+[116] T. Pham, M. Tsai, D. Nguyen, C. Dow, and D. Deng, “A cloud-based smart-
+parking system based on internet-of-things technologies,” Special Section in IEEE
+Access - Emerging Cloud-Based Wireless Communications and Networks , vol. 3,
+pp. 1581–1591, 2015.
+[117] K. Inaba, M. Shibui, T. Naganawa, M. Ogiwara, and N. Yoshikai, “Intelligent
+parking reservation service on the internet,” in Symp on Applications and the
+Internet Wksp, 2001, pp. 159–164.
+[118] R. Barone, T. Giuffre, S. Siniscalchi, M. Morgano, and G. Tesoriere, “Architecture
+for parking management in smart cities,” Intelligent Transport Systems , vol. 8,
+no. 5, pp. 445–452, 2014.
+[119] T. B. Hodel-Widmer and S. Cong, “PSOS, parking space optimization service,”
+in Swiss Transport Research Conf , 2004.
+[120] A. Niculescu, M. Lim, S. Wibowo, K. Yeo, B. Lim, M. Popow, D. Chia, and
+R. Banchs, “Designing IDA - an intelligent driver assistant for smart city parking
+in singapore,” in Human-Computer Interaction, ser. LNCS. Springer, 2015, vol.
+9299, pp. 510–513.
+[121] P. Sauras-Perez, A. Gil, and J. Taiber, “Parkingain: Toward a smart parking
+application with value-added services integration,” in Intl Conf on Connected
+Vehicles and Expo, 2014, pp. 144–148.
+[122] G. Yao, J. Wang, X. Ran, Z. Li, and L. Yao, “Topology study on parking guidance
+and information system based on can,” in Intl Conf on Computer, Mechatronics,
+Control and Electronic Engineering , vol. 3, 2010, pp. 420–422.
+[123] C. Tsiaras, L. Hobi, F. Hofstetter, S. Liniger, and B. Stiller, “parkitsmart:
+Minimization of cruising for parking,” in Intl Conf on Computer Communication
+and Networks, 2015, pp. 1–8.
+[124] C. Rodier and S. Shaheen, “Transit-based smart parking: An evaluation of the
+san francisco bay area ﬁeld test,” Transportation Research Part C: Emerging
+Technologies, vol. 18, no. 2, pp. 225–233, 2010.
+[125] L. Ducreux, C. Guyon-Gardeux, M. Louvel, F. Pacull, S. Thior, and M. Vergara-
+Gallego, “Rapid prototyping of complete systems, the case study of a smart
+parking,” in Intl Symp on Rapid System Prototyping , 2015, pp. 133–139.
+[126] Y . Jun, “A system framework of active parking guidance and information system,”
+in WASE Intl Conf on Information Engineering , vol. 2, 2010, pp. 150–154.
+[127] S. Srikanth, P. Pramod, K. Dileep, S. Tapas, M. Patil, and N. Babu, “Design
+and implementation of a prototype Smart PARKing (SPARK) system using
+wireless sensor networks,” in Intl Conf on Advanced Information Networking and
+Applications Wksp, 2009, pp. 401–406.
+[128] J. Shin and H. Jun, “A study on smart parking guidance algorithm,” Transportation
+Research Part C: Emerging Technologies, vol. 44, pp. 299–317, 2014.
+[129] X. Chen, “Parking occupancy prediction and pattern analysis.” Stanford Univer-
+sity, Tech. Rep., 2014.
+[130] “Optimod’Lyon,” optimodlyon.com.
+[131] M. Quinones, V . Gonzalez, L. Quinones, C. Valdivieso, and W. Yaguana, “Design
+of a smart parking system using wireless sensor network,” in Iberian Conf on
+Information Systems and Technologies , 2015, pp. 1–6.
+[132] “Smart Canton,” ge.ch/deta.
+[133] T. Dinh and Y . Kim, “A novel location-centric iot-cloud based on-street car parking
+violation management system in smart cities,”Sensors, vol. 16, no. 6, p. 810, 2016.
+[134] S. Pullola, P. K. Atrey, and A. El Saddik, “Towards an intelligent GPS-based
+vehicle navigation system for ﬁnding street parking lots,” in IEEE Intl Conf on
+Signal Processing and Communications , 2007, pp. 1251–1254.
+[135] A. Klappenecker, H. Lee, and J. L. Welch, “Finding available parking spaces
+made easy,” Ad Hoc Networks , vol. 12, pp. 243–249, 2014.
+[136] F. Richter, S. Di Martino, and D. Mattfeld, “Temporal and spatial clustering for a
+parking prediction service,” in IEEE Intl Conf on Tools with Artiﬁcial Intelligence,
+2014, pp. 278–282.
+[137] E. Vlahogianni, K. Kepaptsoglou, V . Tsetsos, and M. Karlaftis, “Exploiting
+new sensor technologies for real-time parking prediction in urban areas,” in
+Transportation Research Board Annual Meeting , ser. 14-1673, 2014.
+[138] ——, “A real-time parking prediction system for smart cities,” J. of Intelligent
+Transportation Systems, vol. 20, no. 2, pp. 192–204, 2016.
+[139] Y . Zheng, S. Rajasegarar, and C. Leckie, “Parking availability prediction for
+sensor-enabled car parks in smart cities,” in IEEE Intl Conf on Intelligent Sensors,
+Sensor Networks and Information Processing , 2015, pp. 1–6.
+[140] E. Wu, J. Sahoo, C. Liu, M. Jin, and S. Lin, “Agile urban parking recommendation
+service for intelligent vehicular guiding system,” IEEE Intelligent Transportation
+Systems Magazine, vol. 6, no. 1, pp. 35–49, 2014.
+[141] T. Rajabioun, B. Foster, and P. Ioannou, “Intelligent parking assist,” in Mediter-
+ranean Conf on Control Automation , 2013, pp. 1156–1161.
+[142] Y . Ji, D. Tang, P. Blythe, W. Guo, and W. Wang, “Short-term forecasting of
+available parking space using wavelet neural network model,”Intelligent Transport
+Systems, vol. 9, no. 2, pp. 202–209, 2015.
+[143] Y . Wu, “Analysis of present status and prediction of future demand on parking
+in the central area of medium and small city,” in Intl Conf on Remote Sensing,
+Environment and Transportation Engineering , 2011, pp. 57–60.
+[144] A. Demisch, “Demand-responsive pricing on the cheap: Estimating parking
+occupancy using meter data,” in Transportation Research Board Annual Meeting,
+ser. 15-0676, 2015.
+[145] “Citypark - Se garer `a bordeaux,” www.citypark.io.
+[146] A. Millard-Ball, R. Weinberger, and R. Hampshire, “Is the curb 80% full or
+20% empty? assessing the impacts of san franciscos parking pricing experiment,”
+Transportation Research Part A: Policy and Practice , vol. 63, pp. 76–92, 2014.
+[147] M. Piorkowski, M. Grossglauser, and A. Papaioannou, “Mobile user navigation
+supported by WSAN: Full-ﬂedge demo of the SmartPark system,” in ACM Intl
+Symp on Mobile AdHoc Networking and Computing, Tech. Demo. , 2006.
+[148] C. Lochert, B. Scheuermann, and M. Mauve, “Probabilistic aggregation for data
+dissemination in V ANETs,” in ACM Intl Wksp on Vehicular Ad Hoc Networks ,
+2007, pp. 1–8.
+[149] R. Lu, X. Lin, H. Zhu, and X. Shen, “SPARK: A new vanet-based smart parking
+scheme for large parking lots,” in IEEE Conf on Computer Communications, 2009,
+pp. 1413–1421.
+[150] A. Alhammad, F. Siewe, and A. Al-Bayatti, “An InfoStation-based context-aware
+on-street parking system,” in Intl Conf on Computer Systems and Industrial
+Informatics, 2012, pp. 1–6.
+[151] N. Bessghaier, M. Zargayouna, and F. Balbo, “Management of urban parking:
+An agent-based approach,” in Artiﬁcial Intelligence: Methodology, Systems, and
+Applications, ser. LNCS. Springer, 2012, vol. 7557, pp. 276–285.
+[152] K. Raichura and N. Padhariya, “edPAS: Event-based dynamic parking allocation
+system in vehicular networks,” in IEEE Intl Conf on Mobile Data Management ,
+vol. 2, 2014, pp. 79–84.
+[153] R. Panayappan, J. Trivedi, A. Studer, and A. Perrig, “V ANET-based approach for
+parking space availability,” in ACM Intl Wksp on Vehicular Ad Hoc Networks ,
+2007, pp. 75–76.
+[154] H. Zhao, L. Lu, C. Song, and Y . Wu, “IPARK: Location-aware-based intelligent
+parking guidance over infrastructureless V ANETs,” Intl J. of Distributed Sensor
+Networks, 2012.
+[155] T. Delot, N. Cenerario, S. Ilarri, and S. Lecomte, “A cooperative reservation
+protocol for parking spaces in vehicular ad hoc networks,” in Intl Conf on Mobile
+Technology, Application and Systems , 2009, pp. 30:1–8.
+[156] N. Cenerario, T. Delot, and S. Ilarri, “Dissemination of information in inter-vehicle
+ad hoc networks,” in IEEE Intelligent Vehicles Symp , 2008, pp. 763–768.
+[157] T. Delot, N. Cenerario, S. Ilarri, and S. Lecomte, “Cooperative parking space
+allocation in vehicular ad hoc networks,” in Annual Intl Mobile and Ubiquitous
+Systems: Networking Services , 2009, pp. 1–2.
+[158] N. Cenerario, T. Delot, and S. Ilarri, “A content-based dissemination protocol for
+V ANETs: Exploiting the encounter probability,”IEEE Transactions on Intelligent
+Transportation Systems, vol. 12, no. 3, pp. 771–782, 2011.
+[159] E. Kokolaki, M. Karaliopoulos, and I. Stavrakakis, “Opportunistically assisted
+parking service discovery: Now it helps, now it does not,” Pervasive and Mobile
+Computing, vol. 8, no. 2, pp. 210–227, 2012.
+[160] G. Tasseron, K. Martens, and R. van der Heijden, “The potential impact of
+vehicle-to-vehicle and sensor-to-vehicle communication in urban parking,” IEEE
+Intelligent Transportation Systems Magazine , vol. 7, no. 2, pp. 22–33, 2015.
+[161] M. Caliskan, D. Graupner, and M. Mauve, “Decentralized discovery of free
+parking places,” in Intl Wksp on Vehicular Ad Hoc Networks , 2006, pp. 30–39.
+[162] M. Caliskan, A. Barthels, B. Scheuermann, and M. Mauve, “Predicting parking
+lot occupancy in vehicular ad hoc networks,” in IEEE Vehicular Technology Conf,
+2007, pp. 277–281.
+[163] G. Horng, C. Wang, and S. Cheng, “Using cellular automata on recommenda-
+tion mechanism for smart parking in vehicular environments,” in Intl Conf on
+Consumer Electronics, Communications and Networks , 2012, pp. 3683–3686.
+[164] G. Horng, “The adaptive recommendation mechanism for distributed parking
+
+===== PAGE 25 =====
+
+IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS 24
+service in smart city,” Wireless Personal Communications , vol. 80, no. 1, pp.
+395–413, 2015.
+[165] V . Vaghela and D. Shah, “Vehicular parking space discovery with agent approach,”
+in Intl Conf & Wksp on Emerging Trends in Technology , 2011, pp. 613–617.
+[166] N. Kim, C. Jing, B. Zhou, and Y . Kim, “Smart parking information system
+exploiting visible light communication,” Intl J. of Smart Home , vol. 8, pp. 251–
+260, 2014.
+[167] B. Xu, O. Wolfson, J. Yang, L. Stenneth, P. Yu, and P. Nelson, “Real-time street
+parking availability estimation,” in IEEE Intl Conf on Mobile Data Management ,
+vol. 1, 2013, pp. 16–25.
+[168] J. Boehle, L. Rothkrantz, and M. Wezel, “CBPRS: A city based parking and
+routing system,” Erasmus Research Institute of Management , 2008.
+[169] Y . Geng and C. Cassandras, “New smart parking system based on resource
+allocation and reservations,” IEEE Transactions on Intelligent Transportation
+Systems, vol. 14, no. 3, pp. 1129–1139, 2013.
+[170] D. Draskovic and S. Vukicevic, “A model of software system for parking using
+search algorithms,” in Intl Convention of Information Communication Technology,
+Electronics and Microelectronics, 2012, pp. 1098–1103.
+[171] C. Song and Z. Mou, “Noncooperative game theory based curb parking policies
+study,” in Intl Conf on Management & Service Science , 2011, pp. 1–3.
+[172] D. Ayala, O. Wolfson, B. Xu, B. DasGupta, and J. Lin, “Parking slot assignment
+games,” in ACM Intl Conf on Advances in Geographic Information Systems, 2011,
+pp. 299–308.
+[173] ——, “Parking in competitive settings: A gravitational approach,” in IEEE Intl
+Conf on Mobile Data Management , 2012, pp. 27–32.
+[174] ——, “Pricing of parking for congestion reduction,” in ACM Intl Conf on
+Advances in Geographic Information Systems , 2012, pp. 43–51.
+[175] A. Kotb, Y . Shen, X. Zhu, and Y . Huang, “iParker – new smart car-parking
+system based on dynamic resource allocation and pricing,” IEEE Transactions
+on Intelligent Transportation Systems , vol. 17, no. 9, pp. 2637–2647, 2016.
+[176] S. Chou, S. Lin, and C. Li, “Dynamic parking negotiation and guidance using
+an agent-based platform,” Expert Systems with Applications , vol. 35, no. 3, pp.
+805–817, 2008.
+[177] M. Dell’Orco and D. Teodorovi ´c, “Multi agent systems approach to parking fa-
+cilities management,” in Applied Research in Uncertainty Modeling and Analysis ,
+ser. ISIT. Springer, 2005, vol. 20, pp. 321–339.
+[178] M. Karaliopoulos, K. Katsikopoulos, and L. Lambrinos, “Bounded rationality
+can increase parking search efﬁciency,” in ACM Intl Symp on Mobile Ad Hoc
+Networking and Computing , 2014, pp. 195–204.
+[179] E. Kokolaki, M. Karaliopoulos, and I. Stavrakakis, “Leveraging information in
+parking assistance systems,” IEEE Transactions on Vehicular Technology, vol. 62,
+no. 9, pp. 4309–4317, 2013.
+[180] C. Di Napoli, D. Di Nocera, and S. Rossi, “Agent negotiation for different needs
+in smart parking allocation,” in Intl Conf of Advances in Practical Applications
+of Heterogeneous Multi-Agent Systems , ser. LNCS. Springer, 2014, vol. 8473,
+pp. 98–109.
+[181] A. Schlote, C. King, E. Crisostomi, and R. Shorten, “Delay-tolerant stochastic
+algorithms for parking space assignment,” IEEE Transactions on Intelligent
+Transportation Systems, vol. 15, no. 5, pp. 1922–1935, 2014.
+[182] C. Jin, L. Wang, L. Shu, Y . Feng, and X. Xu, “A fairness-aware smart parking
+scheme aided by parking lots,” in IEEE Intl Conf on Communications , 2012, pp.
+2119–2123.
+[183] Z. Chen, J. Xia, and B. Irawan, “Development of fuzzy logic forecast models for
+location-based parking ﬁnding services,” Math. Problems in Engineering , 2013.
+[184] D. Teodorovi ´c and P. Lu ˇci´c, “Intelligent parking systems,” European J. of
+Operational Research, vol. 175, no. 3, pp. 1666–1681, 2006.
+[185] W. A. Sarasua, P. Malisetty, and M. Chowdhury, “Using GIS-based, hitchcock
+algorithm to optimize parking allocations for special events,” Applied GIS, vol. 7,
+no. 2, pp. 1–13, 2011.
+[186] P. Li, D. Li, and X. Zhang, “CGPS: A collaborative game in parking-lot search,” in
+Intl Conf on Soft Computing Techniques and Engineering Application , ser. AISC.
+Springer, 2014, vol. 250, pp. 105–113.
+[187] N. Doulamis, E. Protopapadakis, and L. Lambrinos, “Improving service quality
+for parking lot users using intelligent parking reservation policies,” in Intl Conf on
+Advanced Information Networking and Applications Wksp , 2013, pp. 1392–1397.
+[188] Z. Mei and Y . Tian, “Optimized combination model and algorithm of parking
+guidance information conﬁguration,” EURASIP J. on Wireless Communications
+and Networking, vol. 2011, no. 1, 2011.
+[189] F. Caicedo, “The use of space availability information in PARC systems to reduce
+search times in parking facilities,” Transportation Research Part C: Emerging
+Technologies, vol. 17, no. 1, pp. 56–68, 2009.
+[190] F. Caicedo, C. Blazquez, and P. Miranda, “Prediction of parking space availability
+in real time,” Expert Systems with Applications, vol. 39, no. 8, pp. 7281–90, 2012.
+[191] I. Benenson, K. Martens, and S. Birﬁr, “PARKAGENT: An agent-based model
+of parking in the city,” Computers, Environment and Urban Systems - GeoCom-
+putation: Modeling with spatial agents , vol. 32, no. 6, pp. 431–439, 2008.
+[192] G. Joss ´e, M. Schubert, and H. Kriegel, “Probabilistic parking queries using aging
+functions,” in ACM Intl Conf on Advances in Geographic Information Systems ,
+2013, pp. 452–455.
+[193] H. Guo, W. Wang, and W. Guo, “Micro-simulation study on the effect of on-
+street parking on vehicular ﬂow,” in IEEE Intl Conf on Intelligent Transportation
+Systems, 2012, pp. 1840–1845.
+[194] L. Guo, S. Huang, J. Zhuang, and A. Sadek, “Modeling parking behavior under
+uncertainty: A static game theoretic versus a sequential neo-additive capacity
+modeling approach,” Networks and Spatial Economics , vol. 13, no. 3, pp. 327–
+350, 2013.
+[195] X. Ma, X. Sun, Y . He, and Y . Chen, “Parking choice behavior investigation: A
+case study at beijing lama temple,” Procedia Social and Behavioral Sciences -
+COTA Transportation Professionals, vol. 96, pp. 2635–2642, 2013.
+[196] M. Chen, C. Hu, and T. Chang, “The research on optimal parking space choice
+model in parking lots,” in Intl Conf on Computer Research and Development ,
+vol. 2, 2011, pp. 93–97.
+[197] K. Nurul Habib, C. Morency, and M. Tr ´epanier, “Integrating parking behaviour in
+activity-based travel demand modelling: Investigation of the relationship between
+parking type choice and activity scheduling process,” Transportation Research
+Part A: Policy and Practice , vol. 46, no. 1, pp. 154–166, 2012.
+[198] J. Glasnapp, H. Du, C. Dance, S. Clinchant, A. Pudlin, D. Mitchell, and
+O. Zoeter, “Understanding dynamic pricing for parking in los angeles: Survey
+and ethnographic results,” in HCI in Business , ser. LNCS. Springer, 2014, vol.
+8527, pp. 316–327.
+[199] E. Chaniotakis and A. Pel, “Drivers’ parking location choice under uncertain park-
+ing availability and search times: A stated preference experiment,” Transportation
+Research Part A: Policy and Practice , vol. 82, pp. 228–239, 2015.
+[200] K. Shaaban and A. Pande, “Classiﬁcation tree analysis of factors affecting parking
+choices in qatar,” Case Studies on Transport Policy, vol. 4, no. 2, pp. 88–95, 2016.
+[201] R. Yu, M. Yun, and X. Yang, “Study on driver’s parking location choice
+behavior considering drivers’ information acquisition,” in Intl Conf on Intelligent
+Computation Technology and Automation , vol. 3, 2009, pp. 764–770.
+Trista Lin received her B.Sc. and Ph.D. degrees
+from National Tsing Hua university (NTHU), Tai-
+wan, and Institut National des Sciences Appliques
+de Lyon (INSA Lyon), France, respectively. She is
+currently a wireless system engineer at Assystem,
+France. Prior to that, she was a member of the
+Inria/INSA Lyon CITI laboratory. Her research inter-
+ests cover wireless networking and middleware for
+industry-speciﬁc applications.
+Herv´e Rivano is a senior Inria researcher. He is
+the head of the Inria Agora team in the Inria/INSA
+Lyon CITI laboratory. He graduated from Ecole
+Normale Sup ´erieure de Lyon in 2000 and got his
+Ph.D. from University of Nice Sophia Antipolis in
+2003. His research interests include combinatorial
+optimization applied to Smart Cities networks design
+and provisioning.
+Fr´ed´eric Le Mou ¨el is currently an associate pro-
+fessor in INSA Lyon. He conducts his research in
+the Inria/INSA Lyon CITI laboratory where he is
+leading the Dynamid team - Dynamic software and
+distributed systems for the internet of things. He
+holds a master and a Ph.D. degree in computer
+science from the university of Rennes 1, France. His
+main interests are distributed systems, operating sys-
+tems, middleware, virtual machines, programming
+languages and more speciﬁcally in dynamic adapt-
+ing, self-coordinating and autonomic environments.

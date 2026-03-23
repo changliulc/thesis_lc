@@ -1,0 +1,12 @@
+{
+  "source_excel": "G:\\地磁组路段数据\\路段统计\\20240730白沙路数据采集\\20240730白沙路车型分类数据采集.xlsx",
+  "sheet": 2,
+  "row_start": 1,
+  "row_end": 32740,
+  "window_seconds": [
+    324.5,
+    326.5
+  ],
+  "style_note": "Reference-like layout, no threshold dashed lines, reduced legend occlusion.",
+  "note": "Preview only. Current thesis image was not overwritten."
+}

@@ -1,0 +1,1018 @@
+
+
+===== PAGE 1 =====
+
+882 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+A Robust Parking Detection Algorithm Against
+Electric Railway Magnetic Field Interference
+Zusheng Zhang , Xianmang He, and Huaqiang Y uan
+Abstract— Wireless magnetic sensor networks (WMSNs) offer
+an effective and efﬁcient low-cost alternative for real-time park-
+ing space monitoring. Current algorithms used for parking space
+detection based on the WMSNs have been well studied but not
+without eliminating the geomagnetic ﬁeld interference. Electric
+railway systems, such as subways and light rail systems, produce
+magnetic ﬁeld radiation that interferes with the geomagnetic ﬁeld.
+The electric railway magnetic ﬁeld interference has increased and
+is prominent in urban settings; therefore, it is imperative to ﬁlter
+out the interference in order to increase the detection accuracy.
+This paper proposes an algorithm for parking space detection,
+which can effectively eliminate the geomagnetic background
+interference. We solve the parking detection problem through
+signal ﬁltering technology. Based on mathematical morphology,
+we designed two ﬁlters for extracting morphological structures
+from interfered magnetic signals. The experimental results verify
+that the proposed algorithm is mo re accurate than the existing
+algorithms.
+Index Terms— Vehicle detection, magnetic sensor, interference,
+morphological ﬁlter.
+I. I NTRODUCTION
+C
+URRENTLY, real-time parking demand and availability
+has become a major issue in densely populated urban
+settings since parking spaces are limited and the number
+of vehicles is continually in creasing [1]. Searching for an
+available parking space during peak hours is usually difﬁcult
+and leads to additional energy waste, trafﬁc congestion and air
+pollution. The need for real time parking monitoring systems
+is signiﬁcant and continues to be in demand.
+Parking detection mechanisms can be categorized into two
+types: indoor and outdoor. There are various methods for
+indoor parking detection, for example: video cameras [2],
+ultrasound [3], and infrared radiation [4]. However, this type
+of technology is not viable outdoors because installing cables
+and wires needed for energy supply and data transmission is
+not cost effective. Thus, a total w ireless solution is a feasible
+option. Wireless Magnetic Sensor Networks (WMSNs) have
+low power consumption, are small and cost-effective [5].
+Manuscript received July 18, 2018; revised December 10, 2018,
+April 27, 2019, and May 20, 2019; accepted May 31, 2019. Date of
+publication June 26, 2019; date of current version February 3, 2020. This
+work was supported in part by the Nati onal Natural Science Fund, China,
+under Grant 61872083, Grant 61672303, and Grant 61572131 and in part
+by the Science and Technology Proj ect of Guangdong Province under Grant
+2016A010101037 and Grant 2017A030310659. The Associate Editor for this
+paper was C. G. Panayiotou. (Corresponding author: Zusheng Zhang.)
+The authors are with the School of Cyberspace Science, Dongguan Univer-
+sity of Technology, Dongguan 523808, China (e-mail: zszhang@dgut.edu.cn;
+hexm@dgut.edu.cn; yuanhq@dgut.edu.cn).
+Digital Object Identiﬁer 10.1109/TITS.2019.2923465
+Also, they are inherently immune to environmental factors
+such as rain, wind, snow or fog than traditional wired tech-
+nologies. Recently an outdoor parking detection WMSN, for
+about 5,000 parking spaces, is being gradually implemented
+in Shenzhen, China.
+In this parking monitoring system, magnetic sensor nodes
+are placed at the center of each parking space and the sensor
+periodically samples the geomagnetic ﬁeld. When a vehicle
+enters or leaves the parking space, the parking detection
+algorithm can detect the change in the parking space status and
+generates detection events. Detection events data is then col-
+lected and transmitted to a server. Having collected the event
+data from these synchronized sensor nodes, the server can
+calculate the parking duration of each vehicle. This data can be
+used for different types of applications, such as parking nav-
+igation, parking collection fees, illegal parking detection, etc.
+The geomagnetic ﬁeld is highly susceptible to interference.
+The operation of electric railway systems, such as subway
+and light rail systems, produces a wide range of magnetic
+ﬁeld radiation, which interferes with the geomagnetic ﬁeld.
+Santarelli et al. [6] analyzed the geomagnetic background
+noise at L ’ Aquila geomagnetic observatory during 2006
+and 2007, and they found that the main source of artiﬁcial
+noise is constituted by the Direct Current (DC) electriﬁed
+railways. Lowes [7] found that DC electric railways pro-
+duce magnetic ﬁelds mainly from unintended earth-leakage
+currents. Pirjola [8] proposed a computational model for the
+magnetic ﬁeld produced by DC railways assuming that the
+leakage current density changes linearly. Currently, many cities
+are building subway systems, so the magnetic interference has
+become a factor to consider when deploying a WMSN.
+There are numerous research studies of parking detec-
+tion algorithms based on wireless magnetic sensor networks.
+However, these algorithms presume that the background geo-
+magnetic ﬁeld is without interference. They do not include
+mechanisms to counter the interference and are prone to pro-
+duce high false and missed detec tion rates in environments that
+have magnetic interference. We propose a parking detection
+algorithm which can effectively eliminate the geomagnetic
+ﬁeld interference. Our main contributions are as follows:
+(1) This paper introduces the problems of magnetic ﬁeld
+interference caused by electric railway and proposes an
+“eliminating interference” algorithm for parking detection.
+To the best of our knowledge, this is the ﬁrst work to study the
+geomagnetic interference problem for a WMSN based parking
+monitoring system.
+1524-9050 © 2019 I EEE. Personal u se is perm itted, but republication/redistri bution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 883
+(2) The parking detection problem is mapped to a signal
+ﬁltering problem, and morphological ﬁlters are designed for
+extracting target structures from interfered signals.
+(3) Experiment results veriﬁed that the proposed algorithm
+can effectively ﬁlter and eliminate the magnetic background
+interference without signiﬁcantly affecting the lifetime of the
+WMSN system.
+The remainder of this paper is organized as follows.
+Section II surveys the related wo rks. Section III presents the
+problem deﬁnition. Section IV proposes the algorithm for
+parking detection. Section V conducts experiments to verify
+the performance of the algor ithm, and Section VI makes a
+brief conclusion.
+II. R ELA TED WORKS
+A considerable amount of research has been conducted on
+the use of WMSN for trafﬁc information collection. Cheung
+and V araiya [9] explored the applications for vehicle detection,
+speed estimation, and classiﬁcation. Wang et al. [10], [11]
+proposed a similarity based vehicle detection algorithm to
+detect vehicles in low SNR (Signal-to-noise ratio) condi-
+tions by calculating the correlation [12] between sampled
+signals and a reference signal. Kwong et al. [13] presents
+a scheme to estimate the travel time distribution of a sin-
+gle arterial link, spanning several signalized intersections.
+Taghvaeeyan and Rajamani [14] presents a portable roadside
+magnetic sensor system for vehicle counting, classiﬁcation,
+and speed measurement.
+Parking detection based on WMSN has been present in both
+the research community and industry (e.g., ParkSol). Thresh-
+old and state machine mechanisms are used to trace the energy
+change of the magnetic ﬁeld when a vehicle is parked [15].
+If the magnetic ﬁeld exceeds a threshold, the sensor will
+indicate the space is occupi ed. Cheung and V araiya [9]
+proposed an adaptive threshold algorithm can be used for
+parking detection. Ding and Cheung [16] proposed a min-
+max detection algorithm. Modiﬁed min-max algorithm for
+magnetometers [17] has also been published. Zhu and Y u [18]
+proposed a parking detection algorithm that combines state
+machine and cross correlation mechanisms. Zhang et al. [19]
+proposed an algorithm for parking occupancy detection based
+on the distance discriminate analysis method.
+Some works have studied the problem of adjacent inter-
+ference. Trigona et al. [20] conducted the magnetic inter-
+ference test of the adjacent vehicle in bay parking spaces.
+Balid et al. [21] found that the magneto-resistive sensor
+node is easily disturbed by the vehicles which have high-
+intensity magnetic ﬁeld (such as large-scale trucks, large
+buses, etc.) on nearby lanes, causing false detection problems
+and they found that the Z-axis was less affected by interfer-
+ence. Liu and Zheng [22] analy zed the interference problem
+caused by the neighboring vehicles and studied the inﬂuence
+of parking direction and sensor coordinate direction on the
+magnetic ﬁeld strength.
+Some researchers propose to add other types of sensors
+for auxiliary detection. Sifuentes et al. [23] have proposed
+a wireless sensor node based on two sensors (one magnetic
+and one optical) to detect the presence of a vehicle. When a
+vehicle arrives or departs, an op tical sensor detects the change
+in light and wakes up the magnetic sensor which measures the
+magnetic ﬁeld in order to detect the vehicle. Huang et al. [24]
+also designed a similar node to solve the adjacent interference
+problem.
+In summary, the vehicle detection for WMSN in the non-
+interference environment has been studied extensively. Some
+works have discussed the adjacent i nterference. However, there
+is no relevant work to study the issue of geomagnetic ﬁeld
+interference caused by an electric railway.
+III. P
+ROBLEM DEFINITION
+Considering a WMSN G = (D, R, BS),w h e r e D =
+{D1, D2, ..., Dn} is the set of sensor nodes, R =
+{R1, R2, ..., Rm} is the set of routers, and BS denotes a
+base station. Sensor nodes are deployed alongside the roadside
+and each node is mounted on the center ﬂoor of a parking
+space. For each sensor D
+i (1 ≤ i ≤ n), it continuously collects
+the Earth’s magnetic ﬁeld with sampling frequency f by the
+magnetic sensor. Di has running a parking detection algorithm
+which can described as S(k) = IS _Parking (M(k)),w h e r e
+M(k) is the magnetic ﬁeld data, and S(k) is a binary result
+0 or 1 to indicate the vacant or occupied status of parking
+space, respectively. If the status is changed, Di sends an event
+message {Di, Time (k), S(k)} to its parent Rp ,t h e nRp relays
+the message to BS through multi-hop.
+The measured signal M(k) from a sensor node can be
+expressed as equation 1,
+Mi (k) = Ci(k) + Ii (k) + Vi (k) i ∈ {x, y, z} (1)
+where k denotes the latest sample, Ci(k) is the geomagnetic
+ﬁeld which is uniform over a wide area on the scale of
+kilometers, Ii (k) is the interference magnetic signal, and
+Vi (k) is the magnetic signal created by a parking vehicle,
+i indicates the index of axis {x, y, z}. Usually, the used
+magnetic sensor is a three-axis AMR (Anisotropic Magneto-
+Resistive, AMR) sensor [21], [22].
+A. Signal Model of Parking
+Generally, the magnetic ﬁeld of a vehicle can be approx-
+imated by the ﬁeld created by a rectangular magnet. Fig. 1
+shows a rectangle magnet with length A, width B, height C
+and a uniform magnetization in its body under the satura-
+tion state with symmetrically magnetizing along the Z-axis.
+As shown in Fig. 1, P
+s = (l, 0, 0) represents a sensor node
+deployed in the parking space, l is the maximum sensing
+distance. The point Pv = (0, 0, h) is the initial position of
+a vehicle, where h is the distance from the chassis of the
+vehicle to the ground.
+Given the linear motion of the vehicle along the X-axis,
+the parking process is as follows: at time t = 0, a vehicle
+starts from Pv and enters the parking space with velocity v0,
+then it parks on the sensor Ps for a period of T , and then it
+leaves the parking space. Assuming the vehicle’s acceleration
+is uniform during the entering and leaving phases, i.e. a is
+acceleration and a = v2
+0/2l. The trajectory of the vehicle can
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+884 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+Fig. 1. Model of a vehicle parking.
+be expressed as Pv(t) ={ x(t), y(t) = 0, z(t) = h}, x(t) is
+s h o w ni ne q u a t i o n2 ,
+x (t) =
+⎧
+⎪⎨
+⎪⎩
+∫ t
+0 (v0 − at)dt i f 0 < t ≤ Te
+li f T e < t ≤ Ts
+l −
+∫ t
+Ts (a ∗(t − Ts))dt i f T s < t ≤ Tl
+(2)
+where Te = v0/a, Ts = Te + T and Tl = Ts + Te are the
+end times of a vehicle’s entering, parking and leaving phases,
+respectively.
+According to the magnetic ﬁeld model of a rectangle
+magnet [25], the magnetic signal of X-axis created by a vehicle
+parked on point P
+s can be calculated as equation 3,
+Mx (t) = K
+2 [/Gamma1(l − A/2 − x(t),− B/2,− h)
++ /Gamma1(l − A/2 − x(t), 3B/2,− h)
+− /Gamma1(A/2 − l − x(t),− B/2,− h)
+− /Gamma1(A/2 − l − x(t), 3B/2,− h)]|C
+0 (3)
+where K = μ0 J/4π, μ0 is the air magnetic permeability,
+J is the surface current density on any plane that is parallel
+to plane xOy ,a n d
+/Gamma1(r1, r2, r3) = ln
+√
+r 2
+1 + r 2
+2 + (r3 −ˆz)2 − r2
+√
+r 2
+1 + r 2
+2 + (r3 −ˆz)2 + r2
+(4)
+where [ •]|C
+0 represents the difference of function in the
+bracket when ˆz = C and ˆz = 0.
+Assume the initial speed is v0 = 5 m/s, the parking
+stop time is T = 20 s, the sampling frequency is f =
+200 Hz , and the measurement noise is Gaussian white noise.
+Fig. 2(a) shows the simulated signal based on using the
+magnetic signal model of equa tion 3. On the other hand,
+experimental results conducted under similar conﬁguration can
+be found in Fig. 2(b). Additional examples are provided in
+Appendix A. The simulated patterns are in agreement with the
+experimental measurements. We can obtain the signal structure
+characteristics as shown in deﬁnition 1.
+Deﬁnition 1 (Signal Structur e of Parking): As shown in
+Fig. 2, an entire parking period includes three phases:
+Fig. 2. Magnetic signals of vehicle parki ng. (a) Simulation signal. (b) Sensor
+sampled signal.
+entering, parking and leaving. The basic signal structures of
+each phase are summarized as follows:
+(1) Entering and leaving phases are identiﬁed by a set
+of Gaussian-like pulses. The entering phase is the period
+when a vehicle enters the sensing range until the vehicle has
+completely stopped. The signal fe ature at this phase is positive
+and negative Gaussian-like pulses [26]. The period from when
+a vehicle starts the engine until it is beyond the sensing range
+is the leaving phase. In the leaving phase, the structure of the
+magnetic signal is the same with the entering phase.
+(2) Parking phase is identiﬁed by a rectangle. The parking
+phase is the duration of a vehicle, while stopped, in the parking
+space. In the phase, there is a stable disturbance on the
+Earth’s magnetic ﬁeld and the structure of the signal is like a
+rectangle.
+B. Magnetic Interference
+The electric railway’s circuit, in its basic structure, consists
+of a rectiﬁer substation, an overhead power line, a train,
+the rails and the ground to conduct the return current, as shown
+in Fig. 3. The magnetic ﬁelds [27] produced by the system
+mainly include three types: First, the trains themselves produce
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 885
+Fig. 3. The circuit of an electriﬁed subway.
+Fig. 4. The interference si gnal created by the subway.
+local magnetic ﬁelds. Second, the magnetic ﬁeld produced by
+the traction current in the loop substation-overhead-train-rails-
+substation will produce a magnetic ﬁeld. Third, the magnetic
+ﬁeld due to currents that have leaked from the track into the
+ground is signiﬁcant. The running rails are close to the ground,
+so unless precautions are taken, it is very easy for them to
+have signiﬁcant electrical contact with the ground. The ﬁrst
+and second types of magnetic ﬁeld are signiﬁcant only when
+observing on or near the train. But currents leaking unto the
+ground from the systems produce a direct effect over tens of
+kilometers on the Earth’s magnetic ﬁeld [28].
+We deployed sensor nodes on the roadside parking spaces
+nearby a subway. For example, Fig. 4 shows the interference
+signal collected by the x-axis I
+x(k). Ix(k) is a random ﬂuctu-
+ation signal and the magnitude of ﬂuctuation greater than the
+normal geomagnetic changes which is less than 5 mGauss .
+The probability density function of I
+x(k) can be approximated
+by the method of ﬁtting with the normal distribution curve,
+as shown in equation 5,
+f (x) = 1
+√
+2πσ2 e− (x−μ)2
+2σ2 (5)
+where μ is the mean or expectation of the distribution, σ2 is
+the variance. Using the sample data as shown in Fig. 4, we can
+calculate μ = 25.0a n d σ2 = 1301.0, and the theoretical
+distribution is shown in Fig. 5.
+Fig. 6 shows the probability density distribution of the
+magnetic signal created by parking vehicles. The magnetic
+ﬁeld is distributed between − 250 mGauss and 200 mGauss .
+Comparing with Fig. 4, we can see that the interference signal
+Fig. 5. The probability density of the interference signal.
+Fig. 6. The probability density distribution of the target magnetic signal.
+is signiﬁcant; therefore it is imperative to ﬁlter out noise in
+order to increase the detection accuracy.
+According to the above descrip tion, the parking detection
+problem can be deﬁned as:
+Deﬁnition 2: Parking Detection:
+S(k) = IS _P a rk in g(M (k))
+Input: Mi (k) = Ci(k) + Ii (k) + Vi (k) i ∈ {x, y, z}
+(1) C i(k) is the Earth’s magnetic ﬁeld.
+(2) Vi (k) is the target magnetic signal of a vehicle. A whole
+parking process can be divided into three phases whose
+structure characteristics are deﬁned in the deﬁnition 1.
+(3) I
+i (k) is the interference magnetic signal created by
+electric railway system.
+Ta sk :The algorithm needs to accurately detect the struc-
+tural characteristics of the three parking phases from the
+interfered signals. And according to these characteristics,
+it can make an estimation of the status of the parking space.
+Output:
+(1) S (k) = 1: if the Gaussian-like pulse and rectangular
+structures are both detected, the algorithm output is S (k) = 1,
+it describes the status of the parking space is {occupied }.
+(2) S (k) = 0: when both Gaussian-like pulse and rec-
+tangular structures are disappearing, the algorithm output
+is S (k) = 0, that is, the parking space is {vacant }.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+886 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+Fig. 7. The magnetic signals of parking events.
+The main task of the algorithm is to accurately extract two
+types of structural signals from the interfered signal: Gaussian-
+like pulse and rectangular structure. We adopt a mathematical
+morphology theory [29] to design signal ﬁlters which can
+effectively ﬁlter noise and extract morphological structures.
+The advantage of mathematical morphological ﬁltering is that
+the algorithm is simple and requires less computation. It does
+not need to consider the type of noise and only needs to select
+structural elements that match the target signal. This method
+is suitable for sensor nodes to process signals in real time.
+IV . A
+LGORITHM
+In this section, we ﬁrst introduce the signal synthesis, then
+explain how to design morphology ﬁlters for Gaussian-like
+pulse and rectangular structure detection, and then describe
+the pseudo code of the parking detection algorithm.
+A. Signal Synthesis
+A 3-axis AMR (Anisotropic Magneto-Resistive) magnetic
+sensor has been used. Detection with single axis or dual
+axis data may result in missed or false detections. As shown
+in Fig. 7, a node has sensed two parking events. In the ﬁrst
+parking event, the change of y-axis signal is much less than
+that of x- and z-axis so that detection with y-axis will result
+in a missed detection. However, in the second parking event,
+only the y-axis varied about 45 mGauss . If x- and z-axis are
+used for detection, it may r esult in a missed detection.
+It is necessary to integrate three axis data for detection.
+In order to reduce the computational complexity and reﬂect
+the variation of the three-axis, the three-axis signals are
+synthesized as a fused signal using equation (6),
+f (k) =
+∑
+i
+Wi(k) ∗|Mi(k) − Ci(k)| i ∈ {x, y, z} (6)
+where Wi is the weight value of i -axis, Ci is the Earth’s
+magnetic ﬁeld.
+The interference of the geomagnetic ﬁeld is dynamic. For
+example, Fig. 8 shows the interference signal in one day
+collected by a sensor deployed on a road near the subway.
+Fig. 8. The interference s ignals of a node in one day.
+The service time of the subway is from 6:00 to 24:00 and
+the out of service time is from 0:00 to 6:00. The magnetic
+interference is signiﬁcant during the service time and there is
+no interference during the out of service time.
+The calculation of W
+i includes two cases: the ﬁrst case,
+if there is geomagnetic interference, Wi is related to the degree
+of the interference, the smaller the interference, the greater
+the proportion; the second case, if there is no geomagnetic
+interference, Wi = 1,
+Wi(k) =
+⎧
+⎪⎨
+⎪⎩
+(Sum(k)− λi(k)) ∗1.5/Sum(k) if ∃λi(k)> 5
+i ∈ {x, y, z}
+1 other wise
+(7)
+where λi(k) is the sample variance value, Sum(k) = ∑
+i λi(k);
+λi(k)
+=
+⎧
+⎪⎪⎪⎪
+⎨
+⎪⎪⎪⎪
+⎩
+1
+N − 1
+k− 1∑
+j=k−N
+(Mi( j)− μi(k))2 if S ( j)= 0
+∀j ∈[k− N,..., k− 1]
+λi(k − 1) Other wise
+(8)
+where μ is the sample mean and N is the sample size. The
+sample variance is updated by the sensor reading when there
+is no vehicle is detected within the duration of N samples.
+Earth’s magnetic ﬁeld has been drifting westward [30]. For
+a long-running parking detection system, for example 5 years,
+the change of the Earth’s magnetic ﬁeld cannot be ignored.
+Conversely, Earth’s magnetic ﬁeld is uniform over a wide
+area on a scale of kilometers [9]. The data we collected in
+our experiments showed that the Earth’s magnetic ﬁeld was
+almost constant over a period of one month. In our system,
+BS instructs the nodes to update C
+i on a monthly basis.
+Ci is approximately equal to the average of the samplings
+when the geomagnetic ﬁeld has not interfered and the status
+of the parking spaces is vacant .
+B. Gaussian-Like Pulse Filter
+The Top-hat transformation in mathematical morphology
+can be used to detect the crest or trough of the signal to be
+processed. It has been widely used in the ﬁelds of infrared
+target detection, license plate location, image analysis and
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 887
+pattern recognition [31]. The ﬁlter based on Top-hat operation
+to extract the Gaussian-like pulses is shown in equation (9);
+TH (k) = OHat ( f (k), g(m)) + CHa t ( f (k), g(m)) (9)
+where f (k) is the input signal, g(m) is a structure element,
+OHat is the open Top-hat transform, and CHa t is the close
+Top-hat transform.
+Commonly used structural elements are rectangular, linear,
+round, triangular and so on. Previous studies [29] have shown
+that it is necessary to select st ructural elements matching
+with the target signal’s characteristics. Filters need to remove
+interference and extract ﬂuctuation signal which has Gaussian-
+like characteristics. So we chose a Gaussian function (10) to
+construct the structural element,
+g(m) = P
+√
+2πσ2 e− (m− L/2)2
+2σ2 0 ≤ m ≤ L (10)
+where P is a given ampliﬁcation factor, σ2 is the variance, L
+is the length of the structural el ement and it is closely related
+to the length of the Gaussian structure in the signal to be
+extracted.
+According to the different form of open and close opera-
+tions, the Top-hat transform can be divided into two types:
+open Top-hat transform and closed Top-hat transform [32],
+and they are deﬁned as equations (11) and (12), respectively;
+OHat ( f (k) , g (m)) = f (k) − ( f (k) ◦g (m)) (11)
+CHa t ( f (k) , g (m)) = f (k) − ( f (k) •g (m)) (12)
+where ◦ and • are the basic opening and closing operations,
+respectively. For the basic operations of mathematical mor-
+phology, please refer to Appendix B.
+Since g is a Gaussian structure, the operation OHat can
+effectively extract the positive Gaussian-like pulse from f ,
+and CHa t is used to extract negative Gaussian-like pulses.
+So TH (k) is the extracted positive and negative Gaussian-
+like pulses from signal f (k). The function y (k) =
+Binarize (
+TH (k), T1) binarize the signal TH (k),w h e r e
+T1 is a threshold value, and y(k) is the detection result of the
+Gaussian-like pulses. For exa mple, Fig. 9 is the initial input
+signal f (k). The extracted Gaussian-like signal TH (k) from
+f (k) is shown in Fig. 10. Fig. 11 are the detection results
+y(k) from the initial signal f (k). y(k) is a time series of 0
+and 1. To facilitate viewing the detection results in the graph,
+we enlarge 1:180.
+C. Rectangular Structure Filter
+The ﬁlter to extract the rectangular structure is shown in
+equation (13), where f (k) is the input signal, h(m) is a
+structure element. The morphological operation OC (or CO )
+is the combination with opening (or closing) operator followed
+by closing (or opening) operator, which is used to eliminate
+pulse interference and extract the rectangular structure signals.
+MA (k) = OC( f (k), h(m)) + CO ( f (k), h(m))
+2 (13)
+The selection of structural elements is closely related to
+the waveform of the signal. The signal in the parking phase
+Fig. 9. The initial input signal.
+Fig. 10. The extracted Gaussian signal.
+Fig. 11. The detection result.
+is similar to the rectangle. So using a rectangle as structure
+element h(m) (14) to eliminate the interference,
+h(m) = H 1 ≤ m ≤ W (14)
+where H is a constant, W is the length of structural elements,
+Wmin ≤ W ≤ Wmax . The magnetic signals created by electric
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+888 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+Fig. 12. The extracted rectangle structure signal.
+railway contain positive and negative triangle pulse. The width
+of most of the pulse is between 10 ∼ 20. In order to
+remove interference, W must greater than the width of pulses,
+so Wmin ≥ 20. There is also a limit to the upper of W .
+Assume that the parking time of the vehicle is Tparking ,
+then the length of the rectangle signal to be extracted is
+Wparking = Tparking ∗ f , f is the sampling frequency.
+If W > Wparking , the target rectangle signal will be ﬁltered out
+as noise, so Wmax < Minimum (Wparking ). Usually, the height
+of the structural element H has no effect on the performance
+of the ﬁlter, so a constant value is taken.
+Using the structural elemen ts of the same type and size,
+the morphological opening and closing operations are cas-
+caded and combined in different orders to construct the classic
+Open-closing and Close-opening ﬁlters [29]. They are deﬁned
+as follows:
+Open-closing operation:
+OC ( f (k) , h(m)) = f (k) ◦h (m) •h (m) (15)
+Close-opening operation:
+CO ( f (k) , h(m)) = f (k) •h (m) ◦h (m) (16)
+From the above deﬁnition, both OC and CO ﬁlters can ﬁlter
+positive and negative pulse noise in the target signal. However,
+they all lead to statistical deviations in amplitude, i.e., the
+result of open-closing operation has the lower amplitude than
+the original signal and the result of close-opening operation
+has the larger amplitude than the original signal. This may
+affect the result of rectangle structure detection. So a mean
+weighted combination method is adopted as equation (13).
+For example, Fig. 9 is the initial input signal f (k) which
+is created by a vehicle parked. The extracted rectangle-like
+signals MA (k) from f (k) is shown in Fig. 12. Then used the
+function r (k
+) = Binarize (MA (k) , T2) to binarize the signal
+MA (k),w h e r eT2 is a threshold value, and r(k) is the detection
+result of the rectangle signal. Fig. 13 are the detection results
+r(k) from the initial signal f (k). r(k) is a time series of 0
+and 1. To facilitate viewing the detection results in the graph
+were enlarge 1:150.
+Fig. 13. The detection result of t he rectangle structure signal.
+D. Pseudo Code of Algorithm
+According to the deﬁnition of parking detection
+problem 2, the pseudo code of the AMID (Against Magnetic
+Interference Detection) algorithm is described as shown
+in algorithm 1.
+Algorithm 1 AMID Algorithm
+1 Function S(k) = IS _ Parking (Mi(k))
+Input : The original samples Mi(k) i ∈ {x, y, z}
+Output: The status of parking space
+S(k) = 0 is vacant
+S(k) = 1 is occupied
+/* Signal synthesis */
+2 f (k) ← {Mx (k), My(k), Mz(k)};
+/* Gaussian-like pulse filter */
+3 g(m) ← a Gaussian structure element ;
+4 TH (k) = OHat ( f (k), g(m)) + CHa t ( f (k), g(m));
+5 y (k) = Binarize (TH (k), T1);
+/* Rectangle structure filter */
+6 h(m) ← a rectangle structure element ;
+7 MA (k) = (OC( f (k), h(m)) + CO ( f (k), h(m)))/2;
+8 r (k) = Binarize (MA (k) , T2);
+9 if y(k) == 1 and r (k) == 1 then
+10 S(k) = 1;
+11 else if S(k − 1) == 1 and r (k) == 1 then
+12 S(k) = 1;
+13 else if y(k) == 0 and r (k) == 0 then
+14 S(k) = 0;
+15 else
+16 S(k) = 0;
+17 end
+V. E XPERIMENTS
+In this section, we evaluate the performance of AMID
+through experiments. First, we introduce the experimental sce-
+narios and results of a deploye d WMSN. Then the performance
+comparison with the existing parking detection algorithms is
+carried out.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 889
+Fig. 14. The location of experiments.
+A. Experimental Scenario and Results
+As shown in Fig. 14, the selected roadside parking areas
+are in the Gaoxin South 10th Rd, Shenzhen, China, which is
+above the subway Line 2. The subway line 2 is a 60 km rapid
+transit system and its highest speed is 80 km/ h. Trains are fed
+at 1500 V direct current through overhead wires. The subway
+line’s train departure interval is between 3-6 minutes.
+To test the proposed algorithm, we deploy sensor nodes
+in three types of parking: parallel, bay and angled. All of
+these parking areas are near the subway line 2. As shown
+in Fig. 15(a), the node uses the STM8L151C8 MCU, has LoRa
+SX1278 [33] communication module and QMC5883L [34]
+magnetic sensor. The node runs the Contiki operating sys-
+tem [35] and its shell uses a high-strength PC mater-
+ial for resisting the weight of vehicles. The routers and
+BS use wireless communication and are solar powered.
+As shown in Fig. 15(b), each of router and BS is equipped with
+a4 4 Ah lithium battery pack and a solar panel. The routers and
+BS are attached on roadside la mpposts to improve the quality
+of wireless communication and solar charging efﬁciency.
+In our experiments, parameters related to the parking detec-
+tion algorithm are given in table I. We analyzed the perfor-
+mance of the AMID using the accuracy of detection as in
+deﬁnition 3.
+Deﬁnition 3 (Accuracy of Detection): The lifetime of sen-
+sor node D
+i can be divided into an e vent stream according to
+the status of its corresponding parking space,
+L ife (Di) = {ti(v1), ti(o1), ti(v2), ti(o2) ,..., ti(v j), ti(o j)}
+(17)
+where ti(v j ) is the duration of the vacant event v j , and t i(o j)
+is the duration of the occupied event o j . It is an incorrect
+detection that the number of missed or false detection in the
+period of the event v j or o j is equal or greater than 1. The
+correct detection rate of a WMSN is deﬁned as equation (18),
+Accuracy_Rate =
+∑N
+i=1(1 − I ncorrect i
+Eventi
+)
+N (18)
+where I ncorrect i is the number of incorrect detections of
+node D i ,E venti is the number of vacant and occupied events
+of node D i
+Fig. 15. The sensor node and BS. (a) Sensor node. (b) BS.
+TABLE I
+EXPERIMENT PARAMETERS
+In order to verify the proposed AMID algorithm, a wireless
+magnetic sensor network was installed and operated for about
+two months. Using manual recording and video monitoring,
+we obtained the exact status of the parking spaces. Experi-
+ment results show that the average detection accuracy of the
+WMSN in the parallel parking spaces is 98 .5%, and in the
+bay or angled parking spaces is 96 .6%. In addition to subway
+interference there is also interference signals from adjacent
+vehicles. For example, Fig. 16 shows magnetic signals with
+adjacent parking space interfere nce. The lower accuracy of the
+bay and angled parking spaces is mainly due to interference
+which is produced by a vehicle parked in the adjacent space.
+Interference from nearby traveling vehicles produces a short
+period of ﬂuctuations. Fig. 17 shows the magnetic interference
+generated by a bus and a truck as they passed through an
+adjacent lane. The characteris tic of a rectangular structure
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 9 =====
+
+890 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+Fig. 16. The magnetic signals with adjacent interference.
+Fig. 17. The interference m agnetic signal created by nearby travel vehicles.
+is a necessary condition for parking detection, so that the
+interference of traveling vehicles will not affect the parking
+detection.
+Since the sensor node is battery powered, the battery life
+span is low, so the majority of the time the sensor node
+should be in a sleep mode. The power consumption of the
+node includes sampling, calcula tion, sending, receiving and
+sleeping. We can use the time complexity of the parking
+detection algorithm to evaluate the energy consumption of
+calculation. The MCU controls the AMR sensor to sam-
+ple by a pre-setting sampling period. After each sampling,
+the MCU needs to call the AMID algorithm for calculation.
+AMID mainly includes two ﬁltering modules: Gaussian ﬁl-
+ter and rectangular ﬁlter. For the Gaussian ﬁlter module,
+the structural element used is a Gaussian signal, and the time
+complexity of the Open and Close operations is O(L
+2),w h e r e
+L is the length of the structure element; For the rectangular
+ﬁlter module, each value of the structural element is equal,
+which simpliﬁes the calculation, the time complexity of Open
+and Close is O(1). So the time complexity of AMID is O(L2).
+Fig. 18. An algorithm veriﬁcation system.
+In our experiment, the length of the Gaussian structure element
+is L = 15. So the energy consumption of the AMID algorithm
+is minimal. In the designed WMSN, the node is equipped
+w i t hap a i ro f3 .6 V 8000 mA h lithium batteries and it can
+continuously work for 5 years without changing the battery.
+B. Performance Comparison
+In order to facilitate the performance comparison of multiple
+algorithms, we implemented an algorithm veriﬁcation system.
+The original sampling data of the magnetic ﬁeld is packaged
+and uploaded. Every 30 samples are packed into a packet.
+The packaged method can reduce transmission conﬂict and
+energy consumption. The system receives the magnetic ﬁeld
+data uploaded by the BS, realizes data parsing and stores the
+data in the database. We use C language to implement multiple
+algorithms. Using the original magnetic ﬁeld signal obtained
+from the experiment, algorithms are running on the server side.
+The interface of the system is shown in Fig. 18, the system
+can select the magnetic signals according to the node number
+and date. It can choose to display original magnetic signals
+and the detection results of the running algorithms.
+The threshold and state machine mechanisms based algo-
+rithms designed for parking detection such as A T A (Adaptive
+Threshold Algorithm) [9], MAX_MIN [17] are considered.
+However, they are not suitable to direct calculation of inter-
+fered magnetic signals. To evaluate these algorithms we need
+to preprocess the signal. First, the three-axis signals are
+synthesized as a fused signal f (k) by equation (6). Then a
+smoothing ﬁlter as equation (19) takes a running average of
+the signal f (k),
+A(k)=
+⎧
+⎪⎨
+⎪⎩
+f (k) + f (k − 1) +···+ f (1)
+k fo rk < M
+f (k)+ f (k− 1) +···+ f (k− M+1)
+M fo rk ≥ M
+(19)
+where M is the pre-deﬁned length of the running average.
+For implementation, using a buffer Gbu f stores the values of
+[ f (k), f (k − 1),··· , f (k − M + 1)]. A(k) is used as input to
+simulate A TA and MAX_MIN algorithms.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 10 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 891
+TABLE II
+PERFORMANCE COMPARISON OF ALGORITHMS
+Fig. 19. Parking detection examples of three algorithms. (a) Initial signal.
+(b) Detection result.
+We performed performance comparison tests on different
+types of algorithms. For each e xperiment, the sample data we
+selected contained 1000 parking events. As shown in table II,
+in both types of parking lots, the detection accuracy of AMID
+algorithm proposed in this paper is better than A T A and
+MAX_MIN. Compared with the par allel parking, the detection
+accuracy of these algorithms ha s slightly decreased. This is
+due to the fact that the magnetic signals in the bay parking
+maybe disturbed by adj acent interference.
+Fig. 19 shows an example of parking detection. The initial
+magnetic signal is shown in Fig. 19(a). The actual event status
+has been identiﬁed above the ﬁgure, v
+i is the vacant event, and
+oi is the occupancy event. So the initial signal represents a list
+of events E ={ v1, o1,v 2, o2,v 3, o3,v 4, o4,v 5}. The detection
+results of three algorithms are shown in Fig. 19(b). There are
+fault detections of event v2 f o rb o t hA T Aa n dM A X _ M I N
+algorithms. In addition, there is a missed detection of event o4
+for A TA algorithm. In this example, the AMID algorithm has
+all been correctly detected.
+VI. C ONCLUSION AND DISCUSSION
+Wireless magnetic sensor networks are being gradually used
+for outdoor parking detection. However, the geomagnetic ﬁeld
+is highly susceptible to interference from electric railway
+systems. This work proposes a parking detection algorithm
+which can ﬁlter and eliminate the geomagnetic interference.
+Two ﬁlters based on mathematical morphology are proposed
+to remove the magnetic interference and extract the structural
+signals of vehicle parking detection. Experiment results show
+that the detection accuracy of the algorithm is more accurate
+than previous algorithms for parking detection.
+For the future study, we plan to measure another magnitude
+which is not affected by magnetic interference to improve the
+detection accuracy.
+(1) We can add a second sensor for auxiliary detection,
+for example, a Light Dependent Resistor (LDR) to measure
+optical changes of light, or sensors such as infrared, ultra-
+sonic, Doppler radar, and so on. However, these sensors are
+often susceptible in outdoor environment, such as weather
+conditions, occlusions, and lighting variations. Conversely,
+if a second sensor is used, the design of the node’s shell needs
+to be changed. For example, if an optical sensor is added,
+the diffusion of light should be considered in the design of the
+shell. We need to conduct further research on the feasibility
+and cost effectiveness of adding a second sensor.
+(2) The change of RSSI (Received Signal Strength Indica-
+tion) of the node’s wireless communication can also be used as
+a reference for detection. In th e process of a vehicle entering
+and leaving the parking space, if the sensor node tries to send
+and receive data packets multip le times, its parent node and
+itself will both sense that the RSSI has changed signiﬁcantly.
+However, passing vehicles, pedestrians, and adjacent vehicles’
+parking will also change the value of RSSI. Therefore, it is
+necessary to further explore the relationship between the
+change of RSSI and parking detection.
+A
+PPENDIX A
+MAGNETIC SIGNALS
+Magnetic signals are affected by various factors such as
+the type of parking spaces, the trajectory of the vehicle,
+and the speed of travel. For example, Fig. 20 shows the
+magnetic signals of vehicles parked in a bay, an angled and
+a parallel parking spaces, respectively. Although these signals
+are different, they share common characteristics as described
+in deﬁnition 1.
+A
+PPENDIX B
+BASIC MORPHOLOGICAL OPERA TORS
+Mathematical morphology is a theory for the analysis and
+processing of geometrical structures. Let f and g denote
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 11 =====
+
+892 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 21, NO. 2, FEBRUARY 2020
+Fig. 20. The magnetic signals sampled from different kinds of parkin g spaces. (a) Bay parking. (b) Angled parking. (c) Parallel parking.
+two discrete-valued functions deﬁned on a one-dimensional
+discrete space. f is the input signal and g is a structure
+element. There are four basic morphological operators as
+follows:
+A. Erosion
+The erosion of f by a structure element g is
+( f ⊖ g)( k) = min
+m=1,2,...,M
+{ f (k + m) − g (m)} (20)
+where k ∈ (1, 2,..., N − M).
+B. Dilation
+The dilation of f by a structure element g is
+( f ⊕ g)( k) = max
+m=1,2,...,M
+{ f (k − m) + g (m)} (21)
+where k ∈ (M, M + 1,..., N).
+C. Opening
+Opening of signal f by a structure element g consists of
+an erosion followed by a dilation. That is,
+( f ◦g)( k) = [( f ⊖ g) ⊕ g](k) (22)
+D. Closing
+Closing is a dual operation of opening and consists of a
+dilation followed by an erosion. The closing of a signal f by
+a structure element g is
+( f •g)( k) = [( f ⊕ g) ⊖ g](k) (23)
+ACKNOWLEDGEMENT
+The authors wish to thank the anonymous reviewers for their
+valuable comments that contributed to the improved quality of
+this paper.
+REFERENCES
+[1] J. H. Shin and H. B. Jun, “A study on smart parking guid-
+ance algorithm,” Transp. Res. C, Emerg. Technol. , vol. 44,
+pp. 299–317, Jul. 2014.
+[2] J. Zhou, D. Gao, and D. Zhang, “Moving vehicle detection for automatic
+trafﬁc monitoring,” IEEE Trans. Veh. Technol., vol. 56, no. 1, pp. 51–59,
+Jan. 2007.
+[3] P . N. Pathirana, A. E. K. Lim, A. V . Savkin, and P . D. Hodgson, “Robust
+video/ultrasonic fusion-based estim ation for automotive applications,”
+IEEE Trans. Veh. Technol. , vol. 56, no. 4, pp. 1631–1639, Jul. 2007.
+[4] C. N. Dickson, A. M. Wallace, M. Kitchin, and B. Connor, “Improving
+infrared vehicle detection with polarisation,” in Proc. IET Intell. Signal
+Process. Conf., Dec. 2013, pp. 1–6.
+[5] Z. He, Z. Cai, S. Cheng, and X. Wang, “Approximate aggregation for
+tracking quantiles and range counti ngs in wireless sensor networks,”
+Theor . Comput. Sci., vol. 607, pp. 381–390, Nov. 2015.
+[6] L. Santarelli, P . Palangio, and M. De Lauretis, “Electromagnetic back-
+ground noise at L’Aquila geomagnetic observatory,” Ann. Geophys. ,
+vol. 57, no. 2, pp. 2–11, Aug. 2014.
+[7] F. J. Lowes, “DC railways and the magnetic ﬁelds they produce—The
+geomagnetic context,” Earth, Planets Space , vol. 61, no. 8, pp. 1–15,
+Aug. 2009.
+[8] R. Pirjola, “Modelling the magnetic ﬁeld caused by a DC-electriﬁed
+railway with linearly changing leakage currents,” Earth, Planets Space ,
+vol. 63, no. 2, pp. 991–998, Sep. 2011.
+[9] S. Cheung and P . V araiya, “Trafﬁc surveillance by wireless sen-
+sor networks: Final report,” Uni v. California, Berkeley, CA, USA,
+Tech. Rep. UCB-ITS-PRR-2007-4, 2007.
+[10] R. Wang, L. Zhang, R. Sun, J. Gong, and L. Cui, “EasiTia: A per-
+vasive trafﬁc information acquisition system based on wireless sensor
+networks,” IEEE Trans. Intell. Transp. Syst. , vol. 12, no. 2, pp. 615–621,
+Jun. 2011.
+[11] L. Zhang, R. Wang, and L. Cui, “Real-time trafﬁc monitoring
+with magnetic sensor networks,” J. Inf. Sci. Eng. , vol. 27, no. 4,
+pp. 1473–1486, 2011.
+[12] S. Cheng, Z. Cai, J. Li, and H. Gao, “Extracting kernel dataset from big
+sensory data in wireless sensor networks,” IEEE Trans. Knowl. Data
+Eng., vol. 29, no. 4, pp. 813–827, Apr. 2017.
+[13] K. Kwong, R. Kavaler, R. Rajagopal, and P . V araiya, “Real-time
+measurement of link vehicle count and travel time in a road network,”
+IEEE Trans. Intell. Transp. Syst. , vol. 11, no. 4, pp. 814–825, Dec. 2010.
+[14] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[15] A. Haoui, R. Kavaler, and P . V araiya, “Wireless magnetic sensors
+for trafﬁc surveillance,” Transp. Res. C, Emerg. Technol. , vol. 16,
+pp. 294–306, Jun. 2008.
+[16] J. Ding, S.-Y . Cheung, C.-W. Tan, a nd P . V araiya, “Signal processing
+of sensor node data for vehicle detection,” in Proc. 7th Int. IEEE Conf.
+Intell. Transp. Syst. , Oct. 2004, pp. 70–75.
+[17] J. Gu, Z. Zhang, F. Y u, and Q. Liu, “Design and implementation of a
+street parking system using wireless sensor networks,” in Proc. IEEE
+Int. Conf. Ind. Inform. , Jul. 2012, pp. 1212–1217.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 12 =====
+
+ZHANG et al. : ROBUST P ARKING DETECTION ALGORITHM AGAINST ELECTRIC RAILW A Y MAGNETIC FIELD INTERFERENCE 893
+[18] H. Zhu and F. Y u, “A cross-correla tion technique for vehicle detections
+in wireless magnetic sensor network,” IEEE Sensors J. , vol. 16, no. 11,
+pp. 4484–4494, Jun. 2016.
+[19] Z. Zhang, M. Tao, and H. Y uan, “A parking occupancy detection
+algorithm based on AMR sensor,” IEEE Sensors J. , vol. 15, no. 2,
+pp. 1261–1269, Feb. 2015.
+[20] C. Trigona et al. , “Implementation and characterization of a smart
+parking system based on 3-axis magnetic sensors,” in Proc. IEEE Int.
+Instrum. Meas. Technol. Conf. , May 2016, pp. 1–6.
+[21] W. Balid, H. Taﬁsh, and H. H. Refa i, “Intelligent vehicle counting and
+classiﬁcation sensor for real-time trafﬁc surveillance,” IEEE Trans. Ind.
+Electron., vol. 19, no. 6, pp. 1784–1794, Jun. 2018.
+[22] Y . Liu and L. Zheng, “Research of anti-interference technology based on
+magnetic ﬁeld variation of vehicle,” in Proc. Int. Symp. Comput. Intell.
+Design, Dec. 2015, pp. 397–400.
+[23] E. Sifuentes, O. Casas, and R. Pallas-Areny, “Wireless magnetic sensor
+node for vehicle detection with optical wake-up,” IEEE Sensors J. ,
+vol. 11, no. 8, pp. 1669–1676, Aug. 2011.
+[24] Y . Huang et al. , “Toward an easy deployable outdoor parking
+system—Lessons from long-term deployment,” in Proc. IEEE Int. Conf.
+Pervasive Comput. Commun. , Mar. 2017, pp. 227–236.
+[25] W. Y ang, C. Hu, M. Q. H. Meng, H. Dai, and D. Chen, “A new 6D
+magnetic localization technique for wireless capsule endoscope based
+on a rectangle magnet,” C h i n .J .E l e c t r o n ., vol. 19, no. 2, pp. 360–364,
+Aug. 2010.
+[26] J. Y ao, F. Zeng, and Q. Wang, “Phot onic generation of ultrawideb and
+signals,” J. Lightw. Technol., vol. 25, no. 11, pp. 991–998, Aug. 2007.
+[27] R. D. Persichini, D. Di Febo, V . Calà, C. Malta, and A. Orlandi, “EMC
+analysis of axle counters in the Italian railway network,” IEEE Trans.
+Electromagn. Compat., vol. 57, no. 1, pp. 44–51, Feb. 2015.
+[28] M. B. Pádua, A. L. Padilha, and Í. Vitorello, “Disturbances on mag-
+netotelluric data due to DC electriﬁed railway: A case study from
+southeastern Brazil,” Earth, Planets Space , vol. 54, no. 8, pp. 591–596,
+Aug. 2002.
+[29] P . Maragos and R. Schafer, “Mo rphological ﬁlters—Part I: Their
+set-theoretic analysis and relations to linear shift-invariant ﬁlters,”
+IEEE Trans. Acoust., Speech, Signal Process. , vol. ASSP-35, no. 8,
+pp. 1153–1169, Aug. 1987.
+[30] M. Dumberry and C. C. Finlay, “Eastward and westward drift of the
+earth’s magnetic ﬁeld for the last three millennia,” Earth Planet. Sci.
+Lett., vol. 254, nos. 1–2, pp. 146–157, 2007.
+[31] M. Zeng, J. Li, and Z. Peng, “The de sign of top-hat morphological ﬁlter
+and application to infrared target detection,” Infr . Phys. Technol., vol. 48,
+no. 1, pp. 67–76, Aug. 2006.
+[32] A. C. Jalba, M. H. F. Wilkinson, and J. B. T. M. Roerdink, “Morpholog-
+ical hat-transform scale spaces and their use in pattern classiﬁcation,”
+Pattern Recognit., vol. 37, no. 5, pp. 901–915, Aug. 2004.
+[33] Semtech Group. (2018). Datasheet of SX1278 . [Online]. Available:
+https://www.semtech.com/products/wireless-rf/lora-transceivers/sx1278
+[34] QST Corp Group. (2018). Datasheet of QMC5983 . [Online]. Available:
+https://img.ﬁlipeﬂop.com/ﬁles/download/Datasheet-QMC5883L-
+1.0%20.pdf
+[35] A. Dunkels, B. Gronvall, and T. V oigt, “Contiki—A lightweight and
+ﬂexible operating system for tiny networked sensors,” in Proc. 29th
+Annu. IEEE Int. Conf. Local Comput. Netw. , Nov. 2004, pp. 455–462.
+Zusheng Zhang received the B.S. degree from
+the Hunan University of Science and Technology,
+Xiangtan, China, in 2003, the M.S. degree from
+Nankai University, Tianjin, China, in 2006, and
+the Ph.D. degree from the Institute of Computing
+Technology, Chinese Academy of Sciences, Beijing,
+China, in 2010. He is currently an Assistant Profes-
+sor with the Dongguan University of Technology,
+Dongguan, China. His research interests include
+intelligent transportation systems and wireless sen-
+sor networks.
+Xianmang He received the Ph.D. degree in com-
+puter science from the School of Computer Sci-
+ence and Technology, Fudan University, Shanghai,
+in 2011. He is currently a Lecturer with the
+Dongguan University of Technology. His research
+interests include signal pro cessing and differential
+privacy.
+Huaqiang Yuan received the Ph.D. degree from
+Shanghai Jiao Tong University, Shanghai, China,
+in 1996. He is currently a Professor with the School
+of Computer and Network Security, Dongguan Uni-
+versity of Technology. His primary research interests
+include signal processing and data mining.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:24:34 UTC from IEEE Xplore.  Restrictions apply. 

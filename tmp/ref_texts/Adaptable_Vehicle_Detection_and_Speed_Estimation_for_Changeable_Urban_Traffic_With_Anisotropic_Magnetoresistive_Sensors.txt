@@ -1,0 +1,704 @@
+
+
+===== PAGE 1 =====
+
+IEEE SENSORS JOURNAL, VOL. 17, NO. 7, APRIL 1, 2017 2021
+Adaptable Vehicle Detection and Speed Estimation
+for Changeable Urban Trafﬁc With Anisotropic
+Magnetoresistive Sensors
+Qifan Wei and Bo Yang, Member, IEEE
+Abstract— This paper presents an adaptable roadside
+vehicle detection and speed estimation system for various trafﬁc
+conditions on urban roads based on tri-axial anisotropic mag-
+netoresistive sensors and wireless sensor network. The system
+consists of one master node and two sensor nodes, which are
+placed along the roadsides and can measure the earth’s local
+magnetic ﬁeld disturbance caused by passing vehicles. A dynamic
+threshold detection algorithm is proposed for vehicle detection,
+especially considering the actual variable trafﬁc condition. The
+vehicle speed is estimated on the basis of the maximum values and
+the cross correlation of effective parts extracted from two sensor
+signals. We have tested the vehicle information at several roads
+under different trafﬁc conditions. Validation study has revealed
+a high detection accuracy of 97.92% when using a dynamic
+threshold compared with 92.3% when using a ﬁxed threshold.
+And, the average accuracy of speed estimation can reach up to
+97.11% on the roads. The proposed algorithm has a signiﬁcant
+increase in accuracy, reliability, and practicability compared with
+the ﬁxed threshold algorithm.
+Index Terms — Anisotropic magnetoresistive sensor (AMR),
+vehicle detection, speed estimation, changeable urban trafﬁc.
+I. I NTRODUCTION
+V
+EHICLE detection and speed measurement technologies
+are used to collect trafﬁc information in the Intelligent
+Transportation System (ITS). N owadays, vehicle detection
+systems commonly use inductive loop detector [1], video
+camera [2] and radar detector [3], etc. The installation and
+maintenance of inductive loop requires interrupting transporta-
+tion, which will lead to a high cost. The video camera is
+greatly affected by the environment, such as light intensity.
+The radar detector has poor adaptability to the weather and
+can be easily inﬂuenced by temperature and air ﬂow. All of
+them are expensive for a large-scale deployment. Recently, the
+magnetic sensor has attracted great attention due to its low
+cost and low power consumption. It can be used with wireless
+sensor network for vehicle detection, which is reliable, easily
+installed and can reach high accuracy [4].
+Researchers have proposed many vehicle detection meth-
+ods with magnetic sensors. One approach is using a cross-
+correlation between the measur ed signal and the reference
+Manuscript received July 20, 2016; revised November 29, 2016; accepted
+January 9, 2017. Date of publication Ja nuary 17, 2017; date of current version
+March 8, 2017. The associate editor coor dinating the review of this paper and
+approving it for publication was Dr. Themis Prodromakis.
+The authors are with the School of Automation Science and Elec-
+trical Engineering, Beihang Uni versity, Beijing 100191, China (e-mail:
+boyang@buaa.edu.cn).
+Digital Object Identiﬁer 10.1109/JSEN.2017.2654501
+signal to detect vehicle [5]. However, ﬁnding the proper
+reference signal is not easy, which will cause high power com-
+putation. In contrast, the threshold-based methods are simple
+and easy-to-use. Balid et al. [6] updates the localized magnetic
+ﬁeld reference components and analyze various vehicles to
+decrease the detection error. This algorithm can detect various
+vehicles with different speeds successfully. In our previous
+work, we proposed a ﬁxed threshold state machine algorithm
+based on signal variance [7]. It can suppress the signal drift
+caused by changed temperature and the detection accuracy can
+reach up to 99.05%. However, the urban trafﬁc is complex and
+changeable, and the ﬁxed thresholds cannot adapt to different
+trafﬁc conditions. Therefore, adjusting thresholds according to
+the changeable trafﬁc condition simply and automatically will
+be a new direction for further research.
+To estimate the vehicle speeds, a single sensor [8] or two
+longitudinally spaced sensors [9] are generally used. A speed
+estimation algorithm based on the calculation of cross correla-
+tion was proposed in [10], and the time delay can be obtained
+based on the maximum value of the calculation results. Saber
+Taghvaeeyan et al. used the fast Fourier transform (FFT) to
+calculate the cross correlation, which can reduce computation
+and greatly improve accuracy to 97.5% [11]. However, the
+algorithms mentioned above only considered the case of a
+single vehicle passing by the sensors. In urban trafﬁc, the
+vehicles always crawl bumper to bumper, so we need to extract
+the effective signal of each vehicle from sensor signal. The
+conventional vehicle signal extraction method is based on the
+vehicle entering and leaving points [7], [12]. Slight changes of
+the detection points will result in a great change in the vehicle
+speed, especially with a low sampling frequency in wireless
+sensor network. Hence decreasing the impact of these vehicle
+detection points will increase t he speed estimation accuracy.
+In this paper, we propose an adaptable vehicle detection and
+speed estimation system, which can be used in the changeable
+and complex urban trafﬁc. The system is based on triaxial
+anisotropic magnetoresistive (AMR) sensors and wireless sen-
+sor network, and it can be placed along the roadside without
+any inﬂuence on the trafﬁc. A dynamic threshold detection
+algorithm is proposed to detect vehicles, and the thresholds can
+be dynamically adjusted according to the trafﬁc condition. The
+maximum values of the two sensors and the cross correlation
+between them are analyzed to extract vehicle signals and
+estimate vehicle speed. The experimental results have shown
+that the proposed algorithms can ﬁt the urban trafﬁc with high
+accuracy.
+1558-1748 © 2017 I EEE. Personal u se is perm itted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 2 =====
+
+2022 IEEE SENSORS JOURNAL, VOL. 17, NO. 7, APRIL 1, 2017
+Fig. 1. Principle of vehicle detection based on magnetic sensor:
+(a) the disturbance of geomagnetic ﬁeld by a moving vehicle [13] and
+(b) AMR sensor bridge.
+Fig. 2. The sensor node in the sensing system.
+This paper is organized as follows. Section II introduces
+the conﬁguration of the sensing system. Section III describes
+the algorithm for vehicle detecting considering the actual
+trafﬁc condition. The speed estimation method is discussed
+in section IV . Section V shows the experimental results of
+vehicle detection and vehicle s peed estimation. Finally, some
+conclusions are contained in section VI.
+II. S
+ENSING SYSTEM CONFIGURATION
+The geomagnetic ﬁeld can be disturbed by the ferromagnetic
+material in vehicles. The magnetic sensor is used to detect
+the variation of geomagnetic ﬁeld and can output a voltage
+value by a Wheatstone bridge. Figure 1 shows the principle
+of vehicle detection based on magnetic sensor.
+The sensor system and the sensor setup used in this paper
+are the same as that in [7]. We use the Honeywell HMC5883L
+triaxial anisotropic magnetoresistive sensor in this system due
+to its high level of integration and low cost. The sensor has
+a build-in 12 bits analogue-to-digital converter (ADC) and
+achieves 0.5μT resolution in ±800.0μT Fields. The average
+current drain of the sensor is only 100 .0μA and as low as
+2.0μA in standby mode. Figure 2 shows one of the two sensor
+nodes in the system, which contains a CC2430 processor and
+a magnetic sensor. There are also four infrared sensors and a
+sound sensor in the sensor node for other measurement tasks.
+All the nodes are battery-powered with small size, and they
+can be easily installed along the roadside.
+Figure 3 shows the deployment of the system consisting
+of one master node and two sensor nodes. The sensor nodes
+and master node are connected wirelessly, and the measured
+data can be transferred to a laptop through a RS232 serial
+port. The master node works as the clock source and provides
+Fig. 3. The conﬁguration of the sensor system.
+Fig. 4. Current drain of the sensor node.
+time synchronization for all the nodes. The master node is
+in the working state all the time, and the sensor nodes work
+in sleep and wake-up state. Th rough polling mechanism, the
+master node can receive the data from the two sensor nodes
+successively. Figure 4 shows the current drain of the sensor
+nodes working in different states. The current drain is much
+higher when the sensor node is transmitting and receiving
+data. To reduce the power consumption, vehicle detection and
+speed estimation algorithm with a low sampling frequency is
+concerned. The sampling frequency of each sensor node is
+set as 25 Hz and deﬁned as f
+s in this paper. Sensor node 1 is
+used to detect vehicles and the detection algorithm is described
+in Section III. Sensor node 2 is used to estimate the vehicle
+speed along with sensor node 1 and the method is discussed
+in Section IV . Considering the similarity of the two sensor
+nodes and the sampling frequency, the distance between the
+two sensor nodes is experimentally set as 3 m. The x-axis
+of magnetic sensor is parallel to the direction of the moving
+vehicles, the y-axis is perpendicular to the direction of the
+moving vehicles, and the z-axis is perpendicular to the ground.
+III. V
+EHICLE DETECTION
+A. Multi-State Machine
+The ﬂuctuation of geomagnetic ﬁeld is relatively weak and
+can be disturbed easily by the surrounding electromagnetic
+ﬁeld. Figure 5 (a) shows the signals measured along the
+x-, y-, and z-axis respectively for a two-box vehicle passing
+in the near road. The horizontal ax is represents the sampling
+points of the magnetic sensor, while the vertical axis represents
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 3 =====
+
+WEI AND Y ANG: ADAPTABLE VEHICLE DETECTION AND SPEED ESTIMATION FOR CHANGEABLE URBAN TRAFFIC 2023
+Fig. 5. Magnetic signals of a two-box ve hicle: (a) original signals and
+(b) signals after ﬁltering.
+Fig. 6. Signals of a two-box vehicle a fter processing: (a) F and (b) F after
+ﬁltering and (c) the variance of F and ( d) the ﬁnal signal after processing.
+the intensity of magnetic ﬁeld. A median ﬁlter and a moving
+average ﬁlter are used and the ﬁltered signals are shown
+in Fig. 5(b).
+We use the data preprocessing algorithm in our previous
+work [7]. There will be a drift in background signal when
+the temperature changes [14], and this algorithm can not only
+reduce the inﬂuence of the signal drift, but also retain the
+characteristics of the magnetic ﬁeld intensity signal.
+F is deﬁned as the magnetic ﬁeld intensity here:
+F =
+√
+X2 + Y 2 + Z2, (1)
+where X, Y , and Z are the magnetic readings of x-, y-, and
+z-axis of magnetic sensor respectively. The ﬁnal signal used
+to detect vehicles is called Final _F, which is given by
+Final _F = Filtered _F ×
+√
+Va rianc e_F, (2)
+where Filtered _F is the signal of F after ﬁltering and
+Va rianc e_F is the variance of Filtered _F. The signals of
+the two-box vehicle mentioned above are shown in Fig. 6.
+Vehicles on the adjacent road can also affect the AMR
+sensor output, and an experiment was performed to analyze
+the inﬂuence. The system layout is illustrated in Fig. 7. The
+vehicle passed by the sensors on the adjacent road, and its
+signals are shown in Fig. 8. The amplitudes of signals are
+much smaller than the signals shown in Fig. 6. As a result,
+the inﬂuence caused by the ve hicles on adjacent road can be
+neglected compared with those on the near road.
+In our previous work, we used a ﬁxed threshold state
+machine algorithm based on signal variance. We consider
+Fig. 7. Sensor installation diagram.
+Fig. 8. Signals of a two-box vehicle on the adjacent road: (a) F and (b) F after
+ﬁltering and (c) the variance of F and ( d) the ﬁnal signal after processing.
+Fig. 9. The misjudgment results using our previous algorithm: (a) a jamming
+signal misjudged as one vehicle and (b) one vehicle misjudged as two.
+the vehicle entering and leavi ng the sensor monitoring area
+when the value of ﬁnal signal is just higher than the High
+Threshold and just lower than the Low Threshold, respectively.
+This algorithm, however, may lead to wrong judgment on
+vehicle detection. Fig. 9 (a) shows that a jamming signal is
+regarded as a vehicle signal and the interference is caused by
+a wheelbarrow passing by the sensor. Fig. 9 (b) shows that a
+low-speed vehicle (about 1.7 m/s) is mistaken for two vehicles.
+Referring to the multi-state machine proposed in
+[6] and [15], we add two intermediate states on the
+basis of the previous one. It still uses the deviations of
+Final _F from High Threshold and Low Threshold to detect
+vehicles. The schematic of this algorithm is presented in
+Fig. 10 and the input is deﬁned as SI , which is given by
+SI =
+⎧
+⎪⎨
+⎪⎩
+0 Final _F(n) ≤ Low Threshold
+2 Final _F(n) ≥ High Threshold
+1 other wise ,
+(3)
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 4 =====
+
+2024 IEEE SENSORS JOURNAL, VOL. 17, NO. 7, APRIL 1, 2017
+Fig. 10. State machine used in the sensor system for vehicle detection.
+Fig. 11. Vehicle detection results using our improved algorithm:
+(a) a jamming signal judgment and (b) one vehicle judgment.
+where Final _F(n) represents the corresponding value of
+Final _F of the n th sampling point. INIT counts for the
+initial state, and all parameters are set to initial values. Count 0
+is the intermediate state which represents counter for vehicles
+entering the sensor monitoring area. When the vehicle signal is
+higher than the High Threshold, the counter starts to count the
+number, and the counting results are compared with counting
+threshold set as M1. If the signal becomes lower than the
+High Threshold when the counting result is still smaller than
+M1, the counter will be cleared to 0. Count 00 represents
+counter for vehicle leaving the sensor monitoring area, and
+the counting result is compared with M2. By adding the two
+intermediate states, we expect to recognize the interference and
+improve the stability of this algorithm. Count 1, in addition,
+is used to record the lasting time for vehicles staying in
+the sensor monitoring area. Finally, Car and Nocar are the
+outputs of this state machine.
+Figure 11 shows the detection results of our improved
+algorithm for small disturban ces and very low speed vehicle,
+and the detection accuracy is clearly improved.
+B. Dynamic Threshold Detection Algorithm
+The accuracy of vehicle detection is closely related to
+the values of High and Low Thresholds, and how to select
+the proper thresholds is discussed in this paper. In urban
+trafﬁc, the trafﬁc condition is changeable, so the following
+experiments were performed in order to ﬁnd the relationship
+between the two thresholds and the trafﬁc condition. Note that
+the target used to describe the trafﬁc condition is called NUM ,
+Fig. 12. Vehicle detection results ba sed on the ﬁxed thresholds algorithm:
+(a) NUM = 6a n d( b )NUM = 2.
+which refers to the total number of passing vehicles in about
+20 seconds (the time required for sampling 500 points).
+The sensing system was placed along Xueyuan Road in
+Haidian District, Beijing. The vehicles driving on the road
+includes two-box vehicle, sal oon, sports utility vehicle (SUV)
+and van. The speed ranges from 4-14m/s and the number of
+vehicles is bigger in the rush hour. To analyze the detection
+accuracy under different trafﬁc condition, we test two different
+cases: NUM = 6a n d NUM = 2, and these 8 vehicles are
+all two-box vehicles. Figure 12 shows the detection results of
+the two signals based on the same thresholds. For the case
+NUM = 6a n dNUM = 2, their optimal thresholds values
+have no intersection. In Figure 12, the chosen thresholds are
+optimal for the case NUM = 6, while being too high for the
+case NUM = 2. As for our previous work in [7], the trafﬁc
+condition is limited during the test, which makes the optimal
+thresholds can be found easily, and the vehicle detection can
+achieve high accuracy. However, the ﬁxed threshold algorithm
+is not applicable for variable urban trafﬁc, which means poor
+adaptability of the algorithm. A dynamic threshold detection
+algorithm is required.
+Our previous work presented an adaptive threshold detection
+algorithm, which detects vehicles with constantly-changing
+thresholds. The thresholds will change as long as there is
+a slightly change of the sensor signal, which results in a
+poor anti-jamming ability of the algorithm. The adaptive
+thresholds change depend on the variance of the history signal.
+When the low speed vehicles pass by the sensor, the adaptive
+threshold increases due to the inﬂuence of the front vehicle,
+so the thresholds keep rising correspondingly. Sometimes, the
+threshold adjustments are too high for the purpose of proper
+vehicle detection [7]. Hence th e detection result, especially
+when the vehicles crawl bumper to bumper with low-speed in
+urban trafﬁc, is not satisfactory.
+A dynamic threshold multi-state machine algorithm is pro-
+posed to improve the capacity of resisting interference and
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 5 =====
+
+WEI AND Y ANG: ADAPTABLE VEHICLE DETECTION AND SPEED ESTIMATION FOR CHANGEABLE URBAN TRAFFIC 2025
+Fig. 13. Determination of the High an d Low Thresholds: (a) the value of x
+and (b) the values of mag and the two thresholds.
+avoid over frequent threshold adjustments. Va rianc e_F is
+used as a preliminary judgment signal and Final _F is used
+to determine the values of High and Low (Fig.13). Firstly,
+we set an initial threshold for Va rianc e_F, which can be
+deﬁned as Th re sho ld_Va r. There may be a vehicle entering
+when V arianced _F is just higher than it, and the sampling
+point can be deﬁned as x. Then we can extract a segment of
+the Final _F b a s e do nt h ev a l u eo fx
+seg ={ Final _F(x), Final _F(x+1) ,..., Final _F(x+k)},
+(4)
+where k is experimentally set to 30.
+Deﬁne
+mag = max(seg). (5)
+Notice that mag happens to get the maximum of Final _F,
+but it is not always the case. If the speed of vehicle is too
+slow, mag occurs before the maximum value. Now we can
+get the High and Low Thresholds by
+{
+High Threshold = mag/2;
+Low Threshold = l∗mag/2; 0 < l < 1, (6)
+where l is experimentally set to 0.9. Then if the value of
+Va rianc e_F is sustainably higher than Th re sho ld_Va r,t h e
+High and Low Thresholds remain unchanged. When it is
+lower than Th re sho ld_Va r, the High and Low Thresholds are
+resumed to the initial value. By this way, the two thresholds
+are dynamically adjusted according to the change of sensor
+signal when the vehicle is entering, and they will not be too
+high to detect vehicles.
+M1a n d M2, in addition, also inﬂuence the detection
+result. The recognizition of the noise affects the selection
+of M1. During the experiments, the duration of the noise is
+always less than 150 ms. As the sampling period is 40 ms,
+considering the High Threshold, M1 is set as 4 (160ms) in
+the experiments. When the vehicle speed is small enough,
+Final _F will ﬂuctuate and the signal may be lower than the
+Low Threshold during the time when the vehicle is passing
+by the sensor. Increasing M2 can prevent the misdetection.
+We tested about 3000 vehicles, and almost all of the vehicles
+Fig. 14. Vehicle detection results using our improved algorithm:
+(a) NUM = 6a n d( b )NUM = 2.
+arrive beyond 200ms. Considering the Low threshold, M2i s
+set as 3 (120ms) in the experiments.
+Figure 14 shows the detection results using the improved
+algorithm. After adjusting the thresholds, the vehicles can be
+detected under different trafﬁc conditions.
+Using the algorithm proposed in this paper, we only need
+to set a group of initial thresholds for Final _F ﬁrstly, and
+then the thresholds are dynami cally adjusted according to the
+actual trafﬁc condition. Compared with the adaptive threshold
+vehicle detection algorithms mentioned in [7] and [16], though
+the thresholds are all adjusted dynamically, the signal used to
+detect vehicles and the adjustment process of the thresholds are
+different. Final _F used in the paper can reduce the inﬂuences
+caused by the signal drift and the vehicles on the adjacent
+road. The adjustment of the thresholds in the paper does not
+merely depend on the history signal, which guarantees the
+vehicle detection result less affected by the front vehicles. Our
+proposed algorithm can apply to different trafﬁc conditions and
+ﬁt the urban trafﬁc.
+IV . S
+PEED ESTIMATION
+To estimate the individual vehicle speed of passing vehicles,
+two roadside and longitudinally deployed sensor nodes are
+used in this sensing system. The speed of passing vehicle can
+be given by
+Vi = S
+/Delta1T , (7)
+where S is the distance between two sensors and /Delta1T is the
+time interval of a vehicle passing by them. To measure the time
+interval more precisely, the cross correlation between the two
+sensor signals along with the maximum values is used in this
+paper. Note that the sensor signal used here is Filtered _F.
+As the two sensor nodes are close to each other, we can
+assume that the speed is nearly constant as the vehicle passing
+by the two sensors. The signals of sensor 1 and 2 are similar
+and we can calculate the cross correlation between them to
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 6 =====
+
+2026 IEEE SENSORS JOURNAL, VOL. 17, NO. 7, APRIL 1, 2017
+Fig. 15. (a) Signals of sensor 1 and 2. (b) The extracted vehicle signals
+based on the maximum values.
+estimate the vehicle speed [10], [11]. Figure 15(a) shows the
+two signals when there are 6 vehicles passing by the two
+sensors in about 20 seconds. In urban trafﬁc, vehicles always
+pass by the magnetic sensor in succession. To estimate the
+speed of each vehicle, extracting the effective part of each
+vehicle signal is important. As the conventional vehicle speed
+estimation method seldom describes how to extract vehicle
+signal in detail, we take the signal extraction method used in
+vehicle classiﬁcation as a reference. It is always based on the
+detection points [17] and the vehicle signals of sensor 1 and 2
+can be represented as
+{
+B
+1 ={ F1(m), F1(m + 1), F1(m + 2) ,..., F1(m + k1)}
+B2 ={ F2(n), F2(n + 1), F2(n + 2) ,..., F2(n + k2)},
+(8)
+where F1 and F2 are the signals of sensor 1 and sensor 2,
+respectively. F1(m) and F2(n) are just bigger than the high
+thresholds, F1(m + k1) and F2(n + k2) are just smaller than
+the low thresholds. However, one drawback of this method
+is that the vehicle signal extraction is greatly affected by the
+high and low thresholds. If the high threshold is set slightly
+lower, the vehicle entering points will be detected earlier.
+Finding the right time vehicles entering and leaving the sensor
+detection zone are difﬁcult. The speed estimation result will
+be heavily dependent on the thresholds, especially in low
+sampling frequency conditions.
+We extract the effective parts of the vehicle signals based on
+their maximum values B
+1 and B2, and the maximum values of
+sampling points are deﬁned as n1m a x and n2m a x, respectively.
+Now we can use N points around n1m a x and n2m a x to replace
+the whole vehicle signals of sensor 1 and 2. The signals can
+be represented as
+⎧
+⎪⎪
+⎪
+⎨
+⎪⎪
+⎪
+⎩
+B
+′
+1 ={ F1(n1m a x− (N − 1)/2) ,..., F1(n1m a x) ,...,
+F1(n1m a x+ (N − 1)/2)}
+B′
+2 ={ F2(n2m a x− (N − 1)/2) ,..., F2(n2m a x) ,...,
+F2(n2m a x+ (N − 1)/2)}.
+(9)
+To ensure that more accurate matching points can be
+selected, N is experimentally set in this paper to 51, approx-
+imately 2 times the signal sampling frequency. Figure 15(b)
+shows the schematic view of signal segmentation of the above
+TABLE I
+SIMILARITY BETWEEN B′′
+1 AND B′′
+2
+six vehicles. As a result, our proposed algorithm takes the
+maximum values of the sensor signals into account besides
+the cross correlation of them, and thus can extract effective
+parts from the sensor signals.
+With the low sampling frequency in our system, the sam-
+pling points are limited. We know that the sampling frequency
+is fs , so the maximum error of the time interval can reach
+up to 1 /fs seconds. The curve ﬁt model method with the
+cubic equation is used to ﬁt the experiment data to improve
+the accuracy of speed estimation. Then a number of equally
+spaced sampling points are used to represent the result and
+the oversampling frequency is set to 10 fs , with the consider-
+ation of calculation and accuracy. The two oversampled and
+curve ﬁtted sensor signals of a vehicle can be represented as
+B
+′′
+1 and B′′
+2 , and the length of them are both 10 N. Then,
+B′′
+2 can be time-shifted to the left or right to ﬁnd the number
+of curve ﬁtted samples required that produces maximum
+cross-correlation between B′′
+1 and the time-shifted version
+of B′′
+2 .
+To verify the similarity between B′′
+1 and B′′
+2 ,w et e s t e d
+80 vehicles passing by the sensors in succession, which
+contains 6 SUVs, 2 two-box cars, 5 vans and 67 saloons. The
+correlation coefﬁcient is used as criterion and Table I shows
+the results. The average correlation coefﬁcient is higher than
+0.98 for each type of the vehicles. As a result, B
+′′
+1 and B′′
+2 are
+similar to each other.
+We deﬁne nd as the number of sample delay.
+nd = n1m a x− n2m a x+
+arg maxm r(m)
+10 , (10)
+where
+r(m) =
+10N∑
+n=1
+B′′
+1 (n)B′′
+2 (n − m), −(10N− 1) ≤ m ≤ 10N− 1.
+(11)
+The Fast Fourier Transform (FFT) is used to compute r(m)
+to reduce the amount of computation required. The method is
+described as follows.
+Firstly we ﬁnd a number called P, which meets
+2
+P−1 ≤ 10N + (10N − 1) ≤ 2P. (12)
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 7 =====
+
+WEI AND Y ANG: ADAPTABLE VEHICLE DETECTION AND SPEED ESTIMATION FOR CHANGEABLE URBAN TRAFFIC 2027
+Then ﬁll B′′
+1 and B′′
+2 with zeros to a length of 2 P and we
+obtain
+˜B′′
+1 (n) =
+{
+B′′
+1 (n)( n = 1, 2,..., 10N)
+0 (n = 10N + 1,..., 2P)
+˜B′′
+2 (n) =
+{
+B′′
+2 (n)( n = 1, 2,..., 10N)
+0 (n = 10N + 1,..., 2P). (13)
+Deﬁne
+X1(k) = FFT ( ˜B′′
+1 (n))
+X2(k) = FFT ( ˜B′′
+2 (n)) ( k, n = 1, 2, 3,..., 10N). (14)
+Now r(m) can be computed by
+r(m) = IFFT (X1(k) ∗ ¯X2(k)) ( k = 1, 2, 3,..., 10N)
+(m = 0, 1, 2,..., 10N − 1), (15)
+where ¯X2(k) is the conjugation of X2(k). Exchanging the order
+of X1(k) and X2(k),t h e nw eg e t
+r(m) = IFFT (X2(k) ∗ ¯X1(k)) ( k = 1, 2, 3,..., 10N)
+(m = 0,−1,..., −(10N − 1)). (16)
+Now that r(m) has been determined, we can obtain nd based
+on (10). The time delay of a vehicle passing by the two sensors
+can be calculated by
+/Delta1T = nd
+fs
+. (17)
+Finally, the speed of passing vehicles can be computed
+by (7). We can extract the vehicle signals of sensor 1 and 2
+with high similarity, and thus estimate the vehicle speed even
+the vehicles crawl bumper to bumper in the complex urban
+trafﬁc.
+V. E
+XPERIMENTAL RESULTS AND ANALYSIS
+A. Vehicle Detection
+Several experiments were conducted on different roads in
+Haidian District, Beijing, and the tests were performed at
+different times under different trafﬁc conditions, and we can
+observe the adaptability of th e algorithm proposed in this
+paper. The test duration of eachexperiment is about 10 minutes
+and the vehicle detection results are listed in Table I. Note that
+the high and low thresholds used in our previous method are
+60 and 50, respectively.
+Table II shows the detection accuracy. After using the
+dynamic threshold multi-state m achine algorithm, the detec-
+tion accuracy can reach up to 100% with the low trafﬁc
+volume. With the increasing of trafﬁc ﬂow, a slight reduction
+in detection accuracy is observed. This is probably caused by
+the increased complexity of the sensor signal on busy roads.
+The accuracy is still over 95% on road 3, highlighting the
+adaptability of the proposed approach under different trafﬁc
+conditions. As a whole, the average accuracy can reach up to
+97.92%, increased by 5.62% compared with the previous algo-
+rithm. The improved vehicle detection algorithm is adapted to
+changeable trafﬁc ﬂow and has signiﬁcant improvement on
+accuracy.
+TABLE II
+RESULTS OF VEHICLE DETECTION
+Fig. 16. Speed estimation results using our improved speed algorithm.
+B. Speed Estimation
+To verify the speed estimation accuracy, we tested 80
+vehicles which passed by the sensors sequentially on Xueyuan
+Road in Haidian District, Beijing. A video was used as a
+reference to measure the time delay of a vehicle passing by
+the two reference lines. The distance of the two lines is 8m
+and the resolution of time is 1/50 second. Figure 16 shows the
+speed estimation accuracy of the 80 vehicles.
+For the above 80 vehicles, the average speed estimation
+accuracy can reach up to 97.11%. During the test, a few
+vehicles passed by the sensors with non-uniform speed, which
+results in the poor similarity between the two sensor signals,
+and an increase in the error of speed estimation
+Although the speed estimatio n result is still inﬂuenced by
+the actual vehicle movement, the algorithm proposed in this
+paper can reach good accuracy as a whole and it is more stable
+and adaptable.
+VI. C
+ONCLUSION
+This paper focuses on the urban trafﬁc, and presents an
+adaptable roadside vehicle detection and speed estimation
+system with triaxial anisotropic magnetoresistive sensors.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 
+
+===== PAGE 8 =====
+
+2028 IEEE SENSORS JOURNAL, VOL. 17, NO. 7, APRIL 1, 2017
+A novel dynamic threshold multi-state machine algorithm is
+proposed, which takes the actual changeable trafﬁc condition
+into account. The speed estimation is based on the maximum
+values of the two sensor signals of passing vehicles and the
+cross-correlation between them. The experimental results show
+that the proposed algorithms have signiﬁcant improvement
+in accuracy and adaptability, which veriﬁes that this sensor
+system is promising for application in urban trafﬁc.
+In this paper, we concern about the estimation of moving
+vehicles, and will investigate vehicle detection for severe
+congested trafﬁc, i.e., the stalled trafﬁc, in the near future.
+R
+EFERENCES
+[1] S. S. M. Ali, B. George, and L. Vanajakshi, “A simple multiple loop
+sensor conﬁguration for vehicle detection in an undisciplined trafﬁc,”
+in Proc. IEEE 5th Int. Conf. ICST , Palmerston North, New Zealand,
+Nov. 2011, pp. 644–649.
+[2] Z. Sun, G. Bebis, and R. Miller, “On-road vehicle detection: A review,”
+IEEE Trans. Pattern Anal. Mach. Intell. , vol. 28, no. 5, pp. 694–711,
+May 2006.
+[3] S. J. Park, T. Y . Kim, S. M. Kang, and K. H. Heon, “A novel signal
+processing technique for vehicle detection radar,” in IEEE MTT-S Int.
+Microw. Symp. Dig., vol. 1, Jun. 2003, pp. 607–610.
+[4] P. Ni, L. Le, and W. Yu, “Review of vehicle detection algorithms
+based on magnetoresistive sensors,” Comput. Eng. Appl., vol. 45, no. 19,
+pp. 245–248, 2009.
+[5] H. Zhu and F. Yu, “A vehicle parking detection method based on
+correlation of magnetic signals,” Int. J. Distrib. Sensor Netw., vol. 2015,
+no. 1, pp. 1–13, 2015.
+[6] W. Balid, H. Taﬁsh, and H. H. Refai, “Development of portable wireless
+sensor network system for real-time trafﬁc surveillance,” in Proc. IEEE
+18th Int. Conf. Intell. Transp. Syst. , Sep. 2015, pp. 1630–1637.
+[7] B. Yang and Y . Lei, “Vehicle detection and classiﬁcation for low-
+speed congested trafﬁc with anisotropic magnetoresistive sensor,” IEEE
+Sensors J., vol. 15, no. 2, pp. 1132–1138, Feb. 2015.
+[8] H. Li, H. Dong, L. Jia, D. Xu, and Y . Qin, “Some practical vehicle speed
+estimation methods by a single trafﬁc magnetic sensor,” in Proc. 14th
+Int. IEEE Conf. Intell. Transp. Syst. (ITSC) , Oct. 2011, pp. 1566–1573.
+[9] V . Markevicius, D. Navikas, M. Zilys, D. Andriukaitis, A. Valinevicius,
+and M. Cepenas, “Dynamic vehicle detection via the use of magnetic
+ﬁeld sensors,” Sensors, vol. 16, no. 1, pp. 1–9, Jan. 2016.
+[10] S. Gontarz, P. Szulim, J. Se´ nko, and J. Dybała, “Use of magnetic
+monitoring of vehicles for proactive strategy development,” Transp.
+Res. C, Emerg. Technol. , vol. 52, pp. 102–115, Mar. 2015.
+[11] S. Taghvaeeyan and R. Rajamani, “Po rtable roadside sensors for vehicle
+counting, classiﬁcation, and speed measurement,” IEEE Trans. Intell.
+Transp. Syst., vol. 15, no. 1, pp. 73–83, Feb. 2014.
+[12] J. Lan, Y . Xiang, L. Wang, and Y . S hi, “Vehicle detection and classi-
+ﬁcation by measuring and processing magnetic signal,” Measurement,
+vol. 15, no. 1, pp. 174–180, Jan. 2011.
+[13] S.-Y . Cheung and P. Varaiya, “Trafﬁc surveillance by wireless sensor
+networks: Final report,” Inst. Transp. Stud., Univ. California, Berkeley,
+CA, USA, Tech. Rep. UCB-ITS-PRR-2007-4, 2007.
+[14] P. Ripka, M. Butta, and A. Platil, “Temperature stability of AMR
+sensors,” Sensor Lett., vol. 11, no. 1, pp. 74–77, Jan. 2013.
+[15] A. N. Knaian, “A wireless sensor network for smart roadbeds and intel-
+ligent transportation systems,” M.S. thesis, Dept. Elect. Eng. Comput.
+Sci., Masschusetts Inst. Tec hnol., Cambridge, MA, USA, 2000.
+[16] R. Hostettler and W. Birk, “Analysis of the adaptive threshold vehicle
+detection algorithm applied to trafﬁc vibrations,” in Proc. 18th IFAC
+World Congr., Milan, Italy, Aug. 2011, pp. 2150–2155.
+[17] S. Keawkamnerd, J. Chinrungrueng, and C. Jaruchart, “Vehicle Classi-
+ﬁcation with low computation magnetic sensor,” in Proc. 8th Int. Conf.
+ITS Telecommun., Oct. 2008, pp. 164–169.
+Qifan Wei was born in Henan, China, in 1995.
+She received the B.S. degree in automation science
+and electric engineering from Beihang University,
+Beijing, China, in 2015, where she is currently
+pursuing the M.S. degree with the School of
+Automation Science and Electrical Engineering. Her
+research interest includes wireless sensor networks.
+Bo Yang (M’14) was born in Sichuan, China,
+in 1972. She received the B.S. and M.S. degrees
+in electrical engineering from Beihang University,
+Beijing, China, in 1993 and 1996, respectively, and
+the Ph.D. degree in electrical engineering from the
+University of Paderborn, Paderborn, Germany, in
+2004.
+Since 2004, she has been with the School of
+Automation Science and Electrical Engineering,
+Beihang University, where she is currently a
+Professor. Her main research interests include intel-
+ligent measurement and motion control.
+Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 21,2026 at 12:30:09 UTC from IEEE Xplore.  Restrictions apply. 

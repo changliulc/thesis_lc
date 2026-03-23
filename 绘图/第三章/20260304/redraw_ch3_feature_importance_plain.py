@@ -7,9 +7,12 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from matplotlib import font_manager as fm
 
 import run_ch3_thesis_pipeline as TP
 
+
+FONT_FAMILIES = ["Times New Roman", "SimSun", "STSong", "DejaVu Serif"]
 
 LABEL_MAP = {
     "x_absarea": "\u0058 \u8f74\u7edd\u5bf9\u9762\u79ef",
@@ -47,6 +50,22 @@ LABEL_MAP = {
 }
 
 
+def configure_fonts() -> None:
+    plt.rcParams["font.family"] = FONT_FAMILIES
+    plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams["axes.linewidth"] = 1.0
+    plt.rcParams["xtick.direction"] = "in"
+    plt.rcParams["ytick.direction"] = "in"
+    plt.rcParams["mathtext.fontset"] = "stix"
+
+
+def mixed_font(size: float | None = None) -> fm.FontProperties:
+    props = fm.FontProperties(family=FONT_FAMILIES)
+    if size is not None:
+        props.set_size(size)
+    return props
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--csv", required=True)
@@ -64,7 +83,8 @@ def main() -> None:
     df = df.iloc[::-1].copy()
 
     TP.ensure_plot_style()
-    fig_h = max(5.8, 0.38 * len(df) + 1.6)
+    configure_fonts()
+    fig_h = max(6.2, 0.40 * len(df) + 1.8)
     fig, ax = plt.subplots(figsize=(10.5, fig_h))
 
     ax.barh(
@@ -74,10 +94,9 @@ def main() -> None:
         edgecolor="none",
         alpha=0.95,
     )
-    ax.set_title("\u7aef\u4fa7\u5019\u9009\u7edf\u8ba1\u7279\u5f81\u91cd\u8981\u6027\u6392\u5e8f", fontsize=16)
-    ax.set_xlabel("\u91cd\u8981\u6027\u503c\uff08\u968f\u673a\u68ee\u6797\uff09", fontsize=13)
-    ax.tick_params(axis="y", labelsize=12)
-    ax.tick_params(axis="x", labelsize=11)
+    ax.set_xlabel("重要性值（随机森林）", fontsize=14.5, fontproperties=mixed_font(14.5))
+    ax.tick_params(axis="y", labelsize=13.2, length=5.0, width=1.0)
+    ax.tick_params(axis="x", labelsize=12.2, length=5.0, width=1.0)
     ax.grid(axis="x", linestyle="--", alpha=0.28)
 
     fig.tight_layout()

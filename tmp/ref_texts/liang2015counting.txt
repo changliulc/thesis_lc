@@ -1,0 +1,922 @@
+
+
+===== PAGE 1 =====
+
+2878 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Counting and Classiﬁcation of Highway V ehicles
+by Regression Analysis
+Mingpei Liang, Xinyu Huang, Chung-Hao Chen, Xin Chen, and Alade Tokuta
+Abstract—In this paper, we describe a novel algorithm that
+counts and classiﬁes highway vehicles based on regression analy-
+sis. This algorithm requires no explicit segmentation or tracking
+of individual vehicles, which is usually an important part of
+many existing algorithms. Therefore, this algorithm is particularly
+useful when there are severe occlusions or vehicle resolution is
+low, in which extracted features are highly unreliable. There are
+mainly two contributions in our proposed algorithm. First, a
+warping method is developed to detect the foreground segments
+that contain unclassiﬁed vehicles. The common used modeling
+and tracking (e.g., Kalman ﬁltering) of individual vehicles are
+not required. In order to reduce vehicle distortion caused by the
+foreshortening effect, a nonuniform mesh grid and a projective
+transformation are estimated and applied during the warping
+process. Second, we extract a set of low-level features for each
+foreground segment and develop a cascaded regression approach
+to count and classify vehicles directly, which has not been used
+in the area of intelligent transportation systems. Three different
+regressors are designed and evaluated. Experiments show that our
+regression-based algorithm is accurate and robust for poor quality
+videos, from which many existing algorithms could fail to extract
+reliable features.
+Index Terms —Highway vehicle, image warping, cascaded
+regression.
+I. I NTRODUCTION
+V
+IDEO cameras could be used to record the trafﬁc in-
+formation constantly or continuously. We are thus able
+to analyze the trafﬁc videos in real time and discover any
+information of interest. One fundamental task is to count the
+vehicles passing by in a given time period and classify the
+vehicles into different categories at the same time. The counting
+and classiﬁcation results could be useful in many different
+applications. For example, they could be used to measure trafﬁc
+density, trafﬁc ﬂow, and even emissions in terms of pollutants
+and greenhouse gases.
+Counting and classiﬁcation also could be done by other
+sensors such as radar, infrared, and inductive loop detectors.
+Although some sensors could be more accurate, they could also
+Manuscript received May 25, 2014; revised August 23, 2014, December 7,
+2014, and March 23, 2015; accepted April 17, 2015. Date of publication May 1,
+2015; date of current version September 25, 2015. The Associate Editor for this
+paper was H. Huang.
+M. Liang, X. Huang, and A. Tokuta are with the Department of Mathematics
+and Computer Science, North Carolina Central University, Durham, NC 27707
+USA (e-mail: mliang@nccu.edu; xinyu. huang@nccu.edu; atokuta@nccu.edu).
+C.-H. Chen is with the Department of Electrical and Computer Engineering,
+Old Dominion University, Norfolk, V A 23529 USA (e-mail: cxchen@odu.edu).
+X. Chen is with HERE, Chicago, IL 60606 USA (e-mail: xin.5.chen@
+here.com).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TITS.2015.2424917
+be intrusive and need a higher maintenance cost. For example,
+we may need to embed weighing sensors in road to measure
+vehicle weight and classify vehi cle size. Comparing with other
+sensors, vision-based systems could be non-intrusive and could
+obtain much richer trafﬁc information. However, current vision-
+based systems could be less accurate and more sensitive to
+operating conditions (e.g., weather). These problems make
+vision-based systems challenging and important research topics
+in the area of intelligent transportation systems.
+A typical vision-based trafﬁc analysis system could consist
+of many components such as foreground segmentation, shadow
+removal, feature extraction, and tracking [1]. In order to count
+and classify vehicles, there is often a module to detect and
+separate individual vehicles for each foreground segment. This
+module could be conducted after feature extraction or tracking.
+For example, if feature points could be extracted robustly across
+multiple image frames, it is possible to ﬁt explicit 2D/3-D
+vehicle models [2], [3]. This kind of algorithms usually requires
+at least moderate-resolution images without severe occlusions
+and motion blur. In this paper, we would like to process low-
+quality videos by skipping this m odule. In our collected videos,
+multiple vehicles could be occluded and thus form a large fore-
+ground segment. Separation or inference of individual vehicles
+would be a difﬁcult task in this case. Moreover, a 2-D vehicle
+shape could be strongly distorted caused by the foreshortening
+effect, which means the weak perspective projection used in the
+traditional algorithms is not a good approximation. As the video
+frame rate could be as low as one frame per second, the vehicle
+size could be reduced to less than 10 × 10 pixels for the next
+image frame. Therefore, it would also be difﬁcult to detect and
+track robust feature points or edges. Fig. 1 shows several image
+frames in our collected videos.
+There are mainly two contributions of the proposed algo-
+rithm. First, we develop a warping method to detect image
+foreground segments that contain unclassiﬁed vehicles. In order
+to reduce vehicle distortion between two consecutive image
+frames, we estimate a non-uniform mesh grid and a projective
+transformation. By using this warping method, we do not need
+the common used tracking or modeling of individual vehicles.
+We either do not need to assume the weak perspective pro-
+jection that has been used in some existing algorithms (e.g.,
+[2], [4]). In fact, the warping method could be considered as
+an approximation of the perspective projection when vehicle
+features are not reliable. Furthermore, the warping method
+based on the non-uniform mesh grid is designed for both curved
+(as shown in Figs. 1(c) and 7) and straight highway sections.
+To our knowledge, there are no other similar algorithms for
+1524-9050 © 2015 IEEE. Translations and content mining are permitted for academic research only. Personal use is also permitted, but republication/redistribution
+requires IEEE permission. See http://www.ieee.org/publications_standards/publications/rights/index.html for more information.
+
+===== PAGE 2 =====
+
+LIANG et al.: COUNTING AND CLASSIFICA TION OF HIGHW A Y VEHICLES BY REGRESSION ANAL YSIS 2879
+Fig. 1. Examples of image frames. (a) and (b) show the severe occlusions. (c) and (d) are two consecutive image frames showing strong shape distortion c aused
+by the foreshortening effect. Feature points or edges a re often unreliable in these low resolution images.
+the detection of unclassiﬁed vehicles. Secondly, we propose
+a cascaded regression approach to count and classify vehicles
+directly. A set of low-level features are extracted and form
+an input vector for the regression. Three different regressors
+that include Gaussian process regression, standard Poisson
+regression, and Bayesian Poisson regression are designed and
+evaluated.
+Notice that other components of a typical trafﬁc analysis
+system, such as shadow removal and foreground segmentation,
+are not the focus of this paper. These components could be
+useful for adverse weather conditions. Therefore, the counting
+and classiﬁcation performance could be further improved when
+advanced algorithms for these components are added to the
+system. Our paper is organized as follows. Section II provides
+a review of related work. Our algorithm is described in details
+in Section III. Section IV shows the experimental results and
+Section V gives a conclusion.
+II. R
+ELA TED WORK
+First, we provide a review of different feature extraction
+methods for trafﬁc analysis. In [5], a set of Scale Invariant Fea-
+ture Transform (SIFT) features [6] are extracted and matched
+in the follow-up image frames in order to improve tracking
+performance. The SIFT features are also detected, tracked,
+clustered in the foreground blobs in [7]. Horizontal and vertical
+line features are extracted in [8] to build a 3-D vehicle model
+assuming the vehicle is not occluded. Similarly, by predicting
+and matching image intensity edges, Leotta et al. [9] ﬁt a
+generic 3-D vehicle model to multiple still images. Simultane-
+ous tracking can also be done during the shape estimation in a
+video. Ma et al. [10] proposed a vehicle classiﬁcation algorithm
+that uses the feature based on edge points and modiﬁed SIFT
+descriptors. Two classiﬁcation tasks, cars versus minivans and
+sedans versus taxies, are tested with good performance. In
+[11], a 3-D extended Histograms of Oriented Gradients (HOG)
+feature for detection and classiﬁcation of individual vehicles
+and pedestrians is proposed by combining 3-D interest points
+and HOG. 3-D vehicle models are pre-reconstructed by the
+methods in [12].
+Region-based features are often used for trafﬁc analysis.
+Gupte et al. [13] track regions in image frames by matching,
+splitting, and merging of these regions. The foreshortening
+effects between two consecutive image frames are not consid-
+ered. In [14], assuming individual vehicles have been separated
+after lane and shadow detection, Hsieh et al. further extracted
+region size and vehicle “linearity” to classify vehicles into four
+categories (e.g., car, minivan, truck, and van truck). In [15],
+image regions are extracted according to high edge density
+areas. Shadows, symmetry measurement, and Harris corners are
+then used in the hypothesis classiﬁcation. In [2], image regions
+of interest are extracted based on motion detection, then a 3-D
+model is ﬁtted to the image region using a point-to-line segment
+distance metric.
+Occlusion is a major challenging problem in the vehicle
+segmentation. Many methods have been proposed to deal with
+this problem. Features mentioned above could be considered as
+a set of “parts” that are tracked and grouped together [16], [17].
+When the 2-D/3-D vehicle model could be ﬁtted into image
+frames, it is also relatively easy to detect occlusions [2], [18].
+In [19], a spatiotemporal Markov random ﬁeld is proposed to
+detect occluded vehicles at intersections. In [20], a “cutting
+region” between two occluded vehicles is extracted based on
+the motion ﬁeld of consecutive image frames. Similarly, a
+“cutting line” is estimated in [21] to separate two occluded
+vehicles based on the analysis of convex shape.
+Image warping is not considered as a step or module to
+detect and track vehicles in [1]. There are some researches using
+image warping as a pre-processing step to generate a horizontal
+or vertical road segment to facilitate the detection and tracking
+(e.g., [7], [22]). Four reference points are selected to estimate a
+projective transformation in [7]. This transformation is applied
+so that all motion vectors are approximately parallel to each
+other. The similar idea is applied in [22] so that lanes could
+be detected easily. However, image warping itself has not been
+applied directly to detect unclassiﬁed vehicles. Moreover, only
+four reference points used in these algorithms are often not
+enough to model non-straight road segments. In our algorithm,
+we estimate a nonlinear mesh grid to model road segments more
+accurately.
+The features used in many existing algorithms could be ro-
+bust when image quality is ideal. However, these features based
+on point, line, and image region could be highly unreliable with
+a low image quality. Therefore, it could not be a good choice to
+use them for segmentation and tracking of individual vehicles
+and even 3-D reconstruction. In this paper, we use a set of low-
+level features that could be considered as weak classiﬁers and
+apply regression to count and classify vehicles directly.
+Regression analysis has been applied to count people in
+[23], which is similar to our proposed algorithm. There are
+mainly two differences between two algorithms. First, the
+detection of unclassiﬁed vehicles is quite different from the
+
+===== PAGE 3 =====
+
+2880 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Fig. 2. (a) Red points sampled along trafﬁc trajectory. (b) Fitted spline using vertical positions that are the y coordinates of the sampled points (i.e., horizontal
+axis is the number of the sampled points, and vertical axis is the corresponding y coordinate). (c) Fitted spline using y coordinates of sampled points (i.e., the
+vertical axis in (b)) and horizontal distances between consecutive sample points. (d) Generated dense mesh grid.
+crowd segmentation described in [23]. The crowd segmentation
+is done by a mixture of dynamic textures. In the mixture
+model, the observed variable is the sampled video frames,
+and the hidden variable encodes the dynamics. Another hid-
+den variable is a mixture component that is used to handle
+inhomogeneous videos. In the ﬁrst part of our algorithm, we
+apply a nonlinear warping algorithm on foreground segments
+in the previous frame. A projective transformation is applied
+to reduce perspective distortion. Weighted normalized cross
+correlation (WNCC) is used to compare transformed patches
+with the corresponding patches in the current frame. Secondly,
+the regression frameworks of two algorithms are different.
+In our algorithm, we build a three-level cascaded regression
+framework as we have three different vehicle classes. More
+importantly, to our knowledge, regression analysis has not been
+applied before for counting and classifying highway vehicles.
+III. A
+LGORITHM
+Our algorithm mainly consists of four steps. The ﬁrst step
+is the background estimation and foreground segmentation.
+Background estimation is a necessary pre-processing step for
+most vision-based systems. Background could be estimated by
+a simple averaging [17], [24]. The averaging method has little
+computational cost, however, it could not be robust to different
+operating conditions. To improve robustness, the background
+pixel could also be modeled as a single Gaussian, a mix-
+ture of Gaussians, and on [25]–[28]. Recently, Unzueta et al.
+proposed an adaptive multi-cue s egmentation strategy to de-
+tect foreground pixels [29]. As our major contribution is the
+novel algorithm for counting and classiﬁcation, we apply the
+averaging method to estimate background and use thresholds
+and morphological operations (e.g., erode and dilate) to extract
+the foreground segments. A region of interest is also deﬁned
+and the foreground segments outside the region of interest are
+removed. The rest steps are described in Section III-A, III-B,
+and III-C, respectively.
+A. Detection of Unclassiﬁed V ehicles
+It would be difﬁcult to detect and track robust features since
+vehicle size could be reduced to as small as 10 × 10. Therefore,
+it is necessary to consider a much larger image region that
+could contain more than one vehicle. Since the time between
+two consecutive image frames is around 1 second, it is safe
+to assume the relative 3-D distances among vehicles remain
+almost unchanged or have small changes. However, due to the
+foreshortening effect, their 2-D projections could be distorted
+signiﬁcantly. Hence, the weak pers pective projection assumed
+in [2], [4] is not a good approximation.
+We ﬁrst manually sample a small set of points on the dashed
+lane markers along the road direction. The vertical positions
+and horizontal distances between two consecutive points are
+computed. Fig. 2(a) shows the sampled points (i.e., the red
+points) on the background imag e, which partition the highway
+road into a set of regions based on their y coordinates. Notice
+that it is easy to automate this sampling step when the trafﬁc
+trajectory is known. The trajectory can be estimated robustly
+in [30], [31]. Two sets of values are used to ﬁt two smoothing
+splines. The spline ﬁtted by vertical positions (i.e., Fig. 2(b))
+is a modeling of the foreshortening effect along the road
+direction. The horizontal axis is the same as the number of
+sampled points, and the vertical axis is the corresponding y
+coordinates. As the horizontal direction is roughly parallel to
+the image plane, the spline ﬁtted by the horizontal distances
+(i.e., Fig. 2(c)) is a modeling of scaling factors along x-axis.
+The horizontal axis of this ﬁgure is same as the vertical axis
+in the Fig. 2(b), and the vertical axis is the horizontal distance
+between two consecutive sample points, which is proportional
+to the scaling factor. We adopt smoothing splines for ﬁtting as
+the road direction may not be straight. These two splines are
+used to generate a dense nonuniform mesh grid.
+Our warping method used to detect unclassiﬁed vehicles is
+based on the mesh grid. For simplicity, let us assume the trafﬁc
+ﬂow is from bottom to top. It is straightforward to extend
+the warping method to other different trafﬁc ﬂows. First, we
+check if there are any foreground segments in the bottom region
+of the previous image frame. This is done by comparing the
+current image frame with the background image. If the area of
+foreground segments is larger than the minimum area of a small
+size vehicle (computed from the training set), then we compute
+a bounding box that includes these foreground segments. The
+mesh vertices in the bounding box are the original mesh grid.
+Secondly, we conduct a complete search from the bottom region
+to the top region. When we decrease the y coordinate, we can
+ﬁnd a new set of vertices that is a shift of the original mesh grid
+along the highway road. This new set of vertices is the target
+mesh grid. Warping method we used here is the Thin-Plane
+
+===== PAGE 4 =====
+
+LIANG et al.: COUNTING AND CLASSIFICA TION OF HIGHW A Y VEHICLES BY REGRESSION ANAL YSIS 2881
+Fig. 3. Selection of four points for the projective transformation.
+spline warping in [32]. Texture mapping could also be used to
+speed up the warping process. Image patch of the foreground
+mask is also warped. The warped intensity image is compared
+with the same image patch in the current image frame based on
+the WNCC,
+γ=
+∑
+i wi(Ip(i)−¯Ip)·(Ic(i)−¯Ic)
+√
+∑
+i wi(Ip(i)−¯Ip)2 ·
+√
+∑
+i wi(Ic(i)−¯Ic)2 (1)
+where Ip(i) and Ic(i) are corresponding pixel values in previ-
+ous and current image frames, ¯Ip and ¯Ic are the weighted mean
+values of pixels in previous and current image frames, and wi
+is the pixel weight in the previous image frame. The wi is set
+to 1 if it is in the foreground mask and 0 otherwise. The highest
+matching score is selected and a convex hull is generated based
+on the foreground segments in the warped mask. The convex
+hull gives us the image region that has been classiﬁed. The
+foreground segments below the convex hull in the current image
+frame contain the unclassiﬁed vehicles. It is interesting to note
+that the search results could also be used to estimate the trafﬁc
+density. If the moving distance along the highway direction is
+small, it is likely to have a heavy trafﬁc.
+Warping is deﬁned by the mesh vertices on the road surface.
+If the vehicle height is large (e.g., a truck), vehicle shape could
+still be distorted or tilted after warping. Therefore, we apply
+another projective transformation to the foreground segment
+after warping in order to further reduce the distortion. In order
+to deﬁne a projective transformation, we need to deﬁne four
+pairs of points. As shown in Fig. 3, as the trafﬁc ﬂow is from
+bottom to top, the right and bottom part of the foreground
+segments are often close to the road surface. Thus, we sample
+three points, bottom-right p
+1, bottom-left p2, and a rightmost
+point p3 at the mean of y coordinates. These three points are
+the same after the projective transformation.
+The fourth points p4 and p′
+4 are selected based on the
+assumption that vertical lines on the vehicle are often parallel
+with the image plane of camera. Thus, the vertical lines are still
+vertical in the image after the perspective projection. We ﬁrst
+select a vertical line with length l in the original mesh grid.
+l would be transformed to l
+′ that is often not vertical after the
+warping process we described above. Since the warping process
+is essentially an interpolation of neighboring pixels, we could
+compute the coordinate ofp4 by the interpolation of four nearby
+mesh vertices (i.e., the red points in Fig. 3. As the length of the
+vertical line is s·l, p′
+4 is also computed. Here, s is the scaling
+factor that is derived from the spline in Fig. 2(c). Note that
+this 2-D projective transformation only approximately models
+the distortions of large vehicles caused by the perspective
+projection. An exact solution would require camera calibration
+or 3-D reconstruction. However, this could be time-consuming
+and needs reliable measuremen ts and feature extraction.
+Fig. 4 is an example that illustrates the processes such as
+warping, projective transformation, weighted normalized cor-
+relation, and detection of current unclassiﬁed vehicles.
+B. Feature Extraction
+As mentioned, it could be difﬁcult to detect and track reliable
+features in low quality image frames. Therefore, we only use a
+set of low level features that could present weak linear relations
+to the vehicle count. These features include 1) segment area;
+2) segment length along the road direction; 3) segment width;
+4) segment perimeter associated with the number of pixels on
+the segment boundary; 5) horizontal edge length within the
+segment (i.e., segment boundary is not included); 6) texture
+coarseness.
+These features are similar to the features used in [23] with
+two main differences. First, they are normalized (e.g., re-scaled)
+based on the smoothing spline estimated in Fig. 2(c). A refer-
+ence line with y coordinate close to the image bottom is chosen
+for the normalization. Secondly, as trafﬁc trajectory is known or
+has been estimated, segment length and width are not sensitive
+to the road direction. Thus, they are computed by projection
+onto the road direction and the direction perpendicular to the
+road direction. Longer length and width often indicate more
+vehicles or larger vehicles in the segment. Horizontal edge
+length within a segment is a feature that could distinguish a
+large vehicle and multiple small vehicles that may have the
+similar area and segment length. Texture coarseness consists
+of measurements of homogeneity, energy, and entropy along
+four orientations [23], [33]. Similar to horizontal edge length,
+texture coarseness could also help us estimate the different
+vehicle classes. In general, smoother texture tends to contain
+less or larger vehicles. Fig. 5 shows some of features from an
+image frame.
+These features are then concatenated together to form a 17 ×
+1 feature vector. This feature vector is the input vector (i.e., x)
+in the regression module to estimate count of large vehicles.
+C. Cascaded Regression
+We are interested in three different vehicle classes (i.e.,
+large, medium, and small size) corresponding to truck/bus,
+SUV/minivan, and sedan, respectively. There are two reasons
+for using three different classes. First, we tend to combine
+vehicle counts and classes to estimate emissions on highways.
+
+===== PAGE 5 =====
+
+2882 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Fig. 4. An example of warping and detection processes. (From left to right) 1) Nonlinear warping based on the estimated mesh grids (e.g., warping from t he
+red rectangle to the green and yellow rectangles, respectively); 2) project ive transformation to reduce the dist ortions; 3) comparisons between wa rped results and
+corresponding patches in the current fra me based on weighted normalized cross correlation; 4) de tection of unclassiﬁed vehicles that are below the c onvex hull
+(red polygon).
+Fig. 5. Illustration of some extracted features. ( a) Original image frame. (b) Foreground segments where red lines indicate segment length and width . (c) Segment
+perimeter. (d) Horizontal edge length within the segments.
+In the area of atmospheric environment, McGaughey et al.
+applied a set of linear regressions to estimate relations be-
+tween emission factors and diesel contribution for a Houston
+tunnel [34]. Different classes of vehicles are manually counted
+by observers on trafﬁc videos that have been captured. Our
+algorithm is designed to automatically estimate counts and
+emissions in real time. Secondly, as our cameras only capture
+low resolution and low frame rate videos, it would be difﬁcult
+to detect many different classes, and even speciﬁc models of
+highway vehicles. There are four different classes, cars/jeeps,
+light-duty trucks, medium-duty trucks (i.e., trucks with two
+axles and six tires), and heavy-duty trucks (trucks with three
+or more axles), are used in [34]. However, it is difﬁcult for us
+to use these categories based on the criteria of number of axles
+and tires. In our image frames, many tires and axles are invisible
+due to occlusion and low video quality.
+In statistics, regression analysis is often applied to build a
+mapping from an input variable to a continuous output variable.
+It has been widely used in the area of image processing. In the
+area of intelligent transportation systems, different regression
+algorithms have been applied to p redict travel time, forecast
+trafﬁc ﬂow and detect trafﬁc incidents, and freeway trafﬁc states
+[35]–[37]. In our algorithm, we need to build a regression
+model from input variable, which is the 17 × 1 feature vector,
+to the count of large, medium, and small vehicles, which are
+our output variables. One possible solution is to assume the
+counts of three vehicle classes a re independent with each other.
+Then we can apply regression for three classes separately given
+the same input feature vectors. However, this solution could
+not be accurate or robust as the assumption of independence
+is often not valid. Therefore, we apply a three-level cascaded
+regression.
+The ﬁrst level is the regression for the large vehicles as all
+the features are less affected by the counts of medium and
+small vehicles. The estimated count is treated as a feature and
+concatenated to the original f eature vector. The new feature
+vector is used as input variable for the second level to estimate
+count of medium vehicles. Both counting results from these two
+levels are concatenated to the original feature vector and used to
+estimate the count of small vehicles. Fig. 6 shows the cascaded
+regression framework.
+We evaluate three different regression methods to ﬁnd out
+which kind of regression method could be more suitable for our
+application.
+The simplest regression could be the linear regression that is
+a linear combination of the input variables. We also could use
+nonlinear functions of the input variables, such as polynomial
+functions, spline functions, and logistic sigmoid functions.
+These regression methods are parametric models, which could
+be sensitive to nonlinearities of the input data and cause over-
+ﬁtting when input variable is in a high-dimensional space.
+Therefore, we ﬁrst evaluate th e Gaussian process, which could
+be used to specify ﬂexible nonlinear regression for more com-
+plex data set. However, the output variable by using Gaussian
+
+===== PAGE 6 =====
+
+LIANG et al.: COUNTING AND CLASSIFICA TION OF HIGHW A Y VEHICLES BY REGRESSION ANAL YSIS 2883
+Fig. 6. Three-level cascaded regression. RLarge , RMe d i u m, RSmall are
+regression modules for large, medium, and small vehicles respectively.
+process could be negative, which cannot happen in our applica-
+tion. Hence, the second regression method that we evaluate is
+the Poisson regression that is mainly used to model count data.
+For comparison purpose, we also evaluate the Bayesian Poisson
+regression proposed in [23].
+Gaussian Process: The regression model with Gaussian
+noise is given by
+y = f(x)+ ϵ (2)
+where ϵ is a random noise variable that is independent for
+each observation,y is the count of a vehicle class, and x denotes
+the feature vector. The Gaussian likelihood for the count is
+given by
+p(y|f(x)) =N(y|f,σ
+2I) (3)
+where σ2 is the variance of noise. Based on the deﬁnition of a
+Gaussian process, the Gaussi an prior has the zero mean and a
+Gram matrix K as the covariance
+p(x)= N(x|0, K). (4)
+The kernel function k(x, x′) that determines K is given by
+adding the squared exponential function, a linear term, and a
+constant.
+k(x, x′)= θ1 exp
+(
+−θ2
+2 |x−x′|2
+)
++θ3xT x′ +θ4 (5)
+where θ=( θ1,θ2,θ3,θ4) are the hyperparameters and opti-
+mized by maximizing the log likelihood p(y|θ). The linear and
+constant terms in the kernel function are used to model the lin-
+ear relation between input and output. The squared exponential
+function could model the local nonlinearities that are caused by
+occlusions and segmentation errors.
+Suppose there is a new input x∗, let us deﬁne X =
+(x1,..., xN)T and y =( y1,...,y N)T (N is the size of train-
+Fig. 7. Sample images captured at different time intervals.
+ing set), then the predictive distribution is given by
+p(y∗|X,y,x∗)= N(m,σ2
+∗) (6)
+where
+m = k(x∗,X)(K+σ2I)−1y
+σ2
+∗= k(x∗,x∗)−k(x∗,X)T(K+σ2I)−1k(X,x∗)
+Poisson Regression: As the vehicle count is a nonnegative
+integer, the typical regression choice is the Poisson regression
+wherey ∼Poisson(μ). The canonical link is the log,
+log(μ)= η= wTφ(x). (7)
+Iterative reweighted least squares could be applied to ﬁt this
+model. The update formula is w =( ΦRΦ)−1ΦTRz,w h e r e
+R = Diag(μi) is the weight matrix, zi = ηi +(yi −μi)/μi,
+andΦis the design matrix.
+Bayesian Poisson Regression: A Bayesian model for count
+regression is proposed in [23]. After approximations on the
+posterior distribution p(w|X,y), the prediction distribution
+could be modeled by a negative binomial distribution,
+p(y∗|X,y,x∗)= NB(eμη,σ2
+η) (8)
+with mean and variance
+μη= k(x∗,X)(K+Σy)−1t
+σ2
+η= k(x∗,x∗)−k(x∗,X)T(K+Σy)−1k(X,x∗)
+whereΣy= Diag(1/(y1+c),..., 1/(yN+c)) andt=log(y+c)−
+cΣy1. The kernel function we used here is same as the kernel
+in (5).
+IV . EXPERIMENTS
+We remotely collected close to 70-minutes videos from a
+local transportation department at different highway locations
+at different time intervals. Image size is 352 × 240 and frame
+
+===== PAGE 7 =====
+
+2884 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Fig. 8. Illustration of unreliable contour and SIFT features. (a) Two cons ecutive image frames. (b) Contours from the Canny method. (c) Contours from the
+Laplacian of Gaussian method. (d) The SIFT feature points. The enlarged regions are from the same vehi cles, which contain 12 SIFT features and 1 SIFT fe ature,
+respectively.
+Fig. 9. Five consecutive image frames and their c orresponding foreground segments. Y ellow segments contain unclassiﬁed vehicles and white segment s contain
+classiﬁed vehicles that have been classiﬁed in previous frame. All th e segments are extracted from the pre-deﬁned region of interest.
+rate is only around 1 fps that may be caused by a slow network
+transfer. In each image frame, we manually counted the new
+entered vehicles according to t heir classes. These manually
+counted results are used as the ground truth. A region of
+interest (e.g., the region close to the camera) is selected for each
+highway road. Fig. 7 shows sample images captured at different
+time intervals.
+Our algorithm is implemented using Matlab and can be run
+in real time. The most time consuming part is the warping
+algorithm, which is 0.16 ms on average. The prediction based
+on the regression is around 3.4 × 10−4 ms per foreground
+segment.
+As mentioned in the related work, different features (e.g.,
+contours and feature points) could be extracted for trafﬁc analy-
+sis [2], [3], [7]–[11], [17]. These features could be used to ﬁt
+into a 2-D/3-D vehicle model or be tracked over image frames.
+Fig. 8 shows the extraction of two kinds of contour features
+(the contours in the background have been removed) and the
+SIFT feature points. As most contours are mixed together and
+not distinguishable, they cannot be easily used to ﬁt into one
+vehicle model. As the vehicle resolution is small, the number of
+the SIFT features is very limited even we set the peak threshold
+of the DoG scale space to the minimum. These SIFT features
+are also highly inconsistent over image frames, which makes
+the modeling and tracking difﬁcult.
+For instance, SIFT features need to be matched and tracked
+in the foreground segments in [7]. Motion vectors are then
+grouped by a hierarchical clustering algorithm. As shown in
+the enlarged regions in Fig. 8(d), the same vehicle in two
+consecutive image frames contains 12 SIFT features and 1 SIFT
+features, respectively. Therefore, it would be very difﬁcult to
+match and track these SIFT features.
+We believe that other similar feature extraction methods,
+such as the Harris corner, would have the same problem. As
+a result, many existing algorithms (e.g., [2], [3], [7]–[11], [17])
+are not suitable for low quality videos and could easily fail to
+extract features so that countin g and classiﬁcation are highly
+inaccurate.
+Many existing algorithms also need to segment individual
+vehicles either before or after tracking. This segmentation itself
+could be a difﬁcult problem when vehicle resolution is small
+and severe occlusions present. As a result, in many existing
+algorithms (e.g., [7], [13], [14], [20], [21]), we can only ﬁnd
+segmentation of around two occluded vehicles.
+Fig. 9 shows the ﬁve image frames and their corresponding
+foreground segments. Because of the low frame rate, vehicles
+often become very small after one image frame and are almost
+invisible after two image frames. There are severe occlusions
+in foreground segments. Each foreground segment could easily
+contain many vehicles. The assumption of the weak perspective
+
+===== PAGE 8 =====
+
+LIANG et al.: COUNTING AND CLASSIFICA TION OF HIGHW A Y VEHICLES BY REGRESSION ANAL YSIS 2885
+TABLE I
+PERFORMANCE COMPARISON BY USING THREE REGRESSION METHODS AND DIFFERENT FEA TURES .B ASED ON ALL FEA TURES , THE BEST
+CLASSIFICA TION RA TES FOR LARGE ,M EDIUM , AND SMALL VEHICLES ARE 92.7%, 63.4%, AND 79.9%, R ESPECTIVEL Y ,
+WHICH ARE CORRESPONDING TO MEAN ABSOLUTE ERRORS 0.146, 0.732, AND 0.401
+Fig. 10. The ground truth of small size vehicles in a trafﬁc video (around 30 minutes).
+projection that has been used in some existing algorithms is also
+not valid here.
+Three different regression methods are evaluated, in which
+training and testing data are completely separated. The absolute
+error for each vehicle class ( err = 1
+N
+∑|ˆci −ci|,w h e r e ˆci
+and ci are the estimated and true counts in the ith foreground
+segment, andN is the number of foreground segments) is com-
+puted. Table I shows the counting results for all the features and
+different categories of features. In order to obtain an accurate
+evaluation, the image frames that contain no or few vehicles
+are removed in this experiment as these image frames are not
+challenging and could greatly reduce the absolute errors. For
+the selected image frames, th e number of small and medium
+size vehicles in one foreground segment could reach up to 11
+and the number of large size vehicles could reach up to 4. On
+average, there are around 4 small and medium vehicles and 2
+large vehicles in each foreground segment. We can ﬁnd that
+the performance by using all the features is better than the
+performance only using one kind of features. Our algorithm is
+accurate and robust to count large size vehicles. For example,
+the mean absolute error using all features and the Poisson
+regression is 0.146 per foreground segment, which means the
+algorithm could miscount 15 large size vehicles for every
+100 foreground segments that contain around 200 large size
+vehicles. For small and medium size vehicles, our algorithm
+is less accurate. For example, the mean absolute error using
+all features and the Bayesian Poisson is 0.732 per foreground
+segment. Therefore, based on all features, the best classiﬁcation
+rates for large, medium, and small vehicles are 92.7%, 63.4%,
+and 79.9%, respectively, which are corresponding to mean
+absolute errors 0.146, 0.732, and 0.401. As shown in Fig. 6,
+the counting results for small and medium vehicles also reply
+on the counting results of large vehicles. Therefore, the errors
+made in the ﬁrst-level regression would be propagated to the
+second and third level regression.
+If the cascaded regression framework is not applied for small
+and medium vehicles (i.e., the counts of different vehicles
+in one segment are mutually independent), the counting and
+classiﬁcation performance is further reduced. For example,
+if the Poisson regression and all features are applied in this
+experiment, the mean absolute errors could be increased from
+0.752 (0.298) to 0.893 (0.429) for medium size vehicles and
+from 0.401 (0.281) to 0.820 (0.231) for small size vehicles,
+where the numbers in the parentheses are the corresponding
+standard deviations.
+The performance of Gaussian process is worse than other
+two regression methods. Standard Poisson regression is slightly
+better than the Bayesian Poisson regression proposed in [23].
+One of possible reasons could be that vehicle counts (e.g., up to
+11) generally are much less than the pedestrian counts (e.g., up
+to 50). There are no enough local nonlinearities so that squared
+exponential kernel function is not very useful comparing with
+the linear kernel.
+Figs. 10 and 11 show the count estimates using standard
+Poisson regression and ground truth of small size vehicles
+over a moderate trafﬁc video. The video length is close to
+
+===== PAGE 9 =====
+
+2886 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Fig. 11. Our estimation of small size vehicles in the same trafﬁc video used in Fig. 10.
+Fig. 12. The ground truth between 1000th and 1100th image frame in Fig. 10.
+Fig. 13. Our estimation between 1000th and 1100th image frame in Fig. 11.
+30 minutes. We can ﬁnd that these two distributions are similar.
+This indicates that our estimation can be used to approximate
+the trafﬁc density distribution. In terms of each image frame,
+it is also common that there is a difference of 1 or 2 vehicles
+between the ground truth and our estimation. We believe that it
+could be difﬁcult to further reduce the errors unless image res-
+olution and frame rate are increased. Figs. 12 and 13 show the
+results between 1000th and 1100th image frame of Figs. 10 and
+11.
+V. D
+ISCUSSION
+In many segmentation based algorithms, the boundary of an
+individual vehicle or the boundaries shared by multiple vehicles
+need to be estimated. However, the boundary estimation could
+be considered as a more difﬁcult problem than the vehicle
+counting itself. One advantage of using regression analysis is
+that the vehicle boundary estimation is not required and the
+counting problem can be addressed directly. The major factor
+that affects our algorithm pe rformance is the feature vector
+extracted from the foreground segment. Normalization of these
+features based on the smoothing splines is an important step
+to reduce the effects from perspective projection. Without this
+step, the small size vehicles close to the camera could have
+some similar features with the large size vehicles far away from
+the camera.
+Another advantage of using regression analysis is that pre-
+diction stage of regression is often very fast. All the regression
+methods we used could make predictions in real time. It is
+also possible to choose other supervised learning techniques to
+learn the relation between the f eature vector and the vehicle
+count, such as a neural network. For sufﬁciently large number
+of hidden units, a two-layer neural network could have a similar
+performance of Gaussian process.
+Our algorithm is mainly designed to count and classify
+highway vehicles. Without ﬁnding individual vehicles, it is not
+easy to extend our algorithm to other applications, such as
+detection of complex events for urban trafﬁc. This could be one
+limitation of the algorithm.
+Our algorithm is currently trained and evaluated at different
+time intervals during daytime. However, our algorithm still
+cannot handle many different w eather conditions, such as the
+“transition” weather condition presented in [29]. This is another
+limitation of the algorithm. For example, our experiments are
+currently conducted when small shadow areas present. How-
+ever, features could be strongly affected by large shadow areas.
+In order to improve robustness, it could be useful to add shadow
+removal to our framework. Our algorithm also could not be
+applied during nighttime. One reason is that vehicle features
+could not quite different during daytime and nighttime. In
+order to partially solve the problem, we could train multiple
+regression models based on different time intervals.
+VI. C
+ONCLUSION
+In this paper, we present a counting and classiﬁcation algo-
+rithm for highway vehicles. Unlike many existing algorithms,
+
+===== PAGE 10 =====
+
+LIANG et al.: COUNTING AND CLASSIFICA TION OF HIGHW A Y VEHICLES BY REGRESSION ANAL YSIS 2887
+our algorithm requires no explicit segmentation of individual
+vehicles. Our algorithm also does not rely on tracking of robust
+features. Given a set of low level features, we apply a cascaded
+regression model to count and classify vehicles directly. We
+have tested our algorithm on low quality videos that last more
+than one hour. We show that our algorithm can deal with the
+trafﬁc with severe occlusions and very low vehicle resolutions.
+Our algorithm is suitable for vision based systems that are
+non-intrusive and can be mounted many places near highways.
+Our algorithm could be further applied for estimation of trafﬁc
+density and vehicle emissions. Looking into the future, there are
+many areas that could be improved. One immediate step is to
+apply more sophisticated algorithms for background estimation
+and shadow removal.
+R
+EFERENCES
+[1] N. Buch, S. A. V elastin, and J. Orwell, “A review of computer vision
+techniques for the analysis of urban trafﬁc,” IEEE Trans. Intell. Transp.
+Syst., vol. 12, no. 3, pp. 920–939, Sep. 2011.
+[2] J. Lou, T. Tan, W. Hu, H. Y ang, and S. J. Maybank, “3-D model-
+based vehicle tracking,” IEEE Trans. Image Process. , vol. 14, no. 10,
+pp. 1561–1569, Oct. 2005.
+[3] C. C. C. Pang, W. W. L. Lam, and N. H. C. Y ung, “A method for vehicle
+count in the presence of multiple-vehicle occlusions in trafﬁc images,”
+IEEE Trans. Intell. Transp. Syst., vol. 8, no. 3, pp. 441–459, Sep. 2007.
+[4] B. Johansson, J. Wiklund, P .-E. F orssén, and G. Granlund, “Combining
+shadow detection and simulation for estimation of vehicle size and posi-
+tion,” Pattern Recognit. Lett., vol. 30, no. 8, pp. 751–759, Jun. 2009.
+[5] T. Gao, Z. Liu, W. Gao, and J. Zhang, “Moving vehicle tracking based on
+sift active particle choosing,” in Advances in Neuro-Information Process-
+ing. Berlin, Germany: Springer-V erlag, 2009, pp. 695–702.
+[6] D. G. Lowe, “Distinctive image feat ures from scale-invariant keypoints,”
+Int. J. Comput. Vis., vol. 60, no. 2, pp. 91–110, 2004.
+[7] G. Jun, J. Aggarwal, and M. Gokmen, “Tracking and segmentation of
+highway vehicles in cluttered and crowded scenes,” in Proc. IEEE WACV,
+2008, pp. 1–6.
+[8] Z. Kim and J. Malik, “Fast vehicle detection with probabilistic feature
+grouping and its application to vehicle tracking,” in Proc. 9th IEEE Int.
+Conf. Comput. Vis., 2003, pp. 524–531.
+[9] M. J. Leotta and J. L. Mundy, “V ehicle surveillance with a generic,
+adaptive, 3D vehicle model,” IEEE Trans. Pattern Anal. Mach. Intell. ,
+vol. 33, no. 7, pp. 1457–1469, 2011.
+[10] X. Ma and W. E. L. Grimson, “Edge-based rich representation for
+vehicle classiﬁcation,” in Proc. T enth IEEE ICCV , 2005, vol. 2,
+pp. 1185–1192.
+[11] N. Buch, J. Orwell, and S. A. V el astin, “3D extended histogram of ori-
+ented gradients (3dhog) for classiﬁca tion of road users in urban scenes,”
+in Proc. BMVC, 2009, pp. 1–11.
+[12] S. Messelodi, C. M. Modena, and M. Zanin, “A computer vision system
+for the detection and classiﬁcation of vehicles at urban road intersections,”
+Pattern Anal. Appl., vol. 8, no. 1/2, pp. 17–31, 2005.
+[13] S. Gupte, O. Masoud, R. F. Martin , and N. P . Papanikolopoulos, “De-
+tection and classiﬁcation of vehicles,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 3, no. 1, pp. 37–47, Mar. 2002.
+[14] J.-W. Hsieh, S.-H. Y u, Y .-S. Chen, and W.-F. Hu, “Automatic trafﬁc
+surveillance system for vehicle tracking and classiﬁcation,” IEEE Trans.
+Intell. Transp. Syst., vol. 7, no. 2, pp. 175–187, Jun. 2006.
+[15] D. Alonso, L. Salgado, and M. Nie to, “Robust vehicle detection through
+multidimensional classiﬁcation for on board video based systems,” in
+Proc. IEEE ICIP, 2007, vol. 4, pp. IV -321–IV -324.
+[16] C. Gentile, O. Camps, and M. Sznaier, “Segmentation for robust tracking
+in the presence of severe occlusion,” IEEE Trans. Image Process., vol. 13,
+no. 2, pp. 166–178, Feb. 2004.
+[17] N. K. Kanhere, S. J. Pundlik, and S. T. Birchﬁeld, “V ehicle segmentation
+and tracking from a low-angle off-axis camera,” in Proc. IEEE CVPR ,
+2005, vol. 2, pp. 1152–1157.
+[18] X. Song and R. Nevatia, “A model-based vehicle segmentation method
+for tracking,” in Proc. 10th IEEE ICCV , 2005, vol. 2, pp. 1124–1131.
+[19] S. Kamijo, Y . Matsushita, K. Ikeuc hi, and M. Sakauchi, “Trafﬁc monitor-
+ing and accident detection at intersections,” IEEE Trans. Intell. Transp.
+Syst., vol. 1, no. 2, pp. 108–118, Jun. 2000.
+[20] C.-L. Huang and W.-C. Liao, “A vision-based vehicle identiﬁcation sys-
+tem,” in Proc. 17th ICPR
+, 2004, vol. 4, pp. 364–367.
+[21] W. Zhang, Q. J. Wu, X. Y ang, and X. Fang, “Multilevel framework to
+detect and handle vehicle occlusion,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 9, no. 1, pp. 161–174, Mar. 2008.
+[22] R. Jiang, M. Terauchi, R. K lette, S. Wang, and T. V audrey, Low-Level
+Image Processing for Lane Detection and Tracking . Berlin, Germany:
+Springer-V erlag, 2010.
+[23] A. B. Chan and N. V asconcelos, “Counting people with low-level features
+and Bayesian regression,” IEEE Trans. Image Process. , vol. 21, no. 4,
+pp. 2160–2177, Apr. 2012.
+[24] N. K. Kanhere and S. T. Birchﬁeld, “ Real-time incremental segmentation
+and tracking of vehicles at low camera angles using stable features,” IEEE
+Trans. Intell. Transp. Syst., vol. 9, no. 1, pp. 148–160, Mar. 2008.
+[25] P . Kumar, S. Ranganath, and H. Weimin, “Bayesian network based com-
+puter vision algorithm for trafﬁc monitoring using video,” in Proc. IEEE
+Intell. Transp. Syst., 2003, vol. 1, pp. 897–902.
+[26] B. Morris and M. Trivedi, “Robust classiﬁcation and tracking of vehicles
+in trafﬁc video streams,” in Proc. IEEE ITSC, 2006, pp. 1078–1083.
+[27] J.-S. Hu and T.-M. Su, “Robust background subtraction with shadow
+and highlight removal for indoor surveillance,” EURASIP J. Appl. Signal
+Process., vol. 2007, no. 1, p. 108, Jan. 2007.
+[28] A. Elgammal, D. Harwood, and L. Davis, “Non-parametric model
+for background subtraction,” in Computer Vision—ECCV . Berlin,
+Germany: Springer-V erlag, 2000, pp. 751–767.
+[29] L. Unzueta et al. , “Adaptive multicue background subtraction for robust
+vehicle counting and classiﬁcation,” IEEE Trans. Intell. Transp. Syst. ,
+vol. 13, no. 2, pp. 527–540, Jun. 2012.
+[30] S. Atev, G. Miller, and N. P . Papanikolopoulos, “Clustering of vehicle
+trajectories,” IEEE Trans. Intell. Transp. Syst., vol. 11, no. 3, pp. 647–657,
+Sep. 2010.
+[31] K. Kim, D. Lee, and I. Essa, “Gaussian process regression ﬂow for analy-
+sis of motion trajectories,” in Proc. IEEE ICCV, 2011, pp. 1164–1171.
+[32] F. L. Bookstein, “Principal warps: T hin-plate splines and the decomposi-
+tion of deformations,” IEEE Trans. Pattern Anal. Mach. Intell. , vol. 11,
+no. 6, pp. 567–585, Jun. 1989.
+[33] A. N. Marana, L. d. F. Costa, R. Lotufo, and S. V elastin, “On the efﬁcacy
+of texture analysis for crowd monitoring,” in Proc. SIBGRAPI , 1998,
+pp. 354–361.
+[34] G. R. McGaughey et al., “Analysis of motor vehicle emissions in a Hous-
+ton tunnel during the Texas Air Quality Study 2000,” Atmosp. Environ.,
+vol. 38, no. 20, pp. 3363–3372, Jun. 2004.
+[35] C.-H. Wu, J.-M. Ho, and D.-T. Lee, “Travel-time prediction with sup-
+port vector regression,” IEEE Trans. Intell. Transp. Syst. , vol. 5, no. 4,
+pp. 276–281, Dec. 2004.
+[36] S. Tang and H. Gao, “Trafﬁc-incident detection-algorithm based on non-
+parametric regression,” IEEE Trans. Intell. Transp. Syst. , vol. 6, no. 1,
+pp. 38–42, Mar. 2005.
+[37] L. Li, X. Chen, and L. Zhang, “Multimodel ensemble for freeway traf-
+ﬁc state estimations,” IEEE Trans. Intell. Transp. Syst. , vol. 15, no. 3,
+Jun. 2014.
+Mingpei Liang received the B.S. degree in electrical
+engineering from Beijing University, Beijing, China.
+He is currently working toward the master’s degree
+in computer science with North Carolina Central
+University, Durham, NC, USA, under the supervi-
+sion of Dr. X. Huang and Dr. A. Tokuta. He is
+currently with NetBrain Technologies Inc., Boston,
+MA, USA. His research interests include computer
+vision and image processing.
+Xinyu Huang received the B.S. degree in mechan-
+ical engineering from Huazhong University of Sci-
+ence and Technology, Wuhan, China, the M.S. de-
+gree in computer science from Eastern Kentucky
+University, Richmond, KY , USA, and the Ph.D. de-
+gree in computer science from the University of
+Kentucky, Lexington, KY . He is currently an Assis-
+tant Professor with the Department of Mathematics
+and Computer Science, North Carolina Central Uni-
+versity, Durham, NC, USA. His research interests
+include computer vision, image processing, pattern
+recognition, and machine learning.
+
+===== PAGE 11 =====
+
+2888 IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTA TION SYSTEMS, VOL. 16, NO. 5, OCTOBER 2015
+Chung-Hao Chen received the B.S. and M.S. de-
+grees in computer science and information engineer-
+ing from Fu Jen Catholic University, New Taipei
+City, Taiwan, in 1997 and 2001, respectively, and
+the Ph.D. degree in electrical engineering from The
+University of Tennessee, Knoxville, TN, USA, in
+2009. In 2009, he joined the Department of Math-
+ematics and Computer Science, North Carolina Cen-
+tral University, Durham, NC, USA, as an Assistant
+Professor and retained this position until 2011. He is
+currently an Assistant Professor with the Department
+of Electrical and Computer Engineering, Old Dominion University, Norfolk,
+V A, USA. His research interests incl ude object tracking, robotics, and image
+processing.
+Xin Chen received the B.S. degree in computer sci-
+ence from the University of Science and Technology
+of China, Hefei, China, and the M.S. and Ph.D. de-
+grees in computer science and engineering from the
+University of Notre Dame, Notre Dame, IN, USA.
+He is a Senior Research Scientist and an Engineering
+Manager at HERE (a Nokia c ompany), Chicago, IL,
+USA. He is also the University Cooperation Ambas-
+sador for the Nokia Intell ectual Property Business
+Unit. Currently, he is an Adjunct Professor at the
+Department of Computer Science, Illinois Institute
+of Technology, and the Department of Electrical Engineering and Computer
+Science, Northwestern University.
+Alade Tokuta received the B.S. and M.S. de-
+grees in electrical engineering from Duke University,
+Durham, NC, USA, the E.E. degree in electrical
+engineering from Columbia University, New Y ork,
+NY , and the Ph.D. degree in electrical engineering
+and computer science from the University of Florida,
+Gainesville, FL, USA. Currently, he is a Professor
+at the Department of Mathematics and Computer
+Science, North Carolina Central University, Durham.
+His research interests include robotics, computer
+image synthesis/vision, networking, and algorithm
+design.

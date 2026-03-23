@@ -1,0 +1,928 @@
+
+
+===== PAGE 1 =====
+
+sensors
+Article
+Dynamic Vehicle Detection via the Use of Magnetic
+Field Sensors
+Vytautas Markevicius *, Dangirutis Navikas, Mindaugas Zilys, Darius Andriukaitis,
+Algimantas Valinevicius and Mindaugas Cepenas
+Received: 12 November 2015; Accepted: 4 January 2016; Published: 19 January 2016
+Academic Editor: Andreas Hütten
+Department of Electronics Engineering, Kaunas University of Technology, Studentu St. 50–418,
+LT-51368 Kaunas, Lithuania; dangirutis.navikas@ktu.lt (D.N.); mindaugas.zilys@ktu.lt (M.Z.);
+darius.andriukaitis@ktu.lt (D.A.); algimantas.valinevicius@ktu.lt (A.V .); mindaugas.cepenas@ktu.edu (M.C.)
+* Correspondence: vytautas.markevicius@ktu.lt; Tel.: +370-37-300-522
+Abstract: The vehicle detection process plays the key role in determining the success of intelligent
+transport management system solutions. The measurement of distortions of the Earth’s magnetic field
+using magnetic field sensors served as the basis for designing a solution aimed at vehicle detection.
+In accordance with the results obtained from research into process modeling and experimentally testing all
+the relevant hypotheses an algorithm for vehicle detection using the state criteria was proposed. Aiming
+to evaluate all of the possibilities, as well as pros and cons of the use of anisotropic magnetoresistance
+(AMR) sensors in the transport flow control process, we have performed a series of experiments with
+various vehicles (or different series) from several car manufacturers. A comparison of 12 selected
+methods, based on either the process of determining the peak signal values and their concurrence in
+time whilst calculating the delay , or by measuring the cross-correlation of these signals, was carried out.
+It was established that the relative error can be minimized via the Z component cross-correlation and Kz
+criterion cross-correlation methods. The average relative error of vehicle speed determination in the best
+case did not exceed 1.5% when the distance between sensors was set to 2 m.
+Keywords: magnetic ﬁeld; AMR sensors; vehicle speed detection
+1. Introduction
+Intelligent transport [1], smart cities [2,3] and the Internet of Things [4] are terms that surround all
+of us nowadays. One of the key factors allowing one to consider intelligent solutions [3–5] speciﬁcally
+designed for urban areas is the constantly decreasing price of sensors capable of providing information
+about trafﬁc ﬂows, environmental conditions and other parameters. The processes of integrating
+sensors into the existing infrastructure and forming large sensor networks has thus become increasingly
+less complicated. In turn, the physical medium is less disrupted and society gains access to a brand
+new quality of life, facilitated by environmentally responsive public services, continual surveillance
+and a direct connection with other information users [6].
+The capability to detect vehicles is the main element in intelligent transport management systems,
+allowing us to gather information about the trafﬁc intensity and vehicle speed. Amongst the most
+popular transport sensors are induction loops, commonly used due to their low price and relatively
+high signal quality. However, the process of installing such devices normally results in signiﬁcant
+damage to an extensive area of the road surface and the loop itself may suffer from the thermal
+expansion of the road pavement. Anisotropic magnetoresistance (AMR) sensors are an alternative to
+induction loops capable of measuring even extremely weak magnetic ﬁelds. When a vehicle is above
+the sensor, its metal construction distorts the Earth’s magnetic ﬁeld and this allows one to determine
+the location of the vehicle.
+Sensors 2016, 16, 78; doi:10.3390/s16010078 www.mdpi.com/journal/sensors
+
+===== PAGE 2 =====
+
+Sensors 2016, 16, 78 2 of 9
+Magnetoresistive sensors are small, so their installation and maintenance are much less complex
+and pricey in comparison to induction loops. Nevertheless, since their introduction, they have been
+subject to little scrutiny or testing in this particular application area.
+As the Earth’s magnetic ﬁeld distortion signal can be used not only for the detection, but also
+for the classiﬁcation and recognition of transport vehicles [7], it is highly important to ensure sensor
+effectiveness and the repetition rate of the recognized signal. Various objects and processes taking place
+in the surrounding environment have a major impact on the readings of magnetic sensors. The factors
+determining the success of locating a vehicle are multiple, therefore, distinguishing the distortions
+of the magnetic ﬁeld caused by the vehicle from those caused by certain environmental changes is a
+rather difﬁcult task [8,9]. The accuracy of locating vehicles in the environment with no undesirable
+objects affecting the magnetic ﬁeld would be signiﬁcantly higher, but, unfortunately, the possibilities
+of creating such an environment are slim to none at all. Taking that into account, in comparison to road
+induction loops the process of locating vehicles using magnetic ﬁelds is way more complicated. When
+conducting the task of locating a vehicle using the magnetic ﬁeld method, these external factors must
+be eliminated. The literature analysis reveals that the majority of research in the ﬁeld of AMR sensors
+has been carried out in laboratories, which indicates the lack of practical research activity when it
+comes to real transport vehicles and road environment conditions [10].
+2. Related Works
+Previous research papers mostly addressed the problems related to the detection of vehicles
+parked on parking lots or in car parks [ 11]. The measurement system based on AMR sensors
+was thus created for the purpose of locating vehicles using the Earth’s magnetic ﬁeld distortion
+method. It comprises magnetoresistive sensors produced by four different manufacturers and
+researchers have focused on analyzing the temperature stability and parameter spread inﬂuence
+on detection relevant to reliability [12]. Following a lengthy period of observation, the researchers
+determined several shortcomings of the method, which were as follows: dependence of the sensor
+signal on temperature, residual magnetic moment and diffusion of the sensor parameters during the
+manufacturing process [13]. Upon analyzing the impact of the vehicle construction on the magnetic
+ﬁeld changes in the parameters of the mounted sensors, it was determined that said construction plays
+a vital role in terms of magnetic ﬁeld distortion and sensor output signals. Even vehicles of similar
+construction impact the magnetic ﬁeld components differently when entering and exiting a parking
+space. The amplitude and form of an AMR sensor signal is also dependent on how the sensors and
+vehicles are arranged in terms of their positions magnetic ﬁeldwise [13]. When a vehicle is on top of
+the sensor, in some cases one can determine the critical zones which display no change in the magnetic
+ﬁeld. Based on modeling and practical research results, researchers have proposed a location algorithm
+reliant on the state criteria. It has been established that the most accurate way of determining the state
+of the parking location sensors relies on the use of complex criteria [14]. Via the use of this method the
+researchers observed a 93.3% detection effectiveness.
+In the case of moving vehicles, the majority of the proposed stationary vehicle detection methods
+have been proven unsuitable due to the need to not only record the fact of the vehicle’s presence, but
+also measure its speed and the dependence of the magnetic ﬁeld distortions on the vehicle construction.
+It is noteworthy that the majority of publications contain algorithms and methods designed to locate
+vehicles and determine their speed via the use of AMR sensors, yet most of these papers lack any
+consideration of the fact that small sensors can be passed by vehicles following different trajectories,
+which can signiﬁcantly complicate the task of determining the vehicle type.
+The bottom of the vehicle under the engine is commonly magnetically open whilst the engine
+section holds a generator and the ignition starter, each of which generate their own operating magnetic
+ﬁelds. In between the engine department and vehicle interior there is typically a steel (magnetic)
+partition, similar to the ones found between multiple interior and baggage compartments. Much of
+uncertainty is caused by the aforementioned partitions, knowing that regardless of their distance to
+
+===== PAGE 3 =====
+
+Sensors 2016, 16, 78 3 of 9
+the AMR sensor, they can act as a vehicle driving nearby, or the one being located above, i.e., the
+sum of the magnetic ﬁeld and its separate components, subject to a partition in the vicinity of the
+magneto-resistive sensors, can increase or decrease. Therefore, the notion that the Z component of
+the Earth’s magnetic ﬁeld increases under the vehicle is not necessarily true in all cases, and this can
+signiﬁcantly complicate the process of identifying a vehicle located in the same line as the sensor.
+3. Experiments
+An experiment was conducted with 24 various models of cars produced by different
+manufacturers seeking to evaluate the possibilities as well as pros and cons of using AMR sensors in
+the control of transport ﬂows. A brand new vehicle scanning system (Figure 1) was designed, which
+allowed us to measure the distortion of the Earth’s magnetic ﬁeld caused by vehicles. Vehicle detection
+was conducted using two sensors located at a distance of 30 cm. The measurement was carried out
+every 1 cm along the X axis direction whilst capturing the vehicle position and the magnetic ﬁeld
+parameters. Scanning along the direction of the X axis was repeated every 20 cm along the direction of
+the Y axis whilst moving both AMR sensors (Figure 2).
+Sensors 2016, 16, 78 3 of 10 
+ 
+distance to the AMR sensor, they can act as a vehicle driving nearby, or the one being located above, 
+i.e., the sum of the magnetic field and its separate components, subject to a partition in the vicinity of 
+the magneto-resistive sensors, can increase or decr ease. Therefore, the notion that the Z component 
+of the Earth’s magnetic field increases under the vehi cle is not necessarily true in all cases, and this 
+can significantly complicate the process of identifying a vehicle located in the same line as the sensor. 
+3. Experiments 
+A n  e x p e r i m e n t  w a s  c o n d u c t e d  w i t h  2 4  v a r i o u s  m o d e l s  o f  c a r s  p r o d u c e d  b y  d i f f e r e n t  
+manufacturers seeking to evaluate the possibilities as well as pros and cons of using AMR sensors in 
+the control of transport flows. A brand new vehicle scanning system (Figure 1) was designed, which 
+allowed us to measure the distortion of the Eart h’s magnetic field caused by vehicles. Vehicle 
+detection was conducted using two sensors located at a distance of 30 cm. The measurement was 
+carried out every 1 cm along the X axis direction whilst capturing the vehicle position and the 
+magnetic field parameters. Scanning along the direction of the X axis was repeated every 20 cm along 
+the direction of the Y axis whilst moving both AMR sensors (Figure 2).  
+Micro-
+controller
+MSP430
+I2C
+I2C
+Distance 
+meter
+RS485
+RS485
+ 
+Figure 1. Experiment structure. 
+40cm
+AMR X
+Y
+AMR X
+Y
+20cm
+ 
+Figure 2. Vehicle scanning scheme. 
+For the purpose of gathering data a digital di stance measuring instrument was used, which 
+transferred all the data via a RS 485 serial commu nication port to a computer where it was then 
+processed with the specifically designed software. The data acquired from the sensor via the RS 485 
+port. The process of transferring data and reading the data from the AMR sensors via the I2C interface 
+was carried out using a low-power MSP430 microcontroller. 
+The Earth’s magnetic field distortions were detect ed on different vehicles. A sample set of the 
+Earth’s magnetic field distortions data caused by several of them is provided in Figure 3. The research 
+results indicate that the change in the magnetic  field modulus and separate components when the 
+vehicle is driven on top of the magneto-resistive sensor is different and depends on the vehicle brand 
+Figure 1. Experiment structure.
+Sensors 2016, 16, 78 3 of 10 
+ 
+distance to the AMR sensor, they can act as a vehicle driving nearby, or the one being located above, 
+i.e., the sum of the magnetic field and its separate components, subject to a partition in the vicinity of 
+the magneto-resistive sensors, can increase or decr ease. Therefore, the notion that the Z component 
+of the Earth’s magnetic field increases under the vehi cle is not necessarily true in all cases, and this 
+can significantly complicate the process of identifying a vehicle located in the same line as the sensor. 
+3. Experiments 
+A n  e x p e r i m e n t  w a s  c o n d u c t e d  w i t h  2 4  v a r i o u s  m o d e l s  o f  c a r s  p r o d u c e d  b y  d i f f e r e n t  
+manufacturers seeking to evaluate the possibilities as well as pros and cons of using AMR sensors in 
+the control of transport flows. A brand new vehicle scanning system (Figure 1) was designed, which 
+allowed us to measure the distortion of the Eart h’s magnetic field caused by vehicles. Vehicle 
+detection was conducted using two sensors located at a distance of 30 cm. The measurement was 
+carried out every 1 cm along the X axis direction whilst capturing the vehicle position and the 
+magnetic field parameters. Scanning along the direction of the X axis was repeated every 20 cm along 
+the direction of the Y axis whilst moving both AMR sensors (Figure 2).  
+Micro-
+controller
+MSP430
+I2C
+I2C
+Distance 
+meter
+RS485
+RS485
+ 
+Figure 1. Experiment structure. 
+40cm
+AMR X
+Y
+AMR X
+Y
+20cm
+ 
+Figure 2. Vehicle scanning scheme. 
+For the purpose of gathering data a digital di stance measuring instrument was used, which 
+transferred all the data via a RS 485 serial commu nication port to a computer where it was then 
+processed with the specifically designed software. The data acquired from the sensor via the RS 485 
+port. The process of transferring data and reading the data from the AMR sensors via the I2C interface 
+was carried out using a low-power MSP430 microcontroller. 
+The Earth’s magnetic field distortions were detect ed on different vehicles. A sample set of the 
+Earth’s magnetic field distortions data caused by several of them is provided in Figure 3. The research 
+results indicate that the change in the magnetic  field modulus and separate components when the 
+vehicle is driven on top of the magneto-resistive sensor is different and depends on the vehicle brand 
+Figure 2. Vehicle scanning scheme.
+For the purpose of gathering data a digital distance measuring instrument was used, which
+transferred all the data via a RS 485 serial communication port to a computer where it was then
+processed with the speciﬁcally designed software. The data acquired from the sensor via the RS
+485 port. The process of transferring data and reading the data from the AMR sensors via the I2C
+interface was carried out using a low-power MSP430 microcontroller.
+The Earth’s magnetic ﬁeld distortions were detected on different vehicles. A sample set of the
+Earth’s magnetic ﬁeld distortions data caused by several of them is provided in Figure 3. The research
+results indicate that the change in the magnetic ﬁeld modulus and separate components when the
+vehicle is driven on top of the magneto-resistive sensor is different and depends on the vehicle brand
+
+===== PAGE 4 =====
+
+Sensors 2016, 16, 78 4 of 9
+and the position of sensors with respect to a particular vehicle (Figure 3). This is the reason behind the
+fact that when a vehicle passes the sensor in different places (with respect to the Y axis), very diverse
+magnetic ﬁeld proﬁles are recorded. As a result, the methods based on measuring and comparing
+absolute values are unsuitable for detecting the type and speed of vehicles.
+Upon completing the interpolation of the acquired data, a full view of the magnetic ﬁeld distortion
+caused by a vehicle was acquired (Figure 4). From the data it can be noticed that there are a number
+of areas (marked as “Dead zone”) under the vehicle where the magnetic ﬁeld remains undistorted
+(as if the vehicle was not present at all). Such situations are critical when using AMR sensors for
+determining the presence of a vehicle in a static state.
+Sensors 2016, 16, 78 4 of 10 
+ 
+and the position of sensors with respect to a partic ular vehicle (Figure 3). Th is is the reason behind 
+the fact that when a vehicle passes the sensor in different places (with respect to the Y axis), very 
+diverse magnetic field profiles are recorded. As  a result, the methods based on measuring and 
+comparing absolute values are unsuitable for detecting the type and speed of vehicles. 
+Upon completing the interpolation of the acquir e d  d a t a ,  a  f u l l  v i e w  o f  t h e  m a g n e t i c  f i e l d  
+distortion caused by a vehicle was acquired (Figure 4). From the data it can be noticed that there are 
+a number of areas (marked as “Dead zone”) under the vehicle where the magnetic field remains 
+undistorted (as if the vehicle was not present at al l). Such situations are critical when using AMR 
+sensors for determining the presence of a vehicle in a static state.  
+ 
+Figure 3. The distribution of the magnetic field measured  by two distinct sensors (plots of magnetic 
+field components X1, Y1, Z1 and X2, Y2, Z2 of sens ors 1 and 2 respectively). Plot curves are color 
+coded by sensor position along latitudinal vehicle line. 
+Vehicle No. 1 
+  
+Figure 4. Cont. 
+200 400 600 800 1000 1200-800
+-600
+-400
+-200
+0
+200
+X1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-600
+-400
+-200
+0
+200
+Y1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 12000
+200
+400
+600
+800
+Z1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-800
+-600
+-400
+-200
+0
+200
+X2
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-400
+-200
+0
+200
+Y2
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 12000
+200
+400
+600
+800
+Z2
+X position, cm
+ Magm etic field, m G
+200
+400
+600
+800
+1000
+0
+50
+100
+150
+200
+0
+200
+400
+600
+X position, cm
+Z1
+Y position, cm
+ Magmetic field, mG
+0 200 400 600 800 1000-100
+0
+100
+200
+300
+400
+500
+600
+700
+800
+Z1
+X position, cm
+Magmetic field, mG
+Dead zone 
+Figure 3. The distribution of the magnetic ﬁeld measured by two distinct sensors (plots of magnetic
+ﬁeld components X1, Y1, Z1 and X2, Y2, Z2 of sensors 1 and 2 respectively). Plot curves are color coded
+by sensor position along latitudinal vehicle line.
+Sensors 2016, 16, 78 4 of 10 
+ 
+and the position of sensors with respect to a partic ular vehicle (Figure 3). Th is is the reason behind 
+the fact that when a vehicle passes the sensor in different places (with respect to the Y axis), very 
+diverse magnetic field profiles are recorded. As  a result, the methods based on measuring and 
+comparing absolute values are unsuitable for detecting the type and speed of vehicles. 
+Upon completing the interpolation of the acquir e d  d a t a ,  a  f u l l  v i e w  o f  t h e  m a g n e t i c  f i e l d  
+distortion caused by a vehicle was acquired (Figure 4). From the data it can be noticed that there are 
+a number of areas (marked as “Dead zone”) under the vehicle where the magnetic field remains 
+undistorted (as if the vehicle was not present at al l). Such situations are critical when using AMR 
+sensors for determining the presence of a vehicle in a static state.  
+ 
+Figure 3. The distribution of the magnetic field measured  by two distinct sensors (plots of magnetic 
+field components X1, Y1, Z1 and X2, Y2, Z2 of sens ors 1 and 2 respectively). Plot curves are color 
+coded by sensor position along latitudinal vehicle line. 
+Vehicle No. 1 
+  
+Figure 4. Cont. 
+200 400 600 800 1000 1200-800
+-600
+-400
+-200
+0
+200
+X1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-600
+-400
+-200
+0
+200
+Y1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 12000
+200
+400
+600
+800
+Z1
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-800
+-600
+-400
+-200
+0
+200
+X2
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 1200-400
+-200
+0
+200
+Y2
+X position, cm
+ Magm etic field, m G
+200 400 600 800 1000 12000
+200
+400
+600
+800
+Z2
+X position, cm
+ Magm etic field, m G
+200
+400
+600
+800
+1000
+0
+50
+100
+150
+200
+0
+200
+400
+600
+X position, cm
+Z1
+Y position, cm
+ Magmetic field, mG
+0 200 400 600 800 1000-100
+0
+100
+200
+300
+400
+500
+600
+700
+800
+Z1
+X position, cm
+Magmetic field, mG
+Dead zone 
+Figure 4. Cont.
+
+===== PAGE 5 =====
+
+Sensors 2016, 16, 78 5 of 9
+Sensors 2016, 16, 78 5 of 10 
+ 
+Vehicle No 2 
+  
+Vehicle No. 3 
+  
+Figure 4. The distribution of the magnetic field distor tion (Z component) caused by three different 
+vehicles (different color means different position of sensor with respect to the Y axis—across the 
+vehicle). 
+4. Analysis of Vehicle Detection Methods 
+The key task which must be addressed when designing the system for detecting speed and 
+vehicle type is related to the ac curacy of determining the duration between signals from separate 
+sensors. Once established the stable signal discretization frequency and completing the matching of 
+both signals, it becomes possible to calculate the delay between signals and the vehicle speed. 
+Seeking to evaluate the accuracy of determin ing the vehicle speed using AMR sensors, we 
+turned to the data acquired from conducting th e experiment and carried out a comparison of 12 
+selected methods. The list of these methods is provided in Table 1. 
+Table 1. List of methods. 
+No. Method
+1 Z com ponent peak detection
+2 Z com ponent cross-correlation
+3 Module peak detection
+4 Module cross-correlation
+5 Vectorial deviation peaks (Equation (1))
+6 Vectorial deviation cross-correlation (Equation (1))
+7 Combined vectorial deviation— peaks (Equation (2))
+8 Combined vectorial deviation cross-correlation (Equation (2)) 
+9 Kz criterion peaks
+10 Kz criterion cross-correlation
+11 Z peaks ±50 readings of cross-correlation
+12 Module peaks ±50 readings of cross-correlation
+200
+400
+600
+800
+1000
+0
+50
+100
+150
+200
+200
+300
+400
+500
+600
+X position, cm
+Z1
+Y position, cm
+ Magmetic field, mG
+0 200 400 600 800 1000100
+200
+300
+400
+500
+600
+700
+Z1
+X position, cm
+Magmetic field, mG
+200
+400
+600
+800
+1000
+0
+50
+100
+150
+200
+200
+300
+400
+500
+600
+X position, cm
+Z1
+Y position, cm
+ Magmetic field, mG
+0 200 400 600 800 1000150
+200
+250
+300
+350
+400
+450
+500
+550
+600
+650
+Z1
+X position, cm
+Magmetic field, mG
+Dead zone
+Dead zone 
+Figure 4. The distribution of the magnetic ﬁeld distortion (Z component) caused by three different
+vehicles (different color means different position of sensor with respect to the Y axis—across the vehicle).
+4. Analysis of Vehicle Detection Methods
+The key task which must be addressed when designing the system for detecting speed and vehicle
+type is related to the accuracy of determining the duration between signals from separate sensors. Once
+established the stable signal discretization frequency and completing the matching of both signals,
+it becomes possible to calculate the delay between signals and the vehicle speed.
+Seeking to evaluate the accuracy of determining the vehicle speed using AMR sensors, we turned
+to the data acquired from conducting the experiment and carried out a comparison of 12 selected
+methods. The list of these methods is provided in Table 1.
+Table 1. List of methods.
+No. Method
+1 Z component peak detection
+2 Z component cross-correlation
+3 Module peak detection
+4 Module cross-correlation
+5 Vectorial deviation peaks (Equation (1))
+6 Vectorial deviation cross-correlation (Equation (1))
+7 Combined vectorial deviation—peaks (Equation (2))
+8 Combined vectorial deviation cross-correlation (Equation (2))
+9 Kz criterion peaks
+10 Kz criterion cross-correlation
+11 Z peaks ˘50 readings of cross-correlation
+12 Module peaks ˘50 readings of cross-correlation
+
+===== PAGE 6 =====
+
+Sensors 2016, 16, 78 6 of 9
+The selected methods are based on either the process of ﬁnding the peak signal values or their
+superposition in time whilst calculating the delay, or via calculation of the cross-correlation of these
+signals and determining the lag.
+Vectorial deviation is a simple criterion deﬁned as [11]:
+K“|cosα´ cosα0|`| cosβ´ cosβ0|`| cosγ´ cosγ0| (1)
+where α, β, γ—angle between magnetic ﬁeld vector and x, y, z axis respectively.
+Combined vectorial deviation is a criterion compiled from the “square” and vectorial deviations.
+According to the fact that the Z component increases when a vehicle is moving over and decreases
+nearby the vehicle, it can be used to increase the sensor’s sensitivity when a vehicle is moving:
+K“|cosα´ cosα0|`| cosβ´ cosβ0|`p Bz{Bz0´ 1q (2)
+where cos α, cos β—cosines of magnetic ﬁeld vector’s angles on the inﬂuence of vehicle, cos α0, cos
+β0—cosines of magnetic ﬁeld vector angles without inﬂuence of vehicle, Bz—magnetic induction on
+the inﬂuence of vehicle, Bz0—magnetic induction value without inﬂuence of vehicle.
+Kz criterion:
+Kz“ Bz
+Bz0
+´ 1 (3)
+where Bz0—magnetic induction value without inﬂuence of vehicle.
+The view of the gathered data when using different methods which are interpreted in search for
+signal matching, is presented in Figure 5.
+Sensors 2016, 16, 78 6 of 10 
+ 
+The selected methods are based on either the proc ess of finding the peak signal values or their 
+superposition in time whilst calculating the delay, or via calculation of the cross-correlation of these 
+signals and determining the lag. 
+Vectorial deviation is a simple criterion defined as [11]: 
+00 0| cos cos cos cos cos |Kc o s         (1) 
+where α, β, γ—angle between magnetic field vector and x, y, z axis respectively. 
+Combined vectorial deviation is a criterion compiled from the “square” and vectorial deviations. 
+According to the fact that the Z component increases when a vehicle is moving over and decreases 
+nearby the vehicle, it can be used to increase the sensor’s sensitivity when a vehicle is moving: 
+00 0| cos cos cos cos | ( / 1) z zKB B         (2) 
+where cos α, cos β—cosines of magnetic field vector’s angles on the influence of vehicle, cos α0,  
+cos β0—cosines of magnetic field vector angles without influence of vehicle, zB —magnetic induction 
+on the influence of vehicle, 0zB —magnetic induction value without influence of vehicle.  
+Kz criterion: 
+0
+1z
+z
+z
+BK B  (3) 
+where 0zB —magnetic induction value without influence of vehicle.  
+The view of the gathered data when using different methods which are interpreted in search for 
+signal matching, is presented in Figure 5.  
+ 
+Figure 5.  The gathered data when using different  methods (1—Z component, 2—Module, 3—
+Vectorial deviation, 4—Combined vectorial deviation, 5—Kz criterium). 
+In Figure 6 a view of the data samples from two matching sensors via the use of Z component 
+cross-correlation is presented. The mismatch between data samples from the two sensors could be 
+due to the different sensitivity or positioning of sensors. Such a mismatch could be eliminated by 
+using data normalization techniques. 
+0
+100
+200
+300
+400
+500
+600
+700
+800
+900
+0 200 400 600 800 1000 1200
+Magmetic field, mG
+Data
+1 2 3 4 5
+Figure 5. The gathered data when using different methods (1—Z component, 2—Module, 3—Vectorial
+deviation, 4—Combined vectorial deviation, 5— Kz criterium).
+In Figure 6 a view of the data samples from two matching sensors via the use of Z component
+cross-correlation is presented. The mismatch between data samples from the two sensors could be due
+to the different sensitivity or positioning of sensors. Such a mismatch could be eliminated by using
+data normalization techniques.
+
+===== PAGE 7 =====
+
+Sensors 2016, 16, 78 7 of 9
+Sensors 2016, 16, 78 7 of 10 
+ 
+ 
+Figure 6. A view of the data samples from two sensors ( a) and samples matching ( b) via the use of 
+the Z component. 
+Upon conducting the analysis and processing of the data collected during the experiment using 
+the selected signal matching methods, we have determined the average and maximum relative errors 
+when the distance between sensors was considered to be equal to 2 m. The results are displayed in 
+Table 2.  
+The analysis of the acquired results has revealed  that the smallest average relative errors are 
+obtained with the second and the tenth methods (the maximum errors do not exceed 6.5%, Figure 7). 
+The dispersion of errors in the case of using these methods is shown in Figures 8 and 9. 
+Table 2. Method errors. 
+Relative Error (%) Method No.
+1 2 3 4 5 6 7 8 9 10 11 12 
+Average 3.6 1.5 2.8 3.3 3.7 6.7 3.3 2.6 3.9 1.5 3.1 2.5 
+Maximum 28.5 6.0 14.5 15.0 15.0 23.5 12.5 12.5 31.0 6.5 15.5 11.0 
+ 
+Figure 7. Box plot of the methods’ (Table 1) relative errors. 
+0 100 200 300 400 500 600 700 800 900 1000-300
+-200
+-100
+0
+100
+200
+300
+ X position
+Magnetic field, mG
+a)
+ 
+ 
+1 Sensor
+2 Sensor
+0 100 200 300 400 500 600 700 800 900 1000-300
+-200
+-100
+0
+100
+200
+300
+ X position
+Magnetic field, mG
+b)
+ 
+ 
+1 Sensor
+2 Sensor
+0
+2
+4
+6
+8
+10
+12
+14
+16
+123456789 1 0 1 1 1 2
+Method No.
+Relative error %
+Figure 6. A view of the data samples from two sensors (a) and samples matching (b) via the use of the
+Z component.
+Upon conducting the analysis and processing of the data collected during the experiment using
+the selected signal matching methods, we have determined the average and maximum relative errors
+when the distance between sensors was considered to be equal to 2 m. The results are displayed
+in Table 2.
+The analysis of the acquired results has revealed that the smallest average relative errors are
+obtained with the second and the tenth methods (the maximum errors do not exceed 6.5%, Figure 7).
+The dispersion of errors in the case of using these methods is shown in Figures 8 and 9.
+Table 2. Method errors.
+Relative Error (%)
+Method No.
+1 2 3 4 5 6 7 8 9 10 11 12
+Average 3.6 1.5 2.8 3.3 3.7 6.7 3.3 2.6 3.9 1.5 3.1 2.5
+Maximum 28.5 6.0 14.5 15.0 15.0 23.5 12.5 12.5 31.0 6.5 15.5 11.0
+Sensors 2016, 16, 78 7 of 10 
+ 
+ 
+Figure 6. A view of the data samples from two sensors ( a) and samples matching ( b) via the use of 
+the Z component. 
+Upon conducting the analysis and processing of the data collected during the experiment using 
+the selected signal matching methods, we have determined the average and maximum relative errors 
+when the distance between sensors was considered to be equal to 2 m. The results are displayed in 
+Table 2.  
+The analysis of the acquired results has revealed  that the smallest average relative errors are 
+obtained with the second and the tenth methods (the maximum errors do not exceed 6.5%, Figure 7). 
+The dispersion of errors in the case of using these methods is shown in Figures 8 and 9. 
+Table 2. Method errors. 
+Relative Error (%) Method No.
+1 2 3 4 5 6 7 8 9 10 11 12 
+Average 3.6 1.5 2.8 3.3 3.7 6.7 3.3 2.6 3.9 1.5 3.1 2.5 
+Maximum 28.5 6.0 14.5 15.0 15.0 23.5 12.5 12.5 31.0 6.5 15.5 11.0 
+ 
+Figure 7. Box plot of the methods’ (Table 1) relative errors. 
+0 100 200 300 400 500 600 700 800 900 1000-300
+-200
+-100
+0
+100
+200
+300
+ X position
+Magnetic field, mG
+a)
+ 
+ 
+1 Sensor
+2 Sensor
+0 100 200 300 400 500 600 700 800 900 1000-300
+-200
+-100
+0
+100
+200
+300
+ X position
+Magnetic field, mG
+b)
+ 
+ 
+1 Sensor
+2 Sensor
+0
+2
+4
+6
+8
+10
+12
+14
+16
+123456789 1 0 1 1 1 2
+Method No.
+Relative error %
+Figure 7. Box plot of the methods’ (Table 1) relative errors.
+
+===== PAGE 8 =====
+
+Sensors 2016, 16, 78 8 of 9
+Sensors 2016, 16, 78 8 of 10 
+ 
+ 
+Figure 8. The dependence of error on the position of sensors with respect to vehicles using the second 
+method. 
+ 
+Figure 9. The dependence of error on the position of se nsors with respect to vehicles using the tenth 
+method. 
+Sensor placement near the longitudinal centerline of the passing vehicle (Figures 8 and 9) 
+increases the precision of the speed detection. The analysis of the obtained results indicates that if the 
+right signal matching method of AMR data samples is selected, it is possible (with an acceptable 
+error) to determine the speed and type of the vehicle (considering the length of vehicle). The benefits 
+of such a system are as follows: 
+1. The detection of the vehicle location, measurem ent of speed and classification of vehicles 
+according to their type.  
+2. Lower infrastructure costs. 
+3. Relatively modest amount of data to be transferred due to the fact that signal processing can be 
+performed in the sensor itself.  
+  
+-6
+-4
+-2
+0
+2
+4
+6
+0 50 100 150 200
+Relative error %
+Distance (cm)
+-6
+-4
+-2
+0
+2
+4
+6
+8
+0 50 100 150 200
+Relative error %
+Distance (cm)
+Figure 8. The dependence of error on the position of sensors with respect to vehicles using the
+second method.
+Sensors 2016, 16, 78 8 of 10 
+ 
+ 
+Figure 8. The dependence of error on the position of sensors with respect to vehicles using the second 
+method. 
+ 
+Figure 9. The dependence of error on the position of se nsors with respect to vehicles using the tenth 
+method. 
+Sensor placement near the longitudinal centerline of the passing vehicle (Figures 8 and 9) 
+increases the precision of the speed detection. The analysis of the obtained results indicates that if the 
+right signal matching method of AMR data samples is selected, it is possible (with an acceptable 
+error) to determine the speed and type of the vehicle (considering the length of vehicle). The benefits 
+of such a system are as follows: 
+1. The detection of the vehicle location, measurem ent of speed and classification of vehicles 
+according to their type.  
+2. Lower infrastructure costs. 
+3. Relatively modest amount of data to be transferred due to the fact that signal processing can be 
+performed in the sensor itself.  
+  
+-6
+-4
+-2
+0
+2
+4
+6
+0 50 100 150 200
+Relative error %
+Distance (cm)
+-6
+-4
+-2
+0
+2
+4
+6
+8
+0 50 100 150 200
+Relative error %
+Distance (cm)
+Figure 9. The dependence of error on the position of sensors with respect to vehicles using the tenth method.
+Sensor placement near the longitudinal centerline of the passing vehicle (Figures 8 and 9) increases
+the precision of the speed detection. The analysis of the obtained results indicates that if the right
+signal matching method of AMR data samples is selected, it is possible (with an acceptable error) to
+determine the speed and type of the vehicle (considering the length of vehicle). The beneﬁts of such a
+system are as follows:
+1. The detection of the vehicle location, measurement of speed and classification of vehicles according
+to their type.
+2. Lower infrastructure costs.
+3. Relatively modest amount of data to be transferred due to the fact that signal processing can be
+performed in the sensor itself.
+5. Ideas for Further Research
+There is great potential for further research into the use of AMR sensors in the presence of a
+different Z component angles (i.e. at different locations across the Earth) and for analyzing different
+types of signal processing methods for vehicle speed detection. Moreover, there is still a knowledge
+gap in terms of researching vehicle detection using the magnetic vehicle signature features.
+6. Conclusions
+By experimental research it has been established that AMR sensors can be used for the purposes of
+vehicle speed control and vehicle classiﬁcation. Upon conducting research with regard to the different
+
+===== PAGE 9 =====
+
+Sensors 2016, 16, 78 9 of 9
+impact of distinct vehicle types on the Earth’s magnetic ﬁeld it has been established that different
+vehicles have distinct magnetic signatures which can be used for identifying the vehicle type.
+According to the research results it can be concluded that is sufﬁcient to use only one AMR Z
+component for vehicle speed detection. Upon analyzing the 12 methods found suitable for the purpose
+of speed control, it has been established that the minimum errors are obtained using the Z component
+for methods 2 and 10 (the Z component cross-correlation and Kz cross-correlation criterion methods).
+When using the proposed methods the average relative error of speed determinations in the case of
+applying the most suitable method does not exceed 1.5% when the distance between sensors is 2 m.
+It should be noted however that the vehicles can affect measurements by adding additional errors.
+These can be eliminated through other magnetic ﬁeld components.
+Author Contributions: V .M. supervised the project direction. V .M., M.C. and A.V . designed the hardware. D.N.,
+D.A. and M.Z. implemented the hardware. M.Z., D.N. and D.A. evaluated the system by developing software.
+D.N. developed the ﬁnal software. V .M and M.C. analyzed the data. V .M., D.N. and M.C. wrote the initial
+manuscript; M.Z., D.A. and A.V . participated actively in the development, revision and proofreading of the
+ﬁnal manuscript.
+Conﬂicts of Interest: The authors declare no conﬂict of interest.
+References
+1. Schulz, W.; Geis, I. Future role of cost-beneﬁt analysis in intelligent transport system-research. IET Intell.
+T ransp. Syst.2015, 9, 626–632. [CrossRef]
+2. Mone, G. The New Smart Cities. Commun. ACM 2015, 58, 20–21. [CrossRef]
+3. Glasmeier, A.; Christopherson, S. Thinking about smart cities. Camb. J. Reg. Econ. Soc. 2015, 8, 3–12.
+[CrossRef]
+4. Lee, I.; Lee, K. The Internet of Things (IoT): Applications, investments, and challenges for enterprises.
+Bus. Horiz. 2015, 58, 431–440. [CrossRef]
+5. Surgailis, T.; Valinevicius, A.; Markevicius, M.; Navikas, D.; Andriukaitis, D. Avoiding Forward Car Collision
+using Stereo Vision System. Elektron. Elektrotech. 2012, 18, 37–40. [CrossRef]
+6. Zhu, H.; Yu, F. A Vehicle Parking Detection Method Based on Correlation of Magnetic Signals.Int. J. Distrib.
+Sens. Netw. 2015, 1–13. [CrossRef]
+7. Cirilo Gimeno, R.V .; Pla Castells, M.; Celda, A.G.; Plume, J.M. A simulation model using AMR sensors
+applied to vehicle classiﬁcation and identiﬁcation. In Proceedings of the ISC’2013, Ghent, Belgium, 13–15
+November 2013.
+8. Zhou, X. Vehicle location estimation based on a magnetic sensor array. In Proceedings of the 2013 IEEE
+Sensors Applications Symposium (SAS), Galveston, TX, USA, 19–21 February 2013; pp. 80–83.
+9. Marshall, S.V . Vehicle detection using a magnetic ﬁeld sensor. IEEE T rans. Veh. T echnol. 1978, 27, 65–68.
+[CrossRef]
+10. Pitton, A.C.; Vassilev, A.; Charbonnier, S. Vehicle Re-Identiﬁcation with Several Magnetic Sensors.
+In Proceedings of the AMAA’2012, Berlin, Germany, 30–31 May 2012; Springer: Berlin, Germany; Heidelberg,
+Germany; pp. 281–290.
+11. Daubaras, A.; Zilys, M. Vehicle Detection based on Magneto-Resistive Magnetic Field Sensor.
+Elektron. Elektrotech. 2012, 2, 27–32. [CrossRef]
+12. Markevicius, V .; Navikas, D. Adaptive Thermo–Compensation of Magneto–Resistive Sensor.Elektron. Elektrotech.
+2011, 8, 43–46. [CrossRef]
+13. Daubaras, A.; Markevicius, V .; Navikas, D.; Cepenas, M.; Zilys, M.; Andriukaitis, D. Vehicle Inﬂuence on the
+Earth's Magnetic Field Changes. Elektron. Elektrotech. 2014, 4, 27–32.
+14. Daubaras, A.; Markevicius, V .; Navikas, D.; Zilys, M. Analysis of magnetic ﬁeld disturbance curve for vehicle
+presence detection. Elektron. Elektrotech. 2014, 5, 80–83. [CrossRef]
+© 2016 by the authors; licensee MDPI, Basel, Switzerland. This article is an open access
+article distributed under the terms and conditions of the Creative Commons by Attribution
+(CC-BY) license (http://creativecommons.org/licenses/by/4.0/).

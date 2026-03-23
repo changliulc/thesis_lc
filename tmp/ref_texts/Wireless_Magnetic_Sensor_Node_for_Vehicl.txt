@@ -1,0 +1,556 @@
+
+
+===== PAGE 1 =====
+
+IEEE SENSORS JOURNAL, VOL. 11, NO. 8, AUGUST 2011 1669
+Wireless Magnetic Sensor Node for V ehicle Detection
+With Optical Wake-Up
+E. Sifuentes, O. Casas, and R. Pallas-Areny
+Abstract—V ehicle detectors provide essential information about
+parking occupancy and trafﬁc ﬂow. T o cover large areas that lack
+a suitable electrical infrastructure, wired sensors networks are im-
+practical because of their high deployment and maintenance costs.
+Wireless sensor networks (WSNs) with autonomous sensor nodes
+can be more economical. V ehicle detectors intended for a WSN
+should be small, sturdy, low power , cost-effective, and easy to in-
+stall and maintain. Currently available vehicle detectors based on
+inductive loops, ultrasound, infrared, or magnetic sensors do not
+fulﬁll the requirements above, which has led to the search for al-
+ternative solutions. This paper presents a vehicle detector which
+includes a magnetic and an optical sensor and is intended as sensor
+node for use with a WSN. Magnetic sensors based on magnetore-
+sistors are very sensitive and can detect the magnetic anomaly in
+the Earth’s magnetic ﬁeld that results from the presence of a car ,
+but their continuous operation would drain more than 1.5 mA at
+3 V , hence limiting the autonomy of a battery-supplied sensor node.
+Passive, low-power optical sensors can detect the shadow cast by
+car that covers them, but are prone to false detections. The use
+of optical triggering to wake-up a magnetic sensor , combined with
+power-efﬁcient event-based software, yields a simple, compact, re-
+liable, low-power sensor node for vehicle detection whose quiescent
+current drain is 5.5
+/65. This approach of using a low-power sensor
+to trigger a second more speciﬁc sensor can be applied to other au-
+tonomous sensor nodes.
+Index Terms—Direct sensor interface circuit, event-based sensor
+wake-up, magnetoresistive sensors, sensor electronic interface, ve-
+hicle presence detection, wireless sensor node.
+I. I NTRODUCTION
+V
+EHICLE detection is one of the key enabling technolo-
+gies in Intelligent Trafﬁc Systems (ITS). ITS collect and
+process trafﬁc data (vehicle presence, vehicle speed, vehicle
+Manuscript received May 11, 2010; revised August 13, 2010; accepted De-
+cember 19, 2010. Date of publication January 06, 2011; date of current ver-
+sion May 25, 2011. This work was supported in part by the Spanish Ministry
+of Education and Science under Projects TEC2007-06631 and DPI2006-04017,
+and in part by the European Regional Development Fund. The work of E. Si-
+fuentes was supported in part by PROMEP and UACJ Mexico. The associate
+editor coordinating the review of this paper and approving it for publication
+was Prof. Okyay Kaynak.
+E. Sifuentes was with the Instrumentation Sensors and Interfaces (ISI)
+Group, Castelldefels School of Technology (EPSC), Universitat Politècnica
+de Catalunya (UPC), Castelldefels, Barcelona 08860, Spain. He is now with
+the Department of Computer and Electrical Engineering, Autonomous Uni-
+versity of Ciudad Juarez (UACJ), Juarez, 32310 Chihuahua, Mexico (e-mail:
+esifuent@uacj.mx).
+O. Casas and R. Pallas-Areny are with the Instrumentation Sensors and In-
+terfaces (ISI) Group, Castelldefels School of Technology (EPSC), Universitat
+Politècnica de Catalunya (UPC), Castelldefels, Barcelona 08860, Spain (e-mail:
+jocp@eel.upc.edu; ramon.pallas@upc.edu).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/JSEN.2010.2103937
+density and occupancy ratios, etc.) from vehicle detector sen-
+sors. These can be intrusive (in-roadway) or nonintrusive (over-
+roadway) [1], [2]. Intrusive detectors are embedded in the pave-
+ment, taped to the surface of the roadway, or mounted on the
+roadway surface. This group includes inductive loops, pneu-
+matic road tubes, piezoelectric cables, and capacitive sensors
+[2]. Nonintrusive detectors are placed above the surface of the
+roadway or on poles adjacent to it, so that they do not disrupt
+trafﬁc ﬂow during installation and maintenance. Some exam-
+ples are video cameras, acoustic signal processors, radar, and
+ultrasonic and infrared sensors [2]. All these solutions, how-
+ever, are power-hungry and expensive to deploy and maintain,
+hence inadequate for large-scale deployment in wireless sensor
+networks (WSNs), which are preferred over wired sensors net-
+works to cover large areas.
+Magnetic sensors based on magnetoresistors have recently
+been proposed for vehicle detection [3], [4] because they are
+quite sensitive, small and more immune to environmental fac-
+tors such as rain, wind, snow or fog than sensing systems based
+on video cameras, ultrasound or infrared radiation. WSNs based
+on magnetoresistors can detect and track moving vehicles to
+obtain vehicle count or speed statistics [5], [6], but no exper-
+imental analyses are known about the use of magnetoresistors
+to detect static vehicles in spite of its interest, for example,
+to know where empty parking spots are and for street parking
+control. Further, published solutions rely on voltage-amplitude-
+based interface circuits, which are more complex, expensive and
+power-hungry than a direct connection of magnetoresistive sen-
+sors (AMR and GMR) to a microcontroller (MCU) [7]. Finally,
+there is a tradeoff between sensitivity and speciﬁcity that may
+result in the detection of vehicles in adjacent road lanes [8] or
+parking places.
+This paper presents the design and implementation of a wire-
+less sensor node to detect the presence of a vehicle in a prede-
+termined zone. It can be useful, for example, to monitor empty
+places in parking lots or streets, parking meters, automatic door/
+gate opening, semaphore control, trafﬁc control, and railroad
+crossing control. The sensor node includes a magnetic and an
+optical sensor. The optical sensor, that drains a very small cur-
+rent, is always on and detects the reduced illumination resulting
+from the presence of a car or any other object. The magnetic
+sensor is wakened up by the optical sensor and detects the pres-
+ence of ferromagnetic material near the sensor. Both sensors
+are directly connected to a microcontroller without any inter-
+vening ampliﬁer, which results in a simple, compact and very
+low-power vehicle detector. This use of a low-power sensor to
+wake-up a second that has a better performance can be extended
+to other applications.
+1530-437X/$26.00 © 2010 IEEE
+
+===== PAGE 2 =====
+
+1670 IEEE SENSORS JOURNAL, VOL. 11, NO. 8, AUGUST 2011
+Fig. 1. V ehicle modeled as a magnetic dipole parallel to the vertical Earth’s
+magnetic ﬁeld component /90
+.
+II. S ENSING APPROACH
+A. Magnetic Sensor
+All road vehicles have signiﬁcant amounts of ferrous metals
+in their structure and parts, and produce a magnetic anomaly
+because their magnetic permeability is much higher than that of
+the surrounding air and soil. This concentrates and/or distorts
+the ﬂux lines of the Earth’s magnetic ﬁeld and increases the
+magnitude of the magnetic ﬂux density (or magnetic induction)
+inside and near the vehicle. A magnetic sensor close or below
+a vehicle will detect this change in the Earth’s magnetic ﬁeld.
+The Earth’s magnetic ﬁeld is uniform over wide areas, but
+its vector direction changes from horizontal at the Equator to
+almost vertical at the magnetic poles. In Barcelona, Spain, the
+current vertical component,
+, is larger than the hor-
+izontal component, , the strength of the ﬁeld is
+and the ﬁeld vector points 60 down from hori-
+zontal towards the magnetic north pole. Therefore, a magnetic
+axis sensor can sense the vertical component and detect its
+change when a vehicle passes or is parked over the sensor.
+The simplest mathematical model to describe the magnetic
+signature of a vehicle is a magnetic point dipole [8], [9] with
+a magnetic moment
+centered in the vehicle and parallel to
+the Earth’s ﬁeld (Fig. 1). The ﬁeld components , , pro-
+duced by are [10]
+(1a)
+(1b)
+(1c)
+where is the permeability of free space, , , and are
+the magnetic dipole moments in -, -, and -direction, respec-
+tively, and is the distance from the dipole to the observation
+point.
+Fig. 1 shows a magnetic dipole moment placed in
+and an observation point s in . We assume that the
+magnetization induced by the Earth’s ﬁeld (assumed itself a ho-
+mogeneous magnetic ﬁeld in
+direction) is parallel to the longi-
+tudinal axis of the dipole and perpendicular to the longitudinal
+axis of the vehicle. If the vehicle moves along the
+axis, with
+, and we assume , that is to say only is
+considered, the magnetic induction is
+(2)
+where is the vertical component of the Earth’s magnetic ﬁeld
+and is the vertical magnetic anomaly created by the vehicle
+(magnetic dipole).
+V ehicles apart from a magnetometer may look like a magnetic
+point dipole but as a vehicle consists of several ferrous metal
+components (e.g., engine and wheel axis), the magnetic dipoles
+of these individual components will reveal when the sensor is
+close enough. Therefore, we can expect each vehicle to yield a
+distinct magnetic signature with multiple peaks corresponding
+to its multiple dipoles. In practice, a given magnetic anomaly
+can be produced by a small vehicle close to the sensor or by
+a larger vehicle farther away, maybe in the next road lane or
+parking row.
+B. Optical Sensor
+The illumination level outdoors (i.e., in roads, streets and
+parking areas) depends on the natural and artiﬁcial light sources
+available. For example, the illuminance on a horizontal surface
+(at ﬂoor level) can be 100 klx on a clear day, 5 klx on a cloudy
+day and below 100 lx at night when there is a single street lamp
+[11]. V ehicles or any other object can reduce the illuminance
+underneath them to less than 50 lx (measured at night, clear and
+cloudy days for different cars using an ISO-Tech Lux-1335 light
+meter, whose resolution is 0.01 lx [9]).
+Therefore, a light meter can detect an object that covers the
+sensor. To assess whether that object is actually a car, the optical
+sensor can wake-up a magnetic sensor, which will distinguish
+ferromagnetic objects from any other materials. Hence, a pas-
+sive, low-cost optical sensor such as an LDR, able to run with
+very little power, combined with a more selective (and power de-
+manding) magnetic sensor can result in a reliable, low-cost and
+low-power vehicle detector system suitable for wireless sensor
+nodes.
+III. W IRELESS SENSOR NODE DESIGN AND IMPLEMENTA TION
+A. Sensor Node Architecture
+The main components of a wireless sensor node are: a sensor,
+a processor, a transceiver, and an energy source. Fig. 2 shows a
+prototype of the wireless sensor node proposed. The processor
+is a low-cost, low-power microcontroller (MSP430F2274) (run-
+ning at 8 MHz, quartz oscillator clock) that has ﬁve low-power
+modes, a wake-up time shorter than 6
+, and a versatile and
+friendly programmable clock system. All the eight bits of its
+I/O port P2 have edge-selectable interrupt input capability. The
+magnetic sensor is the AAH002 (NVE), a compact and low-cost
+GMR (Giant Magnetoresistive) sensor with two sensing resis-
+tors connected in opposed arms of a Wheatstone bridge,
+
+===== PAGE 3 =====
+
+SIFUENTES et al.: WIRELESS MAGNETIC SENSOR NODE FOR VEHICLE DETECTION WITH OPTICAL W AKE-UP 1671
+Fig. 2. Wireless magnetic sensor node for vehicle detection based on a wake-up
+system triggered by a high-resistance light sensor.
+, a typical sensitivity of 11 mV/V/G, and temper-
+ature range from C to 150 C. The optical sensor is an
+LDR NORPS-12 (CdS, SILONEX) with dark resistance 1
+(1 lx), light resistance 5.4 (1000 lx) and temperature range
+from C to 150 C.
+The transceiver (Telegesis ETRX2) is a low-power, 2.4 GHz
+free-licensed ISM band module based on the EM250 (Ember)
+single chip Zigbee/IEEE802.15.4 solution, and intended for
+networking. The conﬁgurable functionality often allows the
+ETRX2 wireless meshing module to be used without an addi-
+tional host MCU, thus saving more time and costs. All circuits
+were supplied from a 3 V voltage regulator (TS9011) connected
+to a lithium primary battery (TL-5135, Tadiran) that can supply
+20
+at 3.6 V for ten years, and can operate from Ct o
+70 C.
+B. V ehicle Detection Algorithm
+Magnetic induction has been measured using the method de-
+scribed in [7] for resistive sensor bridges, which is based on
+measuring the discharge times of
+(Fig. 3) through selected re-
+sistive paths that include the sensing bridge arms. Because the
+AAH002 GMR sensor implements a half-bridge topology,
+can be obtained from
+(3)
+where is the sensitivity of the GMR sensor and is the esti-
+mated fractional resistance change of the sensors in the bridge,
+calculated from the corresponding time-based equation in [7].
+When the LDR sensor detects a change in illuminance that is
+large enough for the voltage in P2.1 to trigger an interrupt re-
+quest, the MCU is waken up, measures
+, calculates the change
+with respect to a stored baseline value (the vertical component of
+the Earth’s magnetic ﬁeld in the absence of any car) and checks
+whether this change exceeds or not a given threshold. A positive
+result means that a car covers the sensor. Measurements for dif-
+ferent car models using a commercial magnetometer with 0.1 nT
+resolution (Mag-01H, Bartington), suggest a 5
+threshold for
+car detection [9]. The baseline magnetic ﬁeld can be determined
+from a site survey before installing the sensors.
+Fig. 3 shows the detection algorithm in detail. Table I shows
+the activities and operation modes of the sensor node. The
+default state for the node is sleep mode (MCU in LPM4 mode
+and ETRX2 in mode 3, their lowest power consumption modes,
+activity 13 in Table I) and the average current consumption
+is 5.5
+. A reduction in illuminance below 50 lx brings the
+voltage in ports P2.0 (conﬁgured as ADC input) and P2.1
+(conﬁgured as external interrupt pin) above the logic voltage
+threshold needed to request an external interrupt and wakes up
+the sensor node, starts up the external quartz oscillator clock,
+and waits for a warm up time of 3 ms (activity 2). Then,
+is
+measured and the change with respect to its previously stored
+baseline value is calculated and compared with the preset
+threshold (activities 3–6). If the comparison is positive, it is
+assumed that there is a vehicle, the transceiver is placed in
+mode 0 and sends a message to the base station (activities 7,
+11, and 12).
+The message contains the sensor node ID, the actual mea-
+sured value
+, and ends with an “1” to indicate that the parking
+spot is occupied. Afterwards, the sensor node changes from in-
+terrupt detection mode to periodic detection (polling mode) by
+running the WDT (Watchdog timer) at 1.5 kHz and measuring
+each 20 s to detect whether the vehicle is still parked. During
+this 20 s interval, the sensor node is placed in low-power mode
+(MCU in LPM4a mode and ETRX2 in mode 3, activity 10)
+waiting for a WDT interrupt, so the average current consump-
+tion is only 2.6
+. When the vehicle leaves the detection zone,
+the transceiver sends a message to the base station that ends with
+a “0,” to indicate that the place is empty.
+If, when in “dark condition,” the change in
+is less than
+5 , meaning that no vehicle is detected, no message is sent.
+The illumination level is then measured (activity 8) by the
+10 bit ADC embedded in the MCU which is connected to the
+voltage divider formed by the LDR sensor and
+(port P2.0 in
+Fig. 2). If is less than 50 lx and the change in is less than
+5 , we either have: (a) a nonferromagnetic object covering the
+sensor; (b) a low-level local illumination (e.g., it is night time or
+the sensor window is dirty); or (c) a vehicle parked nearby that
+projects a shadow onto the sensor node. Whatever the situation,
+to be able to detect a vehicle arriving at the sensor,
+and are
+measured every 20 s, until exceeds 50 lx.
+If rises above 50 lx and the change in is less than 5 ,
+the sensor node reconﬁgures P2.1 (IES) and returns to sleep
+mode (activity 13) to wait for the next interrupt event (reduced
+illumination), which would indicate that another possible ve-
+hicle has arrived. If
+stays below 50 lx for some time and
+does not increase above 5 , it may be decided that the sensor
+node needs some maintenance. Information from nearby sen-
+sors can also be considered in taking that decision.
+
+===== PAGE 4 =====
+
+1672 IEEE SENSORS JOURNAL, VOL. 11, NO. 8, AUGUST 2011
+Fig. 3. Event-based algorithm to detect vehicle presence or absence.
+C. Power Consumption Analysis
+To calculate the average power consumption of a sensor node,
+we need to know the power consumption and duration of each
+activity performed. The average power consumption is
+(4)
+where is the supply voltage and is the average total
+current consumption,
+(5)
+where identiﬁes an active sequence, is the average current
+consumption of sequence is the duration of is the cur-
+
+===== PAGE 5 =====
+
+SIFUENTES et al.: WIRELESS MAGNETIC SENSOR NODE FOR VEHICLE DETECTION WITH OPTICAL W AKE-UP 1673
+TABLE I
+TIME DURA TION AND CURRENT CONSUMPTION FOR EACH ACTIVITY OF THE SENSOR NODE. /82 , /82 , AND /82 ,
+ARE THE EQUIV ALENT RESISTANCES OF THE THREE DIFFERENT DISCHARGING PA THS FOR /67DEPENDING ON THE
+VOLTAGE/IMPEDANCE SELECTED A T PINS 2.3, 3.7, AND 3.6 OF THE MCU [7]
+AM1: /83 /77 /67 /76 /75/61/86 /76 /79/61/65 /67 /76 /75/61/79 /11, /77/67/76/75 /61 /67/80/85 /61 /68/67/79 /61 /49 /77/72/122.
+AM2: /83/77/67/76/75 /61 /86/76/79 /61 /79/11, /77/67/76/75 /61 /67/80/85 /61 /68/67/79 /61 /49 /77/72/122, /65/67/76/75 /61 /56 /77/72/122. (Note A).
+AM3: /83/77/67/76/75 /61 /86/76/79 /61 /68/67/79 /61 /79/11, /77/67/76/75 /61 /67/80/85 /61 /65/67/76/75 /61 /56 /77/72/122. (Note A).
+LPM3: /83/77/67/76/75 /61 /86/76/79 /61 /68/67/79 /61 /67/80/85 /61 /79/11, /77/67/76/75 /61 /65/67/76/75 /61 /56 /77/72/122. (Notes A and B).
+LPM4: /83/77/67/76/75 /61 /86/76/79 /61 /68/67/79 /61 /77/67/76/75 /61 /67/80/85 /61 /65/67/76/75/61 /79/11(GIE_On), (Note A)
+LPM4a: /68/67/79 /61 /67/80/85 /61 /65/67/76/75 /61 /79/11/40/71/73/69/79/110/41, /83/77/67/76/75 /61 /77/67/76/75 /61 /86/76/79/61/56(1.5 kHz), WDT enabled, (Note A).
+Mode 3: /77/67/85 /61 /82/65/68/73/79 /61 /65/115/108/101/101/112, /84/73/77/69/82/83 /61 /79/11.
+Mode 0: /77/67/85 /61 /82/65/68/73/79 /61 /65/119/97/107/101, /84/73/77/69/82/83 /61 /85/115/101/114 /100/101/12/110/101/100.
+Note A: All internal peripherals are disabled, and non-used ports are conﬁgured as digital output in Low state.
+Note B: Only Timer A and capture module are enabled, except in activity 8 where ADC is enabled.
+rent consumption in sleep mode, and is the clock period. From
+and the duty cycle, we can calculate .
+Table I shows the measured current consumption and duration
+of each activity of the sensor node, and the operation modes of
+the MCU and transceiver (ETRX2). Table II shows that the av-
+erage current consumption of the sensor node in sleep mode (no
+vehicle detected, no data transmitted) is 5.5
+, so the battery
+(1700 mAh) would last about 35 years, hence longer than the
+battery lifetime speciﬁed by the manufacturer (ten years). The
+average current consumption in active mode largely depends
+on the sensor application. For example, for automatic door/gate
+opening, the worst case could be a vehicle detection every 20
+s, hence 4320 detections and 8640 data packets sent each day,
+TABLE II
+CURRENT CONSUMPTION OF THE SENSOR NODE IN SLEEP MODE
+whereas common cases could be 500 detections a day for a com-
+munity and 10 vehicles a day for a single-family use (automatic
+garage door). Table III shows the corresponding average current
+
+===== PAGE 6 =====
+
+1674 IEEE SENSORS JOURNAL, VOL. 11, NO. 8, AUGUST 2011
+Fig. 4. Magnetic signature of three different cars. (a) Measurement points were along a centered line below each parked car. (b) Ford Focus. (c) Opel Me riva.
+(d) Fiat Punto.
+TABLE III
+AVERAGE CURRENT CONSUMPTION OF THE SENSOR NODE IN
+THREE DIFFERENT SCENARIOS
+consumption of the sensor node in active mode for these three
+cases. The lifetime of the sensor node is greatly extended by
+using software and hardware based on events, such as the op-
+tical triggering wakeup system proposed.
+IV . EXPERIMENTAL RESULTS AND DISCUSSION
+To test the sensor node proposed, we built a minimal WSN
+with the sensor node in Fig. 2 acting as a Sleep End Device
+(SED) and an ETRX2USB (Telegesis) module acting as a net-
+work coordinator node connected to a laptop computer by an
+USB interface. We measured on parked vehicles and during
+parking maneuvers in an outdoor parking area. Two compact
+vehicles (Ford Focus and Opel Meriva) and a subcompact (Fiat
+Punto) were involved. Tests were repeated at different times of
+the day, hence different natural illumination levels and night
+lights. The optical sensor detected the presence of a car in all
+instances, including car arrival and departure, and woke up the
+sensor node, which send the corresponding data packet to the
+coordinator node.
+Fig. 4 shows the magnetic induction simultaneously mea-
+sured by the sensor and the Mag-01H magnetometer for the
+three vehicles when parked. Measurements were performed at
+ﬂoor level and ten different positions along a line centered in the
+vehicle [Fig. 4(a)]. For the sensor node, each
+value was es-
+timated from (3) by averaging ten measurements of [7], [9].
+The resolution achieved was 750 nT (8 bit) for a measurement
+range of 200
+, and the measurement time was 112 ms. Aver-
+aging 100 values increased the resolution to 10 bit (187 nT) but
+the measurement time extended to 1.12 s. Fig. 4(b)–(d) show
+the respective magnetic signatures for each car model. These
+signatures suggest that compact cars can be roughly described
+by three magnetic dipoles: two larger dipoles for the engine and
+wheel axes and a smaller dipole between them. The sensor al-
+ways measured larger
+values than the magnetometer, per-
+haps because of the large tolerance for the magnetoresistors
+(
+20%), but that difference did not affect car detection.
+Fig. 5 shows the corrected magnetic induction values
+obtained during parking maneuvers. The sensor node
+was placed at the center of the parking spot. was measured
+each 120 ms when the vehicle arrived, stayed parked for about
+10 s and left. The magnetic signature consists of a ﬁrst peak
+that corresponds to the engine and front wheel axis passing over
+the sensor when the vehicle arrives, followed by a constant
+when the car is parked, and a second peak that corresponds to
+the engine and front wheel axis when the car backs to leave the
+parking place. Results when the vehicles backed to park yielded
+similar curves.
+V ehicles parked at spots about 1.5 m from the sensor node
+produced negligible changes in the
+baseline value. This is
+probably because of the high directivity of the magnetic sensor
+and raises the question of the actual interest of using an addi-
+tional (optic) sensor. Nevertheless, a continuous measurement
+
+===== PAGE 7 =====
+
+SIFUENTES et al.: WIRELESS MAGNETIC SENSOR NODE FOR VEHICLE DETECTION WITH OPTICAL W AKE-UP 1675
+Fig. 5. Magnetic vehicle signatures for three different cars parking over the sensor.
+of the magnetic ﬁeld using a 2 sensor bridge supplied at 3 V
+would drain about 1.5 mA, day or night. A voltage divider with
+an LDR sensor drains far less current; the power drain of the
+sensor node proposed was about 5.5
+when in sleep mode,
+60% of which were from the voltage divider that included the
+light sensor and
+(Fig. 3). Power consumption will
+depend on how often the magnetic sensor is asked to measure,
+and on the use of the transceiver.
+To avoid unnecessary calls to duty, for example by shadows
+cast by nearby cars, particularly at night, the actual illumination
+level could be measured to update an internal threshold value
+and use it for future detections. This could also compensate for
+possible changes in the transparency of the sensor housing, for
+example because of dirt.
+V. C ONCLUSION
+We have proposed a wireless sensor node based on two
+passive sensors to detect the presence of a vehicle in a pre-
+determined zone. When a vehicle arrives or departs, an LDR
+sensor detects the change in illumination and wakes up the
+sensor node. Then, a magnetoresistive sensor measures the
+magnetic anomaly in the Earth’s magnetic ﬁeld created by the
+presence of a vehicle, if any, and the necessary actions are
+taken (data transmission, control signals issued). Otherwise,
+the sensor node falls back in sleep mode, where it drains a
+very small current (5.5
+in our prototype). To further reduce
+power consumption, both sensors are directly connected to the
+ports of a microcontroller without any analog front end. The
+measurement time exceeds 100 ms, which would be too long
+to detect fast vehicles, but that is short enough for a simple,
+compact, low-cost, and very low-power vehicle detector for
+parking control, and that is also reliable, sturdy and easy to
+install and maintain. Amplitude-based sensor interfaces would
+provide faster measurements at the cost of a reduced battery
+life.
+REFERENCES
+[1] L. A. Klein , Sensors Technologies and Data Requirements for ITS .
+Norwood, MA: Artech House, 2001.
+[2] L. E. Mimbela and L. A. Klein, A “Summary of vehicle detection and
+surveillance technologies used in intelligent transportation systems,
+Handbook,” U.S. Federal Highway Administration, Intelligent Trans-
+portation System, 2007. [Online]. Available: http://www.fhwa.dot.gov/
+policyinformation/pubs/vdstits2007
+[3] M. H. Kang, B. W. Choi, K. C. Koh, J. H. Lee, and G. T. Park, “Ex-
+perimental study of a vehicle detector with an AMR sensor,” Sens. Ac-
+tuators A, vol. 118, pp. 278–284, 2005.
+[4] J. Pelegrí, J. Alberola, and J. R. Lajara, “Signal conditioning for GMR
+magnetic sensors applied to trafﬁc speed monitoring GMR sensors,”
+Sens. Actuators A , vol. 137, pp. 230–235, 2007.
+[5] S. Y. Cheung and P. V araiya, “Trafﬁc surveillance by wireless sensor
+networks,” California PA TH Res. Rep., Jan. 2007, .
+[6] A. Haoui, R. Kavaler, and P. V araiya, “Wireless magnetic sensors for
+trafﬁc surveillance,”Transport. Res. Part C, vol. 16, pp. 294–306, 2008.
+[7] E. Sifuentes, O. Casas, F. Reverter, and R. Pallas-Areny, “Direct in-
+terface circuit to linearize resistive sensor bridges,” Sens. Actuators A,
+vol. 147, pp. 210–215, 2008.
+[8] S. V. Marshall, “V ehicle detection using a magnetic ﬁeld sensor,”IEEE
+Trans. V eh. Technol., vol. 27, pp. 65–68, 1978.
+[9] E. Sifuentes, “Sensor autónomo para detectar vehículos estáticos,”
+(in Spanish) Ph.D. dissertation, Universitat Politècnica de Catalunya
+(UPC), Barcelona, Spain, 2009.
+[10] D. Craik , Magnetism: Principles and applications. New Y ork: Wiley,
+1995.
+[11] “Lighting Handbook, ” 9th ed. Illuminating Engineering Society of
+North America, 2000, IESNA.
+E. Sifuentes was born in Durango, Mexico, in 1976.
+He received the B.S. degree from the Technological
+Institute of Durango (ITD), Durango, Mexico,
+in 2000, the M.S. degree from the Technological
+Institute of Chihuahua (ITCH), Chihuahua, Mexico,
+in 2002, and the Ph.D. degree from the Universitat
+Politècnica de Catalunya (UPC), Barcelona, in 2009,
+all in electronic engineering.
+Since August 2002, he has been a Titular Professor
+at the Department of Computer and Electrical En-
+gineering, Autonomous University of Ciudad Juarez
+(UACJ), Juarez, Mexico. His current research interests include sensor interface
+circuits, virtual instrumentation, embedded systems, autonomous sensors, and
+wireless sensor networks.
+O. Casas was born in Barcelona, Spain, on
+April 15, 1970. He received the Ingeniero de
+Telecomunicación and Doctor Ingeniero de Teleco-
+municación degrees from the Universitat Politècnica
+de Catalunya (UPC), Barcelona, Spain, in 1994 and
+1998, respectively.
+He is an Associate Professor of Electronic Engi-
+neering at the UPC and teaches courses in several
+areas of electronic instrumentation. His research
+includes sensor interfaces, autonomous sensors,
+electronic instrumentation, noninvasive physiolog-
+ical measurements, and sensors based on electrical impedance measurements.
+
+===== PAGE 8 =====
+
+1676 IEEE SENSORS JOURNAL, VOL. 11, NO. 8, AUGUST 2011
+R. Pallas-Areny received the Ingeniero Industrial
+and Doctor Ingeniero Industrial degrees from
+the Universitat Politècnica de Catalunya (UPC),
+Barcelona, Spain, in 1975 and 1982, respectively.
+He is a Professor of Electronic Engineering at the
+UPC, and teaches courses in electronic instrumenta-
+tion. In 1989 and 1990, he was a Visiting Fulbright
+Scholar and, in 1997 and 1998, he was an Honorary
+Fellow at the University of Wisconsin, Madison. In
+2001, he was nominated Professor Honoris Causa by
+the Faculty of Electrical Engineering, University of
+Cluj-Napoca (Romania). His research includes instrumentation methods and
+sensors based on electrical impedance measurements, autonomous sensors,
+sensor interfaces, noninvasive physiological measurements, and electromag-
+netic compatibility in electronic systems. He is the author of six books, the
+leading author of ﬁve books and coauthor of two books on instrumentation in
+Spanish and Catalan. He is also coauthor (with John G. Webster) of “Sensors
+and Signal Conditioning,” 2nd ed. (New Y ork: Wiley, 2001), and “Analog
+Signal Processing” (New Y ork: Wiley, 1999).
+Dr. Pallas-Areny was a recipient, with John G. Webster, of the 1991 Andrew
+R. Chi Prize Paper Award from the Instrumentation and Measurement Society
+(IEEE). In 2000, he received the Award for Quality in Teaching granted by the
+Board of Trustees of the UPC, and in 2002, the Narcís Monturiol Medal from
+the Autonomous Government of Catalonia.

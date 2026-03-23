@@ -1,0 +1,848 @@
+
+
+===== PAGE 1 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+274 
+Transport and Telecommunication, 2016, volume 17, no. 4, 274–288 
+Transport and Telecommunication Institute, Lomonosova 1, Riga, LV-1019, Latvia 
+DOI 10.1515/ttj-2016-0024 
+WIRELESS MAGNETIC SENSOR NETWORK FOR ROAD 
+TRAFFIC MONITORING AND VEHICLE CLASSIFICATION  
+Vladan Velisavljevic1, Eduardo Cano2, Vladimir Dyo1, Ben Allen3 
+1Department of Computer Science and Technology, University of Bedfordshire 
+Park Square, Luton LU1 3JU, United Kingdom 
+vladan.velisavljevic@beds.ac.uk  
+2European Commission, Joint Research Centre (JRC) 
+Via E. Fermi, 20127 Ispra (VA), Italy 
+3Department of Engineering Science, University of Oxford 
+Parks Road, Oxford OX1 3PJ, United Kingdom 
+ 
+ 
+Efficiency of transportation of people and goods is playing a v ital role in economic growth. A key component for enabling 
+effective planning of transporta tion networks is the deployment  and operation of autonomous monitoring and traffic analysis to ols. 
+For that reason, such systems have been developed to register a nd classify road traffic usage. In this paper, we propose a nov el 
+system for road traffic monito ring and classification based on highly energy efficient wireless magnetic sensor networks. We 
+develop novel algorithms for vehicle speed and length estimatio n and vehicle classification th at use multiple magnetic sensors . We 
+also demonstrate that, using such a low-cost system with simpli fied installation and maintenance compared to current solutions, it is 
+possible to achieve highly accurate estimation and a high rate of positive vehicle classification. 
+Keywords: wireless, magnetic sensors, traffic monitoring, speed and length estimation, vehicle classification 
+1. Introduction  
+Transportation of people and goods are a fundamental part of the global economy. With a growing 
+world population, demand for an effective transport infrastructure continues to increase at a huge rate, and 
+without careful management, the t ransportation infrastructure would become highly in effective. Thus, an 
+intelligent infrastructure that makes use of sensors, communica tions technology and data analytics is 
+accepted by many to be an enabler  for managing an effective tra nsportation system. In terms of the road 
+network, this may entail monitoring road usage for purposes of capacity planning, toll charging and 
+maintenance. These systems typi c a l l y  c o n s i s t  o f  a  p o w e r  s o u r c e , sensors, signal conditioning, 
+communications, database and data analytics. There are numerous  options for each, influenced by 
+environmental factors, performance requirements and technology availability. 
+For traffic monitoring, the systems may typically be installed away from a convenient power 
+source. Therefore, they are required to operate autonomously fo r several years including: classifying, 
+logging and reporting traffic data to a central data centre. So lutions such as those described in (Haoui et 
+al., 2007) and (Cheung et al., 2005) have been designed and investigated. In (Haoui et al., 2007), a single 
+magnetic sensor is used to detect  and classify vehicles. This a pproach has been proposed as a low cost 
+alternative to using classical inductive loops (Ki and Baik, 20 06) and it may be deployed quicker and can 
+provide additional detection data not available from inductive loop systems. Signal classification is 
+implemented by means of magnetic signature correlation and comp arison to reference signatures. Good 
+results have been shown in terms of correct classification usin g a single sensor and this achievement sets 
+a benchmark for comparison of th e obtained performance reported  in this paper. The work reported in 
+(Cheung et al., 2005) presents trials of a commercial product developed usin g the method from (Haoui et 
+al., 2007). This product uses magnetic sensors and wireless commu nications technology for reporting the 
+data back to a processing centre. It is shown in (Cheung et al., 2005) that magnetic sensors can provide 
+signatures at least as good as those from inductive loop sensor s ,  b u t  m a y  b e  m o r e  e a s i l y  d e p l o y e d .  
+However, the work in (Cheung et al., 2005) neither provides details of the signal processing tech niques 
+used nor does it explore the use of multiple sensors. 
+In addition, some other notable attempts were made to detect an d classify road traffic. In (Haijian 
+et al., 2014), classification and regression rate based approach was applied on vehicle magnetic signatures 
+for real-time classification w ith an accuracy rate of 88.9% for  t w o  v e h i c l e  c l a s s e s .  F u r t h e r m o r e ,  i n  
+(Kaewkamnerd et al., 2010), vehicles are classified using a tree algorithm based on signals collected from 
+two anisotropic magneto-resistive sensors achieving an accuracy rate of 81.7% for 4 classes. Some related 
+
+===== PAGE 2 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+275 
+algorithms were developed for road traffic monitoring using dif ferent technologies. For instance, vehicle 
+classification has been implemented in Pretoria, South Africa, using RFID technology (Mbodila et al., 
+2015), whereas axle counting is used in (Ma et al ., 2014). Traffic and infrastructure monitoring was 
+deployed in (Xue et al., 2015), whereas, in (Collotta et al., 2015), traffic detection was developed for use 
+with a traffic light controller. 
+I n  c o n t r a s t  t o  t h e s e  a p p r o a c h e s ,  w e  a d d r e s s  v e h i c l e  c l a s s i f i c a tion with multiple classes and our 
+target accuracy rate is higher th an the ones achieved by the co mparative methods. In collaboration with 
+Clearview Traffic, our project partner, we develop a novel syst em of wireless magnetic sensor network 
+and advanced signal classification techniques. We demonstrate t hat high accuracy of vehicle detection 
+and classification can be achieved with only two magnetic senso rs, which greatly reduces hardware 
+complexity and costs. In particular, we show how a signal edge detection algorithm successfully used in 
+other areas of signal processing can improve temporal localisat ion of vehicle drive-by events. By 
+combining magnetic signatures from only two magnetic sensors, t he novel proposed method deployed on 
+the newly designed system is cap able of providing highly accura te vehicle length and speed estimates. 
+Furthermore, the method is then extended to determine vehicle c lassification based on the processed 
+magnetic signatures. We evaluate the developed method using a c omprehensive database of magnetic 
+signatures recorded in a realistic environment. 
+The remainder of the paper is organised as follows. In Section 2, we describe the system based on 
+the wireless magnetic sensor network. Then, in Sections 3, we e xplain the method used for edge 
+localisation in magnetic signatures, which is exploited in Sect ion 4 for vehicle length and speed estimate. 
+In Section 5, we explain the wireless communications protocol. In Section 6, we analyse the obtained 
+performance. Finally, we conclude our findings in Section 7. 
+2. System Description  
+A generalised system for road traffic monitoring and vehicle cl assification consists of two parts: a 
+set of sensors and a base station (BS), as illustrated in Figur e 1. Each sensor is equipped with 
+magnetometers (x, y and z axes), a microprocessor with reduced computational power and RF transceiver 
+with antenna. The sensor is connected to the BS via a wireless channel. The BS plays a role of data sink 
+for all the information gathered by the sensors and it deploys an algorithm for vehicle speed estimation 
+and classification. 
+ 
+Figure 1. System concept of wireless magnetic sensor network for road traffic monitoring and classification 
+The num ber of m agnetic sensors  is not fi xed,  but the  a dopte d a pproach aims at minimising this 
+number to preserve low system costs and simplified installation . For that reason, the target is to have two 
+sensors placed along the road at a fixed distance. The position  of this pair of sensors is optimised based 
+on measurements acquired using a comprehensive database provide d by Clearview Traffic, as explained 
+in Section 6. 
+The system processes the magnetic signatures of each vehicle in  a two-fold procedure. First, the 
+signatures for each vehicle are captured by the magnetometers i n three geometrical axes, i.e. x, y and z. 
+These signatures are processed locally by the microprocessor to  deploy de-noising and detection of the 
+signature beginning and end time-stamps. The signatures are tra nsferred to the BS via a wireless link 
+along with the detected time-stamps. Then, the BS deploys a pro cessing algorithm to all gathered data 
+
+===== PAGE 3 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+276 
+that estimates the speed and length of the vehicles and classif ies them. The results may then be 
+communicated to users. The design of the system has to be such that it fits within the computational 
+resources of the sensors and BS, and within the available energy budget. 
+The algorithm used for detecting the beginning and end of vehic le magnetic signatures is based on 
+a wavelet multi-scale discontinuity detection method, as explai ned in the next section. This algorithm is 
+used to extract the two time-stamps corresponding to the beginning and end of the vehicle drive-by event. 
+This is subsequently used to reduce the amount of information a nd hence data-rate required for 
+communicating and determining vehicle length and speed estimation at the BS. This is explained in detail 
+in the following sections. 
+3. Wavelet Multi-Scale Discontinuity Detection 
+Singularity or discontinuity detection has been an important ch allenge in many areas of signal 
+processing, where precise temporal or spatial localisation of events of interest or key signal characteristics 
+plays a fundamental role. 
+For instance, in image processing, singularities correspond to edges and contours that are 
+important for image understanding and, hence, high popularity o f the Canny edge detector (Canny, 1986) 
+in computer vision and image processing. Similarly, in speech p rocessing, discontinuity detection is used 
+for word boundary segmentation (Scharenburg et al., 2010) or for a voice activity cue (Benyassine et al., 
+1997), which contributes to interference reduction in blind aco ustic source separation (Quingju et al ., 
+2014). 
+In this work, we exploit multi-scale wavelet discontinuity detection to determine the beginning and 
+end of magnetic signatures. The method is used to localise in t ime the vehicle drive-by events as 
+compared to background noise during no-event time. The original  theory was developed in (Mallat and 
+Hwang, 1992; Mallat and Zhong, 1992), whereas the method was th en successfully extended to two-
+dimensional signals for image interpolation (Chang et al., 2006). 
+This method characterizes signal discontinuities across multipl e scales of the wavelet transform, 
+where each discontinuity is char acterized by amplitude, locatio n and local Lipschitz regularity (Mallat 
+and Zhong, 1992). When the wavelet transform is applied to a si gnal ሻ with a discontinuity, the 
+resulting wavelet coefficients ሻ at scales ൌ1 , 2 , . . contain a footprint that consists of peaks across 
+multiple scales. The locations and amplitudes of the peaks, ሻ, exhibit coherence across scales so 
+that the locations remain the same, whereas the amplitudes behave as 
+KsxfWs ~)( , (1) 
+where K is a constant, ߙis the local Lipshitz regularity of the discontinuity and ~ de notes approximate 
+equality. Such a multi-scale coherence of discontinuities is a key feature for providing a robust method to 
+distinguish them from the background noise. For that reason, th is method is exploited in our system, as 
+explained next, and is a distinguishing aspect of our system. 
+4. Vehicle Length and Speed Estimates 
+The method for estimating both vehicle speed and length can be divided into two parts: distributed 
+processing on each sensor microprocessor and centralised processing at the BS. Unlike the BS, the sensor 
+hardware is severely constrained in terms of computational and energy resources and hence the system 
+design criterion is to reduce the energy required for the magne tometers, computation and wireless 
+transmission/reception. First, the wavelet multi-scale disconti nuity detection is used to determine the 
+magnetic signature beginning and end on each sensor node, and t hen this information is used for speed 
+and length estimation conducted centrally at the BS. The speed estimation method has several possible 
+configurations that enable a trade-off between performance and energy efficiency. These are explained in 
+detail below. 
+4.1. Detection of Signature Beginning and End 
+Vehicle length estimation is based on extracting the location o f the signature beginning and end 
+using the detection approach explained in Section 3. This infor mation is communicated to the BS, which 
+performs the final length estimation making use of the estimate d speed and sampling frequency fs. The 
+method consists of several steps, as follows. 
+
+===== PAGE 4 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+277 
+The magnetometers measure the incident magnetic field in three geometrical axes providing three 
+corresponding components. Since the distribution of the measure ments across these three components is 
+sensitive to magnetometer orientation, considering each component separately can affect the estimate and 
+classification performance in practical implementation. For tha t reason, the magnetic components are 
+processed jointly by computing the magnitudes for each sample as 
+222 ][][][][ nznynxnm  , (2) 
+where x[n], y[n] and z[n] are the three magnetic components at the time instance n, and m[n] is the 
+corresponding magnitude. Typical magnetic signature components x, y and z a r e  s h o w n  i n  F i g u r e  2  
+together with the resultant magnitude. 
+The magnitude is then transformed using the quadratic spline wa velet transform with the low-pass 
+and high-pass filters ௅௉ൌ ሾ1,3,3,1ሿ and ு௉ൌሾ 1 , െ 1 ሿ, respectively, following the method from (Chang 
+et al., 2006). This filter pair is chosen since it provides a good b alance between computational efficiency 
+and smoothing, as reported in (Chang et al ., 2006), where the same transform was used for image 
+interpolation. The number of wavelet decomposition scales, J, in the transform is chosen experimentally 
+so that the mean square error of vehicle length estimate for th e available dataset (see Section 6) is 
+minimised. Increasing J leads to better de-noising performance due to iterated low-pas s filtering using 
+ு௉. However, at the same time, such a smoothing operation results  in loss of temporal resolution, which 
+deteriorates ability to localise precisely the signature beginn ing and end. These opposed constraints are 
+best balanced for J = 5 for use with the database of vehicle magnetic signatures, as explained in Section 6. 
+The beginning of the signature is determined as the most promin ent positive magnitude 
+discontinuity (i.e. discontinuity with positive amplitude) in t he wavelet domain. Similarly, the end of the 
+signature is identified as the most prominent negative magnitude discontinuity. Note that using any of the 
+three separate magnetic components instead of magnitude would c ause ambiguity in polarity of the 
+discontinuities since these components are not, unlike the magn itude, constrained to be non-negative. As 
+a consequence, the beginning and  end of the signature are alway s featured by positive and negative 
+discontinuities, respectively. To extract these discontinuities from noisy signatures, they are examined for 
+coherence of the characteristics across wavelet scales given in (1). 
+ 
+Figure 2. Magnetic field signatures taken at fs=400Hz: three components, x, y, z, magnitude m and wavelet scales at J = 4 and J = 5 
+Since the resultant magnitude exhibits a high level of noise, t he first three wavelet scales, 
+ ൌ 1,2,3, .., are discarded. Recall that the high-pass outputs of the wavel et transform correspond to 
+derivatives of the iteratively smoothed versions of the origina l signal. Thus, a positive (or negative) 
+
+===== PAGE 5 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+278 
+discontinuity in the signal will generate a local maximum (or m inimum) in the wavelet domain. This 
+property is exploited in the method following (Chang et al ., 2006) so that the locations of all local 
+maxima at the scales J =  4 a nd  5  a r e  f i r s t  i de nt i f i e d a nd  f or  t he  one s  t ha t  p r e s e r ve  the neighbourhood 
+locations at J =  4  a n d  J =  5  ( i . e .  t he  l oc a l  m a xim a  r em ai n i n  p r oxi m i ty  a t  t he s e  t w o  s cales) are tested 
+whether they meet the scaling equation (1) for ൑1 . 5. The local maximum with the minimal 
+location (left-most in the grap hs) occurring earliest in time t hat satisfies these conditions corresponds to 
+the beginning of the signature (denoted in green in Fig. 2). Si milarly, the local minimum that satisfies 
+these conditions with the maximal location (right-most in the graphs) occurring latest in time corresponds 
+to the end of the signature (denoted in red in Fig. 2). The ind ices of the detected beginning and end, ଵ 
+and ଶ are communicated to the BS for further processing. 
+4.2. Vehicle Speed Estimate 
+Speed estimation is based on measuring a time delay, ݐbetween signatures from at least two 
+sensors placed along the road. Knowing the distance, d, between these sensors, we can compute the 
+estimated speed, ො, as the ratio ̂, where ̂ is a measured version of ݐNote that such an 
+approach inherits a measurement error imposed by using a finite  sampling frequency ௦ because of 
+sampling error in measuring ݐAssuming the maximal absolute error in measuring ݐequals a half of 
+the sampling interval, ௦,  t h e n  t h e  m a x i m a l  r e l a t i v e  e r r o r  o f  t h e  e s t i m a t e d  s p e e d  i s  g i ven by  
+ሻିଵ. For practical implementation presented in Section 6, this err or is not constraining the 
+quality of speed estimate because t he reported obtained errors are slightly larger than the theoretical 
+maximal inherited error. 
+Since the method requires input from at least two sensors, it i s implemented centrally at the BS. 
+Note that more accurate speed estimation can be derived by usin g more than 2 sensors, but since the goal 
+is to minimise the system complexity and costs, we are focusing on speed estimation using only 2 sensors. 
+Based on the type of input from the sensors and system architec ture, we propose three algorithms 
+for measuring the time delay, which allow for trade-off between  speed estimation accuracy and 
+computational complexity. In the first Algorithm A, the entire set of signature magnitudes is quantized 
+using ௕ bits-per-sample (bps) and transmitted from each sensor to the BS. The BS then estimates the 
+time delay between the two signa tures as the time instance of t he cross-correlation maximum. The two 
+signatures are generated by the same vehicle driving by the two  s e n s o r s  a n d ,  t h u s  t h e  s h a p e s  o f  t h e  
+signatures are expected to be highly correlated. In the experim ents, this assumption is verified and can be 
+efficiently exploited. The highest cross-correlation between the two signatures occurs at the time instance 
+equal to the time delay. Fig. 3 shows a typical cross-correlati on with a clear peak at the time delay. The 
+number of bps, ௕, enables scaling of the transmission data-rate versus estimati on accuracy and, as 
+explained in Section 6, we have found that the best results are obtained for ௕ൌ5. 
+In Algorithm B, the magnitude samples are quantized and transmi tted to the BS only for indices 
+between the detected beginning and end of the signatures from e ach sensor separately. The BS then 
+computes the cross-correlation in the same way as for Algorithm  A. The key feature in Algorithm B is to 
+preserve temporal alignment across all used sensors to compute correctly the cross-correlation and this is 
+achieved by attaching time-stamps of each signature to the tran smission package in the protocol, as 
+explained in Section 5. Algorithm B reduces the overall transmi ssion data-rate at the cost of a slight 
+performance loss, as analysed below. 
+Finally, Algorithm C transmits to the BS only the detected begi nning and end indices from each 
+sensor. The time delay is estimated as an average difference between the corresponding beginning indices 
+and end indices from the sensors divided by the sampling freque ncy ௦. While this algorithm significantly 
+reduces the transmission data-rate, it also results in a lower performance, as analysed in Section 6. 
+4.3. Vehicle Length Estimate 
+Having the beginning and end indices, ଵ
+ሺ௜ሻ and ଶ
+ሺ௜ሻ, of signature from the sensor ൌ1 , 2 
+transmitted to the BS and the estimated vehicle speed, ො, as explained in Section 4.2, length is calculated 
+as the mean estimate from each sensor, that is, 
+si
+ii
+f
+vnnl ˆ)(2
+1ˆ )(
+1
+)(
+2   . (3) 
+
+===== PAGE 6 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+279 
+Since the length estimate method depends on the speed estimate,  t h e r e  a r e  t h r e e  a l g o r i t h m s  
+following their definitions in Section 4.2. Note that from (3),  the error of speed estimation is propagated 
+to that of length estimation and, thus length estimate accuracy  is worse than speed estimate accuracy, as 
+also supported by experimentations and presented in Section 6. Thus, the system design should ensure 
+speed estimation error is minimised. 
+As a summary, Figure 4 illustrates the block diagrams of the three algorithms. 
+t
+t
+ 
+Figure 3. Magnitudes of the magnetic signature from two sensors, (a) and (b), and their cross-correlation with a clear peak (c) 
+][nm i
+ ][nm j
+
+)(
+2
+)(
+1 ,
+,,1,][
+ii
+i
+nn
+NnnmQ   
+)(
+2
+)(
+1 ,
+,,1,][
+jj
+j
+nn
+NnnmQ   
+)(
+2
+)(
+1
+)(
+2
+)(
+1
+,
+,,
+,][
+ii
+ii
+i
+nn
+nnn
+nmQ
+
+ 
+)(
+2
+)(
+1
+)(
+2
+)(
+1
+,
+,,
+,][
+jj
+jj
+j
+nn
+nnn
+nmQ
+
+)(
+2
+)(
+1 , ii nn
+)(
+2
+)(
+1 , jj nn
+lv ˆ,ˆ
+ lv ˆ,ˆ
+ lv ˆ,ˆ
+)(
+1
+)(
+2
+ii nn 
+][nm i
+][nm i][nm j
+][nm j
+][nm j][nm i
+)(
+2
+)(
+1 , ii nn )(
+2
+)(
+1 , jj nn
+bits bN bits bN
+bits bN
+ 
+Figure 4. Block diagrams of algorithms A, B and C for vehicle speed and length estimation.  
+Box denoted as SENSOR shows the components of the algorithms implemented on sensor before data transmission,  
+whereas the box BS depicts deployment at BS after data transmission 
+5. Wireless Communication Protocol 
+The main goal for the wireless communication protocol is to pro vide data transfer from multiple 
+in-road sensors to a roadside BS in a reliable and timely fashi on. Wireless communication is often the 
+
+===== PAGE 7 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+280 
+dominant source of power consumption in wireless sensing applic ations; hence, it is important to 
+minimize the communication energy costs while meeting the appli cation requirements. While a number 
+of energy efficient MAC protocols have been designed in the pas t (e.g. (Ye et al., 2006; Buettner et al., 
+2006)), to the best of our knowledge, none addresses the fact t hat the communication channel is 
+periodically blocked by passing vehicles. This happens because whenever a vehicle is passing over a 
+sensor node, it significantly degrades the communication channe l between the sensor nodes and the BS, 
+causing unnecessary energy wastage on transmission, re-transmission and idle listening. 
+The proposed protocol combines Time Division Multiple Access (T DMA) and centralised polling 
+to provide robust and energy efficient operation. The key idea of the proposed protocol is to integrate 
+vehicle presence information into a wireless channel access scheme. The diagram illustrating the protocol 
+operation is shown in Fig. 5, whereas the beacon format is presented in Table 1. 
+ 
+Figure 5. Wireless protocol operation diagram 
+The protocol operates as follows. The BS transmits a beacon mes sage periodically, to synchronise 
+the nodes and poll the data separ ately from each sensor. The pe riodic polling allows the protocol to cope 
+with high data-rate scenarios, e.g. due to higher sampling freq uency, number of samples or when a large 
+number of sensors is deployed, while eliminating the possibility of packet collisions. 
+Table 1. Beacon format 
+Field Length (bits) 
+BS ID 32  
+Beacon interval 32 
+Sensor-to-poll 32 
+Time-stamp 32  
+5.1. Initialisation 
+Each sensor node enters into standby mode upon start-up, where it searches for beacons by turning 
+on its receiver for ௕௘௔௖௢௡ seconds every ௦௞௜௣ seconds. Each beacon contains the duration of a 
+beacon interval ௕௘௔௖௢௡	and a time-stamp indicating the current time at a BS. Once the node receives a 
+beacon, it computes the clock off set between the local clock an d BS, schedules its wake-up for the next 
+beacon and switches into data transfer mode, described below. ௦௞௜௣ is a fixed parameter based on the 
+available energy budget and the maximum latency for a BS discov ery. Lower values of ௦௞௜௣ allow the 
+sensor node to discover the BS quicker, at the expense of higher energy consumption. 
+
+===== PAGE 8 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+281 
+5.2. Data Transfer 
+Once the sensor node receives a beacon, it compares the beacon’s Sensor-to-poll field with its own 
+ID, and initiates a data transfer if it matches, or sleeps until the next beacon. Reliable data transfer is done 
+using a simple ARQ protocol, where each data packet is acknowle dged by a BS. No acknowledgement 
+indicates either a lost data packet or lost acknowledgement, an d since both events are indistinguishable to 
+the sender, it retransmits any unacknowledged packet again (up to ௥௘௧௥௔௡௦ a t t e m p t s  a f t e r  w h i c h  t h e  
+transmission is considered failed and the packet is discarded).  Each packet contains a sequence number 
+incremented upon each successful transmission. The sequence number is used by the BS to detect gaps in 
+the stream of packets. 
+To take into account th e presence of a vehicle, the protocol ch ecks the magnetic sensor reading 
+before a transmission begins. Data transfer starts immediately if the measured intensity of the magnetic 
+field is less than ௧௛௥௘௦௛. Otherwise, the node assumes there is a vehicle in the proximi ty, turns off the 
+transceiver and waits until the magnetic field intensity drops below ௧௛௥௘௦௛. The vehicle presence can 
+also affect the beacon transmission itself, and while this cann ot be avoided in some cases, it is mitigated 
+by using a higher TX power from the BS, which may be possible d ue to its higher energy budget. If a 
+sensor node does not hear from the BS for more than ௟௢௦௧ seconds (for example, due to a vehicle 
+remaining in the proximity), it switches into an energy-saving standby mode, waking-up periodically to 
+detect a beacon from the BS as described in Section 5.1. As soo n as the beacon is detected, the node 
+switches back into the data transfer mode. 
+5.3. Data Processing 
+The set of magnetic sensor samples that form a magnetic signatu re from a vehicle are organised 
+into data records of the format shown in Table 2. 
+Table 2. Data record format 
+Field Length (bits) 
+Local time-stamp 32  
+Offset 16 
+Length 16  
+Data … 
+Padding 0,…,7 
+ 
+The offset field allows splitting long data records across seve ral packets. The overall packet 
+contains several records and has the format detailed in Table 3. 
+Table 3. Packet format 
+Field Length (bits) 
+Source address 32 
+Destination address 32 
+Sequence number 8  
+Local time-stamp 32 
+Flags 8 
+Data length 16 
+Checksum 16 
+Record #1  
+Record #2  
+…  
+Record #N  
+ 
+The sequence number is incremented upon each successful transmi ssion and is used by the BS to 
+detect missing packets. 
+The BS receives the packets and performs the actions listed in Table 4. 
+
+===== PAGE 9 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+282 
+Table 4. BS actions 
+Step Action 
+1. Send an acknowledgement immediately. 
+2. Use packet sequence numbers to discard repetitive data. Duplicated packets with the same sequence number occur when 
+the acknowledgement is lost and the sensor node retransmits the packet. 
+3. Use packet sequence number to detect missing data. In case a missing packet is detected, it discards relevant fragments 
+from the same node and the relevant samples from other nodes. 
+4. Convert the event local time- stamps within the packet to a global time reference. 
+5. Re-assembles long records th at are split among several packets. 
+6. Re-assembles complete events (samples from several nodes tha t belong to the same event) based on these time-stamps. 
+7. Passes on the complete event t o a vehicle classification module. 
+6. Performance Analysis 
+Experimentation and performance evaluation were carried out in collaboration with Clearview 
+Traffic. A set of 32 magnetometer sensor nodes was deployed on a public road B-4100 in the area of 
+Bicester, Oxfordshire, UK, to collect vehicle magnetic signatures, as illustrated in Fig. 6(a). These sensors 
+collected samples from 930 vehi cles classified into 8 types acc ording to the classification given in Table 
+5. Each signature is annotated with the type of vehicle identified visually from the associated video record 
+and with ground-truth speed and length obtained from a magnetic  loop device installed for benchmarking 
+in parallel to the sensor networ k .  N e x t ,  w e  s h o w  h o w  t h e  b e s t  pair of sensors is selected and we 
+demonstrate accuracy rates of the speed and length estimate and the vehicle classification. 
+Table 5. Vehicle classification and number of vehicles in each category according to the video data 
+Class Description Actual number of vehicles 
+(1) Motorbikes 5 
+(2) Car or light van 713 
+(3) Car or light van  plus trailer 10 
+(4) Heavy van or minibus 111 
+(5) Rigid (LGV) 31 
+(6) Rigid (MGV) 25 
+(7) Rigid plus trailer 20 
+(8) Bus or coach 15 
+Total 930 
+6.1. Selection of the best pair of sensors 
+The 32 sensors were installed in  two linear arrays with 16 sens ors in each row separated by a 
+distance of ݉Since the goal is to keep only 2 sensors, we select the best pair of sensors 
+aligned with the road direction based on the criterion of highe st average Signal-to-Noise-Ratio (SNR) of 
+the magnetic signatures for the vehicles in the collected datab ase. The SNR for different sensors depends 
+mostly on the sensor location across the road – if vehicles are  driven close to the sensor, the SNR will be 
+higher and the signature will be clearer. Thus, we compute the average SNR (the mean between the SNRs 
+obtained from the two sensors f or each pair) for all 16 pairs o f sensors and select the strongest SNR. Fig. 
+6(b) shows the SNRs for these 16 combinations with the pair (6- 22) being the best one. Hence, we 
+process further only the signatures from these two sensors. 
+6.2. Speed and length estimation accuracy 
+The acquired database of vehicle magnetic signatures has been c aptured at the sampling frequency 
+ݖܪFor the purpose of a more de tailed performance analysis, we w ill analyse speed and length 
+estimation accuracy for four different sampling frequencies, ௦∈ ሼ400,200,133,100ሽHz, obtained by 
+subsampling the original signatures. 
+The signatures are quantized using ௕൑6 bps so that the range between zero and maximal 
+magnitude in the signature is divided in 2ே್ uniform quantization intervals. Note that such an adaptive 
+quantization approach requires transmitting the maximal magnitu de to the receiver for successful 
+reconstruction of the quantized samples. 
+
+===== PAGE 10 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+283 
+ 
+(a) 
+ 
+(b) 
+Figure 6. (a) Layout of 32 magnetometer sensors deployed on a public road.  
+(b) Average SNR for each of 16 sensor pairs obtained as the mean for two SNRs from each sensor in the pair.  
+The sensor pair #6 exhibits the highest SNR and is selected for further processing 
+Accuracy of the speed and length estimation is now determined f or the three algorithms A, B and 
+C, as described in Section 4. The obtained performance is compa red in terms of two accuracy metrics: 
+Mean-Relative-Error (MRE) and Mean-Absolute-Error (MAE). For speed estimation, the MRE is defined 
+as തതതതതതതതതതതത, whereas the MAE is defined as |തതതതതതതതത, where the ground-truth values 
+are obtained using the annotation in the database acquired usin g the magnetic loop system. The metrics 
+for length estimate accuracy, ௟ and ௟ are obtained in a similar way to the ones for speed 
+estimation. All the metric value s are shown in Table 6, where MRE is expressed in terms of %, ௩ as 
+km/h and ௟ as cm. Note that quantization is not used in Algorithm C and, thus, ௕ does not affect the 
+performance in the right-hand side columns. Note also that Algo rithm A has the best performance for 
+speed estimate and remains stable for a range of ௕ and ௦. For length estimation, Algorithms A and B 
+have comparable performance. Algorithm C is inferior to the oth er two in all cases, which is expected 
+since it operates at a significantly reduced transmission data- rate, but also has lower resulting power 
+requirements, as analysed below. 
+
+
+===== PAGE 11 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+284 
+Figure 7(a) shows the speed estimation performance of Algorithm  A in the case of ௦ൌ 200 Hz 
+and ௕ൌ5 bps. The graph differentiates the performance for each class o f vehicles, as listed in Table 5. 
+Similarly, Figure 7(b) illustrates the length estimate performa nce for the same case. Note that separation 
+of classes using length is quite clearly visible in Figure 7(b) , which is exploited for vehicle classification, 
+as explained in Section 6.3. 
+Table 6. Speed and length accuracy evaluation. The metrics ௩ (in terms of %), ௩ (km/h),௟ (%) and ௟ (cm) are 
+shown for several values of the sampling frequency fs and number of quantization bps Nb. The values for MRE are expressed in 
+terms of %, whereas the ones for MAE are given in km/h and cm for speed and length, respectively 
+fs 
+(Hz) 
+Nb 
+(bps) 
+Algorithm A Algorithm B Algorithm C 
+MREv MAEv MREl MAEl MREv MAEv MREl MAEl MREv MAEv MREl MAEl 
+100 2 6.80 6.50 28.62 137.02 13.32 12.31 32.11 154.84 14.91 13. 88 31.47 155.67 
+3 6.52 6.24 28.50 135.69 11.78 10.93 29.78 144.04 
+4 6.55 6.27 28.50 135.49 11.56 10.74 29.53 143.07 
+5 6.54 6.25 28.55 135.68 11.80 10.96 29.62 143.73 
+6 6.51 6.23 28.62 136.08 11.87 11.04 29.70 144.11 
+133 2 6.69 6.34 21.79 105.06 10.16 9.39 20.74 106.04 11.87 10.9 5 20.52 110.54 
+3 6.29 5.96 21.66 104.33 9.48 8.76 20.04 103.19 
+4 6.06 5.78 21.38 103.22 9.59 8.83 20.08 103.42 
+5 6.09 5.82 21.39 103.24 9.60 8.82 19.82 102.63 
+6 6.03 5.75 21.33 102.84 9.56 8.79 19.97 102.98 
+200 2 6.74 6.40 18.00 92.84 7.89 7.36 18.79 96.42 8.90 8.41 19. 13 98.56 
+3 6.32 6.00 17.81 91.71 7.58 7.02 18.48 94.63 
+4 6.06 5.80 17.54 90.43 7.36 6.87 18.23 93.58 
+5 6.05 5.78 17.56 90.46 7.19 6.71 18.31 93.94 
+6 6.07 5.80 17.58 90.51 7.20 6.73 18.33 94.05 
+400 2 6.50 6.15 14.41 76.04 6.57 6.22 14.38 75.67 7.85 7.38 15. 05 82.81 
+3 6.13 5.82 14.12 74.53 6.28 5.95 14.14 74.68 
+4 5.87 5.61 13.90 73.46 6.05 5.78 13.96 73.90 
+5 5.87 5.61 13.87 73.34 6.07 5.79 13.91 73.65 
+6 5.86 5.60 13.87 73.30 6.05 5.77 13.92 73.69 
+Table 7. Comparison of transmission data-rates and computational loads on sensor microprocessor for Algorithms A, B and C. Both 
+metrics are expressed per signature and sensor. Number of mathematical operations is approximatively independent of Nb 
+fs (Hz) Nb 
+(bps) 
+Algorithm A Algorithm B Algorithm C 
+bits per sign-
+sensor 
+# comp per 
+sign-sensor 
+bits per sign-
+sensor 
+# comp per 
+sign-sensor 
+bits per sign-
+sensor 
+# comp per 
+sign-sensor 
+100 2 482 ~ 6757 86 ~ 6757 32 ~ 6524 
+3 716 113 
+4 949 140 
+5 1182 168 
+6 1415 195 
+133 2 638 ~ 9019 99 ~ 9019 32 ~ 8708 
+3 949 132 
+4 1259 166 
+5 1570 199 
+6 1881 233 
+200 2 948 ~ 13514 127 ~ 13514 32 ~ 13048 
+3 1414 174 
+4 1881 222 
+5 2347 269 
+6 2813 317 
+400 2 1880 ~ 27028 218 ~ 27028 32 ~ 26096 
+3 2812 310 
+4 3744 403 
+5 4676 496 
+6 5608 589 
+
+===== PAGE 12 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+285 
+ 
+(a) 
+ 
+(b) 
+Figure 7. (a) Speed estimate performance of Algorithm A for each vehicle class for fs=200Hz and Nb=5bps.  
+The estimated speed takes discrete values because of a finite resolution of cross-correlation.  
+(b) Length estimate performance in the same case 
+Algorithms A, B and C differ si gnificantly in terms of required  transmission data-rate and 
+computational load on the sensor microprocessors. Table 7 shows an overview of these two metrics for all 
+three algorithms. It can be observed from Tables 6 and 7 that p erformance may be traded-off for resource 
+usage (transmission data-rate and computational load) at very f ine granularity by choosing different 
+algorithms and parameters ௦ and ௕. 
+40 60 80 100 120 140 160
+40
+60
+80
+100
+120
+140
+160
+Measured speed using magnetic loop system (km/h)
+Estimated speed (km/h)
+Estimated vs measured speed per class for fs = 200Hz and Nb = 5bits
+ 
+ 
+1: 5
+2: 713
+3: 10
+4: 111
+5: 31
+6: 25
+7: 20
+8: 15
+ref
+0 500 1000 1500 2000 2500
+0
+500
+1000
+1500
+2000
+2500
+Measured length using magnetic loop system (cm)
+Estimated length (cm)
+Estimated vs measured length per class for fs = 200Hz and Nb = 5bits
+ 
+ 
+1: 5
+2: 713
+3: 10
+4: 111
+5: 31
+6: 25
+7: 20
+8: 15
+ref
+
+===== PAGE 13 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+286 
+6.3. Vehicle classification accuracy  
+Our vehicle classification method presented in this section is based solely on estimated vehicle 
+lengths using thresholding as the classification criterion due to the need to preserve low computational 
+complexity. We leave investigation of the application of more sophisticated classification methods for the 
+future work. 
+Given a respectable database size, list of classes in Table 5 a nd vehicle lengths shown in Figure 7, 
+we consider classification withou t using Class (3) because the vehicles from this class are scattered in 
+both real and estimated length, thus mixing with other classes.  For similar reasons, we consider Classes 
+(7) and (8) together as a joint class of lengthy vehicles and Classes (1) and (2) as motorbike-car joint class 
+due to a small number of recorded motorbikes. Therefore, 5 sepa rate classes are used for the evaluation 
+purposes delimited by 4 thresholds. The histogram of vehicle le ngths belonging to the 5 classes is 
+graphically shown in Figure 8. 
+Classification performance is eva luated by comparing the true-p ositive-rate (TPR) for various 
+cases. The TPR is obtained as a ratio between correct vehicle c lassification occurrences and total number 
+of vehicles and, hence, it is upper-bounded by 100%. The proces s of classification into 5 classes in each 
+case is optimised so that the 4 corresponding length delimiter thresholds are chosen based on estimated 
+lengths such that the TPR is maximised. In parallel, classifica tion based on real lengths is deployed to 
+produce a benchmark TPR. Table 8 shows the TPRs for all three a lgorithms and a range of ௦ and ௕ and 
+it compares them to the benchmark  TPR. Note that the achieved c lassification results are close to the 
+benchmark TPR even though only a simple comparison of estimated  length is used as the classification 
+core engine. 
+In addition, we compare this performance to the achievements re ported in (Cheung et al., 2005). 
+Unfortunately, not enough techni cal details of the correspondin g method are provided in the relevant 
+publication and we have not been able to apply the method to ou r database. However, the reported 
+quantitative performance metric in (Cheung et al., 2005) shows that for the database of 37 vehicles only 
+65% of vehicles (24) were classi fied correctly using 5 vehicle classes and that rate raised to 83% (31 
+vehicles) when using 3 classes. While these rates may be accept able in some applications, our proposed 
+methods exhibit a higher classification performance that remain s robust and stable for a much larger 
+vehicle database. 
+ 
+ 
+Figure 8. Optimal delimiter thresholds for vehicles classification into 5 classes based on measured lengths.  
+The optimal length delimiter thresholds are as follows: {520, 726, 886, 1358} cm 
+ 
+0 500 1000 1500 2000 2500
+0
+5
+10
+15
+20
+25
+30
+35
+40
+45
+50
+Measured length (cm)
+N o of vehicles
+Vehicle classes used in experimentation
+ 
+ 
+1-2: 718
+4: 111
+5: 31
+6: 25
+7-8: 35
+delimiter thresholds
+
+===== PAGE 14 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+287 
+Table 8. TPRs for a range ofݏ݂and ܾܰand for all three algorithms. The benchmark TPR obtained using real length is shown for 
+comparison 
+fs (Hz) Nb (bps) Benchmark TPR = 99.24% 
+Algorithm A Algorithm B Algorithm C 
+100 2 82.50% 80.43% 81.96% 
+3 82.72% 82.07% 
+4 82.61% 82.39% 
+5 82.83% 83.15% 
+6 82.83% 82.93% 
+133 2 84.67% 84.46% 84.02% 
+3 85.33% 85.11% 
+4 85.22% 85.00% 
+5 85.43% 85.11% 
+6 85.43% 84.89% 
+200 2 87.28% 87.07% 85.54% 
+3 86.96% 86.74% 
+4 87.07% 86.85% 
+5 86.96% 86.96% 
+6 86.96% 86.96% 
+400 2 87.93% 88.15% 86.63% 
+3 87.83% 88.15% 
+4 88.37% 88.26% 
+5 88.04% 88.37% 
+6 87.93% 88.37% 
+7. Conclusions 
+Automatic monitoring and analysis of road traffic is essential for effective planning of 
+transportation networks. While classical systems based on magne tic loop technology can provide reliable 
+traffic data, they are cost ineffective and complicated to inst all and maintain. For that reason, we have 
+proposed a novel system that uses a pair of wireless magnetic s ensors to measure the magnetic signatures 
+generated by passing vehicles. Furthermore, we develop novel al gorithm s for ve hicle spee d and lengt h 
+estimation and classification using these signatures. We demonstrate that it is possible to achieve reliable 
+estimation and classification us ing a reduced-cost system and e nergy-efficient processing, which is 
+supported by extensive experimentation using a comprehensive da tabase gathered in a realistic scenario. 
+Our system was shown to achieve classification accuracy rate of  88.37% with 5 vehicle classes when 
+processing a large realistic dataset, which outperforms relevan t competitive methods, such as (Cheung et 
+al., 2005) (65%) and (Kaewkamnerd et al ., 2010) (81.7%). In addition, our system exhibits a similar 
+performance as that of the method proposed in (Haijian et al., 2014) (88.9%), which is constrained to 
+work with only 2 vehicle classes. Finally, unlike the competiti ve methods, our system design enables 
+efficient trading of estimation accuracy for computational complexity and transmission data-rate. 
+While the achieved accuracy rates are competitive, we envisage that they can be pushed further up 
+by deploying more sophisticated classification algorithms in cases when power constraints are less severe. 
+For instance, classification based on support-vector-machine ha s a superior performance and can work 
+efficiently with multiple classes. Furthermore, relaxing the sy stem complexity constraint would allow for 
+improved performance by installing more magnetic sensors, where  optimisation of the sensor layout 
+might play an important role on the vehicle detection and class ification. We leave these points for the 
+future consideration. 
+Acknowledgements 
+This work was carried out in collaboration with Clearview Traff ic and was funded by the UK’s 
+innovation agency, Innovate UK, Project No. 131603. 
+
+===== PAGE 15 =====
+
+Transport and Telecommunication Vol. 17, no. 4, 2016 
+288 
+References 
+1. Benyassine, A., Shlomot, E., Su, H.-Y., Massaloux, D., Lamblin,  C., Petit, J.-P. (1997) ITU-T 
+Recommendation G.729 optimized for V.70 digital simultaneous vo ice and data applications, IEEE 
+Communications Magazine, vol. 35, no. 9, pp. 64-73. 
+2. Buettner, M., Yee, G.V., Anderson, E., Han, R. (2006) X-MAC: A short preamble MAC protocol for 
+duty-cycled wireless se nsor networks, In: Proceedings of the ACM Conf. on Embedded Networked 
+Sensor Systems (SenSys), Boulder, CO, USA. 
+3. Canny, J.F. (1986) A computational approach to edge detection, IEEE Transactions on Patern 
+Analysis and Machine Intelligence, vol. 8, no. 6, pp. 679-698. 
+4. Chang, S.G., Cvetkovic, Z., Vetterli, M. (2006) Locally adaptiv e wavelet-based image interpolation, 
+IEEE Transactions on Image Processing, vol. 15, no. 6, pp. 1471-1485. 
+5. Cheung, S.Y., Coleri, S., Dunbar, B., Ganesh, S., Tan, C.-W., V araiya, P. (2005) Traffic 
+Measurement and Vehicle Classification with Single Magnetic Sensor, Journal of the Transportation 
+Research Board (Transportation Research Record), pp. 173-181. 
+6. Collotta, M., Lo Bello, L., G. Pau, G. (2015) A novel approach for dynamic traffic lights 
+management based on wireless sensor networks and multiple fuzzy  logic controllers, Expert Systems 
+with Applications, vol. 42, no. 13, pp. 5403-5415. 
+7. Haijian, L., Honghui, D., Limin, J., Moyu, R. (2014) Vehicle cl assification with single multi-
+functional magnetic sensor and optimal MNS-based CART, Measurement: Journal of the 
+International Measurement Confederation, vol. 55, pp. 142-152. 
+8. Haoui, A., Kavaler, R., Varaiya, P. (2007) Wireless magnetic sensors for traffic surveillance, Elsevier 
+Transportation Research Part C. 
+9. Kaewkamnerd, S., Chinrungrueng, J., Pongthornseri, R., Dumnin, S. (2010) Vehicle classification 
+based on magnetic sensor signal, In: Proceedings of the IEEE Int. Conf. on Information and 
+Automation (ICIA). 
+10. Ki, Y.K., Baik, D.K. (2006) Vehicle-classification algorithm fo r single-loop detectors using neural 
+networks, IEEE Transactions on Vehicular Technologies, vol. 55, no. 6. 
+11. Ma, W., Xing, D., McKee, A., Bajwa, R., Flores, C., Fuller, B.,  and Varaiya, P. (2014) A wireless 
+accelerometer-based automatic vehicle classification prototype system, IEEE Trans. on Intelligent 
+Transportation Systems, vol. 15, no. 1. 
+12. Mallat, S., Hwang, W.L. (1992) Singularity detection and proces sing with wavelets, IEEE 
+Transactions on Information Theory, vol. 38, no. 2, pp. 617-643. 
+13. Mallat, S., Zhong, S. (1992) Characterization of signals from multiscale edges, IEEE Transactions on 
+Pattern Analysis and Machine Intelligence, vol. 14, no. 7, pp. 2207-2232. 
+14. Mbodila, M, Obeten, E., Bassey, I. (2015) Implementation of novel vehicles' traffic monitoring using 
+wireless sensor network in South Africa, In: Proceedings of the IEEE Int. Conf. on Communication 
+Software and Networks (ICCSN). 
+15. Qingju, L., Aubrey, A.J., Wenwu, W. (2014) Interference reducti on in reverberant speech separation 
+with visual voice activity detection, IEEE Transactions on Multimedia, vol. 16, no. 6, pp. 1610-1623. 
+16. Scharenborg, O., Wan, V., Ernestus, M. (2010) Unsupervised speech segmentation: an analysis of the 
+hypothesized phone boundaries, The Journal of the Acoustical Society of America, vol. 127, no. 2, 
+pp. 1084-1095. 
+17. Xue, W., Wang, L., Wang, D. (2015) A prototype integrated monit oring system for pavement and 
+traffic based on an embedded sensing network, IEEE Trans. on Intelligent Transportation Systems, 
+vol. 16, no. 3, pp. 1380-1390. 
+18. Ye, W., Silva, F., Heidemann, J . (2006) Ultra-low duty cycle MA C with scheduled channel polling, 
+In: Proceedings of the ACM Conf. on Embedded Networked Sensor Systems (SenSys) , Boulder, CO, 
+USA. 
+ 

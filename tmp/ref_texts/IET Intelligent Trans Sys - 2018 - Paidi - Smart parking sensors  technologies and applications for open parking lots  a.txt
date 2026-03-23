@@ -1,0 +1,937 @@
+
+
+===== PAGE 1 =====
+
+IET Intelligent Transport Systems
+Review Article
+Smart parking sensors, technologies and
+applications for open parking lots: a review
+ISSN 1751-956X
+Received on 13th December 2017
+Revised 12th March 2018
+Accepted on 17th April 2018
+E-First on 18th May 2018
+doi: 10.1049/iet-its.2017.0406
+www.ietdl.org
+Vijay Paidi1 
+ , Hasan Fleyeh1, Johan Håkansson1, Roger G. Nyberg1
+1School of Technology and Business Studies, Dalarna University, Borlänge, Sweden
+ E-mail: vpp@du.se
+Abstract: Parking a vehicle in traffic dense environments often leads to excess time of driving in search for free space which
+leads to congestions and environmental pollution. Lack of guidance information to vacant parking spaces is one reason for
+inefficient parking behaviour. Smart parking sensors and technologies facilitate guidance of drivers to free parking spaces
+thereby improving parking efficiency. Currently, no such sensors or technologies is in use for open parking lot. This study
+reviews the literature on the usage of smart parking sensors, technologies, applications and evaluates their applicability to open
+parking lots. Magnetometers, ultrasonic sensors and machine vision were few of the widely used sensors and technologies on
+closed parking lots. However, this study suggests a combination of machine vision, convolutional neural network or multi-agent
+systems suitable for open parking lots due to less expenditure and resistance to varied environmental conditions. Few smart
+parking applications show drivers the location of common open parking lots. No application provided real-time parking
+occupancy information, which is a necessity to guide them along the shortest route to free space. To develop smart parking
+applications for open parking lots, further research is needed in the fields of deep learning and multi-agent systems.
+1 Introduction
+In densely populated areas as in cities, the availability of parking
+spaces is often less than the availability of vehicles which leads to
+a shortage of parking space [ 1]. Studies showed that in worldwide
+traffic dense environment, 30–50% of the drivers look for free
+parking space [ 2–5]. Based on previous studies, drivers use
+between 3.5 and 14 min to find a parking space [6, 7]. Examples of
+consequences are: the frustration of drivers, accidents, lost business
+opportunities, congestion and increased air pollution. Congestion
+can be observed when traffic density is increased, which is
+observed during peak traffic periods [ 8, 9]. A city with a
+population of ∼50,000 inhabitants contains an average of 250
+parking spaces in a parking lot which would generate an annual
+cost of ∼216,000 US dollars [10].
+In order to reduce parking related congestion and air pollution,
+public transportations such as bus, metro and so on can be utilised.
+However, private vehicles are still used for convenience. One way
+to address the carbon emission issue is to replace all fuel
+consumption vehicles with electric ones. Since, the average age of
+a car in Europe or the USA is ∼11 years (USA) [ 11, 12], it can be
+expected to take quite a long time before electric vehicles replace
+all fuel consumption vehicles. In spite of using electric vehicles,
+cruising of a vehicle to find a vacant parking space would still be
+time consuming leading to congestion. A solution to that problem
+might be driverless cars. The driverless vehicle is one of the
+upcoming technologies currently being developed. Few companies
+such as Google have already developed prototype vehicles which
+support driverless mode in specific conditions [ 13]. With the
+current state of automation and proven technologies, new
+generation vehicles are providing park assist feature which helps in
+parking a car automatically with the use of sensors and guidance
+systems. Vehicle-to-vehicle (V2V) technology could be
+implemented on all vehicles in order to improve the safety of all
+driverless vehicles [14, 15]. An automated driverless vehicle would
+depend on a number of technologies such as global positioning
+system (GPS), sensors, V2V and so on and it would take few
+decades to replace existing vehicles. Yet another, not that far-
+fetched, solution might be a decision support system that uses
+smart parking sensor and technologies to detect parking occupancy
+information which facilitates the drivers to make informed decision
+of where to go and park their car [ 16]. Parking occupancy
+information can be gathered using sensors and technologies such as
+ultrasonic sensors, magnetometers and multi-agent systems. Smart
+parking applications are available online which facilitate in
+improving parking efficiency by providing navigational directions
+to a reserved empty parking space [17].
+There has already been a considerable amount of research
+conducted to improve parking efficiency at closed parking lots
+which are paid parking lots and support reservation of parking
+spaces. There are online applications which provide smart parking
+services in closed parking lots. However, literature is very scarce
+with regard to another and very common type of parking lot, the
+open parking lots which do not support reservation, freely available
+for a limited amount of time and are commonly placed outdoors
+occupying a large amount of space. Therefore, there still exists a
+research gap in order to improve parking efficiency at an open
+parking lot. It is assumed that the driver behaviour could be
+efficient if improved decision support to drivers is offered. The
+areal size of the often very large open parking lots could be
+reduced by improving parking efficiency along with reduced
+congestion and CO2 emissions.
+The aim of this paper is to review smart parking sensors,
+technologies and applications suitability at open parking lots.
+Challenges in an open parking lot are: freely available where the
+reservation is not possible and they are subjected to environmental
+conditions when placed outdoors. Therefore, suitability of sensors
+and technologies was made by compatibility and expenditure
+parameters.
+The remaining part of this paper is organised in the following
+way. Section 2 describes the methods used to conduct the review of
+existing smart parking sensors, technologies and applications.
+Section 3 describes and analyses smart parking sensors,
+technologies and applications while Section 4 discusses about their
+suitability in open parking lots. Finally, the paper is ended with
+conclusion in Section 5.
+2 Method
+In this paper, literature search was carried out to identify articles
+related to smart parking sensors and technologies. Smart or
+intelligent parking has been in focus since early 1980s and there
+IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+735
+
+
+===== PAGE 2 =====
+
+are several papers discussing the implementation of sensors or
+technologies for improving parking efficiency. This paper will not
+review about parking requirements and income generated due to
+parking. Similarly, frameworks or architecture of smart parking
+systems are also not reviewed in this paper. This paper focuses on
+sensors, technologies and interfaces which are used to collect and
+display real-time parking occupancy information. The suitability of
+sensors and technologies is made in terms of compatibility and
+expenditure. Since, the majority of open parking lots are placed
+outdoors, compatibility is measured in terms of varying
+environment and lighting conditions while expenditure is measured
+in terms of purchase cost, installation and maintenance activities.
+Parking meters which are used for payments are placed either at a
+parking lot or beside parking spaces are not referred in this paper.
+From the literature search, literature reviews on sensors and
+technologies are presented in Table 1. However, it should be
+mentioned that these reviews do not emphasise on parking issues
+related to open parking lots. 
+Existing smart parking applications were searched using mobile
+application stores and web search engines. There are hundreds of
+parking applications available in the mobile application store.
+However, in this paper parking applications which provide real-
+time parking occupancy information and navigational directions to
+a reserved parking space are selected. All the referred applications
+support reservation which is possible only in closed parking lots.
+Smart parking applications also provide navigational directions to
+the reserved parking space in a closed parking lot.
+3 Smart parking tools
+Smart parking tools consist of sensors, technologies and
+applications which are used to identify parking occupancy
+information and facilitate to improve parking efficiency. Found
+literature reviews on smart parking technologies and sensors are
+shown in Table 1. In this context, literatures [ 18–20] are reviews
+about various types of smart parking sensors, technologies along
+with their uses while [ 21] identifies research gap in designing
+smart parking system for stakeholders. Furthermore, [ 22] reviews
+about intelligent parking technologies and their economic analysis
+and [23, 24] reviews the advantages and drawbacks of sensors and
+technologies. As shown in Table 1, machine vision using visual
+camera is referred by all the review articles. Sensors like ultrasonic
+and magnetometers are widely reviewed and tested which are used
+in various smart parking applications. Vehicular ad hoc  networks
+(V ANET) and fuzzy logic were not reviewed prior to 2013. A
+detailed description of each sensor and technology can be found in
+this section along with an emphasis on expenditure.
+3.1 Smart parking sensors
+There are various sensors which facilitate in detecting parking
+occupancy information and these are mentioned in the following
+sections. Sensors are one of the common tools which were widely
+tested in several previous literatures. Descriptions of these sensors
+are mentioned in the following sections.
+3.1.1 Passive infrared sensor: These sensors detect changes in
+energy and when a vehicle occupies a parking space, these sensors
+identify the change in energy and detect occupancy [ 25, 26]. The
+sensor observes a change in energy when a vehicle is placed or a
+person standing above the sensor. Based on the amount of energy
+change, it can be used to isolate outliers. However, these sensors
+are sensitive to environment and they would not be accurate when
+there is snow or rain. Passive infrared sensors should be placed
+under the ground or on the ceiling. Therefore, they require high
+investment for procurement and maintenance of these sensors.
+These sensors would be suitable for closed parking lots which are
+inside buildings and are not suitable for outdoor open parking lots.
+3.1.2 Active infrared sensor: These sensors would emit infrared
+energy and detect any object or vehicle by the amount of energy
+reflected [25, 26]. They are also sensitive to environmental changes
+such as rain or snow. Therefore, they should be placed in all the
+parking spaces and require high investment and maintenance.
+Deploying sensors in all the parking spaces would help to attain
+parking occupancy status. These sensors are usually placed
+overhead and are suitable for indoor closed parking lots. As these
+sensors are sensitive to environmental changes, it is not suitable to
+open parking lots.
+3.1.3 Ultrasonic sensor: These sensors would emit sound waves
+between 25 and 50  kHz and detect objects based on reflected
+energy. They are usually mounted on the ceiling and are sensitive
+to environmental changes such as rain and snow [ 27]. Therefore,
+they are suitable for indoor parking lots rather than open parking
+lots. Based on the distance at which waves are reflected it can
+distinguish between a vehicle and a person. In order to get parking
+occupancy status, these sensors should be placed on top of every
+parking space. These sensors would be available for low cost but
+installation and maintenance of multiple sensors and connecting
+them to a grid would be expensive in the long run. Wireless
+ultrasonic sensors are also used to gather parking occupancy
+information. They are connected using wireless sensor networks
+such as ZigBee protocol or other similar networks [ 28]. However,
+wireless sensors involve periodic maintenance costs. In another
+study, ultrasonic sensors are used on a drive-by vehicle and parking
+occupancy information is collected at regular periods [ 29]. Real-
+time parking occupancy information cannot be attained using the
+drive-by vehicle.
+3.1.4 Inductive loop detectors: These detectors are installed
+using underground wiring system and they use principles of
+electromagnetism to detect the presence of a vehicle [ 25]. They are
+commonly used at the entrance and exit to know the count of the
+vehicles which can be used to know the availability of parking
+spaces. These detectors are expensive to install and maintain [ 26]
+Table 1 Literature reviews on smart parking sensors and technologies
+Smart parking tools [19] [24] [18] [22] [21] [20] [23]
+infrared sensors • • • • •
+ultrasonic sensors • • • • • •
+inductive loop detectors • • •
+parking guidance systems • • •
+radio frequency tags • • • •
+magnetometer • • • • •
+microwave radar • •
+GPS • • • •
+machine vision • • • • • • •
+vehicular ad hoc networks • •
+multi-agent systems • • • •
+neural network • •
+fuzzy logic • •
+ 
+736 IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 3 =====
+
+and they are commonly used in indoor parking lots to get the count
+of available parking spaces. An accurate count of vehicles would
+be provided using these detectors in a closed parking lot and these
+are in use at multiple commercial parking lots. However, individual
+parking occupancy status cannot be attained using inductive loop
+detectors.
+3.1.5 Parking guidance systems: Parking guidance systems is
+another smart parking system which provides information about
+number of parking spaces available on display screens and these
+are usually placed near the parking lots as the driver can see and
+decide the parking space to occupy [ 28, 30]. Inductive loop
+detectors or visual camera can be used at the entrance and exit of a
+parking lot to know the count of the vehicles in a parking lot which
+would be displayed on the screens. However, they do not guide the
+driver to a particular parking space which is found empty.
+Therefore, there is every possibility that the driver would cruise for
+several minutes before finding an empty space to occupy. The
+driver can make a decision about the parking lot only after viewing
+the display screens [ 27]. Since sensors or visual cameras would be
+deployed only to get the count of vehicles, the expenditure for
+installation and maintenance would be minimal making them
+suitable for open parking lots.
+3.1.6 Radio-frequency identification (RFID): Radio frequency
+tags are used to identify vehicle. Each vehicle will be given a radio
+frequency tag for identification. A transceiver and antenna would
+be installed at the entrance of a parking lot to identify the tag and
+allow the vehicle to occupy a parking lot [ 31]. These are suited for
+closed and indoor parking lots which are controlled. It is not
+suitable for an open parking lot as they are freely available. RFID
+is used to authorise movement of vehicles at a parking lot.
+However, it neither provides individual parking occupancy status
+nor facilitates the driver in finding a vacant parking space.
+3.1.7 Magnetometer: These sensors detect the presence of
+vehicle by detecting the change in electromagnetic field. They need
+to be in close proximity to the vehicle, therefore, they are placed
+beneath the surface. They are not sensitive to the environment [25].
+These are suitable for both open and closed parking lots. There are
+wireless sensors with a battery life time of few years which can be
+used to detect real-time parking occupancy information. The
+sensors should be placed under every parking space to know the
+occupancy of parking spaces. However, it is expensive to install
+and maintain these sensors on a large scale.
+3.1.8 Microwave radar: A microwave radar transmits microwave
+beam and based on the reflected signal it estimates the velocity of
+the moving target. However, it does not detect stationary objects. In
+order to eliminate this restriction, dual microwave Doppler radar
+can be used to detect both moving and stationary vehicles [ 32].
+These can be mounted or placed beneath the surface for vehicle
+detection. These radars are not sensitive to environment and can be
+used in open and closed parking lots. They should be placed in
+every parking space to detect parking occupancy status making
+them expensive to install and maintain these microwave radars on a
+large scale.
+3.2 Smart parking technologies
+Sensor technologies are tools which facilitate the driver in
+occupying a vacant parking space and descriptions of these
+technologies can be found in the following sections below.
+3.2.1 Global positioning system: GPS-based navigational
+directions are provided to the driver for occupying a vacant parking
+space. GPS will facilitate in finding the shortest/optimal route from
+the current location. However, GPS alone cannot gather occupancy
+information of parking spaces. In one study occupancy of parking
+spaces is estimated using historical occupancy information and
+navigational directions are provided using GPS to the estimated
+parking space [ 33]. The accuracy of the GPS with a single-
+frequency receiver is ≤7.8 m. If a dual-frequency receiver is used,
+the accuracy is <0.71  m. A normal parking space would be
+between 2.3 and 2.7  m and most of the smartphones are provided
+with single-frequency receiver which has higher error compared to
+dual-frequency receivers. Dual-frequency receivers are usually
+used for military products for greater accuracy. A GPS is also
+perceptible to errors when the signal is blocked due to tall towers,
+walls within a building or under the ground. Therefore,
+navigational directions using GPS will be prone to errors in a
+closed indoor parking lot. Usage of GPS is suited for outdoor open
+parking lots where there is less chance for signal blocking.
+Accuracy of the GPS signal is also dependent on availability of
+satellite.
+3.2.2 Machine vision: A visual camera can be used for license
+plate recognition (LPR) or identifying parking lot occupancy using
+machine vision. The camera should be placed near the entrance of
+a closed parking lot for LPR. Based on the number of vehicles
+entered and exited it can help to get the count of vacant parking
+spaces. However, occupancy status of parking spaces cannot be
+attained using this system. Video processing of parking lot using a
+camera is not ideal as it requires continuous transfer of large
+bandwidths. Therefore, a video should be broken into images at
+regular intervals and frame rates to facilitate continuous monitoring
+of the parking lot [ 23]. For parking spaces occupancy detection, a
+camera can be installed overhead to a parking lot and relevant
+image detection algorithms can be used to segment vehicles and
+detect occupancy of parking space. There are publicly available
+datasets such as PKLot [ 34] which consists of large number of
+outdoor parking lot images. In one of the studies, support vector
+machine classifier produced 89% accuracy on their test dataset.
+Similar image classification algorithms such as logistic regression,
+Viola and Jones [35] also produced higher accuracy results [ 36]. A
+camera is suited for open parking lots as it can cover large number
+of parking spaces [ 37]. However, it is susceptible to limitations
+such as occlusion and shadow effects, distortion and lighting
+change. These limitations can be removed with the use of 3D scene
+information [38]. Since limited number of cameras can cover large
+number of parking spaces, the expenditure is considered minimal.
+3.2.3 Vehicular ad hoc networks: This system uses wireless
+communication devices to provide services such as smart parking
+and antitheft. Road side unites (RSUs) would be widely placed
+across parking lots and vehicles should be installed with on-board
+units (OBU). A trusted authority will be responsible for
+registrations of OBU and RSUs [ 39] Therefore, once a vehicle
+approaches the parking lot installed with RSUs, navigational
+information to the vacant parking space will be provided to OBU.
+The OBU's can also be used by the vehicles to avoid collision
+while driving. Such features are also incorporated in self-driving
+vehicles. These devices are not sensitive to environment and are
+suitable for closed and open parking lots. However, installation and
+maintenance of RSUs in the parking lot would be expensive. In
+order to achieve accurate parking occupancy data and navigational
+information, all the vehicles must install OBU. Parking occupancy
+data is prone to errors if there are vehicles without OBU are
+parked.
+3.2.4 Multi-agent systems: These kinds of systems make use of
+multiple mediums such as sensors, mobile, algorithms, visual
+camera and so on. These systems are also capable of incorporating
+aspects such as user preference, importance and so on, in finding a
+vacant parking space for the driver. Multi-agent systems are
+considered as foundation for automation of smart parking systems.
+A user can select a parking space using a mobile or web
+application and based on the user importance and preference, a
+parking space will be selected. The user will also receive
+navigational information to reach the parking space. Java tools
+such as JaCaMo and environment such as CArtAgo can be used in
+the architecture [ 40]. Machine vision systems or V ANETs can be
+used instead of using sensors. Usage of multiple systems is
+supported in this architecture. These systems are suitable for both
+open and closed parking lots. The expenditure would be dependent
+IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+737
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 4 =====
+
+on the usage of technology to identify occupancy status of parking
+spaces.
+3.2.5 Neural networks: Neural network is a data processing
+system which is inspired by brain nervous system. Neural networks
+have evolved over the years and various types of neural networks
+were developed such as fuzzy, neural network, fluid neural
+network, feed forward and convolutional neural network. Neural
+networks can be combined with machine vision to achieve
+automation. Neural networks were used in efficient recognition of
+license plates in real-time videos [ 41, 42]. In one study, images
+from morning and night were taken separately to train the neural
+network and a two layered feed-forward network with hidden
+sigmoid is used to produce accurate results in detection of available
+parking spaces [43]. Deep learning is a branch of machine learning
+which uses neural networks in object detection and classification.
+There is another evolving technology such as convolutional neural
+networks which would take images as input and is more efficient in
+analysing images. In a recent study, convolutional neural networks
+were used along with machine vision to capture parking occupancy
+information efficiently [ 44]. Convolutional neural network was
+also used to facilitate a self-driving vehicle. The network was
+trained using a set of connected cameras which observe the road
+while driving. Using limited training, the vehicle with
+convolutional neural network was able to operate on parking lots
+and roadways without lane markings [ 45]. This technology would
+function as an efficient tool in data processing while it is not
+involved in real-time data capturing. Therefore, it is suitable for
+open and closed parking lots with minimal expenditure.
+3.2.6 Fuzzy logic: Fuzzy logic is an approach which incorporates
+multivalued logic in evaluating. Fuzzy logic can be used to develop
+forecasting models based on sample data. Similar to neural
+networks, fuzzy logic can also be used in multi-agent systems.
+According to a study, a sample of parking spaces availability
+information for 5 days using machine vision was taken to predict
+the availability of parking spaces in future dates using fuzzy logic
+[46]. Fuzzy logic supports autonomy in providing information on
+the availability of parking spaces. The accuracy of forecast models
+would not be high without validating with real-time data.
+Therefore, combination of fuzzy logic models with machine vision
+or sensor technologies would increase the accuracy of the overall
+system. These systems are suitable for both open and closed
+parking lots. The expenditure would be minimal if image
+processing is used along with fuzzy logic to estimate available
+parking spaces for the future as well as provide real-time
+availability of parking spaces. Since this technology is not involved
+in the real-time data capturing process, it can be used for closed
+and open parking lots with minimal expenditure.
+Not all of the sensors and technologies are suitable for
+gathering real-time occupancy information of open parking lots as
+mentioned in Table 2. Even though sensors are widely used to
+acquire parking occupancy information, they would be expensive
+to install and maintain on a large number of parking spaces. Few
+sensors such as infrared and ultrasonic are sensitive to environment
+and are not suitable for open parking lots. Technologies such as
+machine vision, multi-agent systems are suitable for open parking
+lots to acquire parking occupancy information and GPS can be
+used to provide navigational directions. 
+3.3 Smart parking applications
+There are already many free smart parking applications available
+online in web and mobile stores of Android or iOS. Previously,
+reservation of parking space was done by calling to the service
+provider and now with the current usage of internet and
+smartphones, these services are provided online using mobile and
+web applications. These applications serve as decision support
+systems for the driver in occupying a vacant parking space. For
+instance, if the application shows a particular parking lot of choice
+to be full, the driver can search for nearby parking lots with
+available parking spaces or choose another destination. In this way,
+smart parking applications serve as decision support systems in
+occupying available parking spaces. Smart parking tools improve
+efficiency based on the following three categories:
+i. Guide the driver to parking lot using display boards.
+ii. Reserve and authorise the driver to a parking lot.
+iii. Reserve and guide the driver to a specific parking space using
+navigational information.
+The three categories mentioned earlier are the ways in which
+efficiency of parking is improved using existing smart parking
+Table 2 Strength and drawbacks of smart parking sensors and technologies in open parking lots
+Smart parking
+technology
+Suitability on
+open parking
+lots
+Strength Drawback
+active/passive infrared
+sensor
+✗ provides parking occupancy status not suitable for open parking lot due to varying
+environmental conditions
+ultrasonic sensor ✗ provides parking occupancy status not suitable for open parking lot due to varying
+environmental conditions
+inductive loop detectors ✓ facilitates in getting the count of vehicles
+in a parking lot
+not suitable for individual parking occupancy status
+parking guidance
+systems
+✓ guide driver to a parking lot based on
+count of available parking spaces
+do not solve congestion while cruising for parking space
+radio frequency tags ✗ facilitates in authorising vehicles in a
+parking lot
+not suitable for open parking lots and cannot provide
+parking occupancy information
+magnetometer ✓ provides parking occupancy status expensive to install and maintain on large scale
+microwave radar ✓ provides parking occupancy status expensive to install and maintain on large scale
+GPS ✓ provides navigational directions to the
+parking space
+does not provide parking occupancy status and is
+subjective to errors
+machine vision ✓ provides parking occupancy status or
+facilitates in authorising vehicles
+challenges with low lighting conditions
+VANET ✓ provides parking occupancy status all vehicles should be part of the network without which
+will be prone to errors
+multi-agent systems ✓ provides parking occupancy status challenges will be based on the technology used
+neural networks ✓ facilitates efficient parking occupancy
+detection
+is used only as a supporting tool in parking occupancy
+detection
+fuzzy logic ✓ provides parking occupancy status based
+on historical data
+do not provide real-time parking occupancy
+ 
+738 IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 5 =====
+
+tools. The level of efficiency varies with each category. The first
+category would improve the parking efficiency, however cruising
+for the empty parking space would still be involved. The second
+category reserves a parking space for the driver, however, the
+driver would still search for the reserved parking space manually
+which also involves some amount of cruising while searching for
+the location of reserved parking space. The third category provides
+improved efficiency compared to the two previous categories as it
+facilitates in reserving and guiding the driver using the navigational
+information to the parking space.
+The first category to guide the driver to a parking lot was
+provided with the use of parking guidance systems. This parking
+system facilitates the driver in taking a decision to park the vehicle.
+It is suitable to open parking lots as well. The second category
+would use RFID or LPR technologies. If a parking space is
+reserved by the driver, then RFID or LPR would authorise the
+vehicle to park. These are common methods for staff parking in an
+organisation and are not applicable to open parking lots. The third
+category would use web applications or smartphones to reserve the
+parking space and guide the driver using navigational directions
+through GPS. Table 3 shows smart parking applications available
+online which provide smart parking services as mentioned in the
+third category. All the applications are provided in limited cities of
+mentioned countries. 
+All the applications mentioned in Table 3 provide smart parking
+services in closed parking lots which support reservation and all of
+them are available in mobile application stores. However, Open
+Spot is the only application which is currently unavailable and
+discontinued by Google. Navigational directions to the free
+available parking space are provided which improve the efficiency
+of parking behaviour. A percentage or number of available parking
+spaces are shown for selected parking lots. None of the
+applications give the driver a choice in selecting a particular
+parking space. Most of the applications use underground wireless
+sensors such as magnetometers to get real-time parking occupancy
+information. Setup and maintenance cost of wireless sensors will
+be high and it is mandatory to replace all sensors again when the
+battery life is depleted. Since, a sensor needs to be placed in all the
+parking spaces, operational and maintenance costs of such sensors
+would be high. Crowdsourcing application is suited for open/closed
+parking lots and the expenditure is considered very minimal as no
+hardware installations or maintenance is required. However, the
+users need to update occupancy details of parking spaces every
+time they park the vehicle and the accuracy of the information will
+be dependent on the user updating the occupancy details and is
+prone to human errors. Applications such as Parkopedia [ 47] and
+EasyPark Group [ 48] use historical data for predicting parking
+occupancy information. Algorithms like fuzzy logic, time series are
+used to predict parking occupancy information based on historical
+or sample data. These applications are operational in more number
+of cities and countries compared to other applications. All these
+applications provide an overview of parking occupancy which
+facilitates in decision making.
+4 Discussion
+The review of existing smart parking applications shows that most
+of these applications use sensors for parking occupancy detection
+in closed parking lots which would require a considerable amount
+of expenditure for installation and maintenance activities.
+AppyParking [ 49] application mentioned in Table 3 provides the
+location of open parking lots. However, parking occupancy
+information of open parking lot is not provided. Few applications
+such as EasyPark Group and Parkopedia use predictive analytics or
+crowdsourcing which can also be used on open parking lots. The
+applications which used predictive analytics were operational in
+more number of cities and countries than the applications which
+used sensors for parking occupancy detection. The difference
+might be due to less expenditure in using predictive analytics than
+deploying sensors in all parking spaces. However, real-time
+occupancy information of parking spaces cannot be acquired using
+predictive analytics and accuracy of parking occupancy
+information by crowdsourcing is not reliable. None of the
+applications provide real-time parking occupancy information of
+open parking lots. Lack of economic returns can be one of the
+reasons for not providing real-time occupancy information of open
+parking lots. Since there would not be any immediate economic
+gains with the use of smart parking tools at open parking lots, it
+would be well suited to use a sensor or technology with minimal
+expenditure to make it financially viable. A smart parking
+application would assist the driver as a decision support system and
+can also help in reducing congestion. However, using a smart
+parking application is optional and few drivers might not be
+convenient in using an application for parking occupancy.
+Complete benefits in terms of parking occupancy, land usage,
+congestion and pollution are only possible if every driver is using
+the application which is not practically possible.
+According to previous literatures, several smart parking sensors
+and technologies were tested and reviewed. However, sensors or
+technologies were largely used for closed parking lots which
+support reservation. None of the technologies were used to
+improve the efficiency of parking in open parking lots. Ultrasonic
+and infrared sensors are sensitive to environmental conditions
+which might lead to inaccurate parking occupancy information.
+Sensors such as magnetometers and microwave radar are not
+sensitive to environmental conditions but are expensive to install
+and maintain at open parking lots. Even if the prices of sensors
+come down there would still be expenditure involved with
+installation and maintenance activities which would make it
+expensive to use sensors in open parking lots. Therefore, sensors
+are not ideal for open parking lots as expenditure should be
+minimal. Technologies such as V ANET are also expensive and can
+be ruled out for open parking lots. However, V ANET can be
+suitable in the future when all the vehicles are connected using on-
+board and road side units.
+The parking occupancy detection using machine vision will
+vary between closed and open parking lots as there can be varying
+light conditions in an open outdoor parking lot. As mentioned
+earlier, challenges faced by low lighting and shadow conditions can
+be addressed. Therefore, machine vision using visual camera is one
+of the feasible smart parking technology for acquiring real-time
+parking occupancy information in open parking lots. Machine
+vision can be associated with convolutional neural networks and
+deep learning for efficient image classification. In the literature,
+neural networks are used mostly for LPR and there are limited
+studies which use convolutional neural networks for parking
+Table 3 Smart parking applications and their use of
+technologies and sensors
+Smart parking
+application
+Country Sensors/technology
+used
+Park.ME Austria, Germany underground sensors
+SmartParking New Zealand underground sensors,
+RFID
+ParkMe Japan, USA, UK,
+Germany, Brazil
+underground sensors
+ParkAssist USA M4 Smart sensors, LPR
+SpotHero USA underground sensors
+EasyPark Canada underground sensors
+PaybyPhone France underground sensors
+ParkMobile USA underground sensors
+AppyParking UK magnetometer
+EasyPark Group Sweden, Denmark
+and so on
+transactional data and
+crowdsourcing
+Parker USA underground sensors,
+machine vision
+ParkiFi USA magnetometer
+Best Parking USA underground sensors
+Parkopedia USA, Germany,
+Sweden and so on
+predictive analytics,
+underground sensors
+SFPark USA underground sensors
+Open Spot USA crowdsourcing
+ 
+IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+739
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 6 =====
+
+occupancy detection. However, image classification accuracy is
+high while using convolutional neural networks.
+In deep learning, large datasets such as Alexnet [ 50] are already
+available and additional data would facilitate in further improving
+image classification. Different technologies or image classification
+algorithms can be tested using PKLot which is publicly available
+outdoor parking lot images dataset [ 34, 36]. However, this dataset
+is not suitable if an infrared or thermal camera is used for data
+collection. Convolutional neural networks and deep learning are
+contemporary technologies which can be used in parking
+occupancy detection of open parking lots. As expenditure plays an
+important role in the choice of technology, it is found that machine
+vision, multi-agent systems, along with convolutional neural
+network are suitable to provide parking occupancy information.
+Data collected using the visual camera would be processed using
+image classification algorithms or convolutional neural network to
+generate parking occupancy information. This information can be
+displayed using smart parking applications along with navigational
+directions. Smart parking applications serve as decision support
+systems for the user as it helps the user to find a suitable parking
+space which is true in a closed parking lot. However, in an open
+parking lot, it might not be the case as a parking space selected by
+the user can be occupied by another vehicle. Therefore, in an open
+parking lot, a parking space should be updated in real time based
+on the availability and navigational directions should be provided
+to the updated parking space.
+Along with real-time parking occupancy information, a short-
+term prediction of occupancy can be acquired using algorithms like
+fuzzy logic and time series. Since, reservation is not possible in an
+open parking lot, a short-term prediction would facilitate the driver
+in the decision-making process of choosing a parking lot. The
+prediction of parking space availability can also be made based on
+the location of the driver and its distance to the desired parking lot
+or destination. An optimal route can be calculated from the location
+to destination based on the distance of the route using which
+estimated arrival time can be acquired. Therefore, parking space
+occupancy prediction based on estimated arrival time can be shown
+to the driver. In this way, smart parking applications can serve as
+efficient decision support systems. Due to various types of parking
+lots, such as outdoor, multi-storey, basement or indoor, a
+combination of smart parking technologies and sensors can be used
+to improve the efficiency of parking behaviour with minimal
+expenditure.
+Algorithms such as logistic regression, radial basis function,
+support vector machines, decision tree, random forest, Viola and
+Jones object detectors and so on can be used for pattern recognition
+and image classification. Support vector machines can be used to
+enhance feature extraction which would improve image
+classification. In methods such as convolutional neural networks,
+sample test and train images should be collected to train the
+network. The quality of classification would mostly depend on the
+trained sample images. The sample images consist of different
+vehicles and parking spaces at different environmental and light
+conditions. These images can be used to train convolutional neural
+network for efficient image classification. Usage of the visual
+camera for gathering parking occupancy information would also
+depend on a country's privacy protection laws. It can be used in
+public places with less restrictions in countries such as the UK and
+the USA. However, in countries such as Sweden, usage of
+surveillance camera is restricted unless it is used for preventing or
+investigating crimes [ 51]. A surveillance camera can be used
+without any restrictions if it is used in a private place without the
+involvement of public. In Sweden, the surveillance camera is
+restricted to use in an open parking based on privacy protection
+laws. Therefore, usage of surveillance camera's or similar
+technology might be subjected to individual countries regulations.
+In order to comply with the regulations, it is suggested to use a
+thermal camera as public cannot be recognised using it. Thermal
+cameras are expensive compared to a colour cameras. Since, either
+a colour- or thermal-based cameras can be used to cover a large
+number of parking spaces, the expenditure involved in using a
+thermal camera might not be high compared to the usage of
+underground sensors. Future research can be made in using a
+thermal camera for parking occupancy detection.
+Vehicle system technologies are moving towards automation
+and there are proven technologies such as park assist that are
+already available with new generation vehicles. Park assist feature
+will only help to park the vehicle without human intervention but it
+does not eradicate congestion. Such features can be improved if the
+vehicle is provided with real-time parking occupancy information.
+Therefore, parking occupancy information of an open parking lot
+can be gathered using a financially viable method which can be
+connected to automated driving vehicles for efficient parking. The
+usage of smart parking technology or sensor for parking occupancy
+information can be changed based on the kind of parking lot. If a
+parking lot is indoor and has less number of parking spaces,
+sensors such as magnetometers can also be used to collect parking
+occupancy information. If a parking lot is outdoor, the visual
+camera can be used at an elevated position to cover the entire
+parking lot. When a parking space is updated the navigational
+directions to enter the parking lot might also be updated and this
+might be a challenge to address when the user is already following
+navigational directions to a selected parking space. Future research
+can also be made to address this challenge.
+5 Conclusion
+This paper identifies a research gap in utilising smart parking
+sensors, technologies and applications for open parking lots. All
+the existing smart parking technologies and applications are not
+suitable for open parking lots due to varying environmental
+conditions and high expenditure. As there are no immediate
+economic gains from providing smart parking services in an open
+parking lot, expenditure plays an important role in the choice of
+smart parking technologies. Parking guidance system which is one
+of the existing smart parking technology can be used to get the
+count of available parking spaces in open parking lots. Machine
+vision is another technology which uses the visual camera to
+acquire real-time parking occupancy information on open parking
+lots due to its minimal expenditure. The usage of the visual camera
+is dependent on regulations supported by the country which needs
+to be considered prior. However, there is no single ideal technology
+suitable for parking occupancy detection. Based on the type of
+parking lot and size, a different combination of smart parking
+technologies and sensors can be used for efficient and financially
+viable parking occupancy detection. In order to further improve
+parking efficiency, navigational directions should be provided to a
+vacant parking space. Therefore, in order to address this challenge
+further research in the use of deep learning and multi-agent
+systems would help to provide real-time parking occupancy
+information along with navigational directions to available parking
+space in an open parking lot.
+6 References
+[1] Chinrungrueng, J., Sunantachaikul, U., Triamlumlerd, S.: ‘Smart parking: an
+application of optical wireless sensor network’, Int. Symp. on the applications
+and internet workshop, Japan, Hiroshima, IEEE, 2007
+[2] Polak, J., Vythoulkas, P.: ‘An assessment of the state-of-the-art in the
+modelling of parking behaviour’, Report to Transport Research laboratory,
+Issue 753, 1993
+[3] Boltze, M., Puzicha, J.: ‘Effectiveness of the parking guidance system in
+Frankfurt am main’, Parking Trend Int., 1995, pp. 27–30
+[4] White, P.: ‘No Vacancy: Park Slopes Parking Problem And How to Fix It, in
+Internet’: http://www.transalt.org/newsroom/releases/126 [7 January 2016].
+2007
+[5] Gallivan, S.: ‘IBM global parking survey: Drivers share worldwide parking
+woes technical report’. Technical report, IBM, 2011
+[6] Shoup, D.C.: ‘Cruising for parking’, Transp. Policy, 2006, 13, (6), pp. 479–
+486
+[7] Polycarpou, E., Lambrinos, L., Protopapadakis, E.: ‘Smart parking solutions
+for urban areas’. 2013 IEEE 14th Int. Symp. and Workshops on a World of
+Wireless, Mobile and Multimedia Networks (WoWMoM), Madrid, Spain,
+2013
+[8] Geroliminis, N., Daganzo, C.F.: ‘Existence of urban-scale macroscopic
+fundamental diagrams: some experimental findings’, Transp. Res. B,
+Methodol., 2008, 42, (9), pp. 759–770
+[9] Geroliminis, N., Sun, J.: ‘Properties of a well-defined macroscopic
+fundamental diagram for urban traffic’, Transp. Res. B, Methodol. , 2011, 45,
+(3), pp. 605–617
+740 IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+
+===== PAGE 7 =====
+
+[10] Shoup, D.C.: ‘ The high cost of free parking ’, vol. 206 (Planners Press,
+Chicago, 2005)
+[11] Statista: ‘Average age of light vehicles in the U.S. from 2003 to 2016 (in
+years)’, 2017, https://www.statista.com/statistics/261881/average-age-of-
+light-vehicles-in-the-united-states/, accessed 17 November 2017
+[12] European Automobile Manufactures Association: ‘Average vehicle age’,
+2017, http://www.acea.be/statistics/tag/category/average-vehicle-age,
+accessed 17 November 2017
+[13] Thierer, A., Hagemann, R.: ‘Removing roadblocks to intelligent vehicles and
+driverless cars’, 2014
+[14] Harding, J., Powell, G., Yoon, R., et al.: ‘Vehicle-to-vehicle communications:
+readiness of V2V technology for application’. 2014
+[15] Guler, S.I., Menendez, M., Meier, L.: ‘Using connected vehicle technology to
+improve the efficiency of intersections’, Transp. Res. C, Emerg. Technol. ,
+2014, 46, pp. 121–131
+[16] Yang, Z., Liu, H., Wang, X.: ‘The research on the key technologies for
+improving efficiency of parking guidance system’. Intelligent Transportation
+Systems, Proc. 2003 IEEE, Shanghai, China, 2003
+[17] Kotb, A.O., Shen, Y .C., Zhu, X. , et al. : ‘Iparker—A new smart car-parking
+system based on dynamic resource allocation and pricing’, IEEE Trans. Intell.
+Transp. Syst., 2016, 17, (9), pp. 2637–2647
+[18] Revathi, G., Dhulipala, V .S.: ‘Smart parking systems and sensors: A survey’.
+2012 Int. Conf. on IEEE Computing, Communication and Applications
+(ICCCA), Dindigul, Tamilnadu, India, 2012
+[19] Mimbela, L.E.Y ., Klein, L.A.: ‘Summary of vehicle detection and surveillance
+technologies used in intelligent transportation systems’. 2000
+[20] Hassoune, K., Dachry, W., Moutaouakkil, F. , et al.: ‘Smart parking systems: A
+survey’. 11th Int. Conf. on IEEE Intelligent Systems: Theories and
+Applications (SITA), 2016
+[21] Fraifer, M., Fernström, M.: ‘Investigation of smart parking systems and their
+technologies’. Thirty Seventh Int. Conf. on Information Systems. IoT Smart
+City Challenges Applications (ISCA 2016), Dublin, Ireland, 2016
+[22] Mahmud, S., Khan, G.M., Rahman, M. , et al. : ‘A survey of intelligent car
+parking system’, J. Applied Res. Technol., 2013, 11, (5), pp. 714–726
+[23] Enríquez, F., Soria, L.M., Álvarez-García, J.A., et al.: ‘Existing approaches to
+smart parking: An overview’. Int. Conf. on Smart Cities, Malaga, Spain, 2017
+[24] Idris, M., Leng, Y .Y ., Tamil, E.M., et al.: ‘Саг park system: a review of smart
+parking system and its technology’, Inf. Technol. J., 2009, 8, (2), pp. 101–113
+[25] Shaheen, S.: ‘ Smart parking management field test: a bay area rapid transit
+(bart) district parking demonstration ’ (Institute of Transportation Studies,
+Davis, CA, USA, 2005)
+[26] Mouskos, K., Boile, M., Parker, N.A.: ‘ Technical solutions to overcrowded
+park and ride facilities ’ (New Jersey Department of Transportation, New
+Jersey, NY , USA, 2007)
+[27] Kianpisheh, A., Mustaffa, N., Limtrairut, P. , et al. : ‘Smart parking system
+(SPS) architecture using ultrasonic detector’, Int. J. Softw. Eng. Appl. , 2012,
+6, (3), pp. 51–58
+[28] Idris, M., Tamil, E.M., Noor, N.M. , et al.: ‘Parking guidance system utilizing
+wireless sensor network and ultrasonic sensor’, Inf. Technol. J., 2009, 8, (2),
+pp. 138–146
+[29] Mathur, S., Jin, T., Kasturirangan, N. , et al. : ‘Parknet: drive-by sensing of
+road-side parking statistics’. Proc. of the 8th Int. Conf. on Mobile Systems,
+Applications, and Services, ACM, San Francisco, CA, USA, 2010
+[30] Waterson, B., Hounsell, N., Chatterjee, K.: ‘Quantifying the potential savings
+in travel time resulting from parking guidance systems-a simulation case
+study’, J. Oper. Res. Soc., 2001, 52, (10), pp. 1067–1077
+[31] Rahman, M.S., Park, Y ., Kim, K.-D.: ‘Relative location estimation of vehicles
+in parking management system’. 11th Int. Conf. on IEEE Advanced
+Communication Technology, ICACT 2009, Phoenix Park, South Korea, 2009
+[32] Bao, X., Zhan, Y ., Xu, C. , et al. : ‘A novel dual microwave Doppler radar
+based vehicle detection sensor for parking lot occupancy detection’, IEICE
+Electron. Express, 2017, 14, (1), pp. 1–12
+[33] Pullola, S., Atrey, P.K., El Saddik, A.: ‘Towards an intelligent GPS-based
+vehicle navigation system for finding street parking lots’. IEEE Int. Conf. on
+Signal Processing and Communications, ICSPC 2007, Dubai, United Arab
+Emirates, 2007
+[34] De Almeida, P.R., Oliveira, L.S., Britto, JrA.S. , et al. : ‘PKLot–A robust
+dataset for parking lot classification’, Expert Syst. Appl. , 2015, 42, (11), pp.
+4937–4949
+[35] Viola, P., Jones, M.: ‘Rapid object detection using a boosted cascade of
+simple features’. Proc. of the 2001 IEEE Computer Society Conf. on
+Computer Vision and Pattern Recognition, CVPR 2001, Kauai, HI, USA,
+2001
+[36] Ahrnbom, M., Astrom, K., Nilsson, M.: ‘Fast classification of empty and
+occupied parking spaces using integral channel features’. Proc. of the IEEE
+Conf. on Computer Vision and Pattern Recognition Workshops, Las Vegas,
+NV , USA, 2016
+[37] Ichihashi, H., Notsu, A., Honda, K. , et al.: ‘Vacant parking space detector for
+outdoor parking lot by using surveillance camera and FCM classifier’. . IEEE
+Int. Conf. on Fuzzy Systems, FUZZ-IEEE 2009, Jeju Island, South Korea,
+2009
+[38] Huang, C.-C., Tai, Y .-S., Wang, S.-J.: ‘Vacant parking space detection based
+on plane-based Bayesian hierarchical framework’, IEEE Trans. Circuits Syst.
+Video Technol., 2013, 23, (9), pp. 1–13
+[39] Lu, R., Lin, X., Zhu, H. , et al.: ‘An intelligent secure and privacy-preserving
+parking scheme through vehicular communications’, IEEE Trans. Veh.
+Technol., 2010, 59, (6), pp. 2772–2785
+[40] Bilal, M., Persson, C., Ramparany, F. , et al. : ‘Multi-agent based governance
+model for machine-to-machine networks in a smart parking management
+system’. IEEE Int. Conf. on Communications, Ottawa, 2012
+[41] Rahman, C.A., Badawy, W., Radmanesh, A.: ‘A real time vehicle's license
+plate recognition system’. Proc. IEEE Conf. on Advanced Video and Signal
+Based Surveillance, Miami, FL, USA, 2003
+[42] Villegas, O.O.V ., et al. : ‘License plate recognition using a novel fuzzy
+multilayer neural network’, Int. J. Comput., 2009, 3, (1), pp. 31–40
+[43] Jermsurawong, J., Ahsan, M.U., Haidar, A.: ‘Car parking vacancy detection
+and Its application in 24-hour statistical analysis’. 10th Int. Conf. on Frontiers
+of Information Technology, Islamabad, Pakistan, 2012
+[44] Amato, G., Carrara, F., Falchi, F. , et al. : ‘Deep learning for decentralized
+parking lot occupancy detection’, Expert Syst. Appl., 2017, 72, pp. 327–334
+[45] Bojarski, M., Del Testa, D., Dworakowski, D., et al.: ‘End to end learning for
+self-driving cars’. arXiv preprint arXiv:1604.07316, 2016
+[46] Chen, Z., Xia, J.C., Irawan, B.: ‘Development of fuzzy logic forecast models
+for location-based parking finding services’, Math. Probl. Eng. , 2013, 2013,
+pp. 1–6
+[47] ‘Parkopedia - Parking App’, https://en.parkopedia.se/, accessed 05 March
+2017
+[48] ‘EasyPark Group - Parking App’, https://easyparkgroup.com/, accessed 05
+March 2017
+[49] ‘AppyParking - Parking App’, http://www.appyparking.com/, accessed 05
+March 2017
+[50] ‘Alexnet - Convolutional neural networks’, https://se.mathworks.com/help/
+nnet/ref/alexnet.html, accessed 05 March 2017
+[51] Alarik, O.: ‘Kameraövervakningslagen. 2018, https://
+www.datainspektionen.se/lagar-och-regler/kameraovervakningslagen/,
+accessed 25 February 2018
+IET Intell. Transp. Syst., 2018, Vol. 12 Iss. 8, pp. 735-741
+© The Institution of Engineering and Technology 2018
+741
+ 17519578, 2018, 8, Downloaded from https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/iet-its.2017.0406, Wiley Online Library on [21/03/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
