@@ -151,7 +151,7 @@ def build_figure(write_thesis: bool) -> dict[str, Path]:
     t_h, x, y, z = build_full_series()
     t_rel, x_tail, y_tail, z_tail, meta = crop_and_strengthen(t_h, x, y, z)
 
-    fig, axes = plt.subplots(3, 1, figsize=(12.6, 8.3), sharex=True, constrained_layout=True)
+    fig, axes = plt.subplots(3, 1, figsize=(12.0, 8.0), sharex=True, constrained_layout=True)
     series = [
         (x_tail, "X轴", 1.0),
         (y_tail, "Y轴", 1.0),
@@ -159,12 +159,12 @@ def build_figure(write_thesis: bool) -> dict[str, Path]:
     ]
 
     for ax, (arr, label, pad_scale) in zip(axes, series):
-        ax.plot(t_rel, arr, color="#1f77b4", linewidth=1.10, label=label)
-        ax.set_ylabel("磁场强度 (nT)", fontsize=18, fontproperties=mixed_font(18))
+        ax.plot(t_rel, arr, color="#1f77b4", linewidth=1.25, label=label)
+        ax.set_ylabel("磁场强度 (nT)", fontsize=21, fontproperties=mixed_font(21))
         ax.legend(
             loc="upper right",
-            fontsize=16,
-            prop=mixed_font(16),
+            fontsize=18,
+            prop=mixed_font(18),
             frameon=True,
             framealpha=0.95,
             borderpad=0.35,
@@ -172,12 +172,12 @@ def build_figure(write_thesis: bool) -> dict[str, Path]:
             handletextpad=0.45,
         )
         ax.grid(True, alpha=0.22)
-        ax.tick_params(labelsize=15.5, length=5.5, width=1.0)
+        ax.tick_params(labelsize=18, length=5.5, width=1.0)
         lo, hi = np.percentile(arr, [0.3, 99.7])
         pad = max(2.0, 0.08 * (hi - lo)) * pad_scale
         ax.set_ylim(lo - pad, hi + pad)
 
-    axes[-1].set_xlabel("时间 (h)", fontsize=18, fontproperties=mixed_font(18))
+    axes[-1].set_xlabel("时间 (h)", fontsize=21, fontproperties=mixed_font(21))
     axes[-1].set_xlim(0, float(t_rel[-1]))
 
     preview = OUT_DIR / "fig_mag_drift_schematic_tail_preview.png"

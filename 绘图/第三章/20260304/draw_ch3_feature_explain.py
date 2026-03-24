@@ -157,14 +157,16 @@ def build_figure(t: np.ndarray, dz: np.ndarray, out_path: Path) -> None:
 
     ax.scatter([z_max_t, z_min_t], [z_max, z_min], s=46, color="#D62728", zorder=4)
 
-    # Keep z_max label inside the axes even when the peak is close to the top border.
-    zmax_text_x = max(t_start + 0.04 * (t_end - t_start), z_max_t - 0.10)
-    zmax_text_y = min(z_max + 0.18 * span, y_top - 0.05 * span)
+    # Use a compact offset-point annotation so the z_max arrow stays clean
+    # and does not crowd the peak marker.
     ax.annotate(
         r"$z_{\max}$",
         xy=(z_max_t, z_max),
-        xytext=(zmax_text_x, zmax_text_y),
+        xytext=(-20, 10),
+        textcoords="offset points",
         fontsize=14,
+        ha="center",
+        va="bottom",
         arrowprops=dict(arrowstyle="->", lw=1.0, color=arrow_color),
     )
 

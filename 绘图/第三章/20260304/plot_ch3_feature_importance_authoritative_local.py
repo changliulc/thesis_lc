@@ -129,17 +129,17 @@ def main() -> None:
         alpha=0.95,
     )
 
-    ax.set_title('端侧候选统计特征重要性排序', fontsize=16)
-    ax.set_xlabel('重要性值（随机森林）', fontsize=13)
-    ax.tick_params(axis='y', labelsize=12)
-    ax.tick_params(axis='x', labelsize=11)
+    ax.set_title('端侧候选统计特征重要性排序', fontsize=17)
+    ax.set_xlabel('重要性值（随机森林）', fontsize=14)
+    ax.tick_params(axis='y', labelsize=13)
+    ax.tick_params(axis='x', labelsize=12)
     ax.grid(axis='x', linestyle='--', alpha=0.28)
 
     legend_handles = [
         Patch(facecolor='#1f77b4', label='候选特征'),
         Patch(facecolor='#d95f02', label='最终保留特征'),
     ]
-    ax.legend(handles=legend_handles, loc='lower right', frameon=True, fontsize=11)
+    ax.legend(handles=legend_handles, loc='lower right', frameon=True, fontsize=12)
 
     fig.tight_layout()
     out = Path(args.out)

@@ -13,6 +13,9 @@ import run_ch3_thesis_pipeline as TP
 
 
 FONT_FAMILIES = ["Times New Roman", "SimSun", "STSong", "DejaVu Serif"]
+XLABEL_FS = 15.5
+YTICK_FS = 14.2
+XTICK_FS = 13.2
 
 LABEL_MAP = {
     "x_absarea": "\u0058 \u8f74\u7edd\u5bf9\u9762\u79ef",
@@ -94,9 +97,13 @@ def main() -> None:
         edgecolor="none",
         alpha=0.95,
     )
-    ax.set_xlabel("重要性值（随机森林）", fontsize=14.5, fontproperties=mixed_font(14.5))
-    ax.tick_params(axis="y", labelsize=13.2, length=5.0, width=1.0)
-    ax.tick_params(axis="x", labelsize=12.2, length=5.0, width=1.0)
+    ax.set_xlabel(
+        "\u91cd\u8981\u6027\u503c\uff08\u968f\u673a\u68ee\u6797\uff09",
+        fontsize=XLABEL_FS,
+        fontproperties=mixed_font(XLABEL_FS),
+    )
+    ax.tick_params(axis="y", labelsize=YTICK_FS, length=5.0, width=1.0)
+    ax.tick_params(axis="x", labelsize=XTICK_FS, length=5.0, width=1.0)
     ax.grid(axis="x", linestyle="--", alpha=0.28)
 
     fig.tight_layout()

@@ -1,0 +1,18 @@
+﻿name                                 type              encoding         emb sub uni object ID
+------------------------------------ ----------------- ---------------- --- --- --- ---------
+DOKQJS+SimSun                        CID TrueType      Identity-H       yes yes yes   6044  0
+ELUMXQ+SimHei                        CID TrueType      Identity-H       yes yes yes   6049  0
+EFBBXQ+TimesNewRomanPSMT             TrueType          WinAnsi          yes yes yes   6051  0
+MEASFA+TimesNewRomanPS-BoldMT        TrueType          WinAnsi          yes yes yes   6053  0
+IZQFBI+DengXian-Bold                 TrueType          WinAnsi          yes yes yes   6055  0
+YKQXRC+DengXian                      TrueType          WinAnsi          yes yes yes    438  0
+MXQIFA+SimSun                        TrueType          WinAnsi          yes yes yes    441  0
+FAANLO+SymbolMT                      CID TrueType      Identity-H       yes yes yes    451  0
+OHZEHW+TimesNewRomanPS-BoldMT        CID TrueType      Identity-H       yes yes yes    444  0
+OQQPHW+TimesNewRomanPS-ItalicMT      TrueType          WinAnsi          yes yes yes    450  0
+AVNJTY+MT-Extra                      CID TrueType      Identity-H       yes yes yes    456  0
+OISPHW+SimHei                        TrueType          WinAnsi          yes yes yes    459  0
+ZRDDFA+ArialMT                       TrueType          WinAnsi          yes yes yes    461  0
+WPPGPG+Arial-BoldMT                  TrueType          WinAnsi          yes yes yes    460  0
+TIBOZM+CambriaMath                   CID TrueType      Identity-H       yes yes yes    480  0
+NZZETY+CambriaMath                   TrueType          WinAnsi          yes yes yes    481  0

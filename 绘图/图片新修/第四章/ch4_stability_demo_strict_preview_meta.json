@@ -1,0 +1,32 @@
+{
+  "source_window_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第四章\\0304\\_work_ch4\\ch4_onekey_pack\\run\\fig_a_win.csv",
+  "source_full_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第四章\\0304\\_work_ch4\\data\\zhenzhi\\20240723_停车检测_sheet2_clean.csv",
+  "config": "cfg_global_v2 + thesis global overrides",
+  "weight_sigma_source": "full source first 10 seconds",
+  "weights": [
+    0.363394014190816,
+    0.40979293581809967,
+    0.22681304999108423
+  ],
+  "selected_event_index_in_window": 1,
+  "event_k_in": 431,
+  "event_k_out": 520,
+  "event_k_st_raw": 540,
+  "display_t_out_s": 5.55,
+  "display_t_st_raw_s": 5.95,
+  "display_t_st_s": 6.89,
+  "crop_start_abs_s": 94.19,
+  "crop_end_abs_s": 106.19,
+  "R_max": 67.7489,
+  "M_max": 53.0245,
+  "shade_top_segments_s": [
+    [
+      0.11,
+      3.57
+    ],
+    [
+      5.97,
+      11.46
+    ]
+  ]
+}

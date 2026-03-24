@@ -236,9 +236,11 @@ def draw_figure(data: dict[str, np.ndarray], out_path: Path) -> None:
     fig, axs = plt.subplots(2, 2, figsize=(20 / 2.54, 11.5 / 2.54), facecolor="white")
     fig.subplots_adjust(left=0.10, right=0.98, bottom=0.11, top=0.90, wspace=0.18, hspace=0.24)
 
-    fs_ax = 12
-    fs_lab = 14
-    fs_title = 15
+    # 用户要求图内字号整体缩小两档，仅收标题/坐标/图例/刻度，
+    # 不改数据窗口与布局。
+    fs_ax = 10
+    fs_lab = 12
+    fs_title = 13
 
     top_all = np.r_[data["bp"].reshape(-1), data["bk"].reshape(-1)]
     y_top_min, y_top_max = np.min(top_all), np.max(top_all)

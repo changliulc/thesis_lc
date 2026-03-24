@@ -1,0 +1,25 @@
+# Ch4 paper figures exported from: D:\xidian_Master\研究生论文\毕业论文\xduts-main\images
+# Export time: 2026-03-24 20:27:42
+
+[COPIED_PDF]
+ch4_pipeline.pdf
+ch4_stability_demo.pdf
+ch4_fsm_degrade.pdf
+ch4_scene_photo.pdf
+ch4_setup_schematic.pdf
+ch4_param_scan_Dth.pdf
+ch4_param_scan_dist.pdf
+ch4_opt_prf_by_group.pdf
+ch4_opt_errors_by_group.pdf
+ch4_opt_timing_tau_box.pdf
+ch4_opt_timing_dt_cdf.pdf
+ch4_C_seek_ratio.pdf
+ch4_opt_ablation_by_group.pdf
+ch4_sensitivity.pdf
+ch4_case_A.pdf
+ch4_case_B.pdf
+ch4_case_C.pdf
+ch4_case_D.pdf
+
+[MISSING_PDF]
+ch4_pass_vs_park_sim.pdf

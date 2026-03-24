@@ -5,6 +5,7 @@
   style = {
     cjk-font = win,
     latin-font = tac,
+    math-font = termes,
     customize-los = false,
     customize-loa = false,
     biblatex-option = { doi = false, url = false, gbmedium = true },
@@ -251,7 +252,7 @@
 
 在道路运行评估和交通组成分析中，车型信息是表征交通组成结构的重要基础数据，道路车辆计数、分类与测速也常被作为交通监测系统的核心输出\cite{taghvaeeyan2014portable}。已有研究联合讨论了车辆速度估计与车型分类问题，说明单节点磁扰动波形能够承载上层交通信息提取任务\cite{feng2022magmonitor}。进一步的研究提出了基于单磁力计的实时车辆分类系统，再次验证了单节点磁场观测在车型识别中的应用可行性\cite{ch3_sarcevic2022singlemag}。然而，单地磁节点无法直接获取车辆外观、尺寸和轨迹等显性特征，可用于判别的信息主要隐含在事件波形的时间结构和幅值变化之中。在自然车流条件下，同一车型又会因运行状态变化而表现出时间尺度变化和局部结构差异，这使得单地磁车型识别并不是简单的特征堆叠问题，而是对事件表示和时序结构利用能力的综合考验。
 
-与车型信息相对应，停车与占用状态信息也是道路运行监管中的关键数据。相关综述通常将停车引导、监测与预约视为智慧停车系统的核心组成部分，其中停车状态监测是支撑后续服务的重要基础\cite{kotb2017smartparking}。对于开放道路侧场景而言，停车检测不仅需要识别车辆是否由通过转入停留，还需要进一步判断占用状态何时建立、如何维持以及何时释放，其结果直接关系到异常停车发现、路侧占用监管和道路空间治理。针对开放停车场景的感知综述进一步指出，随着场景开放程度提高，停车与占用状态检测更容易受到动态交通流和环境扰动影响\cite{R52}。受连续车流、邻道干扰、环境慢漂移和伪稳态等因素影响，开放道路条件下的停车与占用状态边界往往并不清晰，这也使得道路侧停车与占用判定成为与传统车位监测不同的一类独立问题。
+与车型信息相对应，停车与占用状态信息也是道路运行监管中的关键数据。相关综述通常将停车引导、监测与预约视为智慧停车系统的核心组成部分，其中停车状态监测是支撑后续服务的重要基础\cite{kotb2017smartparking}。对于开放道路场景而言，停车检测不仅需要识别车辆是否由通过转入停留，还需要进一步判断占用状态何时建立、如何维持以及何时释放，其结果直接关系到异常停车发现、路侧占用监管和道路空间治理。针对开放停车场景的感知综述进一步指出，随着场景开放程度提高，停车与占用状态检测更容易受到动态交通流和环境扰动影响\cite{R52}。受连续车流、邻道干扰、环境慢漂移和伪稳态等因素影响，开放道路条件下的停车与占用状态边界往往并不清晰，这也使得道路侧停车与占用判定成为与传统车位监测不同的一类独立问题。
 
 基于上述背景，本文面向道路侧地埋式单地磁节点应用场景，以 50 Hz 三轴地磁连续观测为基础，围绕统一事件级输入之上的车型三分类与停车、占用判定两类任务展开研究。全文在强调工程可部署性的同时，重点关注自然车流条件下事件波形时序信息的有效利用，以及开放道路背景下停车确认与占用状态判定的稳定性问题。相关研究有助于进一步挖掘单地磁节点在道路车辆感知中的应用潜力，并为道路侧轻量感知系统的工程部署与功能扩展提供方法参考。
 
@@ -264,7 +265,7 @@
 \subsection{单地磁车辆事件检测研究现状}
 \label{sec:related_sensor_detection}
 
-车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、动态检测判据、时序状态约束和多源融合增强等思路展开。Ding 等\cite{ch2_ding2004signal}较早从传感节点数据处理、自适应阈值检测与状态机判决角度研究车辆检测问题，为后续基于磁扰动特征的事件检测提供了基础思路。Markevicius 等\cite{R12}进一步从动态车辆检测角度讨论了磁场传感器在连续通行场景中的检测能力，说明时序扰动变化可作为车辆事件判定的重要依据。近期，Stojanovi\'{c} 等\cite{stojanovic2025fsm}将固定阈值检测实现为有限状态机形式，表明通过状态顺序约束可以提高车辆到达与离开判定的稳定性。Lou 等\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。
+车辆事件检测是单地磁道路车辆感知的基础环节，其结果直接影响后续车型识别以及停车、占用状态判定的输入质量。现有研究主要沿着传感节点数据处理、动态检测判据、时序状态约束和多源融合增强等思路展开。Ding 等\cite{ch2_ding2004signal}较早从传感节点数据处理、自适应阈值检测与状态机判决角度研究车辆检测问题，为后续基于磁扰动特征的事件检测提供了基础思路。Markevicius 等\cite{R12}进一步从动态车辆检测角度讨论了磁场传感器在连续通行场景中的检测能力，说明时序扰动变化可作为车辆事件判定的重要依据。Stojanovi\'{c} 等\cite{stojanovic2025fsm}将固定阈值检测实现为有限状态机形式，表明通过状态顺序约束可以提高车辆到达与离开判定的稳定性。Lou 等\cite{R13}进一步提出融合无线信号强度与地磁信息的车辆检测方法，说明通过多源融合可以增强复杂场景下的检测稳定性。
 
 总体来看，已有研究更多关注车辆是否通过及其进入、离开时刻的检测问题，而较少进一步讨论如何将连续观测稳定组织为可复用的统一事件片段。对本文而言，车辆事件检测不仅用于完成车辆通过识别，更在于从连续三轴地磁观测中稳定提取边界一致、表达统一的车辆事件片段，为后续车型分类与停车、占用判定提供共享的事件级输入。
 
@@ -286,13 +287,15 @@
 
 停车与占用检测是智慧停车管理和道路异常事件监测中的重要研究内容。与车辆通过检测不同，停车检测更关注车辆由通过状态转入停留状态的确认过程，而占用检测则更强调某一位置或区域被车辆持续占据后的状态建立、维持与释放。Faheem 等\cite{R49}在智能停车系统综述中将停车状态感知视为智慧停车管理的基础环节。这说明磁传感器已经成为停车与占用感知中较为重要的一类基础手段，但停车确认与占用状态维持仍属于两个密切相关而又不完全相同的判定问题。
 
-停车与占用检测的难度与应用场景密切相关。Lin 等\cite{ch4_lin2017surveyparking}总结的智能停车方案主要面向封闭停车位或边界明确的停车区域，此类场景中检测区域稳定、背景变化较缓，车辆进出逻辑也相对清晰。Zhang 等\cite{ch4_gu2013streetparking}则将无线磁传感网络用于街道停车系统，表明停车感知已逐步从封闭车位扩展到路侧管理场景。Paidi 等\cite{R52}针对开放停车场传感技术的综述进一步指出，随着场景开放程度提高，动态交通流和环境扰动会显著增加停车感知难度。因此，开放道路侧停车与占用检测并不是传统车位占用检测问题的简单平移，而是对稳态证据提取、参考量维护和状态转移机制提出了更高要求。
+停车与占用检测的难度与应用场景密切相关。Lin 等\cite{ch4_lin2017surveyparking}总结的智能停车方案主要面向封闭停车位或边界明确的停车区域，此类场景中检测区域稳定、背景变化较缓，车辆进出逻辑也相对清晰。Zhang 等\cite{ch4_gu2013streetparking}则将无线磁传感网络用于街道停车系统，表明停车感知已逐步从封闭车位扩展到路侧管理场景。Paidi 等\cite{R52}针对开放停车场传感技术的综述进一步指出，随着场景开放程度提高，动态交通流和环境扰动会显著增加停车感知难度。因此，开放道路场景下的停车与占用检测并不是传统车位占用检测问题的简单平移，而是对稳态证据提取、参考量维护和状态转移机制提出了更高要求。
 
 从具体判定机制看，传统基于地磁的停车与占用检测方法多以阈值差分、幅值判决和基准线更新为核心。Zhang 等\cite{ch4_zhang2015amr}提出基于 AMR 传感器的停车占用检测算法，通过磁场差分和阈值判定完成占用识别。针对复杂电磁干扰环境，Zhang 等\cite{ch4_zhang2020railway}又进一步提出抗电气化铁路磁场干扰的鲁棒停车检测算法，说明传统规则方法正在从静态阈值判别向抗干扰增强方向演化。这类方法结构简单、计算开销较低，在背景相对稳定、车辆进出节奏较清晰的停车位场景中具有较好的工程实现性；但当环境磁场存在慢漂移、扰动平台不稳定或车辆通过过程与停靠过程边界交叠时，固定参考或单一阈值往往容易失效。
 
 为提升复杂工况下的鲁棒性，部分研究开始引入更丰富的状态证据和协同信息。Zhu 等\cite{R47}提出基于有限状态机与协同决策的停车检测方法，将停车检测划分为有限状态机初判和协同决策复核两个阶段，实测中车辆进入和离开停车位的检测准确率分别达到 99.8\% 和 99.9\%。Lou 等\cite{R45}提出基于磁传感器和无线信号强度的路侧停车占用检测方法，通过融合磁场信息和无线信号强度提高占位判定稳定性，说明多源协同能够在一定程度上弥补单一磁场证据的不足。Zhang 等\cite{ch4_zhang2020tracking}进一步提出基于无线磁传感网络的协同停车跟踪系统，通过融合相邻停车位的磁场信息实现停车跟踪，实测停车检测准确率达到 99.54\%。与单一阈值路线相比，这类方法通过增加稳定性判据、状态转移逻辑或辅助信息提高了占用判断可靠性，但也带来更高的协同复杂度和额外成本。
 
-与上述多面向停车位或相对静态场景的研究不同，开放道路环境中的停车与占用检测更为复杂。He 等\cite{R43}面向智慧道路提出基于地磁传感器的异常停车检测方法，表明相关研究已开始将关注点从固定车位占用识别扩展到开放道路异常停车场景。进一步来看，开放道路侧场景至少存在三类典型困难：其一，环境磁场会随温度、电源状态和外部电磁条件缓慢漂移，固定参考容易逐渐失效；其二，连续车流可能在短时间内多次触发扰动事件，导致停车事件被正常通过事件打断，使可靠稳态证据难以及时获得；其三，邻道车辆、缓行停走或局部波形平台等情况可能产生伪稳态，使仅依赖单一稳定判据的方法更容易出现误判。总体来看，现有停车与占用检测研究在封闭停车位或相对静态场景中已积累较多成果，但在道路侧单地磁节点条件下，如何在连续车流、慢漂移和伪稳态背景下获得可靠稳态证据，并据此维护动态参考、保持停车确认与占用状态判定的一致性，仍是值得进一步研究的关键问题。面向开放道路场景下停车与占用检测中的上述困难，本文从事件结束后的稳态证据提取出发，进一步研究停车确认、占用维持与释放判定的一体化方法。
+与上述多面向停车位或相对静态场景的研究不同，开放道路场景中的停车与占用检测更为复杂。He 等\cite{R43}面向智慧道路提出基于地磁传感器的异常停车检测方法，表明相关研究已开始将关注点从固定车位占用识别扩展到开放道路异常停车场景。针对停车与占用判定中的稳定性问题，Trigona 等\cite{ch4_trigona2016smartparking}基于三轴磁传感器实现停车检测系统，说明通过三轴观测可增强停车状态感知的稳定性。Zhu 和 Yu\cite{ch4_zhu2015parkingcorr}进一步利用磁信号相关性构造停车检测方法，表明在单磁信号条件下引入更丰富的时序判据有助于提高复杂环境下的检测可靠性。Huang 等\cite{ch4_huang2017easydeploy}则在长期室外部署中结合磁场、光照和 LoRa 等异构信息进行占用检测与长期部署验证，说明通过部署策略与辅助信息协同也可提升停车状态识别的稳定性与可部署性。
+
+综合已有研究与开放道路场景特征可以看出，道路侧单地磁节点条件下的停车与占用检测至少还面临三类典型困难：一是环境磁场会随温度、电源状态和外部电磁条件缓慢漂移，固定参考容易逐渐失效；二是连续车流可能在短时间内多次触发扰动事件，使停车后可靠稳态难以及时显现；三是邻道车辆干扰、缓行停走或局部波形平台等情况可能引入伪稳态，使仅依赖单一稳定判据的方法更容易出现误判。因而，如何在连续车流、慢漂移和伪稳态背景下获得可靠稳态证据，并据此维护动态参考、保持停车确认与占用状态判定的一致性，仍是值得进一步研究的关键问题。基于此，本文以事件触发为入口，进一步研究面向开放道路场景的停车确认与占用状态段判定方法。
 
 
 \section{研究内容及章节安排}
@@ -303,7 +306,7 @@
 
 本文面向道路侧单地磁节点应用场景，以 50 Hz 三轴地磁连续观测数据为基础，围绕单地磁条件下的道路车辆感知问题展开研究。不同于将车辆检测、车型分类和停车占用判定视为相互独立的任务，本文更关注由连续观测到统一事件级输入，再到上层任务识别的链式研究过程。
 
-具体而言，本文首先研究连续三轴地磁序列中的车辆事件提取与事件级输入组织问题，为后续车型分类和停车、占用判定提供统一的数据入口与系统支撑；在此基础上，围绕小型车、中型车和大型车三分类任务，分别研究面向端侧部署的轻量分类方法和面向时间对齐增强的离线分类方法；进一步，围绕开放道路场景下的停车与占用检测问题，研究基于稳定点与动态参考的判定方法，实现停车确认、占用维持与释放判定的一体化处理。
+具体而言，本文首先研究连续三轴地磁序列中的车辆事件提取与事件级输入组织问题，为后续车型分类和停车、占用判定提供统一的数据入口与系统支撑；在完成统一事件级输入构建后，本文分别面向小型车、中型车和大型车三分类任务以及开放道路场景下的停车与占用检测任务展开研究。其中，针对车型分类任务，研究面向端侧部署的轻量分类方法和面向时间对齐增强的离线分类方法；针对停车与占用检测任务，研究基于稳定点与动态参考的判定方法，实现停车确认、占用维持与释放判定的一体化处理。
 
 \subsection{章节安排}
 \label{sec:thesis_organization}
@@ -354,13 +357,13 @@ B_x(k) & B_y(k) & B_z(k)
 \end{equation}
 其中 $B_x(k)$、$B_y(k)$ 和 $B_z(k)$ 分别表示三个正交方向上的磁场分量，单位统一记为 nT。本文约定传感器坐标系与安装方向保持一致，其中 $X$ 轴沿车辆行驶方向，$Y$ 轴沿车道横向，$Z$ 轴垂直向上。若安装存在偏角，工程部署中可通过标定对坐标方向进行修正；本文后续算法均以统一安装方向下的坐标定义为准。
 
-从物理机理看，为解释车辆扰动的空间局部性及三轴响应差异，可将车辆及其磁化效应近似等效为有限数量磁偶极子的叠加，并分析其对传感器邻域磁场的扰动。对于单个等效磁偶极子，设其相对传感器的位置向量为 $\mathbf{r}$（$r=\|\mathbf{r}\|$），偶极矩为 $\mathbf{m}$，则其静磁场可表示为：
+从物理机理看，为解释车辆扰动的空间局部性及三轴响应差异，可将车辆及其磁化效应近似等效为有限数量磁偶极子的叠加，并分析其对传感器邻域磁场的扰动。对于单个等效磁偶极子，设其相对传感器的位置向量为 $\mathbf{r}$，其模记为 $r=\|\mathbf{r}\|$，单位方向向量记为 $\hat{\mathbf{r}}=\mathbf{r}/r$，偶极矩记为 $\mathbf{m}$，$\mu_0$ 表示真空磁导率，则其在传感器位置处产生的静磁场可表示为：
 \begin{equation}
-\mathbf{B}_{dip}(\mathbf{r})=
+\mathbf{B}_{\mathrm{dip}}(\mathbf{r})=
 \frac{\mu_{0}}{4\pi r^{3}}
 \left(3(\mathbf{m}\cdot \hat{\mathbf{r}})\hat{\mathbf{r}}-\mathbf{m}\right)
 \end{equation}
-其中 $\hat{\mathbf{r}}=\mathbf{r}/r$。该表达式主要用于说明：车辆扰动会随距离迅速衰减，并因车辆姿态、传感器安装方向以及局部磁化结构差异而在三轴上呈现不同响应。基于这一特点，后续检测不宜依赖单轴阈值判决，而应结合三轴信息进行联合分析\cite{liu2017threeaxis}。车辆经过传感器邻域时的磁场扰动示意见图~\ref{fig:mag_disturbance}。
+该表达式主要用于说明：车辆扰动会随距离迅速衰减，并因车辆姿态、传感器安装方向以及局部磁化结构差异而在三轴上呈现不同响应。基于这一特点，后续检测不宜依赖单轴阈值判决，而应结合三轴信息进行联合分析\cite{liu2017threeaxis}。车辆经过传感器邻域时的磁场扰动示意见图~\ref{fig:mag_disturbance}。
 
 \begin{figure}[!htbp]
     \centering
@@ -379,14 +382,14 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.86\linewidth]{images/fig_mag_drift_schematic_tail.png}
+    \includegraphics[width=0.78\linewidth]{images/fig_mag_drift_schematic_tail.png}
     \caption{三轴原始磁场漂移情况}
     \label{fig:mag_drift}
 \end{figure}
 
 此外，车辆速度变化会使扰动波形在时间轴上发生拉伸或压缩，即不同车速下的波形整体形态可能相近，但持续时间并不相同。这种特性会降低固定时间窗或固定持续时间阈值策略在不同速度条件下的适用性，并对后续特征提取与识别造成不利影响。因此，检测阶段需要通过鲁棒特征构造与时序判决机制降低速度变化和噪声的影响，在完成事件分割之后，再根据具体上层任务组织相应的事件级输入。
 
-基于上述分析，本文将车辆检测问题表述为连续磁场序列中的车辆扰动事件边界提取问题。设车辆扰动进入检测判定区间时的起始采样点为 $k_{in}$，无车判决重新成立后的第一个采样点为 $k_{out}$，则单车事件片段定义为 $[k_{in},k_{out})$。相应的事件持续点数与事件持续时间分别记为 $N_{\mathrm{evt}}=k_{out}-k_{in}$ 和 $T_{\mathrm{evt}}=N_{\mathrm{evt}}/f_s$。
+基于上述分析，本文将车辆检测问题表述为连续磁场序列中的车辆扰动事件边界提取问题。设车辆扰动进入检测判定区间时的起始采样点为 $k_{in}$，无车判决重新成立后的第一个采样点为 $k_{out}$，则单车事件片段定义为 $[k_{in},k_{out})$。相应的事件持续点数记为 $N_{\mathrm{evt}}=k_{out}-k_{in}$。设地磁传感器采样频率为 $f_s$，则事件持续时间可表示为 $T_{\mathrm{evt}}=N_{\mathrm{evt}}/f_s$。
 若需表示事件内最后一个采样点，则记为 $k_{last}=k_{out}-1$。上述事件片段既构成第3章车型分类的直接输入，也作为第4章停车与占用状态判定的事件触发基础。
 
 第~\ref{sec:vehicle_detection} 节将在此基础上进一步给出基于三轴一阶差分的特征构造方式及有限状态机判决流程，以在复杂道路环境下稳定定位 $k_{in}$ 与 $k_{out}$。
@@ -401,8 +404,9 @@ B_x(k) & B_y(k) & B_z(k)
     D_l(k)=B_l(k)-B_l(k-1), l\in\{x,y,z\}
 \end{equation}
 差分序列 $D_l(k)$ 的单位与 $B_l(k)$ 一致，仍为 \MagUnit。
+其中，$D_l(k)$ 表示第 $l$ 轴原始一阶差分。
 
-差分会放大高频噪声与偶发尖峰，因此工程实现中需对差分序列进行平滑处理。考虑端侧 MCU 的算力与实时性约束，本文采用 $L_s=\SmoothLen$ 点滑动平均：
+差分会放大高频噪声与偶发尖峰，因此工程实现中需对差分序列进行平滑处理。考虑端侧 MCU 的算力与实时性约束，本文采用长度为 $L_s=\SmoothLen$ 的滑动平均窗口：
 \begin{equation}
     \overline{D}_l(k)=\frac{1}{L_s}\sum_{m=0}^{L_s-1}D_l(k-m), l\in\{x,y,z\}
 \end{equation}
@@ -415,23 +419,31 @@ B_x(k) & B_y(k) & B_z(k)
     \label{fig:diff_smooth}
 \end{figure}
 
-其次，在单轴层面建立背景统计模型并构造概率得分。车辆检测可表述为二元假设判决问题。定义时刻 $k$ 的车辆真实状态为 $s(k)\in\{0,1\}$，其中 $s(k)=0$ 表示无车，$s(k)=1$ 表示有车。在无车状态下，平滑差分主要由测量噪声与偶发微扰构成，可用高斯分布近似描述：
+其次，在单轴层面建立背景统计模型并构造概率得分。车辆检测可表述为二元假设判决问题。定义时刻 $k$ 的车辆真实状态为 $s(k)\in\{0,1\}$，其中 $s(k)=0$ 表示无车，$s(k)=1$ 表示有车。在无车状态下，平滑差分 $\overline{D}_l(k)$ 主要由测量噪声与偶发微扰构成，可用高斯分布近似描述：
 \begin{equation}
     \overline{D}_l(k)\,|\,s(k)=0 \sim \mathcal{N}\!\left(\mu_{l,0}, \sigma_{l,0}^2\right), l\in\{x,y,z\}
 \end{equation}
+其中，$\mu_{l,0}$ 和 $\sigma_{l,0}^2$ 分别表示无车状态下第 $l$ 轴平滑差分的背景均值和背景方差。
 
-工程实现中，选取连续无车时间窗 $K_0$ 估计背景均值和标准差。为保证算法实现简洁且参数可复现，本文固定背景窗口长度为 $|K_0|=N_{bg}=500$。相应的背景均值和标准差估计为：
+工程实现中，选取连续无车时间窗 $K_0$ 对背景均值和标准差进行估计。为保证算法实现简洁且参数可复现，本文固定背景窗口长度为 $|K_0|=N_{\mathrm{bg}}=\BgWinPts$。相应的背景均值和标准差估计为：
 \begin{equation}
     \hat{\mu}_{l,0}=\frac{1}{|K_0|}\sum_{k\in K_0}\overline{D}_l(k)
 \end{equation}
 \begin{equation}
     \hat{\sigma}_{l,0}=\sqrt{\frac{1}{|K_0|-1}\sum_{k\in K_0}\left(\overline{D}_l(k)-\hat{\mu}_{l,0}\right)^2}
 \end{equation}
-为避免车辆扰动污染背景统计量，背景窗口仅在无车状态 $S_1$ 且 $P_{car}(k)<\theta_{arr}$ 时滚动更新；一旦进入 $S_2\sim S_5$，则冻结背景参数直至回到 $S_1$。基于上述背景模型，定义单轴背景一致性得分 $p_{0,l}(k)$ 为观测值在无车分布下的双侧尾部概率：
+为避免车辆扰动污染背景统计量，背景窗口仅在无车状态 $S_1$ 且 $P_{car}(k)<\theta_{arr}$ 时滚动更新；一旦进入 $S_2\sim S_5$，则冻结背景参数直至回到 $S_1$。基于上述背景模型，定义单轴背景一致性得分 $p_{0,l}(k)$ 为当前观测值在无车分布下的双侧尾部概率：
 \begin{equation}
     p_{0,l}(k)=2\left[1-\Phi\!\left(\frac{\left|\overline{D}_l(k)-\hat{\mu}_{l,0}\right|}{\hat{\sigma}_{l,0}}\right)\right]
 \end{equation}
-其中 $\Phi(\cdot)$ 为标准正态分布的累积分布函数。为避免三轴乘积导致数值下溢，对得分作下界截断，即令 $p_{0,l}(k)=\max\big(p_{0,l}(k),\,p_{\min}\big)$，其中 $p_{\min}=\ProbFloor$。相应地，定义单轴扰动得分为 $p_{1,l}(k)=1-p_{0,l}(k)$。
+其中 $\Phi(\cdot)$ 为标准正态分布的累积分布函数。为避免三轴乘积导致数值下溢，对得分作下界截断，即令
+\begin{equation}
+    p_{0,l}(k)=\max\big(p_{0,l}(k),\,p_{\min}\big)
+\end{equation}
+其中 $p_{\min}=\ProbFloor$。相应地，定义单轴扰动得分为
+\begin{equation}
+    p_{1,l}(k)=1-p_{0,l}(k)
+\end{equation}
 
 再次，对三个轴向的单轴得分进行朴素融合，得到融合有车概率。由于车辆姿态、传感器安装方向和局部磁化结构差异会使 $X$、$Y$、$Z$ 三轴呈现不同的扰动形式，单轴得分难以在复杂场景下保持稳定；但若直接拟合三轴联合分布，则会显著增加建模和参数估计难度。基于此，三轴得分在实现中采用朴素融合方式进行合成，并引入相关性修正系数 $\rho_0$ 和 $\rho_1$。在本文实验中，为保持实现简洁并保证参数可复现，取 $\rho_0=\rho_1=1$。进一步归一化后得到融合有车概率：
 \begin{equation}
@@ -443,7 +455,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.86\linewidth]{images/fig_p_car_example}
+    \includegraphics[width=0.82\linewidth]{images/fig_p_car_example}
     \caption{融合概率序列示例图}
     \label{fig:p_car_example}
 \end{figure}
@@ -485,7 +497,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{images/fig_param_basis_threshold}
+    \includegraphics[width=0.90\linewidth]{images/fig_param_basis_threshold}
     \caption{融合概率分布与阈值取值依据}
     \label{fig:param_basis_threshold}
 \end{figure}
@@ -541,7 +553,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.86\linewidth]{images/fig_module_photo}
+    \includegraphics[width=0.80\linewidth]{images/fig_module_photo}
     \caption{地磁车辆检测模块硬件实物图}
     \label{fig:module_photo}
 \end{figure}
@@ -718,7 +730,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.82\linewidth]{images/ch3_feature_explain.png}
+\includegraphics[width=0.72\linewidth]{images/ch3_feature_explain.png}
 \caption{代表性事件波形与统计特征说明图}
 \label{fig:ch3_feature_explain}
 \end{figure}
@@ -841,7 +853,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.84\linewidth]{images/fig_motivation_speed_same_vehicle.png}
+\includegraphics[width=0.78\linewidth]{images/fig_motivation_speed_same_vehicle.png}
 \caption{不同速度条件下的车辆事件波形示意图}
 \label{fig:ch3_speed_stretch}
 \end{figure}
@@ -850,7 +862,7 @@ B_x(k) & B_y(k) & B_z(k)
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.84\linewidth]{images/fig_motivation_dtw_align_z.png}
+\includegraphics[width=0.74\linewidth]{images/fig_motivation_dtw_align_z.png}
 \caption{同类样本 DTW 对齐后的结构对应示意图}
 \label{fig:ch3_dtw_align_demo}
 \end{figure}
@@ -1020,36 +1032,37 @@ B_x(k) & B_y(k) & B_z(k)
   \label{fig:ch3_scene_setup}
 \end{figure}
 
-本实验主要关注目标车道车辆的车型三分类问题。结合第\ref{subsec:ch3_data_build}节给出的标注口径，本文依据车辆尺寸和结构特征，将样本归并为小型车、中型车和大型车三类。经第二章事件检测与人工复核后，最终共获得 1366 条单车事件片段，其中小型车 683 条、中型车 410 条、大型车 273 条。对于边界不够完整、双车相邻影响较强、起始前局部背景难以稳定估计或视频无法可靠判别的事件片段，本章均不作为标准分析样本，其具体判据见第\ref{subsec:ch3_data_build}节。其类别规模、事件长度统计及训练集、验证集和测试集划分情况如表~\ref{tab:ch3_dataset_overview} 所示。为保证不同方法之间的对照公平性，本文按类别进行分层随机划分，其中训练集、验证集和测试集分别占 70\%、15\% 和 15\%，并固定随机种子为 42。对应地，小型车的训练集、验证集和测试集样本数分别为 478、102 和 103，中型车分别为 287、62 和 61，大型车分别为 191、41 和 41。该划分索引在后续端侧轻量方法、离线卷积网络基线以及 DTW 增强方法中统一复用。
+本实验主要关注目标车道车辆的车型三分类问题。结合第\ref{subsec:ch3_data_build}节给出的标注口径，本文依据车辆尺寸和结构特征，将样本归并为小型车、中型车和大型车三类。经第二章事件检测与人工复核后，最终共获得 1366 条单车事件片段，其中小型车 683 条、中型车 410 条、大型车 273 条。对于边界不够完整、双车相邻影响较强、起始前局部背景难以稳定估计或视频无法可靠判别的事件片段，本章均不作为标准分析样本，其具体判据见第\ref{subsec:ch3_data_build}节。其类别规模与事件长度统计见表~\ref{tab:ch3_dataset_stats}，训练集、验证集和测试集划分情况见表~\ref{tab:ch3_dataset_split}。为保证不同方法之间的对照公平性，本文按类别进行分层随机划分，其中训练集、验证集和测试集分别占 70\%、15\% 和 15\%，并固定随机种子为 42。对应地，小型车的训练集、验证集和测试集样本数分别为 478、102 和 103，中型车分别为 287、62 和 61，大型车分别为 191、41 和 41。该划分索引在后续端侧轻量方法、离线卷积网络基线以及 DTW 增强方法中统一复用。
 
 \begin{table}[!htbp]
 \centering
 \small
-\caption{实测车辆事件数据集统计与划分}
-\label{tab:ch3_dataset_overview}
+\caption{实测车辆事件数据集事件长度统计（采样点数）}
+\label{tab:ch3_dataset_stats}
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.15}
-
 \begin{tabular}{c c c c c}
-\hline
-\multicolumn{5}{l}{（A）数据集统计与事件长度分布（采样点数）} \\
-\hline
+\toprule
 类别 & 样本数 & 最短长度 & 中位长度 & 最长长度 \\
-\hline
+\midrule
 \input{tables/ch3_dataset_stats_rows.tex}\\
-\hline
+\bottomrule
 \end{tabular}
+\end{table}
 
-\vspace{2mm}
-
+\begin{table}[!htbp]
+\centering
+\small
+\caption{实测车辆事件数据集分层随机划分结果}
+\label{tab:ch3_dataset_split}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.15}
 \begin{tabular}{c c c c}
-\hline
-\multicolumn{4}{l}{（B）分层随机划分后的各类样本数} \\
-\hline
+\toprule
 划分 & 小型车 & 中型车 & 大型车 \\
-\hline
+\midrule
 \input{tables/ch3_dataset_split_rows.tex}\\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -1079,15 +1092,27 @@ B_x(k) & B_y(k) & B_z(k)
 \label{fig:ch3_stat_boxplots}
 \end{figure}
 
-本文采用总体准确率和宏平均 $F_1$ 作为主要评价指标，并在后续结果分析中同时给出各类别的 Precision、Recall 和 $F_1$ 以及混淆矩阵，以分析类别间的误判模式。总体准确率定义为：
+本文采用总体准确率和宏平均 $F_1$ 作为主要评价指标，并在后续结果分析中同时给出各类别的 Precision、Recall 和 $F_1$ 以及混淆矩阵，以分析类别间的误判模式。对于第 $k$ 类，Precision、Recall 和 $F_1$ 分别定义为：
+\[
+\mathrm{Precision}_k=\frac{TP_k}{TP_k+FP_k}
+\]
+\[
+\mathrm{Recall}_k=\frac{TP_k}{TP_k+FN_k}
+\]
+\[
+F_{1,k}=
+\frac{2\cdot \mathrm{Precision}_k \cdot \mathrm{Recall}_k}
+{\mathrm{Precision}_k+\mathrm{Recall}_k}
+\]
+其中，$TP_k$、$FP_k$ 和 $FN_k$ 分别表示在 one-vs-rest 统计口径下，第 $k$ 类的真阳性、假阳性和假阴性样本数。总体准确率定义为：
 \begin{equation}
     \mathrm{Accuracy}=\frac{N_{\mathrm{correct}}}{N_{\mathrm{total}}}
 \end{equation}
 其中，$N_{\mathrm{correct}}$ 表示分类正确的样本数，$N_{\mathrm{total}}$ 表示测试样本总数。宏平均 $F_1$ 定义为：
 \begin{equation}
-    F_{1,\mathrm{macro}}=\frac{1}{3}\sum_{k=1}^{3}F_{1,k}
+    F_{1,\mathrm{macro}}=\frac{1}{K}\sum_{k=1}^{K}F_{1,k},\quad K=3
 \end{equation}
-其中 $F_{1,k}$ 为第 $k$ 类的 $F_1$ 值。由于三类样本规模并不完全均衡，宏平均 $F_1$ 通过对各类别 $F_1$ 等权平均，能够避免综合指标过度受多数类主导，因此适合作为本章三分类任务的主要综合评价指标。
+由于三类样本规模并不完全均衡，宏平均 $F_1$ 通过对各类别 $F_1$ 等权平均，能够避免综合指标过度受多数类主导，因此适合作为本章三分类任务的主要综合评价指标。
 
 \FloatBarrier
 
@@ -1158,7 +1183,7 @@ $N_{zc}^{(z)}$ & 式(\ref{eq:ch3_edge_stat_zc}) & 表征 $z$ 轴波形复杂度�
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.74\linewidth]{images/ch3_cnn_training_curve.png}
+\makebox[\linewidth][c]{\includegraphics[width=1.056\linewidth]{images/ch3_cnn_training_curve.png}}
 \caption{线性定长卷积网络训练收敛曲线图}
 \label{fig:ch3_cnn_train}
 \end{figure}
@@ -1215,15 +1240,15 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 \renewcommand{\arraystretch}{1.25}
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{c ccc ccc}
-\hline
+\toprule
 类别 & \multicolumn{3}{c}{线性定长卷积网络基线（\%）} & \multicolumn{3}{c}{DTW 多模板增强方法（\%）} \\
-\cline{2-7}
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
  & Precision & Recall & $F_1$ & Precision & Recall & $F_1$ \\
-\hline
+\midrule
 小型车 & 93.33 & 95.15 & 94.23 & 98.04 & 97.09 & 97.56 \\
 中型车 & 83.87 & 85.25 & 84.55 & 90.77 & 96.72 & 93.65 \\
 大型车 & 94.74 & 87.80 & 91.14 & 100.00 & 92.68 & 96.20 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -1305,7 +1330,7 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.66\linewidth]{images/ch4_scene_overview.png}
+    \makebox[\linewidth][c]{\hspace*{-0.018\linewidth}\scalebox{0.67}{\includegraphics[width=0.55\linewidth]{images/ch4_scene_overview.png}}}
     \caption{道路侧停车与占用检测场景示意图}
     \label{fig:ch4_scene_overview}
 \end{figure}
@@ -1318,7 +1343,7 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.88\linewidth]{images/ch4_pass_vs_park.png}
+    \includegraphics[width=0.95\linewidth]{images/ch4_pass_vs_park.png}
     \caption{车辆通过事件与停车事件信号对比图}
     \label{fig:ch4_pass_vs_park}
 \end{figure}
@@ -1353,7 +1378,7 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.88\linewidth]{images/ch4_pipeline.png}
+    \includegraphics[width=0.80\linewidth]{images/ch4_pipeline.png}
     \caption{基于信号稳定点的停车与占用检测总体流程图}
     \label{fig:ch4_pipeline}
 \end{figure}
@@ -1406,23 +1431,22 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 \end{equation}
 其中，$R(k)$ 用于约束当前窗口内部的局部波动范围，$M(k)$ 用于约束当前窗口与历史窗口之间的水平差。二者同时成立时，才认为该窗口既不存在明显残余扰动，也不存在持续水平漂移。
 
-为抑制局部伪稳态和偶发短时回落带来的误触发，本文进一步引入连续稳定窗门控。若在事件结束后的搜索区间内，存在首个索引 $k^\ast$ 满足：
+为抑制局部伪稳态和偶发短时回落带来的误触发，本文进一步引入连续稳定窗门控。若在事件结束后的搜索区间内，存在首个索引 $k^\ast$，使得对所有 $\ell\in\{k^\ast-N_{\mathrm{stable}}+1,\ldots,k^\ast\}$，均有：
 \begin{equation}
     \begin{aligned}
         R(\ell)&\le R_{\mathrm{th}}\\
-        M(\ell)&\le M_{\mathrm{th}}\\
-        &\forall\,\ell\in\{k^\ast-N_{\mathrm{stable}}+1,\ldots,k^\ast\}
+        M(\ell)&\le M_{\mathrm{th}}
     \end{aligned}
 \end{equation}
 则将稳定点定义为：
 \begin{equation}
     \mathbf{S}(k^\ast)=\overline{\mathbf{B}}(k^\ast)
 \end{equation}
-其中，$k^\ast$ 表示事件结束后首个通过连续 $N_{\mathrm{stable}}$ 个稳定窗门控的代表窗口索引。换言之，$k^\ast$ 对应被确认进入稳态段的第一个有效稳定点，而不是该稳态段中的任意时刻。参数 $L$、$s$、$R_{\mathrm{th}}$、$M_{\mathrm{th}}$ 与 $N_{\mathrm{stable}}$ 的具体取值及确定原则将在第\ref{subsec:ch4_paramset}节统一说明。图\ref{fig:ch4_stability_demo}给出了典型停车事件中 $R(k)$、$M(k)$ 及连续门控结果的变化示意。
+其中，$k^\ast$ 表示事件结束后首个通过连续 $N_{\mathrm{stable}}$ 个稳定窗门控的代表窗口索引。换言之，$k^\ast$ 对应被确认进入稳态段的第一个有效稳定点，而不是该稳态段中的任意时刻。参数 $L$、$s$、$R_{\mathrm{th}}$、$M_{\mathrm{th}}$ 与 $N_{\mathrm{stable}}$ 的具体取值及确定原则将在第\ref{subsec:ch4_paramset}节统一说明。图\ref{fig:ch4_stability_demo}以典型停车事件的 $B_z$ 通道为例，依次给出了局部波形、$R(k)$、$M(k)$ 与稳定门控结果，并标出了事件结束时刻 $t_{\mathrm{out}}$ 和稳定点确认时刻 $t_{\mathrm{st}}$。为突出事件结束后的寻稳过程，图中仅保留了约 $1\,\mathrm{s}$ 之后的时间范围。
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.86\linewidth]{images/ch4_stability_demo.png}
+    \includegraphics[width=0.80\linewidth]{images/ch4_stability_demo.png}
     \caption{典型停车事件中稳定窗双判据与连续门控示意图}
     \label{fig:ch4_stability_demo}
 \end{figure}
@@ -1536,7 +1560,7 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{images/ch4_param_scan_tseek.png}
+    \includegraphics[width=\linewidth,trim=100 0 170 0,clip]{images/ch4_param_scan_tseek.png}
     \caption{$T_{\mathrm{seek}}$ 参数扫描结果图}
     \label{fig:ch4_param_scan_tseek}
 \end{figure}
@@ -1549,10 +1573,10 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
     \label{tab:ch4_global_params}
     \small
     \setlength{\tabcolsep}{6pt}
-    \begin{tabular}{cc|cc}
-        \hline
+    \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.3cm} @{\hspace{8mm}} >{\raggedright\arraybackslash}X >{\centering\arraybackslash}p{1.3cm}}
+        \toprule
         参数 & 数值 & 参数 & 数值 \\
-        \hline
+        \midrule
         采样率 $f_s$（Hz） & 50 & 稳定窗长度 $L$（点） & 25 \\
         均值差步长 $s$ / 点 & 25 & 连续门控门限 $N_{\mathrm{stable}}$ / 个 & 5 \\
         波动阈值 $R_{\mathrm{th}}$ / nT & 5.44 & 水平差阈值 $M_{\mathrm{th}}$ / nT & 3.50 \\
@@ -1561,8 +1585,8 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
         寻稳超时 $T_{\mathrm{seek}}$ / s & 3.0 & 固定窗长度 $L_{\mathrm{fix}}$ / 点 & 75 \\
         一致性确认门限 $c_{\mathrm{th}}$ / 次 & 3 & 更新门控阈值 $D_{\mathrm{upd}}$ / nT & 30.0 \\
         环境参考更新率 $\alpha$ & 0.162 & 占用参考更新率 $\lambda_{\mathrm{occ}}$ & 0.225 \\
-        \hline
-    \end{tabular}
+        \bottomrule
+    \end{tabularx}
 \end{table}
 
 表~\ref{tab:ch4_global_params}给出了本章实验所采用的全局参数配置。从工况对应关系看，A 类主要检验稳定窗参数与停车建立相关参数在稳定窗可得条件下的可靠性与边界定位精度；B 类主要检验占用维持相关参数在占用期过车扰动下的稳定性；C 类主要约束连续车流退化参数在稳定窗长期缺失条件下的可用性与确认时差；D 类主要检验参考更新参数对慢漂移与参考污染的抑制效果。统一全局配置的目的，正是在边界精度、状态稳定性与复杂工况鲁棒性之间取得可复现的折中，而不是追求任一单场景下的局部最优。
@@ -1577,7 +1601,7 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.64\linewidth]{images/ch4_scene_photo.png}
+    \includegraphics[width=0.66\linewidth]{images/ch4_scene_photo.png}
     \caption{实验场景道路侧布设实景图}
     \label{fig:ch4_scene_setup}
 \end{figure}
@@ -1660,20 +1684,20 @@ DTW 多模板增强方法 & 96.10 & 95.80 \\
     \label{tab:ch4_bycase}
     \setlength{\tabcolsep}{4pt}
     \renewcommand{\arraystretch}{1.05}
-    \begin{tabularx}{\linewidth}{>{\centering\arraybackslash}p{1.35cm} *{5}{>{\centering\arraybackslash}X}}
-        \hline
+    \begin{tabularx}{\linewidth}{l *{5}{>{\centering\arraybackslash}X}}
+        \toprule
         方法 & A 类（\%） & B 类（\%） & C 类（\%） & D 类（\%） & 全部工况（\%） \\
-        \hline
+        \midrule
         本文方法 & 100.0/96.4/98.2 & 97.6/95.3/96.5 & 91.5/91.5/91.5 & 100.0/97.7/98.9 & 96.9/95.1/96.0 \\
         基线一 & 100.0/85.7/92.3 & 95.1/90.7/92.9 & 84.4/80.9/82.6 & 100.0/93.2/96.5 & 94.0/87.7/90.7 \\
         基线二 & 100.0/85.7/92.3 & 100.0/83.7/91.1 & 84.4/80.9/82.6 & 89.7/79.5/84.3 & 92.4/82.1/86.9 \\
-        \hline
+        \bottomrule
     \end{tabularx}
 \end{table}
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.66\linewidth]{images/ch4_baseline_cmp_f1.png}
+    \makebox[\linewidth][l]{\hspace*{0.18\linewidth}\includegraphics[width=0.76\linewidth]{images/ch4_baseline_cmp_f1.png}}
     \caption{不同方法在各工况上的 $F_1$ 对比图}
     \label{fig:ch4_baseline_cmp_f1}
 \end{figure}

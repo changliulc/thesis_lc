@@ -1,0 +1,14 @@
+{
+  "source_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\实验数据\\第四章\\ch4_matlab_pybest_global_oneclick\\data\\zhenzhi\\20240723_#U505c#U8f66#U68c0#U6d4b_sheet2_clean.csv",
+  "gt_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\实验数据\\第四章\\ch4_matlab_pybest_global_oneclick\\data\\zhenzhi\\parking_groundtruth_filled_cleaned.csv",
+  "window_csv": "D:\\xidian_Master\\研究生论文\\毕业论文\\xduts-main\\绘图\\第四章\\0304\\_work_ch4\\ch4_onekey_pack\\run\\fig_a_win.csv",
+  "event_index": 1,
+  "window_t0_s": 89.36,
+  "window_t1_s": 119.3,
+  "t_out_abs_s": 88.96,
+  "t_st_abs_s": 89.4,
+  "t_out_rel_s": -0.4,
+  "t_st_rel_s": 0.04,
+  "R_th": 5.43595814555724,
+  "M_th": 3.50467962447916
+}

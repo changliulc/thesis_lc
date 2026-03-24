@@ -420,10 +420,15 @@
     .event-header,
     .event-row{
       display:grid;
-      grid-template-columns:48px 56px 1fr 114px;
+      grid-template-columns:48px 80px 1fr;
       align-items:center;
       gap:8px;
       padding:6px 2px;
+    }
+
+    .event-header > div:last-child,
+    .event-row > div:last-child{
+      text-align:right;
     }
 
     .event-header{
@@ -945,39 +950,33 @@
                 <div class="event-header">
                   <div>序号</div>
                   <div>类型</div>
-                  <div>路段</div>
                   <div>时间</div>
                 </div>
 
                 <div class="event-row">
                   <div>01</div>
                   <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
-                  <div>京东主线</div>
-                  <div class="mono">22:32:50</div>
+                  <div class="mono">22:32:39</div>
                 </div>
                 <div class="event-row">
                   <div>02</div>
-                  <div><span class="event-dot" style="color:#5a8a6a"></span>缓行</div>
-                  <div>南向出口</div>
-                  <div class="mono">22:32:42</div>
+                  <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
+                  <div class="mono">22:32:36</div>
                 </div>
                 <div class="event-row">
                   <div>03</div>
-                  <div><span class="event-dot" style="color:#5a7a9a"></span>变道</div>
-                  <div>北环高架</div>
+                  <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
                   <div class="mono">22:32:34</div>
                 </div>
                 <div class="event-row">
                   <div>04</div>
-                  <div><span class="event-dot" style="color:#9a8a5a"></span>事故</div>
-                  <div>西三环辅路</div>
-                  <div class="mono">22:32:29</div>
+                  <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
+                  <div class="mono">22:32:33</div>
                 </div>
                 <div class="event-row">
                   <div>05</div>
-                  <div><span class="event-dot" style="color:#5a8a8a"></span>逆行</div>
-                  <div>东向匝道</div>
-                  <div class="mono">22:32:20</div>
+                  <div><span class="event-dot" style="color:#9a6a5a"></span>超速</div>
+                  <div class="mono">22:32:30</div>
                 </div>
               </div>
             </div>
@@ -1035,23 +1034,23 @@
                   </g>
 
                   <!-- 面积 -->
-                  <path d="M38 155 L70 152 L102 149 L134 146 L166 144 L198 140 L230 146 L262 132 L294 110 L326 120 L358 136 L390 148 L390 162 L38 162 Z"
+                  <path d="M38 162 L70 162 L102 162 L134 162 L166 162 L198 162 L230 162 L262 162 L294 162 L326 162 L358 162 L390 162 L390 162 L38 162 Z"
                         fill="url(#fillBlue)"/>
                   <path d="M38 150 L70 148 L102 147 L134 142 L166 132 L198 106 L230 138 L262 80 L294 112 L326 94 L358 138 L390 150 L390 162 L38 162 Z"
                         fill="url(#fillGreen)"/>
 
                   <!-- 折线 -->
                   <polyline fill="none" stroke="#5a8a9a" stroke-width="3"
-                    points="38,155 70,152 102,149 134,146 166,144 198,140 230,146 262,132 294,110 326,120 358,136 390,148"/>
+                    points="38,162 70,162 102,162 134,162 166,162 198,162 230,162 262,162 294,162 326,162 358,162 390,162"/>
                   <polyline fill="none" stroke="#5a9a7a" stroke-width="3"
                     points="38,150 70,148 102,147 134,142 166,132 198,106 230,138 262,80 294,112 326,94 358,138 390,150"/>
 
                   <!-- 节点 -->
                   <g fill="#5a8a9a">
-                    <circle cx="38" cy="155" r="3.5"/><circle cx="70" cy="152" r="3.5"/><circle cx="102" cy="149" r="3.5"/>
-                    <circle cx="134" cy="146" r="3.5"/><circle cx="166" cy="144" r="3.5"/><circle cx="198" cy="140" r="3.5"/>
-                    <circle cx="230" cy="146" r="3.5"/><circle cx="262" cy="132" r="3.5"/><circle cx="294" cy="110" r="3.5"/>
-                    <circle cx="326" cy="120" r="3.5"/><circle cx="358" cy="136" r="3.5"/><circle cx="390" cy="148" r="3.5"/>
+                    <circle cx="38" cy="162" r="3.5"/><circle cx="70" cy="162" r="3.5"/><circle cx="102" cy="162" r="3.5"/>
+                    <circle cx="134" cy="162" r="3.5"/><circle cx="166" cy="162" r="3.5"/><circle cx="198" cy="162" r="3.5"/>
+                    <circle cx="230" cy="162" r="3.5"/><circle cx="262" cy="162" r="3.5"/><circle cx="294" cy="162" r="3.5"/>
+                    <circle cx="326" cy="162" r="3.5"/><circle cx="358" cy="162" r="3.5"/><circle cx="390" cy="162" r="3.5"/>
                   </g>
                   <g fill="#5a9a7a">
                     <circle cx="38" cy="150" r="3.5"/><circle cx="70" cy="148" r="3.5"/><circle cx="102" cy="147" r="3.5"/>

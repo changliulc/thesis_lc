@@ -152,7 +152,7 @@ def draw_block(ax, values: np.ndarray, cmap, vmin: float, vmax: float, *,
                 label,
                 ha="center",
                 va="center",
-                fontsize=19 if square else 16,
+                fontsize=21 if square else 18,
                 color="white" if val >= thresh else "black",
             )
 
@@ -199,18 +199,18 @@ def plot_confusion_preview(payload: dict, title: str, png_path: Path, svg_path: 
 
     ax_main.set_xticks([])
     ax_main.set_yticks(np.arange(len(labels)))
-    ax_main.set_yticklabels(labels, fontsize=16)
-    ax_main.set_ylabel("真实类", fontsize=18)
+    ax_main.set_yticklabels(labels, fontsize=18)
+    ax_main.set_ylabel("真实类", fontsize=20)
 
     ax_row.set_xticks([])
     ax_row.set_yticks([])
 
     ax_col.set_xticks(np.arange(len(labels)))
-    ax_col.set_xticklabels(labels, fontsize=16)
+    ax_col.set_xticklabels(labels, fontsize=18)
     ax_col.set_yticks([])
-    ax_col.set_xlabel("预测类", fontsize=18)
+    ax_col.set_xlabel("预测类", fontsize=20)
 
-    fig.suptitle(title, fontsize=18, y=0.965)
+    fig.suptitle(title, fontsize=20, y=0.965)
 
     png_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(png_path, dpi=320, pad_inches=0.04)
