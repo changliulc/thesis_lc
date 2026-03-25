@@ -1,0 +1,93 @@
+摘要
+
+摘
+
+要
+
+随着城市交通规模持续增长和智慧道路建设不断推进，道路侧车辆感知已成为
+支撑交通组织优化、停车治理和道路空间管理的重要基础。面向长期在线部署场景，
+地磁传感器具有低成本、低功耗和易部署等工程优势，但其观测信息维度有限，且易
+受环境磁场慢变漂移、车辆速度变化、连续车流扰动和伪稳态现象影响。针对上述问
+题，本文面向道路侧单点三轴地磁传感器 50 Hz 连续观测数据，围绕车辆事件提取、
+车型分类和停车与占用状态判定展开研究，形成了由连续观测到统一事件级输入、再
+到上层任务识别的技术链路。
+首先，针对连续三轴地磁序列中的车辆扰动事件在线提取问题，研究了由一阶差
+分特征提取、三轴概率融合和有限状态机约束组成的车辆事件检测方法，实现了车辆
+进入与离开边界的稳定提取，并形成统一的事件边界、事件片段及其持续量，为后续
+车型分类和停车、占用判定提供共享的事件级输入基础。
+其次，针对单地磁条件下车型识别中显性信息有限以及自然车流下波形时间伸
+缩与局部错位并存的问题，构建了基于真实道路场景的车辆事件数据集，并从端侧轻
+量部署与离线增强分析两个层面开展车型三分类研究。在端侧，提取反映扰动幅值、
+能量、面积、持续时间及形态分布的统计特征，建立基于 Softmax 回归的轻量分类方
+法；在离线增强层面，引入基于动态时间规整的多模板时间对齐策略，并结合一维卷
+积神经网络开展增强分类。实验结果表明，端侧方案能够满足低开销部署需求，离线
+增强方案进一步提升了车型区分能力，尤其缓解了中型车与相邻类别之间的混淆。
+最后，针对开放道路场景下环境慢漂移、连续车流和伪稳态等因素导致的停车与
+占用判定困难，提出了基于信号稳定点与动态参考维护的停车与占用检测方法。该方
+法通过窗内波动与窗间水平差的双判据提取稳定点，构建环境参考与占用参考，并结
+合相似性门控、状态维护与转移机制以及连续车流退化分支，实现停车确认、占用维
+持与释放边界的统一判定。实验结果表明，所提方法在复杂工况下仍具有较好的准确
+性与鲁棒性，能够有效支撑开放道路场景下的停车与占用状态检测。
+总体来看，本文围绕单地磁传感器条件下的道路侧车辆感知问题，形成了由车辆
+事件提取到车型分类和停车与占用状态判定的连续技术链路，验证了单节点三轴地
+磁观测在低成本、低功耗和易部署约束下支撑道路侧多任务车辆感知的可行性，可为
+智慧道路精细化治理与相关系统工程部署提供方法参考。
+关键词：道路车辆感知，地磁传感器，车辆事件检测，车型分类，停车与占用检测
+
+I
+
+西安电子科技大学硕士学位论文
+
+II
+
+ABSTRACT
+
+ABSTRACT
+With the sustained growth of urban traffic and the continuous development of smart roads,
+roadside vehicle sensing has become an important foundation for traffic organization optimization, parking governance, and road space management. For long-term online deployment scenarios, a single geomagnetic sensor offers practical advantages such as low cost, low
+power consumption, and easy deployment. However, the observation information available
+from a single geomagnetic node is limited, and it is readily affected by slow background
+magnetic drift, vehicle-speed variation, continuous traffic interference, and pseudo-stable
+states. To address these issues, this thesis investigates continuous 50 Hz observations from
+a single roadside triaxial geomagnetic sensor and develops a technical pipeline from continuous observations to unified event-level inputs and then to high-level task recognition,
+covering vehicle event extraction, vehicle type classification, and parking-occupancy state
+determination.
+First, for the online extraction of vehicle disturbance events from continuous triaxial geomagnetic sequences, a vehicle event detection method composed of first-order difference feature
+extraction, three-axis probability fusion, and finite-state-machine constraints is investigated.
+The proposed method achieves stable extraction of vehicle entry and exit boundaries and
+forms unified event boundaries, event segments, and their durations, thus providing a shared
+event-level input basis for subsequent vehicle type classification and parking-occupancy determination.
+Second, to address the limited explicit information available for vehicle type recognition
+under a single geomagnetic sensor setting, as well as the coexistence of temporal stretching
+and local misalignment of waveforms under natural traffic flow, a vehicle event dataset based
+on real road scenarios is constructed, and three-class vehicle classification is studied from
+two perspectives: lightweight edge-side deployment and offline enhanced analysis. On the
+edge side, statistical features describing disturbance amplitude, energy, area, duration, and
+morphological distribution are extracted, and a lightweight classification method based on
+Softmax regression is established. In the offline enhancement stage, a multi-template timealignment strategy based on dynamic time warping is introduced and combined with a onedimensional convolutional neural network for enhanced classification. Experimental results
+III
+
+西安电子科技大学硕士学位论文
+
+show that the edge-side scheme satisfies low-overhead deployment requirements, while the
+offline enhancement scheme further improves vehicle type discriminability, especially by
+alleviating the confusion between medium-sized vehicles and adjacent classes.
+Finally, to address the difficulty of parking and occupancy determination in open-road scenarios caused by slow environmental drift, continuous traffic flow, and pseudo-stable states,
+a parking-occupancy detection method based on signal stable points and dynamic reference
+maintenance is proposed. The method extracts stable points using dual criteria based on
+intra-window fluctuation and inter-window level difference, constructs environmental and
+occupancy references, and combines similarity gating, a state maintenance and transition
+mechanism, and a degradation branch for continuous traffic to achieve unified determination
+of parking confirmation, occupancy maintenance, and release boundaries. Experimental results show that the proposed method maintains good accuracy and robustness under complex
+conditions and can effectively support parking-occupancy detection in open-road scenarios.
+Overall, this thesis focuses on roadside vehicle sensing under a single geomagnetic sensor
+setting and establishes a continuous technical chain from vehicle event extraction to vehicle
+type classification and parking-occupancy state determination. The results verify the feasibility of using single-node triaxial geomagnetic observations to support multi-task roadside vehicle sensing under the constraints of low cost, low power consumption, and easy
+deployment, and provide methodological reference for fine-grained smart-road governance
+and related system deployment.
+Keywords: roadside vehicle sensing, single geomagnetic sensor, vehicle event detection,
+vehicle type classification, parking and occupancy detection
+
+IV
+
+
