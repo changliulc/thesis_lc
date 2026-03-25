@@ -1,0 +1,101 @@
+缩略语对照表
+
+缩略语对照表
+
+缩略语 英文全称
+
+中文对照
+
+CNN
+
+Convolutional Neural Network
+
+卷积神经网络
+
+DBA
+
+DTW Barycenter Averaging
+
+DTW 重心平均
+
+DTW
+
+Dynamic Time Warping
+
+动态时间规整
+
+FC
+
+Fully Connected
+
+全连接层
+
+FIR
+
+Finite Impulse Response
+
+有限冲激响应
+
+FN
+
+False Negative
+
+假阴性
+
+FP
+
+False Positive
+
+假阳性
+
+GAP
+
+Global Average Pooling
+
+全局平均池化
+
+IoU
+
+Intersection over Union
+
+交并比
+
+LoRa
+
+Long Range
+
+远距离无线通信
+
+MCU
+
+Microcontroller Unit
+
+微控制器
+
+MEMS
+
+Micro-Electro-Mechanical Systems
+
+微机电系统
+
+SUV
+
+Sport Utility Vehicle
+
+运动型多用途汽车
+
+SVM
+
+Support Vector Machine
+
+支持向量机
+
+TP
+
+True Positive
+
+真阳性
+
+XIII
+
+

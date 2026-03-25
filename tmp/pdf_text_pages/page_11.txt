@@ -1,0 +1,28 @@
+ABSTRACT
+
+ABSTRACT
+Roadside sensing technology provides real-time access to traffic operating states from the
+global perspective of infrastructure and serves as a key support for traffic organization optimization, refined parking management, and intelligent transportation systems. As urban
+traffic becomes more complex and traffic governance becomes increasingly refined, there
+is a growing demand for low-cost, highly reliable roadside vehicle sensing data that can
+support long-term online operation. Vehicle composition information, together with parking and road occupancy states, forms an important basis for traffic performance evaluation,
+parking management, and road-space governance. Compared with video- and radar-based
+approaches, geomagnetic sensors offer advantages such as low cost, ease of deployment, and
+all-weather operation, making them suitable for long-term roadside monitoring. However,
+the information provided by a single geomagnetic node is limited and is susceptible to slow
+environmental magnetic drift, vehicle-speed variation, continuous traffic disturbances, and
+pseudo-stable states, all of which make feature extraction and state recognition challenging. To address these issues, this thesis investigates vehicle classification and parking-andoccupancy-state determination using continuous 50 Hz observations from a roadside singlepoint triaxial geomagnetic sensor, with unified event-level inputs as the basis. The main
+contributions are summarized as follows.
+First, to address the difficulty of vehicle recognition caused by vehicle-speed variation and
+waveform distortion, a three-class vehicle classification method that balances lightweight
+edge deployment and high offline accuracy is proposed. A geomagnetic vehicle-event dataset
+collected from real traffic scenes is first constructed. For edge-side deployment, multidimensional statistical features reflecting magnetic disturbance amplitude, energy, temporal area,
+and morphological distribution are extracted and fused to build a low-overhead Softmaxbased baseline classifier. For offline enhancement, dynamic time warping is introduced to
+align temporal features under speed-induced waveform stretching and local misalignment,
+and a one-dimensional convolutional neural network is designed for deep feature extraction
+and enhanced classification. Experimental results show that this classification framework
+satisfies the computational constraints of edge devices while effectively improving class separability and mitigating confusion between adjacent vehicle categories.
+
+III
+
+

@@ -1,0 +1,20 @@
+西安电子科技大学硕士学位论文
+[44] WEI Q, YANG B. Adaptable Vehicle Detection and Speed Estimation for Changeable Urban Traffic
+With Anisotropic Magnetoresistive Sensors[J]. IEEE Sensors Journal, 2017, 17(7): 2021-2028.
+[45] DIAZ OGAS M G, FABREGAT R, ACIAR S. Survey of Smart Parking Systems[J]. Applied Sciences, 2020, 10(11): 3872.
+[46] ZHANG Z, LI X, YUAN H, et al. A Street Parking System Using Wireless Sensor Networks[J].
+International Journal of Distributed Sensor Networks, 2013, 2013: 107975.
+[47] 陈嘉明, 张足生, 吴晓鸰. 基于磁阻传感器的智能车位锁停车检测算法[J]. 集成技术, 2019, 8(6):
+21-30.
+[48] DONG A, ZHANG Z, CHEN J. An Anti-Interference Detection Algorithm for Parking Monitoring
+Systems[J]. International Journal of Intelligent Computing and Cybernetics, 2019, 12(4): 481-496.
+[49] SALVADOR S, CHAN P. Toward Accurate Dynamic Time Warping in Linear Time and Space[J].
+Intelligent Data Analysis, 2007, 11(5): 561-580.
+[50] XU C, WANG Y, ZHAN Y. Vehicle Classification under Different Feature Sets with a Single
+Anisotropic Magnetoresistive Sensor[J]. IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences, 2017, E100.A(2): 440-447.
+[51] CAO G, XUE X, XU D. Real-Time Calibration of Magnetometers Using the RLS/ML Algorithm
+[J]. Sensors, 2020, 20(2): 535.
+
+74
+
+

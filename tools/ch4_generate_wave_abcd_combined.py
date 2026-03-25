@@ -14,6 +14,12 @@ PANELS = [
     ("ch4_wave_d_new.png", "D类慢漂移背景场景"),
 ]
 
+FALLBACK_DIRS = [
+    IMG_DIR,
+    ROOT / "tmp" / "ch4_matlab_bulk_outputs_20260324_203347" / "images",
+    ROOT / "盲审" / "盲审版工作副本" / "images",
+]
+
 
 def crop_white_border(image: Image.Image, pad: int = 3) -> Image.Image:
     rgb = image.convert("RGB")
@@ -45,6 +51,14 @@ def load_font(size: int):
     return ImageFont.load_default()
 
 
+def resolve_panel_path(filename: str) -> Path:
+    for base in FALLBACK_DIRS:
+        candidate = base / filename
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(f"panel image not found: {filename}")
+
+
 def fit_panel(image: Image.Image, target_size: tuple[int, int]) -> Image.Image:
     contained = ImageOps.contain(image, target_size, Image.Resampling.LANCZOS)
     panel = Image.new("RGB", target_size, "white")
@@ -60,50 +74,38 @@ def main() -> None:
     heights = []
 
     for filename, title in PANELS:
-        image = crop_white_border(Image.open(IMG_DIR / filename))
+        image = crop_white_border(Image.open(resolve_panel_path(filename)))
         cropped_panels.append((image, title))
         widths.append(image.width)
         heights.append(image.height)
 
-    target_w = int(max(widths) * 1.08)
-    target_h = int(max(heights) * 1.16)
+    target_w = int(max(widths) * 0.92 * 4 / 3)
+    target_h = int(max(heights) * 0.94 * 4 / 3)
     panel_size = (target_w, target_h)
 
-    title_font = load_font(80)
-    title_band_h = 98
-    title_gap = 6
-    outer_margin_left = 10
+    title_font = load_font(1)
+    title_band_h = 10
+    title_gap = 0
+    outer_margin_left = 12
     outer_margin_right = 12
     outer_margin_top = 8
-    outer_margin_bottom = 8
-    gutter_x = 10
-    gutter_y = 8
+    outer_margin_bottom = 10
+    gutter_y = 10
 
-    canvas_w = outer_margin_left + outer_margin_right + 2 * panel_size[0] + gutter_x
+    canvas_w = outer_margin_left + outer_margin_right + panel_size[0]
     canvas_h = (
         outer_margin_top
-        + title_band_h
-        + panel_size[1]
-        + gutter_y
-        + title_band_h
-        + panel_size[1]
         + outer_margin_bottom
+        + len(PANELS) * (title_band_h + panel_size[1])
+        + (len(PANELS) - 1) * gutter_y
     )
 
     canvas = Image.new("RGB", (canvas_w, canvas_h), "white")
     draw = ImageDraw.Draw(canvas)
 
     for idx, (image, title) in enumerate(cropped_panels):
-        row = idx // 2
-        col = idx % 2
-        x0 = outer_margin_left + col * (panel_size[0] + gutter_x)
-        y0 = outer_margin_top + row * (title_band_h + panel_size[1] + gutter_y)
-
-        box = draw.textbbox((0, 0), title, font=title_font)
-        tw = box[2] - box[0]
-        tx = x0 + (panel_size[0] - tw) // 2
-        ty = y0 + title_gap
-        draw.text((tx, ty), title, fill=(20, 20, 20), font=title_font)
+        x0 = outer_margin_left
+        y0 = outer_margin_top + idx * (title_band_h + panel_size[1] + gutter_y)
 
         panel_img = fit_panel(image, panel_size)
         canvas.paste(panel_img, (x0, y0 + title_band_h))

@@ -1,0 +1,23 @@
+Research on Vehicle Classification and
+Parking Occupancy Detection Methods for
+Intelligent Transportation
+
+A thesis submitted to
+XIDIAN UNIVERSITY
+in partial fulfillment of the requirements
+for the degree of Master
+in Electronic Information
+
+By
+Chang Liu
+Supervisor: Guoqiang Mao
+
+Title: Professor
+
+Supervisor: Qingzhao Zeng
+
+Title: Senior Engineer
+
+March 2026
+
+

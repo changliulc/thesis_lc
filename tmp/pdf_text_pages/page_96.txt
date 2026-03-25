@@ -1,0 +1,33 @@
+西安电子科技大学硕士学位论文
+Electronics and Energetics, 2025, 38(1): 19-38.
+[14] LOU L, ZHANG J, XIONG Y, et al. A Novel Vehicle Detection Method Based on the Fusion of
+Radio Received Signal Strength and Geomagnetism[J]. Sensors, 2019, 19(1): 58.
+[15] CHEUNG S Y, COLERI S, DUNDAR B, et al. Traffic Measurement and Vehicle Classification
+with a Single Magnetic Sensor[J]. Transportation Research Record: Journal of the Transportation
+Research Board, 2005, 1917(1): 173-181.
+[16] CHEN X, KONG X, XU M, et al. Road Vehicle Detection and Classification Using Magnetic Field
+Measurement[J]. IEEE Access, 2019, 7: 52622-52633.
+[17] BALID W, TAFISH H, REFAI H H. Intelligent Vehicle Counting and Classification Sensor for RealTime Traffic Surveillance[J]. IEEE Transactions on Intelligent Transportation Systems, 2018, 19(6):
+1784-1794.
+[18] YANG B, LEI Y. Vehicle Detection and Classification for Low-Speed Congested Traffic With
+Anisotropic Magnetoresistive Sensor[J]. IEEE Sensors Journal, 2015, 15(2): 1132-1138.
+[19] ZHANG X, HUANG H. Vehicle Classification Based on Feature Selection With Anisotropic Magnetoresistive Sensor[J]. IEEE Sensors Journal, 2019, 19(21): 9976-9982.
+[20] LI W, LIU Z, HUI Y, et al. Vehicle Classification and Speed Estimation Based on a Single Magnetic
+Sensor[J]. IEEE Access, 2020, 8: 126814-126824.
+[21] KOLUKISA B, YILDIRIM V C, ELMAS B, et al. Deep Learning Approaches for Vehicle Type
+Classification with a Single 3-D Magnetic Sensor Node[J]. Computer Networks, 2022, 217: 109326.
+[22] Faheem, MAHMUD S A, KHAN G M, et al. A Survey of Intelligent Car Parking System[J]. Journal
+of Applied Research and Technology, 2013, 11(5): 714-726.
+[23] LIN T, RIVANO H, LE MOUËL F. A Survey of Smart Parking Solutions[J]. IEEE Transactions on
+Intelligent Transportation Systems, 2017, 18(12): 3229-3253.
+[24] ZHANG Z, TAO M, YUAN H. A Parking Occupancy Detection Algorithm Based on AMR Sensor
+[J]. IEEE Sensors Journal, 2015, 15(2): 1261-1269.
+[25] ZHANG Z, HE X, YUAN H. A Robust Parking Detection Algorithm Against Electric Railway Magnetic Field Interference[J]. IEEE Transactions on Intelligent Transportation Systems, 2020, 21: 882893.
+[26] ZHU H, FENG S, YU F. Parking Detection Method Based on Finite-State Machine and Collaborative
+Decision-Making[J]. IEEE Sensors Journal, 2018, 18(23): 9829-9839.
+[27] ZHANG Z, MAO X, ZHOU K, et al. Collaborative Sensing-Based Parking Tracking System with
+Wireless Magnetic Sensor Network[J]. IEEE Sensors Journal, 2020, 20(9): 4859-4867.
+[28] HE R, MAO G, HUI Y, et al. Geomagnetic Sensor Based Abnormal Parking Detection in Smart
+Roads[C]//GLOBECOM 2023 - 2023 IEEE Global Communications Conference. IEEE, 2023: 106072
+
+

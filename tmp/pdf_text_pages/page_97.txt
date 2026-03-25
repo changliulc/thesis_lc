@@ -1,0 +1,33 @@
+参考文献
+1065.
+[29] TRIGONA C, ANDÒ B, SINATRA V, et al. Implementation and Characterization of a Smart Parking System Based on 3-Axis Magnetic Sensors[C]//2016 IEEE International Instrumentation and
+Measurement Technology Conference Proceedings. 2016: 1-6.
+[30] ZHU H, YU F. A Vehicle Parking Detection Method Based on Correlation of Magnetic Signals[J].
+International Journal of Distributed Sensor Networks, 2015, 11(7): 361242.
+[31] HUANG Y, CHEN Y C, YOU C W, et al. Toward an Easy Deployable Outdoor Parking System—
+Lessons from Long-Term Deployment[C]//2017 IEEE International Conference on Pervasive Computing and Communications (PerCom). 2017: 227-236.
+[32] WANG Q, ZHENG J, XU H, et al. Roadside Magnetic Sensor System for Vehicle Detection in Urban
+Environments[J]. IEEE Transactions on Intelligent Transportation Systems, 2018, 19(5): 1365-1374.
+[33] MARSHALL S V. Vehicle Detection Using a Magnetic Field Sensor[J]. IEEE Transactions on Vehicular Technology, 1978, 27(2): 65-68.
+[34] LIU M, HUA W, WEI Q. Vehicle Detection Using Three-Axis AMR Sensors Deployed Along Travel
+Lane Markings[J]. IET Intelligent Transport Systems, 2017, 11(9): 581-587.
+[35] SIFUENTES E, CASAS O, PALLAS-ARENY R. Wireless Magnetic Sensor Node for Vehicle Detection With Optical Wake-Up[J]. IEEE Sensors Journal, 2011, 11(8): 1669-1676.
+[36] WANG R, ZHANG L, SUN R, et al. EasiTia: A Pervasive Traffic Information Acquisition System
+Based on Wireless Sensor Networks[J]. IEEE Transactions on Intelligent Transportation Systems,
+2011, 12(2): 615-621.
+[37] HAOUI A, KAVALER R, VARAIYA P. Wireless Magnetic Sensors for Traffic Surveillance[J].
+Transportation Research Part C: Emerging Technologies, 2008, 16(3): 294-306.
+[38] 中华人民共和国公安部. GA-802-2019. 道路交通管理机动车类型[S]. 北京: 公安部交通管理
+科学研究所, 2019.
+[39] BREIMAN L. Random Forests[J]. Machine Learning, 2001, 45(1): 5-32.
+[40] XU C, WANG Y, BAO X, et al. Vehicle Classification Using an Imbalanced Dataset Based on a
+Single Magnetic Sensor[J]. Sensors, 2018, 18(6): 1690.
+[41] FENG Y, MAO G, CHENG B, et al. MagSpeed: A Novel Method of Vehicle Speed Estimation
+Through a Single Magnetic Sensor[C]//2019 IEEE Intelligent Transportation Systems Conference
+(ITSC). 2019: 4281-4286.
+[42] SAKOE H, CHIBA S. Dynamic Programming Algorithm Optimization for Spoken Word Recognition[J]. IEEE Transactions on Acoustics, Speech, and Signal Processing, 1978, 26(1): 43-49.
+[43] PETITJEAN F, KETTERLIN A, GANCARSKI P. A Global Averaging Method for Dynamic Time
+Warping, with Applications to Clustering[J]. Pattern Recognition, 2011, 44(3): 678-693.
+73
+
+

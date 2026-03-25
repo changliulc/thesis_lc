@@ -1,0 +1,30 @@
+参考文献
+
+参考文献
+[1] 百度地图. 2025 年度中国城市交通报告[EB/OL]. 2026 [2026-02-26]. https://huiyan.baidu.com/r
+eports/landing?id=191.
+[2] WANG F, LIN Y, IOANNOU P A, et al. Transportation 5.0: The DAO to Safe, Secure, and Sustainable Intelligent Transportation Systems[J]. IEEE Transactions on Intelligent Transportation Systems,
+2023, 24(10): 10262-10278.
+[3] 工业和信息化部等五部门. 关于开展智能网联汽车“车路云一体化”应用试点工作的通知
+[EB/OL]. 2024 [2026-02-26]. https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2024/art_b236a25edf
+9f4a8f9b60dbcda924753b.html.
+[4] BERNAS M, PŁACZEK B, KORSKI W, et al. A Survey and Comparison of Low-Cost Sensing
+Technologies for Road Traffic Monitoring[J]. Sensors, 2018, 18(10): 3243.
+[5] CHOVANEC M, HODON M, CECHOVIC L. Tiny Low-Power WSN Node for the Vehicle Detection[J]. Informatica, 2014, 38(3): 223-227.
+[6] TAGHVAEEYAN S, RAJAMANI R. Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement[J]. IEEE Transactions on Intelligent Transportation Systems, 2014,
+15(1): 73-83.
+[7] FENG Y, MAO G, CHENG B, et al. MagMonitor: Vehicle Speed Estimation and Vehicle Classification Through A Magnetic Sensor[J]. IEEE Transactions on Intelligent Transportation Systems,
+2022, 23(2): 1311-1322.
+[8] SARCEVIC P, PLETL S, ODRY A. Real-Time Vehicle Classification System Using a Single Magnetometer[J]. Sensors, 2022, 22(23): 9299.
+[9] KOTB A O, SHEN Y C, HUANG Y. Smart Parking Guidance, Monitoring and Reservations: A
+Review[J]. IEEE Intelligent Transportation Systems Magazine, 2017, 9(2): 6-16.
+[10] PAIDI V, FLEYEH H, HÅKANSSON J, et al. Smart Parking Sensors, Technologies and Applications for Open Parking Lots: A Review[J]. IET Intelligent Transport Systems, 2018, 12(8): 735-741.
+[11] DING J, CHEUNG S Y, TAN C W, et al. Signal Processing of Sensor Node Data for Vehicle
+Detection[C]//Proceedings of the 7th International IEEE Conference on Intelligent Transportation
+Systems. 2004: 70-75.
+[12] MARKEVICIUS V, NAVIKAS D, ZILYS M, et al. Dynamic Vehicle Detection via the Use of Magnetic Field Sensors[J]. Sensors, 2016, 16(1): 78.
+[13] STOJANOVIĆ M, VRAČAR L. Vehicle Detector Based on the Magnetic Field Sensor and the
+Fixed-Threshold Algorithm Implemented via Finite State Machine[J]. Facta Universitatis, Series:
+71
+
+

@@ -1,0 +1,21 @@
+西安电子科技大学硕士学位论文
+
+Second, a dynamic-reference decision method based on signal stable points is proposed for
+parking and occupancy recognition in road scenarios. To cope with the failure of fixed references caused by slow environmental drift, the difficulty of obtaining stable evidence in
+time under continuous traffic, and the tendency of pseudo-stable states to cause boundary
+misjudgment, a parking and occupancy detection method based on stable-point extraction
+and dynamic-reference maintenance is designed. On this basis, a similarity-gating mechanism, an outer finite-state-machine architecture, and a degradation branch for continuous
+traffic are incorporated to enable unified determination of parking confirmation, occupancy
+maintenance, and release boundaries. Experimental results show that the proposed method
+achieves good detection accuracy under normal conditions and retains strong robustness and
+resistance to interference under challenging conditions such as dense continuous traffic and
+geomagnetic slow drift.
+Overall, this thesis addresses roadside vehicle sensing with a single geomagnetic sensor and
+investigates a three-class vehicle classification method together with a road parking and occupancy detection method supported by vehicle event detection. The results indicate that,
+under the constraints of low cost, low power consumption, and ease of deployment, a single geomagnetic sensor has significant potential to support roadside vehicle recognition and
+parking-occupancy-state sensing, and can provide a reliable theoretical basis and methodological reference for the refined governance of smart roads.
+Keywords: vehicle sensing, geomagnetic sensor, vehicle event detection, vehicle classification, parking and occupancy detection
+
+IV
+
+
