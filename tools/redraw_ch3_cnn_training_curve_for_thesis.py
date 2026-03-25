@@ -27,9 +27,9 @@ MATLAB_ORANGE = "#D95319"
 GRID_COLOR = "#DADADA"
 CN_FONT_PATH = Path(r"C:\Windows\Fonts\simsun.ttc")
 EN_FONT_PATH = Path(r"C:\Windows\Fonts\times.ttf")
-LABEL_FS = 17
-TICK_FS = 13
-LEGEND_FS = LABEL_FS
+LABEL_FS = 22
+TICK_FS = 22
+LEGEND_FS = 20
 
 CN_FONT = font_manager.FontProperties(fname=str(CN_FONT_PATH)) if CN_FONT_PATH.exists() else None
 EN_FONT = font_manager.FontProperties(fname=str(EN_FONT_PATH)) if EN_FONT_PATH.exists() else None
@@ -63,7 +63,9 @@ def style_axes(ax: plt.Axes, ylabel: str, xlabel: str | None = None) -> None:
         spine.set_linewidth(1.0)
     for label in ax.get_xticklabels() + ax.get_yticklabels():
         if EN_FONT is not None:
-            label.set_fontproperties(EN_FONT)
+            tick_font = EN_FONT.copy()
+            tick_font.set_size(TICK_FS)
+            label.set_fontproperties(tick_font)
 
 
 def add_outer_legend(legend_ax: plt.Axes, plot_ax: plt.Axes) -> None:
@@ -77,7 +79,7 @@ def add_outer_legend(legend_ax: plt.Axes, plot_ax: plt.Axes) -> None:
         handles,
         labels,
         loc="upper left",
-        bbox_to_anchor=(0.0, 1.0),
+        bbox_to_anchor=(-0.08, 1.0),
         borderaxespad=0.0,
         prop=legend_prop,
         frameon=True,
@@ -105,10 +107,10 @@ def main() -> None:
     gs = fig.add_gridspec(
         2,
         4,
-        width_ratios=[0.38, 1.18, 0.08, 0.30],
+        width_ratios=[0.38, 1.18, 0.03, 0.30],
         height_ratios=[1.0, 1.0],
         wspace=0.0,
-        hspace=0.055,
+        hspace=0.09,
     )
     ax1 = fig.add_subplot(gs[0, 1])
     ax2 = fig.add_subplot(gs[1, 1], sharex=ax1)
@@ -119,6 +121,7 @@ def main() -> None:
     ax1.plot(x, val_loss, color=MATLAB_ORANGE, linewidth=1.9, label="\u9a8c\u8bc1\u635f\u5931")
     ax1.axvline(BEST_EPOCH, linestyle="--", color="#8A8A8A", linewidth=1.5, alpha=0.8)
     style_axes(ax1, ylabel="\u635f\u5931")
+    ax1.tick_params(axis="x", labelbottom=False)
     add_outer_legend(leg1_ax, ax1)
     ax1.set_xlim(0, 200)
 
@@ -131,7 +134,7 @@ def main() -> None:
     ax2.set_ylim(0.0, 1.0)
     ax2.set_xticks([0, 25, 50, 75, 100, 125, 150, 175, 200])
 
-    fig.subplots_adjust(left=0.012, right=0.992, top=0.989, bottom=0.072)
+    fig.subplots_adjust(left=0.012, right=0.992, top=0.989, bottom=0.11)
 
     OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT_PNG, dpi=320)
