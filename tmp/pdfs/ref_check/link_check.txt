@@ -1,0 +1,57 @@
+R01	ok	url	https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2024/art_b236a25edf9f4a8f9b60dbcda924753b.html
+R02	ok	url	https://huiyan.baidu.com/reports/landing?id=191
+R09	ok	doi	https://linkinghub.elsevier.com/retrieve/pii/S0968090X07000824
+R12	fail	doi	HTTP Error 403: Forbidden
+R13	fail	doi	HTTP Error 403: Forbidden
+R17	fail	doi	HTTP Error 403: Forbidden
+R18	fail	doi	HTTP Error 418: Unknown Code
+R19	fail	doi	HTTP Error 418: Unknown Code
+R20	fail	doi	HTTP Error 418: Unknown Code
+R26	ok	doi	https://linkinghub.elsevier.com/retrieve/pii/S1389128622003668
+R43	fail	doi	HTTP Error 418: Unknown Code
+R45	fail	doi	HTTP Error 403: Forbidden
+R47	fail	doi	HTTP Error 418: Unknown Code
+R52	fail	doi	HTTP Error 403: Forbidden
+breiman2001randomforests	ok	doi	https://link.springer.com/article/10.1023/A:1010933404324?error=cookies_not_supported&code=f99fa267-eefd-4a03-b53a-da88fd6f97c4
+ch2_ding2004signal	fail	doi	HTTP Error 418: Unknown Code
+ch2_micko2023roadsensor	fail	doi	HTTP Error 403: Forbidden
+ch2_sifuentes2011wakeup	fail	doi	HTTP Error 418: Unknown Code
+ch2_wang2011easitia	fail	doi	HTTP Error 418: Unknown Code
+ch3_feng2019magspeed	fail	doi	HTTP Error 418: Unknown Code
+ch3_li2020singlemag	fail	doi	HTTP Error 418: Unknown Code
+ch3_mps_ga8022019	no_link		
+ch3_petitjean2011dba	ok	doi	https://linkinghub.elsevier.com/retrieve/pii/S003132031000453X
+ch3_sakoe1978dtw	fail	doi	HTTP Error 418: Unknown Code
+ch3_sarcevic2022singlemag	fail	doi	HTTP Error 403: Forbidden
+ch3_xu2017featuresets	ok	doi	https://www.jstage.jst.go.jp/article/transfun/E100.A/2/E100.A_440/_article
+ch3_xu2018imbalanced	fail	doi	HTTP Error 403: Forbidden
+ch3_zhang2019featureselection	fail	doi	HTTP Error 418: Unknown Code
+ch4_biyik2021smartparking	fail	doi	HTTP Error 403: Forbidden
+ch4_chen2019parkinglock	fail	doi	HTTP Error 404: 
+ch4_gu2013streetparking	fail	doi	HTTP Error 403: Forbidden
+ch4_huang2017easydeploy	fail	doi	HTTP Error 418: Unknown Code
+ch4_lin2017surveyparking	fail	doi	HTTP Error 418: Unknown Code
+ch4_trigona2016smartparking	fail	doi	HTTP Error 418: Unknown Code
+ch4_zhang2015amr	fail	doi	HTTP Error 418: Unknown Code
+ch4_zhang2020railway	fail	doi	HTTP Error 418: Unknown Code
+ch4_zhang2020tracking	no_link		
+ch4_zhu2015parkingcorr	fail	doi	HTTP Error 403: Forbidden
+ch5_cao2020magcal	fail	doi	HTTP Error 403: Forbidden
+ch5_ray2022tinyml	ok	doi	https://linkinghub.elsevier.com/retrieve/pii/S1319157821003335
+ch5_salvador2007fastdtw	fail	doi	HTTP Error 403: Forbidden
+chang2021dpdtw	no_link		
+chovanec2014tinywsn	no_link		
+diazogas2020spsurvey	fail	doi	HTTP Error 403: Forbidden
+dong2019antiinterference	fail	doi	HTTP Error 403: Forbidden
+feng2022magmonitor	fail	doi	HTTP Error 418: Unknown Code
+kotb2017smartparking	fail	doi	HTTP Error 418: Unknown Code
+liu2017threeaxis	fail	doi	HTTP Error 403: Forbidden
+marshall1978vehicle	fail	doi	HTTP Error 418: Unknown Code
+stojanovic2025fsm	ok	doi	https://doiserbia.nb.rs/Article.aspx?ID=0353-36702501019S
+taghvaeeyan2014portable	fail	doi	HTTP Error 418: Unknown Code
+wang2018roadside	fail	doi	HTTP Error 418: Unknown Code
+wang2023edge_review	ok	doi	https://crad.ict.ac.cn/cn/article/doi/10.7544/issn1000-1239.202110867
+wang2023transportation5	fail	doi	HTTP Error 418: Unknown Code
+wei2017adaptable	fail	doi	HTTP Error 418: Unknown Code
+zhang2023tsc_review	fail	doi	HTTP Error 404: Not Found
+zhu2018parkingfsm	fail	doi	HTTP Error 418: Unknown Code

@@ -1809,7 +1809,7 @@
   }
 \cs_new:Npn \__xdu_cover_i:nnnnn #1#2#3#4#5
   {
-    \dim_set:Nn \baselineskip { 20pt }
+    \dim_set:Nn \baselineskip { 30pt }
     \vbox_to_ht:nn { #1 }
       {
         \vfill

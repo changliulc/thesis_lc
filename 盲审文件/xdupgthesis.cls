@@ -1809,7 +1809,7 @@
   }
 \cs_new:Npn \__xdu_cover_i:nnnnn #1#2#3#4#5
   {
-    \dim_set:Nn \baselineskip { 20pt }
+    \dim_set:Nn \baselineskip { 30pt }
     \vbox_to_ht:nn { #1 }
       {
         \vfill
@@ -1975,7 +1975,7 @@
       }
     \__xdu_cover_ii:nnnn { 6em } { 申请学位类别 }
       { \l__xdu_cover_author_info_dim }
-      { \l__xdu_degree_str }
+      { }
   }
 \cs_new:Npn \__xdu_zh_title_page_info:
   {
@@ -2042,7 +2042,7 @@
             { \bfseries 领\qquad{}域： } \l__xdu_domain_str
           }
         \par
-        { \bfseries 学位类别： } \l__xdu_degree_str
+        { \bfseries 学位类别： }
         \bool_if:NTF \l__xdu_pro
           {
             \par
@@ -2133,7 +2133,7 @@
         \dim_set:Nn \l__xdu_supv_max_dim
           { \dim_max:nn { \l__xdu_supv_dim } { \l__xdu_supv_max_dim } }
       }
-    \hbox_to_wd:nn { \l__xdu_supv_max_dim } { #1 \hfil } \quad
+    \hbox_to_wd:nn { \l__xdu_supv_max_dim } { #1 \hfil } \hspace*{4em}
   }
 \dim_new:N \l__xdu_supv_t_dim
 \dim_new:N \l__xdu_supv_t_max_dim
@@ -2160,7 +2160,7 @@
         \dim_set:Nn \l__xdu_supv_t_max_dim
           { \dim_max:nn { \l__xdu_supv_t_dim } { \l__xdu_supv_t_max_dim } }
       }
-    \hbox_to_wd:nn { \l__xdu_supv_t_max_dim } { #1 \hfil } \quad
+    \hbox_to_wd:nn { \l__xdu_supv_t_max_dim } { #1 \hfil } \hspace*{1.5em}
   }
 \cs_new:Npn \__xdu_en_title_page:
   {
@@ -2189,6 +2189,7 @@
           { ~\l__xdu_degree_en_str\\ }
           { ~\l__xdu_major_en_str\\  }
       }
+    \skip_vertical:n { 36pt }
     \vbox:n
       {
         \rmfamily \zihao { 3 } \centering
@@ -2210,6 +2211,7 @@
             Supervisor:~ \__xdu_en_title_supv:n { \l__xdu_supv_ent_en_str }
             Title:~ \__xdu_en_title_supv_t:n { \l__xdu_supv_ent_t_en_str } \\
           }
+        \skip_vertical:n { 10pt }
         \__xdu_en_submit_date:
       }
     \cleardoublepage
@@ -2621,8 +2623,15 @@
       {
         \vbox:n { }
         \skip_vertical:n { 430pt }
-        \__xdu_cover_i:nnnnn { 36pt } { sf } { 1  } { bf } { 西安电子科技大学 }
-        \__xdu_cover_i:nnnnn { 36pt } { rm } { -1 } { bf } { \l__xdu_gr_type_tl 学位论文题目 }
+        \vbox_to_ht:nn { 72pt }
+          {
+            \vfill
+            \rmfamily \zihao { -1 } \bfseries \centering
+            \dim_set:Nn \baselineskip { 30pt }
+            \l__xdu_title_tl
+            \par
+            \vfill
+          }
         \skip_vertical:n { 54pt }
         \__xdu_cover_author_info:
         \cleardoublepage

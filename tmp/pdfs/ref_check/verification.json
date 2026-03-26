@@ -1,0 +1,572 @@
+[
+  {
+    "key": "R02",
+    "title": "2025年度中国城市交通报告",
+    "year": "2026",
+    "doi": "",
+    "url": "https://huiyan.baidu.com/reports/landing?id=191",
+    "status": "verified",
+    "source": "https://huiyan.baidu.com/reports/landing?id=191",
+    "note": "https://huiyan.baidu.com/reports/landing?id=191"
+  },
+  {
+    "key": "wang2023transportation5",
+    "title": "Transportation 5.0: The {DAO} to Safe, Secure, and Sustainable Intelligent Transportation Systems",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2023.3305380",
+    "note": "Transportation 5.0: The DAO to Safe, Secure, and Sustainable Intelligent Transportation Systems"
+  },
+  {
+    "key": "R01",
+    "title": "关于开展智能网联汽车“车路云一体化”应用试点工作的通知",
+    "year": "2024",
+    "doi": "",
+    "url": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2024/art_b236a25edf9f4a8f9b60dbcda924753b.html",
+    "status": "verified",
+    "source": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2024/art_b236a25edf9f4a8f9b60dbcda924753b.html",
+    "note": "https://www.miit.gov.cn/zwgk/zcwj/wjfb/tz/art/2024/art_b236a25edf9f4a8f9b60dbcda924753b.html"
+  },
+  {
+    "key": "ch2_micko2023roadsensor",
+    "title": "Review of IoT Sensor Systems Used for Monitoring the Road Infrastructure",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s23094469",
+    "note": "Review of IoT Sensor Systems Used for Monitoring the Road Infrastructure"
+  },
+  {
+    "key": "chovanec2014tinywsn",
+    "title": "Tiny Low-Power {WSN} Node for the Vehicle Detection",
+    "year": "2014",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.4028/www.scientific.net/amm.391.501",
+    "note": "best=Low-Power WSN Measurement Node for Greenhouse"
+  },
+  {
+    "key": "taghvaeeyan2014portable",
+    "title": "Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement",
+    "year": "2014",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2013.2273876",
+    "note": "Portable Roadside Sensors for Vehicle Counting, Classification, and Speed Measurement"
+  },
+  {
+    "key": "feng2022magmonitor",
+    "title": "MagMonitor: Vehicle Speed Estimation and Vehicle Classification Through A Magnetic Sensor",
+    "year": "2022",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2020.3024652",
+    "note": "MagMonitor: Vehicle Speed Estimation and Vehicle Classification Through A Magnetic Sensor"
+  },
+  {
+    "key": "ch3_sarcevic2022singlemag",
+    "title": "Real-Time Vehicle Classification System Using a Single Magnetometer",
+    "year": "2022",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s22239299",
+    "note": "Real-Time Vehicle Classification System Using a Single Magnetometer"
+  },
+  {
+    "key": "kotb2017smartparking",
+    "title": "Smart Parking Guidance, Monitoring and Reservations: A Review",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/mits.2017.2666586",
+    "note": "Smart Parking Guidance, Monitoring and Reservations: A Review"
+  },
+  {
+    "key": "R52",
+    "title": "Smart Parking Sensors, Technologies and Applications for Open Parking Lots: A Review",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1049/iet-its.2017.0406",
+    "note": "Smart parking sensors, technologies and applications for open parking lots: a review"
+  },
+  {
+    "key": "ch2_ding2004signal",
+    "title": "Signal Processing of Sensor Node Data for Vehicle Detection",
+    "year": "2004",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.1109/itsc.2004.1398874",
+    "note": "best=Signal processing of sensor node data for vehicle detection"
+  },
+  {
+    "key": "R12",
+    "title": "Dynamic Vehicle Detection via the Use of Magnetic Field Sensors",
+    "year": "2016",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s16010078",
+    "note": "Dynamic Vehicle Detection via the Use of Magnetic Field Sensors"
+  },
+  {
+    "key": "stojanovic2025fsm",
+    "title": "Vehicle Detector Based on the Magnetic Field Sensor and the Fixed-Threshold Algorithm Implemented via Finite State Machine",
+    "year": "2025",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.2298/fuee2501019s",
+    "note": "Vehicle detector based on the magnetic field sensor and the fixed-threshold algorithm implemented via finite state machine"
+  },
+  {
+    "key": "R13",
+    "title": "A Novel Vehicle Detection Method Based on the Fusion of Radio Received Signal Strength and Geomagnetism",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.3390/s19010058",
+    "note": "best=A Novel Vehicle Detection Method Based on the Fusion of Radio Received Signal Strength and Geomagnetism"
+  },
+  {
+    "key": "R17",
+    "title": "Traffic Measurement and Vehicle Classification with a Single Magnetic Sensor",
+    "year": "2005",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.1177/0361198105191700119",
+    "note": "best=Traffic Measurement and Vehicle Classification with Single Magnetic Sensor"
+  },
+  {
+    "key": "R19",
+    "title": "Road Vehicle Detection and Classification Using Magnetic Field Measurement",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/access.2019.2908006",
+    "note": "Road Vehicle Detection and Classification Using Magnetic Field Measurement"
+  },
+  {
+    "key": "R18",
+    "title": "Intelligent Vehicle Counting and Classification Sensor for Real-Time Traffic Surveillance",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2017.2741507",
+    "note": "Intelligent Vehicle Counting and Classification Sensor for Real-Time Traffic Surveillance"
+  },
+  {
+    "key": "R20",
+    "title": "Vehicle Detection and Classification for Low-Speed Congested Traffic With Anisotropic Magnetoresistive Sensor",
+    "year": "2015",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2014.2359014",
+    "note": "Vehicle Detection and Classification for Low-Speed Congested Traffic With Anisotropic Magnetoresistive Sensor"
+  },
+  {
+    "key": "ch3_zhang2019featureselection",
+    "title": "Vehicle Classification Based on Feature Selection With Anisotropic Magnetoresistive Sensor",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2019.2928828",
+    "note": "Vehicle Classification Based on Feature Selection With Anisotropic Magnetoresistive Sensor"
+  },
+  {
+    "key": "ch3_li2020singlemag",
+    "title": "Vehicle Classification and Speed Estimation Based on a Single Magnetic Sensor",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/access.2020.3008483",
+    "note": "Vehicle Classification and Speed Estimation Based on a Single Magnetic Sensor"
+  },
+  {
+    "key": "R26",
+    "title": "Deep Learning Approaches for Vehicle Type Classification with a Single 3-D Magnetic Sensor Node",
+    "year": "2022",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.1016/j.comnet.2022.109326",
+    "note": "best=Deep learning approaches for vehicle type classification with 3-D magnetic sensor"
+  },
+  {
+    "key": "ch4_biyik2021smartparking",
+    "title": "Smart Parking Systems: Reviewing the Literature, Architecture and Ways Forward",
+    "year": "2021",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/smartcities4020032",
+    "note": "Smart Parking Systems: Reviewing the Literature, Architecture and Ways Forward"
+  },
+  {
+    "key": "ch4_lin2017surveyparking",
+    "title": "A Survey of Smart Parking Solutions",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2017.2685143",
+    "note": "A Survey of Smart Parking Solutions"
+  },
+  {
+    "key": "ch4_zhang2015amr",
+    "title": "A Parking Occupancy Detection Algorithm Based on AMR Sensor",
+    "year": "2015",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2014.2362122",
+    "note": "A Parking Occupancy Detection Algorithm Based on AMR Sensor"
+  },
+  {
+    "key": "ch4_zhang2020railway",
+    "title": "A Robust Parking Detection Algorithm Against Electric Railway Magnetic Field Interference",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2019.2923465",
+    "note": "A Robust Parking Detection Algorithm Against Electric Railway Magnetic Field Interference"
+  },
+  {
+    "key": "R47",
+    "title": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2018.2871869",
+    "note": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making"
+  },
+  {
+    "key": "ch4_zhang2020tracking",
+    "title": "Collaborative Sensing-Based Parking Tracking System with Wireless Magnetic Sensor Network",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2020.2965560",
+    "note": "Collaborative Sensing-Based Parking Tracking System With Wireless Magnetic Sensor Network"
+  },
+  {
+    "key": "R43",
+    "title": "Geomagnetic Sensor Based Abnormal Parking Detection in Smart Roads",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/globecom54140.2023.10437955",
+    "note": "Geomagnetic Sensor Based Abnormal Parking Detection in Smart Roads"
+  },
+  {
+    "key": "ch4_trigona2016smartparking",
+    "title": "Implementation and Characterization of a Smart Parking System Based on 3-Axis Magnetic Sensors",
+    "year": "2016",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/i2mtc.2016.7520379",
+    "note": "Implementation and characterization of a smart parking system based on 3-axis magnetic sensors"
+  },
+  {
+    "key": "ch4_zhu2015parkingcorr",
+    "title": "A Vehicle Parking Detection Method Based on Correlation of Magnetic Signals",
+    "year": "2015",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1155/2015/361242",
+    "note": "A Vehicle Parking Detection Method Based on Correlation of Magnetic Signals"
+  },
+  {
+    "key": "ch4_huang2017easydeploy",
+    "title": "Toward an Easy Deployable Outdoor Parking System---Lessons from Long-Term Deployment",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/percom.2017.7917869",
+    "note": "Toward an easy deployable outdoor parking system — Lessons from long-term deployment"
+  },
+  {
+    "key": "wang2018roadside",
+    "title": "Roadside Magnetic Sensor System for Vehicle Detection in Urban Environments",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2017.2723908",
+    "note": "Roadside Magnetic Sensor System for Vehicle Detection in Urban Environments"
+  },
+  {
+    "key": "marshall1978vehicle",
+    "title": "Vehicle Detection Using a Magnetic Field Sensor",
+    "year": "1978",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/t-vt.1978.23725",
+    "note": "Vehicle detection using a magnetic field sensor"
+  },
+  {
+    "key": "liu2017threeaxis",
+    "title": "Vehicle Detection Using Three-Axis AMR Sensors Deployed Along Travel Lane Markings",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1049/iet-its.2017.0100",
+    "note": "Vehicle detection using three‐axis AMR sensors deployed along travel lane markings"
+  },
+  {
+    "key": "zhu2018parkingfsm",
+    "title": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2018.2871869",
+    "note": "Parking Detection Method Based on Finite-State Machine and Collaborative Decision-Making"
+  },
+  {
+    "key": "ch2_sifuentes2011wakeup",
+    "title": "Wireless Magnetic Sensor Node for Vehicle Detection With Optical Wake-Up",
+    "year": "2011",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2010.2103937",
+    "note": "Wireless Magnetic Sensor Node for Vehicle Detection With Optical Wake-Up"
+  },
+  {
+    "key": "ch2_wang2011easitia",
+    "title": "EasiTia: A Pervasive Traffic Information Acquisition System Based on Wireless Sensor Networks",
+    "year": "2011",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tits.2010.2096467",
+    "note": "EasiTia: A Pervasive Traffic Information Acquisition System Based on Wireless Sensor Networks"
+  },
+  {
+    "key": "R09",
+    "title": "Wireless Magnetic Sensors for Traffic Surveillance",
+    "year": "2008",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1016/j.trc.2007.10.004",
+    "note": "Wireless magnetic sensors for traffic surveillance"
+  },
+  {
+    "key": "ch3_mps_ga8022019",
+    "title": "GA-802-2019. 道路交通管理机动车类型",
+    "year": "",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.37155/2717-5189-0603-59",
+    "note": "best=城市道路交通安全管理对策"
+  },
+  {
+    "key": "ch5_ray2022tinyml",
+    "title": "A Review on TinyML: State-of-the-Art and Prospects",
+    "year": "2022",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1016/j.jksuci.2021.11.019",
+    "note": "A review on TinyML: State-of-the-art and prospects"
+  },
+  {
+    "key": "wang2023edge_review",
+    "title": "面向边缘智能的协同推理综述",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.3788/gzxb20245301.0111003",
+    "note": "best=面向病理图像分割的边缘感知网络"
+  },
+  {
+    "key": "breiman2001randomforests",
+    "title": "Random Forests",
+    "year": "2001",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.1007/978-1-4419-9890-3_12",
+    "note": "best=Random Forests"
+  },
+  {
+    "key": "ch3_xu2018imbalanced",
+    "title": "Vehicle Classification Using an Imbalanced Dataset Based on a Single Magnetic Sensor",
+    "year": "2018",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s18061690",
+    "note": "Vehicle Classification Using an Imbalanced Dataset Based on a Single Magnetic Sensor"
+  },
+  {
+    "key": "ch3_feng2019magspeed",
+    "title": "MagSpeed: A Novel Method of Vehicle Speed Estimation Through a Single Magnetic Sensor",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/itsc.2019.8917515",
+    "note": "MagSpeed: A Novel Method of Vehicle Speed Estimation Through A Single Magnetic Sensor"
+  },
+  {
+    "key": "ch3_sakoe1978dtw",
+    "title": "Dynamic Programming Algorithm Optimization for Spoken Word Recognition",
+    "year": "1978",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/tassp.1978.1163055",
+    "note": "Dynamic programming algorithm optimization for spoken word recognition"
+  },
+  {
+    "key": "ch3_petitjean2011dba",
+    "title": "A Global Averaging Method for Dynamic Time Warping, with Applications to Clustering",
+    "year": "2011",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1016/j.patcog.2010.09.013",
+    "note": "A global averaging method for dynamic time warping, with applications to clustering"
+  },
+  {
+    "key": "chang2021dpdtw",
+    "title": "Learning Discriminative Prototypes With Dynamic Time Warping",
+    "year": "2021",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/cvpr46437.2021.00829",
+    "note": "Learning Discriminative Prototypes with Dynamic Time Warping"
+  },
+  {
+    "key": "zhang2023tsc_review",
+    "title": "单变量序列数据分类方法综述",
+    "year": "2023",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.1360/zd-2014-44-5-967",
+    "note": "best=基于时间序列HJ-1/CCD数据的土地覆盖分类方法"
+  },
+  {
+    "key": "wei2017adaptable",
+    "title": "Adaptable Vehicle Detection and Speed Estimation for Changeable Urban Traffic With Anisotropic Magnetoresistive Sensors",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1109/jsen.2017.2654501",
+    "note": "Adaptable Vehicle Detection and Speed Estimation for Changeable Urban Traffic With Anisotropic Magnetoresistive Sensors"
+  },
+  {
+    "key": "diazogas2020spsurvey",
+    "title": "Survey of Smart Parking Systems",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/app10113872",
+    "note": "Survey of Smart Parking Systems"
+  },
+  {
+    "key": "ch4_gu2013streetparking",
+    "title": "A Street Parking System Using Wireless Sensor Networks",
+    "year": "2013",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1155/2013/107975",
+    "note": "A Street Parking System Using Wireless Sensor Networks"
+  },
+  {
+    "key": "ch4_chen2019parkinglock",
+    "title": "基于磁阻传感器的智能车位锁停车检测算法",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "not_verified_by_crossref",
+    "source": "https://doi.org/10.36012/etr.v2i1.1031",
+    "note": "best=基于电磁场检测 PID 算法控制的智能车设计与实现"
+  },
+  {
+    "key": "dong2019antiinterference",
+    "title": "An Anti-Interference Detection Algorithm for Parking Monitoring Systems",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1108/ijicc-04-2019-0034",
+    "note": "An anti-interference detection algorithm for parking monitoring systems"
+  },
+  {
+    "key": "R45",
+    "title": "An Improved Roadside Parking Space Occupancy Detection Method Based on Magnetic Sensors and Wireless Signal Strength",
+    "year": "2019",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s19102348",
+    "note": "An Improved Roadside Parking Space Occupancy Detection Method Based on Magnetic Sensors and Wireless Signal Strength"
+  },
+  {
+    "key": "ch5_salvador2007fastdtw",
+    "title": "Toward Accurate Dynamic Time Warping in Linear Time and Space",
+    "year": "2007",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3233/ida-2007-11508",
+    "note": "Toward accurate dynamic time warping in linear time and space"
+  },
+  {
+    "key": "ch3_xu2017featuresets",
+    "title": "Vehicle Classification under Different Feature Sets with a Single Anisotropic Magnetoresistive Sensor",
+    "year": "2017",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.1587/transfun.e100.a.440",
+    "note": "Vehicle Classification under Different Feature Sets with a Single Anisotropic Magnetoresistive Sensor"
+  },
+  {
+    "key": "ch5_cao2020magcal",
+    "title": "Real-Time Calibration of Magnetometers Using the {RLS/ML} Algorithm",
+    "year": "2020",
+    "doi": "",
+    "url": "",
+    "status": "verified",
+    "source": "https://doi.org/10.3390/s20020535",
+    "note": "Real-Time Calibration of Magnetometers Using the RLS/ML Algorithm"
+  }
+]
