@@ -2365,7 +2365,7 @@
       % \__xdu_typeout_keywords:nNn
       %   { \textbf { 关键词 } ： } { \l__xdu_keywords_zh_clist } { ， }
       \__xdu_typeout_keywords:nNn
-        { \textbf { 关键词 } ： } { \l__xdu_keywords_zh_clist } { ，\hspace{0.5em} }
+        { \textbf { 关 \hspace{1em} 键 \hspace{1em} 词 } ： } { \l__xdu_keywords_zh_clist } { ，\hspace{0.5em} }
     \group_end:
     \cleardoublepage
   }
@@ -2626,7 +2626,7 @@
         \vbox_to_ht:nn { 72pt }
           {
             \vfill
-            \rmfamily \zihao { -1 } \bfseries \centering
+            \rmfamily \zihao { 2 } \bfseries \centering
             \dim_set:Nn \baselineskip { 30pt }
             \l__xdu_title_tl
             \par

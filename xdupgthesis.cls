@@ -2363,7 +2363,7 @@
       % \__xdu_typeout_keywords:nNn
       %   { \textbf { 关键词 } ： } { \l__xdu_keywords_zh_clist } { ， }
       \__xdu_typeout_keywords:nNn
-        { \textbf { 关键词 } ： } { \l__xdu_keywords_zh_clist } { ，\hspace{0.5em} }
+        { \textbf { 关 \hspace{1em} 键 \hspace{1em} 词 } ： } { \l__xdu_keywords_zh_clist } { ，\hspace{0.5em} }
     \group_end:
     \cleardoublepage
   }
@@ -2622,7 +2622,7 @@
         \vbox:n { }
         \skip_vertical:n { 430pt }
         \__xdu_cover_i:nnnnn { 36pt } { sf } { 1  } { bf } { 西安电子科技大学 }
-        \__xdu_cover_i:nnnnn { 36pt } { rm } { -1 } { bf } { \l__xdu_gr_type_tl 学位论文题目 }
+        \__xdu_cover_i:nnnnn { 36pt } { rm } { 2 } { bf } { \l__xdu_gr_type_tl 学位论文题目 }
         \skip_vertical:n { 54pt }
         \__xdu_cover_author_info:
         \cleardoublepage
