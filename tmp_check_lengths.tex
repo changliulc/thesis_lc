@@ -1,0 +1,19 @@
+﻿\documentclass{article}
+\usepackage{ctex}
+\input{盲审文件图表修改版/xdupgthesis.cls}
+\AtBeginDocument{
+  \setlength{\intextsep}{20pt}
+  \setlength{\textfloatsep}{20pt}
+  \setlength{\floatsep}{16pt plus 1pt minus 1pt}
+  \setlength{\dbltextfloatsep}{20pt}
+  \setlength{\dblfloatsep}{16pt plus 1pt minus 1pt}
+}
+\begin{document}
+\makeatletter
+\typeout{CHECK intextsep=\the\intextsep}
+\typeout{CHECK abovecaptionskip=\the\abovecaptionskip}
+\typeout{CHECK belowcaptionskip=\the\belowcaptionskip}
+\typeout{CHECK textfloatsep=\the\textfloatsep}
+\makeatother
+x
+\end{document}

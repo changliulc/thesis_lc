@@ -1,0 +1,1324 @@
+3330                                                           IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+
+            Sensing-Communication-Computing-Control
+             Closed-Loop Optimization for 6G Digital
+                Twin-Empowered Robotic Systems
+  Xinran Fang , Chengleyang Lei , Wei Feng , Senior Member, IEEE, Yunfei Chen , Senior Member, IEEE,
+     Ming Xiao , Senior Member, IEEE, Ning Ge, Member, IEEE, and Cheng-Xiang Wang , Fellow, IEEE
+
+   Abstract—In recent decades, cyber-physical systems (CPSs)                                          I. I NTRODUCTION
+have received great attention due to their broad applications. This
+paper investigates CPS deployment in remote areas, specifically                 A. Background and Motivation
+focusing on a digital twin-empowered autonomous robotic system.
+                                                                                      YBER-PHYSICAL systems (CPSs) refer to the systems
+The system consists of a multifunctional autonomous aerial
+vehicle (AAV), sensors, and actuators. The AAV carries commu-
+nication and computing modules, acting as an edge information
+                                                                                C     that integrate communication, computing, and control to
+                                                                                get information from the physical world, perform analyses,
+hub (EIH) that connects sensors and actuators—forming reflex-                   and change the physical world [1], [2], [3]. Driven by advance-
+arc-like sensing-communication-computing-control (SC3 ) loops.
+A digital twin is integrated into the EIH to emulate the system’s               ments in artificial intelligence and cloud-fog architecture [4],
+behavior and assist in the decision-making. To alleviate resource               [5], the digital twin-empowered autonomous robotic system
+limitations in remote areas, we propose a goal-oriented closed-                 emerges as a new kind of CPS that has a high degree of
+loop optimization scheme. The proposed scheme takes the SC3                     automation and intelligence. These systems can be deployed
+loop as an integrated structure and jointly optimizes uplink and                in hard-to-access areas and replace humans in hazardous
+downlink (UL&DL) communication and computing resources to
+minimize the total linear quadratic regulator (LQR) cost. To                    tasks such as disaster rescue [6], oil exploitation, and space
+address the non-convex optimization problem, we derive the                      exploration [7]. However, resource constraints pose significant
+closed-form solution for intra-loop allocation and propose an                   challenges for providing communication and computing ser-
+efficient iterative algorithm for inter-loop optimization. Under                vices in remote areas. Efficient management and scheduling of
+the condition of adequate CPU frequency, we derive an approx-                   limited resources become an important issue for the upcoming
+imate closed-form solution for inter-loop bandwidth allocation.
+Simulation results demonstrate the superiority of the proposed                  sixth-generation (6G) network.
+scheme, which achieves a two-tier task-level balance within and                    Due to geographical limitations, ground facilities are unable
+across the SC3 loops.                                                           to be densely deployed in remote areas. Aerial-borne and
+   Index Terms—Closed-loop optimization, goal-oriented commu-                   space-borne platforms such as autonomous aerial vehicles
+nication, sensing-communication-computing-control (SC3 ) loop,                  (AAVs) and satellites, are envisioned to provide complemen-
+autonomous robotic system, uplink and downlink (UL&DL)                          tary coverage [8], [9], [10]. These platforms are agile to carry
+configuration.                                                                  sensing, communication, and computing modules. A digital
+                                                                                twin can be further integrated into the computing module to
+   Received 30 September 2024; revised 16 January 2025; accepted 28 Febru-
+ary 2025. Date of publication 28 May 2025; date of current version 14 October   enable intelligent decision-making [11]. Similar to the hub,
+2025. The work of Xinran Fang, Chengleyang Lei, and Wei Feng was                these edge platforms transfer and process data between sensors
+supported in part by the National Natural Science Foundation of China under     and actuators. Therefore, we refer to these platforms as the
+Grant 62425110 and Grant U22A2002, in part by the National Key Research
+and Development Program of China under Grant 2020YFA0711301, in part            edge information hub (EIH) [12]. During the task execution,
+by Suzhou Science and Technology Project, and in part by FAW Jiefang            the EIH gathers real-time sensing data via the sensor-EIH
+Automotive Company Ltd. The work of Ming Xiao was supported in part             link, processes the data to extract task-related information,
+by European Commission, Horizon Europe, MSCA Project, SCION (Secured
+and Intelligent Massive Machine-to-Machine Communication for 6G), and           and updates the digital twin. Using the reasoning results from
+in part by the Autonomous Vehicular Edge Computing and Networking for           the digital twin, the EIH computes control commands and
+Intelligent Transportation (ASCENT). (Corresponding author: Wei Feng.)          sends them to the actuators via the EIH-actuator link, guiding
+   Xinran Fang, Chengleyang Lei, Wei Feng, and Ning Ge are with
+the Department of Electronic Engineering, State Key Laboratory of               the actuators to take actions. Synergistically, the sensor, the
+Space Network and Communications, Tsinghua University, Beijing 100084,          sensor-EIH link, the EIH, the EIH-actuator link, and the actu-
+China (e-mail: fxr20@mails.tsinghua.edu.cn; lcly21@mails.tsinghua.edu.cn;       ator form a sensing-communication-computing-control (SC3 )
+fengwei@tsinghua.edu.cn; gening@tsinghua.edu.cn).
+   Yunfei Chen is with the Department of Engineering, University of Durham,     loop. Through effective feedback, the SC3 loop continuously
+DH1 3LE Durham, U.K. (e-mail: yunfei.chen@durham.ac.uk).                        learns the behavior of the physical system and guides its
+   Ming Xiao is with the Department of Information Science and Engineering,     evolution to the desired direction. From the perspective of
+School of Electrical Engineering and Computer Science, Royal Institute of
+Technology, 114 28 Stockholm, Sweden (e-mail: mingx@kth.se).                    biology, the SC3 loop has great similarity to the reflex
+   Cheng-Xiang Wang is with the National Mobile Communications Research         arc, as we illustrated in Fig. 1. In biology, it is recognized
+Laboratory, School of Information Science and Engineering, Southeast Uni-       that the presence of the reflex depends on the functional
+versity, Nanjing 210096, China, and also with Purple Mountain Laboratories,
+Nanjing 211111, China (e-mail: chxwang@seu.edu.cn).                             integrity of the reflex arc [13]. By analogy, the human-like
+   Digital Object Identifier 10.1109/JSAC.2025.3574601                          capability of the SC3 loop depends on its integrity. The
+
+              © 2025 The Authors. This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 License.
+                                     For more information, see https://creativecommons.org/licenses/by-nc-nd/4.0/
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                                   3331
+
+
+
+
+Fig. 1. Comparisons between the reflex arc and the SC3 loop. The reflex arc consists of five parts: receptor, afferent nerve, nerve center, efferent nerve, and
+effector. By analogy, the SC3 loop also consists of five parts: sensor, uplink, EIH, downlink, and actuator. The similarity of these two structures motivates
+us to take the SC3 loop as an integrated structure and devise the autonomous robotic system from a structured lens.
+
+
+
+SC3 loop is an integrated structure in the autonomous robotic                    play between communication and computing. In the area
+system.                                                                          of wireless communication, the goal-oriented communica-
+   However, due to the heterogeneity of communication, com-                      tion has received great attention, which integrates the task
+puting, and control, traditional applications decompose the                      efficiency into the communication design. In the following,
+SC3 loop and design its components separately. For this                          we review related studies on WCS, MEC, and goal-oriented
+reason, the fifth-generation (5G) network positions itself as a                  communication.
+communication network and primarily focuses on data trans-                          1) WCS: In WCS, related studies investigated the impact
+missions. It applies multiple access and duplex techniques,                      of imperfect communication, such as low data rate and large
+e.g., frequency/time-division multiple access (FDMA/TDMA)                        latency, on control [17]. From the theoretical perspective,
+and frequency/time-division duplexing (FDD/TDD), to decom-                       Tatikonda et al. analyzed linear discrete-time systems and
+pose the network into independent links. Although this                           derived the lower and upper bounds on the data rate required
+link-level division brings a high capacity for communication,                    for different control objectives [18]. Kostina et al. generalized
+the task-level connections among different components within                     this work and derived the lower bound of the data rate given
+the SC3 loop are disintegrated. The mismatch of communi-                         the control objective measured by the linear quadratic regulator
+cation, computing, and control hinders the functioning of the                    (LQR) cost [19]. In terms of optimization schemes, Baumann
+SC3 loop, impairing its task-execution performance.                              et al. and Gatsis et al. devised control-aware transmission
+   Unlike Shannon who separated communication from its                           schemes, which let the sensor to upload sensing data only
+served applications and regarded communication engineering                       when the estimation error surpasses a certain threshold [20],
+as “reproducing at one point either exactly or approximately                     [21]. Additionally, control-oriented optimization schemes for
+a message selected at another point” [14], the creator of                        uplink (UL) transmission [22], downlink (DL) transmission
+cybernetics, Wiener, emphasized that “The problems of control                    [7], [23], and joint UL&DL transmission [24] were proposed,
+engineering and communication engineering were insepara-                         with the LQR cost as the objective. For ultra-reliable and
+ble, and that they centered not around the technique of                          ultra-low latency communication (URLLC)-supported WCSs,
+electrical engineering but around the much more fundamental                      Chang et al. jointly optimized the communication bandwidth,
+notion of the message.” [15]. By understanding communication                     power, and control convergence rate to maximize the spectrum
+through Wiener’s lens, we can find that communication is not                     efficiency (SE) [25]. Yang et al. optimized the UL&DL
+just about data transmissions but rather an integral part for the                transmit power and block length to minimize a new metric
+task execution. Motivated by this idea, we shift our focus from                  named energy-to-control efficiency [26]. To model the impacts
+individual communication links to integrated SC3 loops. We                       of both UL&DL transmissions on the closed-loop control,
+regard the sensor and actuator within the SC3 loop as a virtual                  Cao et al. introduced a new metric named age of loop
+user [16]. The sensor-EIH link and EIH-actuator link are thus                    (AoL). The authors derived the closed-form expression of the
+the uplink and downlink (UL&DL) of this virtual user. On this                    peak age of loop (PAoL) with respect to the block length
+basis, we explore the goal-oriented closed-loop design, with                     and allowable transmission time, and proposed an UL&DL
+the aim of using limited resources to provide task-matched                       block length adaptation scheme to minimize the average
+services.                                                                        PAoL [27]. Similarly, Lu et al. defined a metric named the
+                                                                                 full-loop age of information (FL-AoI). Based on the FL-
+B. Related Works                                                                 AoI, the authors devised an LQR-based control policy along
+   In the literature, traditional closed-loop design did not                     with a routing and scheduling scheme [28]. Huang et al.
+comprehensively model SC3 processes. Most of these                               investigated the predictive control and devised an UL&DL
+studies only focused on parts of the SC3 loop. In wireless                       transmission-scheduling policy to minimize the long-term state
+control systems (WCSs), research investigated the interplay                      deviations [29]. In addition, researchers also established sim-
+between communication and control. Similarly, in mobile                          ulation platforms to testify the control performance under
+edge computing (MEC), the emphasis has been on the inter-                        different communication conditions. Bhimavarapu et al. pro-
+3332                                                 IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+posed an unobtrusive latency tester solution to measure the         transmission at the transmitter, and the processing prioritiza-
+communication latency and reliability in the real-time control      tion at the receiver [47].
+[30]. Lyu et al. proposed a novel hardware-in-the-loop simu-           In summary, these studies provide valuable insights into the
+lation platform, which accurately stimulates the real wireless      design of the SC3 loop. However, most of them simplify
+environment to provide reliable test results [31], [32]. Based on   the SC3 -loop model by focusing on one or two compo-
+the proposed platform, the authors testified the wireless control   nents. For autonomous robotic systems, the SC3 loop is
+performance under 5G and Wi-Fi 6, which provides valuable           an integrated structure. The simplified model cannot ensure
+insights for selecting communication protocols for specific         the alignment among all components, potentially introduc-
+applications.                                                       ing bottlenecks that limit overall efficiency. In addition, the
+                                                                    performance of the SC3 loop should be evaluated by the
+   2) MEC: The core idea of MEC is to place computing               task rather than intermediate metrics such as communication
+resources close to mobile devices to support time-sensitive         rate or computing latency. There is a lack of work that
+applications. Most studies jointly optimized communication          jointly designs UL, computing, and DL within and across the
+and computing resources to minimize the latency [33], [34]          SC3 loops from a goal-oriented perspective, which is crucial
+and energy consumption [35], [36], or maximize the utility          for ensuring the task performance in resource-limited remote
+[37], [38], [39]. For example, Wen et al. considered an MEC         areas.
+system and optimized bit, subchannel, and time allocation to
+minimize the energy consumption [36]. Jian et al. focused
+on the computing and DL transmission, proposing a joint             C. Main Contributions
+MEC server-user association, CPU frequency, and bandwidth
+                                                                       In this paper, we consider a digital twin-empowered
+optimization scheme [37]. Wang et al. considered a joint
+                                                                    autonomous robotic system in remote areas, which is formed
+sensing, communication, and computing framework, where the
+                                                                    by a multi-functional AAV, sensors, and actuators. The AAV
+base station detects surrounding objects and uploads parts of
+                                                                    carries communication and computing modules, with a digital
+computing tasks to the cloud center using integrated sensing
+                                                                    twin simulating the physical process in real time. During the
+and communication (ISAC) signals. The authors optimized the
+                                                                    task execution, the AAV acts as an EIH that collects data
+beamformer and CPU frequency to maximize the computing
+                                                                    from sensors, calculates commands, and distributes commands
+rate [39]. In the AAV-MEC setting, Ghanem et al. proposed
+                                                                    to actuators to take actions. Together, the EIH, sensors, and
+a joint UL&DL sub-carrier assignment and power allocation
+                                                                    actuators form reflex-arc-like SC3 loops. Different from cur-
+scheme to minimize the power consumption [40]. Tian et al.
+                                                                    rent studies that devise SC3 -loop components separately, our
+devised a service satisfaction-oriented optimization scheme to
+                                                                    study takes the SC3 loop as an integrated structure. The main
+optimize the offloading decision and scheduling strategy for
+                                                                    contributions are listed as follows.
+maximizing the user satisfaction [41].
+                                                                       1) We investigate a digital twin-empowered autonomous
+   3) Goal-Oriented Communication: The core idea of goal-                  robotic system formed by multiple reflex-arc-like SC3
+oriented communication is to adapt communication strategies                loops. To effectively use limited resources, we propose
+to the specific needs of supported tasks. For example, Wen                 a goal-oriented closed-loop optimization scheme that
+et al. considered a real-time inference task performed by                  jointly optimizes the bandwidth, time, and CPU fre-
+the ISAC devices and an edge server. The authors took the                  quency, with the objective of minimizing the total LQR
+discriminant gain as the objective and jointly optimized the               cost.
+transmit power, time allocation, and quantization bit allocation       2) To solve the complex problem, we first investigate the
+[42]. Girgis et al. proposed a semantic communication-control              resource allocation within the SC3 loop. We derive
+co-design that trains an encoder at the edge to abstract the               the closed-form expressions for the UL&DL bandwidth,
+low dimensional feature and a decoder at the control center                time, and LQR cost. We show the task-level balance
+to recover the state and calculate the command [43]. Shao                  between UL&DL, as well as the interchange relation-
+et al. utilized the information bottleneck method to maximize              ships between communication bandwidth and computing
+the mutual information between the inference result and the                CPU frequency.
+encoded feature, while minimizing the mutual information               3) On this basis, we propose an iterative algorithm to
+between the input raw data and the encoded feature [44].                   allocate bandwidth and CPU frequency across SC3
+Mostaani et al. devised a distributed deep learning scheme for             loops. Under the condition of adequate CPU frequency,
+a multi-agent system, and maximized the long-term return by                we derive an approximate closed-form solution for the
+jointly optimizing communication and control policies [45].                inter-loop bandwidth allocation and analyze the allo-
+More recently, Feng et al. proposed a goal-oriented resource               cation principles regarding communication and control
+block allocation scheme to maximize the information utility                parameters.
+gain for a CPS [46]. Wu et al. addressed an AAV control                4) We conduct comprehensive simulations to validate the
+task and developed a goal-oriented framework that minimizes                superiority of the proposed scheme. We show that the
+the positional error between the AAV’s actual flight trajectory            proposed scheme achieves a two-tier balance within and
+and the target trajectory. The proposed framework optimizes                across the SC3 loops, which is crucial for improving
+the control command generation and proactive repetition                    the task performance of the autonomous robotic system.
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                  3333
+
+
+
+                           TABLE I
+                   S YMBOLS AND D EFINITIONS
+
+
+
+
+                                                                  Fig. 2. Illustration of a digital twin-empowered autonomous robotic system.
+                                                                  The system comprises an EIH and K pairs of sensors and actuators, which
+                                                                  synergistically form K SC3 loops. A digital twin is integrated within the
+                                                                  EIH to emulate the physical system in real time. In this figure, the objects
+                                                                  marked in black font represent the physical world and the objects marked in
+                                                                  red font represent the digital twin.
+
+
+
+                                                                  such as radioactive object recycling. The system consists
+                                                                  of K SC3 loops, which are formed by a multi-functional
+                                                                  AAV and K pairs of sensors and actuators. The AAV carries
+                                                                  communication and computing modules, serving as an EIH
+                                                                  that transfers and processes information. A digital twin is
+                                                                  integrated into the EIH for simulating the physical system in
+                                                                  real time. We regard each pair of sensor and actuator as a
+                                                                  virtual user, and take the sensor-EIH link and EIH-actuator link
+                                                                  as the UL&DL of the virtual user. During the task execution,
+                                                                  sensors collect raw data and upload them to the EIH via the
+                                                                  UL. Based on the sensing data, the EIH updates the digital twin
+D. Organization and Notations                                     and calculates control commands according to the reasoning
+                                                                  results from the digital twin. These commands are transmitted
+   The rest of this paper is organized as follows. Section II
+                                                                  to the actuators via the DL. Then, the actuators take actions. To
+introduces the autonomous robotic system and the SC3 -
+                                                                  ensure the correct operations of the EIH, the satellite provides
+loop model. Section III presents the goal-oriented closed-loop
+                                                                  telemetry, tracking, and control services for the EIH, while a
+optimization scheme and its solution. Section IV presents sim-
+                                                                  cloud server provides high-level guidelines. In this paper, we
+ulation results and discussion. Section V draws conclusions.
+                                                                  focus on the autonomous robotic system in the field and do
+   Throughout this paper, vectors, matrices, and sets are rep-
+                                                                  not further consider the remote satellite and cloud server.
+resented by bold lowercase letters, bold uppercase letters, and
+curly uppercase letters, respectively. Rn×n represents the set
+of n×n real matrices, In is the n×n unit matrix, and 0n is the    A. Sensing and Communication Model
+n × n zero matrix. λ(A) denotes the eigenvalue of matrix A
+                                                                     At the beginning of each SC3 cycle, sensors capture data
+and det A denotes the determinant of matrix A. The complex
+                                                                  from the physical system. We denote the sensing rate of
+Gaussian distribution of zero mean and σ 2 variance is denoted
+                                                                  the k-th SC3 loop as Dks (bits/SC3 cycle), which includes
+as CN (0, σ 2 ). The optimal solution of x is denoted as (x)∗ .
+                                                                  both useful information about the system state and redundant
+The key symbols used in this paper are summarized in Table I.
+                                                                  or irrelevant contents. Subsequently, the sensing data are
+                                                                  transmitted to the EIH for further processing and refinement.
+II. D IGITAL T WIN E MPOWERED -AUTONOMOUS ROBOTIC                    For communication, we assume that the UL&DL of each
+            S YSTEM AND SC3 -L OOP M ODEL                         virtual user are allocated orthogonal frequency. This FDMA
+  As shown in Fig. 2, we consider a digital twin-empowered        setting avoids interference among different transmissions. In
+autonomous robotic system that performs a control-type task,      contrast, in the spectrum-sharing setting, interference is a
+3334                                                           IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+critical factor in goal-oriented design. In such cases, effective                where αk (cycles/bit) denotes the processing difficulty (the
+power control and beamforming are promising techniques                           required CPU cycles for processing one-bit data), fk denotes
+which we will consider in the future research. Taking the k-th                   the allocated CPU frequency for the k-th SC3 loop, and
+SC3 loop as an example, denote the bandwidth, transmission                       we denote F = {fk }K     k=1 . αk and ρk are the parameters
+time, and SE of UL&DL as B u = {Bku }K                d    d K
+                                              k=1 , B = {Bk }k=1 ,               of the computing model. A larger model enables a more
+           u K              d K                  u K
+  u                  d                   u
+T = {tk }k=1 , T = {tk }k=1 , R = {rk }k=1 , and Rd =                            thorough extraction of task-related information, and outputs
+{rkd }K
+      k=1 , respectively. According to the Shannon capacity, the                 more effective control commands, resulting in a larger ρk .
+UL&DL SEs are calculated as follows,                                             However, a larger model also incurs higher computational
+                       
+                             |hu/d  2 u/d
+                                                                                complexity, resulting in a larger αk . Therefore, finding a
+                                k | pk
+             u/d
+           rk = log2 1 +                     (bits/s/Hz),1    (1)                proper trade-off between the complexity and effectiveness is
+                               (σku/d )2
+                                                                                 crucial for the practical deployment of the computing model
+where hu/d                               u/d
+        k denotes the channel gain, pk denotes the transmit                      [50].
+              u/d 2                                                                The calculated commands are sent to the actuators to
+power, and (σk ) denotes the variance of the channel noise.
+The channel gain consists of both small-scale fading and large-                  guide their actions. However, due to the constraint of the DL
+scale fading, which is given by,                                                 cycle rate, the information received by the actuator is jointly
+                                   q                                             determined by the task-related information contained in the
+                      hu/d
+                       k   = β u/d
+                               k    gku/d ,                 (2)                  command and the DL cycle rate,
+                                                                                             3
+where βku/d denotes the small-scale fading, and gku/d denotes                           DkSC = min{ρk Dkcomp , Dkd } (bits/SC3 cycle),       (7)
+the large-scale fading. In practice, the SE fluctuates with the                                            3
+channel conditions. In this paper, we assume that the UL&DL                      where we denote DkSC as the closed-loop negentropy rate.
+                                                                                       3
+SEs remain unchanged [48]. This can be achieved through                          DkSC quantifies the amount of information ultimately con-
+adaptive power control, that the transmit power is dynamically                   tributes to control in an SC3 cycle, which functions to resist
+adjusted according to channel conditions to maintain a target                    the entropy increase of the controlled system.
+signal-to-noise ratio [49]. In each SC3 cycle, the amount of
+information transmitted via the UL&DL is given by,                               C. Control Model
+                                           3
+               Dku/d ⩽ Bku/d tu/d u/d
+                              k rk (bits/SC cycle),                       (3)       The controlled systems are modeled as linear time-invariant
+where Dku/d is referred to as the UL/DL cycle rate.                              processes. For nonlinear processes, this linear model repre-
+                                                                                 sents the linearization around the system’s working point,
+                                                                                 which provides a reasonable approximation of its local behav-
+B. Computing Model                                                               ior [51]. Taking the k-th SC3 loop and time index i as an
+  For computing, the amount of data received by the EIH in                       example, the state evolution equation is given by
+each SC3 cycle is jointly determined by the sensing rate and
+UL cycle rate as                                                                                 xk,i+1 = Ak xk,i + Bk uk,i + vk,i ,         (8)
+
+                       Dkcomp = min{Dks , Dku }.                          (4)    where xk,i ∈ Rnk ×1 denotes the system state, nk is the
+                                                                                 dimension of the system state, uk,i ∈ Rmk ×1 denotes the
+Then, the EIH processes raw sensing data to extract the                          control input, mk is the dimension of the control input,
+information about the system state. The intelligent digital                      and vk,i ∈ Rnk ×1 denotes the system noise. The matrices
+model, such as the digital twin, is employed to assist in                        Ak ∈ Rnk ×nk and Bk ∈ Rnk ×mk are determined by the
+decision-making. The digital twin updates its model based on                     system dynamics. Ak quantifies the intrinsic dynamics of the
+the system state information and reasons about the system’s                      system without external intervention, and Bk quantifies the
+behavior. Using the reasoning results, the EIH calculates                        effect of control actions on the state evolution. The system is
+control commands and sends them to actuators to regulate the                     unstable (λ(Ak ) > 1), and it can be stabilized by the pair
+system. We model the computing process as an information                         (Ak , Bk ). Under this linear model, we use the LQR cost to
+extraction process, that the EIH extracts system state informa-                  measure the control performance of the SC3 loop:
+tion from the sensing data and generates control commands                                          "                                     #
+                                                                                                         N
+accordingly,                                                                                          1 X T                  T
+                                                                                                                                       
+                                                                                   lk = lim sup E            x Qk xk,i + uk,i Rk uk,i , (9)
+               Dkcomp → ρk Dkcomp (bits/SC3 cycle),                       (5)             N →∞       N i=1 k,i
+
+where ρk is the information extraction ratio. ρk Dkcomp denotes                  where lk denotes the LQR cost, Qk ∈ Rnk ×nk and Rk ∈
+the amount of information extracted from the received sensing                    Rmk ×mk are weighting matrices that balance the cost between
+data, and it also denotes the amount of information contained                    state deviations and control inputs. As we can see, the
+in the command. The computing time is calculated by,                             LQR cost consists of two components: the state penalty,
+                                                                                 which measures state deviations from the desired values,
+                                     αk Dkcomp
+                           tcomp
+                            k    =             ,                          (6)    and the control input penalty, which quantifies the energy
+                                        fk                                       or resources expended to perform control actions. In the
+  1 To simplify the expression, we use the superscript u/d to present the same   considered autonomous robotic system, the LQR cost serves
+notation for both UL&DL.                                                         as a key metric for assessing the control performance of
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                                  3335
+
+
+                                                                                                             3
+the SC3 loop. Taking the radioactive object recycling as an                                      DkSC > log2 | det Ak |, ∀k                             (14e)
+example, the LQR cost penalizes deviations in radioactive                                        Dku ⩽ tuk Bku rku , ∀k                                 (14f)
+levels from the specified threshold as well as the efforts paid
+                                                                                                 Dkd ⩽ tdk Bkd rkd , ∀k                                 (14g)
+in the recycling process. A lower LQR cost indicates faster
+and more efficient recycling of radioactive objects, reflecting                                        αk Dkcomp
+                                                                                                 tuk +               + tdk ⩽ Tk , ∀k                    (14h)
+more effective control of the SC3 loop. According to [19], the                                             fk
+lower bound of the LQR cost has a direct relationship with                                       X K
+
+the closed-loop negentropy rate:                                                                      (Bku + Bkd ) ⩽ Bmax                               (14i)
+                                                1                                                 k=1
+                  nk N (vk ) | det Mk |        nk
+                                                                                                   K
+    lk ⩾              SC3 −log | det A |)
+                                                     + tr (Σvk Sk ) ,       (10)                  X
+                  2
+                 nk (Dk               k                                                                  fk ⩽ fmax                                      (14j)
+             2                2
+                                                −1
+                                    2
+                                                                                                 k=1
+                      1                 h(x)
+where N (x) , 2πe       e nk  R and h(x) is the differential                                     Bku ⩾ 0 tuk ⩾ 0 fk ⩾ 0 Bkd ⩾ 0 tdk ⩾ 0,          ∀k,   (14k)
+entropy of x, i.e., h(x) , − Rn fx (x) log fx (x)dx, Σvk is
+the variance matrix of the system noise, log2 | det Ak | is the                     where Bmax and fmax denote the maximum bandwidth and
+intrinsic entropy, and Mk and Sk are determined by the Riccati                      CPU frequency, respectively. Due to the coupling relationships
+equations,                                                                          among different variables, (P1) is a highly complex problem.
+                                                                                    From (14c) and (14d), we can see that the closed-loop negen-
+             Sk = Qk + ATk (Sk − Mk ) Ak ,                                          tropy rate is determined by the bottleneck of the sensing rate,
+                                        −1 T                                       and UL&DL cycle rates. In our setting, the communication
+             Mk = STk Bk Rk + BTk Sk Bk    Bk Sk .                          (11)
+                                                                                    and computing capabilities are constrained by the available
+From (10), it can be observed that the lower bound of the                           payload of the EIH. Communication and computing processes
+LQR cost consists of two components. The first component                            are often the bottlenecks of the SC3 loops. To focus on
+is a decreasing function of the closed-loop negentropy rate,                        the optimization of communication and computing resources,
+      3
+DkSC . A larger closed-loop negentropy rate indicates a more                        we assume that the sensing rate is greater than the optimal
+precise control command, which, in turn, enhances the control                       UL cycle rate, i.e., Dks ⩾ (Dku )∗ , ∀k. Thus, the closed-loop
+effectiveness and reduces the LQR cost. The second compo-                           negentropy rate is jointly determined by UL&DL cycle rates
+nent is determined by the system noise. As the system noise                         as,                    3
+cannot be predicted or corrected through control strategies, the                                       DkSC = min{ρDku , Dkd },               (15)
+noise-induced cost is independent of the capability of the SC3
+loop. To ensure the system can be stabilized, the closed-loop                       where ρDku and Dkd quantify the useful information transmitted
+negentropy rate needs to satisfy the following stable condition                     via the UL&DL in each SC3 cycle, and we refer to as the task-
+[19],                                                                               level UL&DL cycle rates. In addition, the cycle-time constraint
+                         3
+                   DkSC > log2 | det Ak |.                 (12)                     is rewritten as
+                                                                                                          αk Dku
+In addition, the SC3 loop needs to run within the cycle time.                                       tuk +        + tdk ⩽ Tk , ∀k.              (16)
+                                                                                                           fk
+We omit the time for sensing and implementing the control
+action and formulate the cycle-time constraint as                                   From (P1), we can see that the considered problem includes
+                                                                                    two-tier allocations: intra-loop and inter-loop allocations. The
+                               tuk + tcomp
+                                      k    + tdk ⩽ Tk ,                     (13)    intra-loop allocation refers to the allocation of bandwidth and
+where Tk denotes the cycle time of the k-th SC3 loop.                               time within each SC3 loop, and the inter-loop allocation refers
+                                                                                    to the allocation of bandwidth and computing CPU frequencies
+   III. G OAL -O RIENTED C LOSED -L OOP O PTIMIZATION                               across multiple SC3 loops. To solve this problem, we first
+                                                                                    investigate the intra-loop allocation and derive the closed-form
+A. Problem Formulation                                                              expression for the optimal LQR cost. Using this closed-form
+  In this paper, we aim to minimize the total LQR cost                              expression, we then address the inter-loop allocation, with an
+of a multi-SC3 -loop autonomous robotic system by jointly                           iterative algorithm proposed to find the solution.
+optimizing the bandwidth, CPU frequency, and time allocation.
+The optimization problem is formulated as follows:                                  B. Intra-Loop Optimization
+  (P1)                                                                                When K = 1, (P1) becomes the problem of optimizing
+                        K
+                        X                                                           bandwidth, CPU frequency, and time allocation within an SC3
+         min                   lk                                          (14a)    loop. We omit the index k and rewrite (P1) as follows:
+  Bu ,T u ,F ,Bd ,T d
+                        k=1
+                                                     1                                 (PA-1)
+                           nk N (vk ) | det Mk | nk
+      s.t. lk ⩾           2         3
+                                 SC −log | det A |)
+                                                              + tr (Σvk Sk ) , ∀k            min             l                                          (17a)
+                               (Dk              k                                       B u ,tu ,f,B d ,td
+                        2 nk            2
+                                                         −1                                                                          1
+                                                                           (14b)                                     nN (v) | det M| n
+                    3                                                                      s.t. l ⩾                                      + tr (Σv S)    (17b)
+             DkSC = min{ρk Dkcomp , Dkd }, ∀k                                                                         SC3
+                                                                                                                 2
+                                                                           (14c)                      2 n (D −log2 | det A|) − 1
+                                                                                                      3
+             Dkcomp = min{Dks , Dku }, ∀k                                  (14d)                   DSC = min{ρDu , Dd }                                 (17c)
+3336                                                            IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+                     3                                                                                              3
+            DSC > log2 | det A|                                       (17d)   From h(21), we observe that DiSC is monotonically decreasing
+            Du ⩽ tu B u ru                                            (17e)   with ρB1u ru + ρfα
+                                                                                               max
+                                                                                                   + B1d rd , which represents the time to
+                d
+            D ⩽t B r     d   d d
+                                                                      (17f)   transmit and process one-bit task-related
+                                                                                                                     i hinformation
+                                                                                                              h                i     from the
+                                                                              sensor to the actuator, where ρB1u ru , ρfα
+                                                                                                                                        1 
+                 αDu                                                                                                       max
+                                                                                                                                 , and  B d rd
+            tu +       + td ⩽ T                                       (17g)   correspond to the time for UL transmission, computing, and
+                  f
+                                                                              DL transmission, respectively. Therefore, we rewrite (PA-2)
+            B u + B d ⩽ Bmax                                          (17h)
+                                                                              into a time-minimization problem as follows:
+            f ⩽ fmax                                                  (17i)
+            B u ⩾ 0 tu ⩾ 0 f ⩾ 0 B d ⩾ 0 td ⩾ 0.                      (17j)                                   1        α     1
+                                                                                         (PA-3)     min        u u
+                                                                                                                   +       + d d         (22a)
+                                                                                                   B u ,B dρB r      ρfmax  B r
+In the case of K = 1, the optimal CPU frequency is the                                                s.t. B u + B d ⩽ Bmax              (22b)
+maximum allowable value, i.e., f ∗ = fmax , as there are                                                       u        d
+no other SC3 loops competing for resources. In addition,                                                      B ⩾ 0 B ⩾ 0.               (22c)
+since the lower bound of the LQR cost (17b) monotonically
+                                                                                Theorem 1: The optimal UL&DL bandwidth allocation is
+decreases with the closed-loop negentropy rate, minimizing
+                                                                              given by                   √
+the LQR cost is equivalent to maximizing the closed-loop
+                                                                                                            rd Bmax
+negentropy rate,                                                                              (B u )∗ = √        √
+                                           3                                                              ρru + rd
+       (PA-2)        max           DSC                                (18a)                             √ u                     (23)
+                B u ,tu ,B d ,td                                                                 d ∗       ρr Bmax
+                                       3
+                                                                                              (B ) = √           √ .
+                    s.t.     DSC = min{ρDu , Dd }                     (18b)                               ρru + rd
+                                   u       u   u u
+                             D ⩽t B r                                 (18c)   The optimal closed-loop negentropy rate and optimal LQR cost
+                                   d       d   d d                            are given by
+                             D ⩽t B r                                 (18d)
+                                  αDu                                               3                  T
+                             tu +       + td ⩽ T                      (18e)   (DSC )∗ =        1             1                            (24)
+                                  fmax
+                                                                                            Bmax r comm + fmax r comp
+                             B u + B d ⩽ Bmax                         (18f)                               3
+                                                                                     +∞,           (DSC )∗ ⩽ log2 | det A|
+                             B u ⩾ 0 tu ⩾ 0 B d ⩾ 0 td ⩾ 0,
+                                                                                     
+                                                                      (18g)          
+                                                                                     
+                                                                                             nN (v) | det M| n
+                                                                                                                 1
+
+                                                                              (l)∗ =                                  + tr (Σv S) , otherwise,
+where the stable condition (17d) is omitted, as we can test                          
+                                                                                        2     SC3 )∗ −log | det A|
+                                                           3                                (D
+it after solving (PA-2). If the optimization result, (DSC )∗
+                                                                                     
+                                                                                      n                  2
+                                                                                       2                             −1
+satisfies (17d), the LQR cost is calculated according to (10).                                                                            (25)
+Otherwise, the controlled system cannot be stabilized, and the
+LQR cost is infinite.                                                         where rcomm denotes the SE of the SC3 loop, referred to
+   Lemma 1: The optimal intra-loop allocation is to equalize                  as the closed-loop SE, and rcomp denotes the computing
+the task-level UL&DL cycle rates,                                             efficiency (CE):
+                               ρ(Du )∗ = (Dd )∗ .                      (19)                            ρru rd
+                                                                                          rcomm = √         √      (bits/s/Hz)
+The optimal UL&DL time allocation is given by,                                                     ( ρru + rd )2                          (26)
+                                                                                                   ρ
+                                                1
+                                             ρB u r u
+                                                                                           rcomp =   (bits/cycle).
+                    (tu )∗ =                                                                       α
+                                     1          α      1 T
+                                   ρB u r u + ρfmax + B d r d
+                                                                                Proof See Appendix B.
+                                                1
+                     d ∗                      B d rd
+                                                                                From (26), we can see that the closed-loop SE is jointly
+                    (t ) =           1          α      1 T.            (20)   determined by the UL&DL SEs. It has the following approx-
+                                   ρB u r u + ρfmax + B d r d
+                                                                              imation,
+   Proof See Appendix A.                                                                
+   The UL&DL balance in (19) can be explained by an analogy                             min(ρru , rd ), ρru  rd or ρru  rd
+to the water flow: the UL&DL are like two water pipes, and                      rcomm = 1 u                                         (27)
+the computing in between is like a filter. Just as the water flow
+                                                                                         ρr ,            ρru ≃ rd .
+                                                                                           4
+through interconnected pipes is limited by the pipe with the
+                                                                              From (27), we can learn that the closed-loop SE is determined
+smallest capacity, the maximum closed-loop negentropy rate
+requires equalizing the capacities of the two pipes, as indicated             by the weak link. A task-level balance between UL&DL SEs
+by the equilibrium in (19).                                                   is required to ensure a high closed-loop SE.
+   Based on (19) and (20), we formulate the closed-loop                          In addition, from (24), we observe an interesting trade-off
+negentropy rate as an expression of the bandwidth,                            between the bandwidth and CPU frequency. This trade-off is
+            3
+                                                                              achieved by exchanging communication and computing time.
+       DSC = min{ρ(Du )∗ , (Dd )∗ } = ρ(Du )∗                                 For instance, increasing the bandwidth reduces communication
+                                                                                            1
+                                         T                                    time, (Bmax +∆B)r  comm , which in turn allows for an increase
+           = ρ(tu )∗ B u ru = 1           α      1 .                   (21)                                 1
+                             ρB u r u + ρfmax + B d r d
+                                                                              in computing time, (fmax −∆f    )r comp , thus reducing the CPU
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                             3337
+
+
+
+frequency. Consequently, the interchange relationship between                 the rule of convex optimization. We thus use the Taylor
+∆B and ∆f can be derived as follows:                                          expansion to linearize this term and apply the successive
+                  1                    1                                      convex approximation method to solve this problem. The
+                            +                                                 convex approximation of (PB-1) in the s-th iteration is given
+      rcomm (Bmax + ∆B) rcomp (fmax − ∆f )
+                                                                              by
+                                  1            1
+                           = comm        + comp      ,                                              K
+                              r    Bmax      r  fmax                                                X
+                         Bmax                                                  (PB-2) min                 lk                                       (31a)
+    ⇒ ∆B = comp  2                        .           (28)                                 B,F
+                      fmax      fmax
+                                                                                                   k=1
+              r
+                             −         − 1                                                  1          1
+                                                                                             comm +
+              r comm ∆f Bmax    Bmax                                                                                                   3       3
+                                                                                        B k rk          comp
+                                                                                                    fk rk    2(DkSC )s−1 − DkSC
+                                                                                                         ⩽                      , ∀k (31b)
+From the above expression, we observe that ∆B is determined                                    Tk                     3
+                                                                                                                 (DkSC )s−1
+                                                                                                                            2
+by the working point of the SC3 loop, characterized by the
+                                                                                       (29b), (29d) − (29g),
+      bandwidth,comm
+available                  frequency, and the SE-to-CE ratio,
+                        CPU
+i.e., Bmax , fmax , rrcomp . For exchanging the same CPU fre-                 where
+                                                                                   the right side of (31b) is the Taylor expansion of
+quency, ∆f , a large bandwidth is required when the available                    1
+                                                                                       at the result obtained in the (s − 1)-th iteration,
+                                                                                SC3
+                                                                               Dk
+bandwidth and SE-to-CE ratio are high and the available                                     3
+CPU frequency is low, corresponding to the communication-                     i.e., (DkSC )s−1 . We summarize the proposed algorithm in
+saturated region.                                                             Algorithm 1 and provide Fig. 3 to illustrate the steps of imple-
+                                                                              menting intra-loop and inter-loop allocations in our proposed
+                                                                              algorithm.
+C. Inter-Loop Optimization
+   1) Iterative Algorithm: In Theorem 1, we derive the                        Algorithm 1 Iterative Algorithm for Goal-Oriented Closed-
+closed-form expressions for the optimal LQR cost and closed-                  Loop Optimization Scheme
+loop negentropy rate of an SC3 loop. With the resulting
+                                                                              Input: SC3 -loop related parameters: Tk and K;
+closed-form expressions, the inter-loop allocation can be
+                                                                                  Control related parameters: nk , mk , Ak , Bk , Qk , Rk ,
+addressed independently, which focuses on the bandwidth and
+                                                                                  and Σvk ;
+CPU frequency allocation across SC3 loops. The problem of
+                                                                                  Communication related parameters: rku , rkd , and Bmax ;
+the inter-loop allocation is given by
+                                                                                  Computing related parameters: αk , ρk , and fmax ;
+   (PB-1)                                                                         The iteration terminating threshold: δ;
+         K                                                                     1: Calculate Sk and Mk according to (11);
+         X                                                                                                                            3
+   min         lk                                                     (29a)    2: Calculate the closed-loop SE and CE for each SC loop
+   B,F                                                                            according to (26);
+         k=1                                                                                                                        √d
+                                             1                                                                             Bmax √     rk
+                     nk N (vk ) | det Mk | nk                                  3: Initialization: s = 0, set (Bku )0 =       K      d+
+                                                                                                                                      √ u,
+   s.t. lk ⩾                                          + tr (Σvk Sk ) , ∀k                                                          rk    ρrk
+                     2
+                         (Dk
+                             3
+                           SC −log | det A |)                                                         √ u
+                                          k                                                             ρrk
+                2 nk              2
+                                                 −1                                  d 0
+                                                                                  (Bk ) = K    Bmax √                       fmax
+                                                                                                         √ u , and fk = K . Calculate
+                                                                                                      d
+                                                                      (29b)                                          rk +   ρrk
+                                                                                            3                                              3
+               3               Tk                                                 (DkSC )0 according to (24). If (DkSC )0 < log2 | det Ak |,
+         DkSC       ⩽    1           1      , ∀k                      (29c)                3
+                                                                                  set (DkSC )0 = log2 | det Ak |.
+                      Bk r comm + fk r comp
+                             k
+                3
+                                       k
+                                                                               4: repeat
+         DkSC > log2 | det Ak |, ∀k                                   (29d)    5: s = s + 1;
+                                                                                                                                    3
+         K
+         X                                                                     6: Solve (PB-2) to obtain (Bk )s , (fk )s , and (DkSC )s ;
+                                                                                                K              K
+               Bk ⩽ Bmax                                              (29e)                 |
+                                                                                                P
+                                                                                                    (lk )s −
+                                                                                                               P
+                                                                                                                   (lk )s−1 |
+                                                                                             k=1               k=1
+         k=1                                                                   7:   until             K
+                                                                                                      P
+                                                                                                                                ⩽ δ.
+         XK                                                                                               (lk )s−1
+                                                                                                     k=1
+               fk ⩽ fmax                                              (29f)    8: Calculate the optimal UL&DL bandwidth allocation for
+         k=1                                                                      each SC3 loop according to (23);
+         Bk ⩾ 0 fk ⩾ 0, ∀k,                                           (29g)    9: Calculate the optimal time allocation for each SC loop
+                                                                                                                                             3
+
+                                                                                  according to (20);
+where Bk denotes the bandwidth allocated to the k-th SC3
+                                                                              Output: The UL&DL bandwidth, time, and CPU frequency
+loop and we denote B = {Bk }K     k=1 . By calculating the second-                of K SC3 loops: (B u )∗ , (B d )∗ , (T u )∗ , (T d )∗ , and (F)∗ .
+order derivative of the right-hand side of (29b), it is easy to
+                                                 3
+prove that it is a convex expression of DkSC . Thus, the only
+non-convex constraint in (PB-1) is (29c), which is reorganized                   If the primal-dual interior-point method is used as the
+as                                                                            optimization tool, the complexity of the solving (PB-2) is
+                      1          1
+                       comm +
+                   Bk rk          comp
+                              fk rk         1                                 O (2K)3.5 log(1/0 ) , where 0 is the duality gap. The con-
+                                       ⩽ SC3 .                (30)            vergence of the algorithm is proved in Appendix C.
+                           Tk             Dk
+                                                                                 2) Approximate Closed-Form Solution: Next, we derive the
+Since x1 is a convex expression of x when x > 0, we can                       approximate closed-form solution for the inter-loop bandwidth
+see that only the right-hand side of (30) does not satisfy                    allocation. For mathematical tractability, we assume that the
+3338                                                                  IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+
+Fig. 3. The proposed two-tier allocation algorithm. The inter-loop allocation determines the bandwidth and CPU frequency assigned to each SC3 loop. The
+intra-loop allocation determines the UL&DL bandwidth and time within the SC3 loop.
+
+
+
+computing time is negligible compared to the communication                          We can learn from (35) that the bandwidth allocation is
+time, Bk r1comm + fk r1comp ≈ Bk r1comm . This assumption is valid                  influenced by both the communication parameter, rkcomm , and
+           k                       k
+                                                                                    the control parameter, ek . The SC3 loop with low closed-
+                       k
+when the EIH carries enough computing resources [52], [53].
+Under this assumption, the closed-loop negentropy rate can be                       loop SE (smaller rcomm ) or controlling a more unstable system
+approximated as                                                                     (larger ek ) is allocated more bandwidth. This balances the
+                                                                                    control processes across different SC3 loops.
+                 3                   Tk
+              DkSC =            1          1          ≈ Tk Bk rkcomm .       (32)
+                                 comm +
+                            B k rk          comp
+                                                                                            IV. S IMULATION R ESULTS AND D ISCUSSION
+                                        fk rk
+
+On this basis, the LQR cost can be approximated by                                     In this section, we present simulation results and discussion.
+                                                                                    We consider the autonomous robotic system composed of
+                                              1
+               nk N (vk ) | det Mk | nk                                             K = 4 SC3 loops. The UL&DL SEs are set as rku = [4, 5, 6, 7]
+       lk ≈   2
+                (T B r comm −log2 | det Ak |)
+                                              + tr (Σvk Sk ) , (33)                 bits/s/Hz and rkd = [7, 8, 9, 10] bits/s/Hz. The computing-
+           2 nk k k k
+                                                                                    related parameters are set as fmax = 1 GHz, ρk = 0.01,
+where the term “–1” in the denominator is omitted from its                          ∀k, and αk = [1000, 100, 50, 500] (cycles/bit). The control-
+original expression (10). This approximation is quite accurate                      related parameters are configured as nk = mk = 100, ∀k,
+                                                    3
+in the assure-to-be-stable region, i.e., DkSC  log2 | det Ak |                     log | det Ak | = [10, 10, 30, 30], Rk = 0100 , Qk = I100 ,
+[7], [23]. Using (33), (PB-1) is simplified into a convex                           Σk = 0.01 ∗ I100 , and Tk = 10 ms, ∀k [7]. The value of
+bandwidth allocation problem,                                                       Ak and Bk do not influence the LQR cost when Rk = 0100 .
+                            K                                  1                    In addition, we assume that the sensing rate is greater than
+                            X        nk N (vk ) | det Mk | nk                       the UL&DL cycle rates and thus, it does not impact the
+        (PB-3) min                   2         comm −log | det A |)         (34a)
+                  B                 nk (Tk Bk rk                k                   control performance. The iteration termination threshold is
+                            k=1 2
+                                                        2
+
+
+                             K                                                      set as δ = 0.001, and the optimization tool is CVX [54].
+                            X
+                     s.t.         Bk ⩽ Bmax                                 (34b)   Unless otherwise stated, these parameters are used throughout
+                            k=1                                                     the results below.
+                        Bk ⩾ 0, ∀k,                                         (34c)
+                                                                                    A. Single-SC3 -Loop Simulation
+where tr (Σvk Sk ) is omitted as it does not influence the
+allocation results. The stable condition is also omitted as                            We first conduct simulations for the case of K = 1. In
+assumed in the assure-to-be-stable region.                                          Fig. 4, we present the relationships between UL&DL SEs and
+   Theorem 2: The optimal bandwidth allocation to (PB-3) is                         the closed-loop SE, as described in (27). The UL&DL SEs
+given by                                                                            are set in the range of [0.5, 10] bits/s/Hz. In the left figure,
+                                                                                    we set the information extraction ratio as ρ = 0.01, which
+               nk
+ (Bk )∗ = comm                                                                      creates the imbalance between the task-level UL&DL SEs,
+          2rk      Tk
+       K h                        comm i                                        i.e., ρru  rd . In this case, the closed-loop SE is constrained
+                      ni            ek rk    Tk
+                                                                                    by the UL. The most effective way to enhance the closed-loop
+          P
+                   comm
+                  2ri    Ti
+                            log 2       comm
+                                    ei ri    Ti
+                                                + Bmax 
+       i=1,i6=k                                                                    SE is by improving the UL SE, while improving the DL SE
+   ×                                                   , (35)
+                                                       
+                           K
+                         P        ni                                              provides little improvement, as indicated by the red and black
+                                         2ricomm Ti
+                                   i=1                                              arrows in the figure. In contrast, the right figure illustrates the
+where ek denotes the control-related parameter,                                     case where the information extraction ratio is set as ρ = 1. In
+                                                  2             1
+                                                                                    this case, the most effective way to enhance the closed-loop
+               ek , N (vk )| det Ak | nk | det Mk | nk .                     (36)   SE is to simultaneously improve UL&DL SEs. It is noted that,
+                                                                                    the raw data transmitted via the UL often contain redundant
+  Proof See Appendix D.                                                             and irrelevant contents, leading to a low information extraction
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                             3339
+
+
+
+
+Fig. 4. The closed-loop SE varies with the task-level SEs of UL&DL. The left subfigure illustrates the case of imbalanced UL&DL SEs, and the right figure
+illustrates the balanced case. The red arrow and black arrow indicate the steepest and slowest directions to improve the closed-loop SE.
+
+
+
+ratio, ρ  1. An enhanced UL is usually required for keeping
+the task-level balance between UL&DL.
+   In Fig. 5, we present the LQR cost of different UL&DL
+allocation schemes. We compare the proposed scheme with
+two classical schemes: equal allocation and proportional allo-
+cation.
+  • Equal allocation: The bandwidth is equally divided for
+    UL&DL like FDD, B d = B u = Bmax 2 .
+  • Proportional allocation: The bandwidth is proportional
+    allocated per the information extraction ratio, B u =
+      1              d     ρ
+    1+ρ Bmax and B = 1+ρ Bmax .
+
+In this simulation, we set the DL transmission time as td =
+1 ms, and the remaining time is adjusted to satisfy that
+          u
+tu + fαD
+       max
+             = T − td . The parameters of the SC3 loop are                    Fig. 5. The task-level cycle rate and LQR cost of three UL&DL allocation
+                                                                              schemes.
+set as the same as the 1-st SC3 loop, i.e., ru = 4 bits/s/Hz,
+rd = 7 bits/s/Hz, log | det A| = 10, α = 1000 cycles/bit. The
+maximum bandwidth is Bmax = 0.5 MHz, and the maximum
+computing CPU frequency is fmax = 0.25 GHz. Fig. 5 is
+a dual-axis chart with the left side representing the task-
+level UL&DL cycle rates and the right side representing the
+LQR cost. From the bar, we can see that, under the proposed
+scheme, the UL&DL are aligned to have the same task-level
+cycle rates, which validates the equilibrium (19) in Lemma 1.
+However, the other two schemes fail to achieve this balance.
+Their weak ULs constrain the performance of the SC3 loop,
+leading to the high LQR cost (shown by the black curve). In
+addition, we find that the LQR cost increases as the degree of
+UL&DL imbalance becomes greater, indicating the importance
+of keeping the task-level balance between UL&DL in the SC3
+loop.
+   In Fig. 6, we illustrate the interchange relationships between             Fig. 6. The required communication bandwidth in exchange 1 MHz comput-
+                                                                                                                            comm
+the bandwidth and CPU frequency. This figure shows the                        ing CPU frequency varies with (Bmax ,fmax , rrcomp ).
+required bandwidth in exchange for 1 MHz CPU frequency
+under different working points of the SC3 loop, characterized
+by the bandwidth, CPU frequency, and SE-to-CE ratio, i.e.,                    of required bandwidth, increasing as the color shifts from
+                 comm
+(Bmax , fmax , rrcomp ). The color gradient represents the amount             blue to yellow. The figure shows that in the communication-
+3340                                                        IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+
+Fig. 7. The number of iterations of the proposed iterative algorithm under   Fig. 9. Comparisons between the proposed scheme and three optimization
+100 random simulations.                                                      schemes, with each focusing on parts of the SC3 loop.
+
+
+
+
+                                                                                 the considered four SC3 loops, with each loop assigned
+                                                                                 an equal time slot, Tk = T4 = 2.5 ms. The SC3 loop
+                                                                                 exclusively uses the bandwidth and CPU frequency in
+                                                                                 its assigned slot. The bandwidth and time allocation is
+                                                                                 optimized for each SC3 loop.
+                                                                               • The Closed-Loop Optimization Scheme Proposed in [36]:
+                                                                                 This scheme divides the cycle time into three slots: UL,
+                                                                                 computing, and DL, with all SC3 loops aligned to per-
+                                                                                 form UL transmissions, computing, and DL transmissions
+                                                                                 in the predefined three slots. In UL&DL slots, different
+                                                                                 SC3 loops use orthogonal frequency bands to transmit
+                                                                                 data. In the computing slot, the data from different
+Fig. 8. Comparisons between the proposed scheme and two closed-loop              sensors are processed sequentially. The time slot division,
+optimization schemes.                                                            bandwidth, and computing CPU frequency are optimized.
+
+                                                                             The results show that the LQR cost of the scheme in [24]
+saturated region, more bandwidth is required compared to                     is significantly higher than the other two schemes. This is
+the communication-limited region. This indicates the marginal                because the scheme in [24] assigned equal time slots to
+effect, that the effectiveness of increasing bandwidth reduces               all SC3 loops, disregarding their differences. The inter-loop
+as the SC3 loop approaches the communication-saturated                       imbalance leads to the poor control performance of the weak
+region.                                                                      SC3 loop. In contrast, the scheme proposed in [36] exhibits
+                                                                             a small performance gap relative to the proposed scheme.
+B. Multi-SC3 -Loop Simulation                                                This performance gap arises from the inefficient utilization
+                                                                             of time in computing, that the processed tasks must wait
+   In Fig. 7, we provide the convergence performance of the
+                                                                             for other tasks to finish computing before DL transmissions.
+proposed iterative algorithm. In this simulation, we randomly
+                                                                             These results validate the superiority of the proposed scheme,
+generate UL&DL cycle rates in the range of [1, 5] (bits/s/Hz)
+                                                                             which maintains the inter-loop balance and effectively uses all
+and [5, 10] (bits/s/Hz), respectively. The maximum bandwidth
+                                                                             resources.
+is set as Bmax = 1 MHz. The results show that, across
+                                                                                In Fig. 9 we compare the proposed scheme with three
+100 simulations, the proposed iterative algorithm requires only
+                                                                             schemes, with each focusing on parts of the SC3 loop. For
+3 ∼ 5 iterations to converge.
+                                                                             fair comparisons, we take the LQR cost as the objective.
+   In Fig. 8, we compare the proposed scheme with two closed-
+loop optimization schemes. For a fair comparison, we use                       • UL&Computing Optimization Scheme: This scheme opti-
+the LQR cost as the objective and adapt the two closed-loop                      mizes the UL transmission and computing, with the DL
+schemes to our settings. The implementation details are as                       parameters fixed at Bkd = B2K
+                                                                                                             max
+                                                                                                                 , ∀k and tdk = 1 ms, ∀k.
+follows:                                                                       • DL&Computing Optimization Scheme [37]: This scheme
+  • The Closed-Loop Optimization Scheme Proposed in [24]:                        optimizes the DL transmission and computing, with the
+      This scheme focuses on the intra-loop allocation for an                    UL parameters fixed at Bku = B2K      max
+                                                                                                                           , ∀k and tuk =
+      SC3 loop. In the simulation, we use TDMA to access                         1
+                                                                                 3 Tk , ∀k.
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                3341
+
+
+
+
+Fig. 10.   Comparisons between the goal-oriented scheme and two    Fig. 11. The LQR cost under the approximate closed-form solution given in
+communication-oriented schemes.                                    (35) and the optimal solution solved by CVX.
+
+
+                                                                   rate,
+  • UL&DL Optimization Scheme [26]: This scheme opti-                       3
+    mizes UL&DL transmissions, with the CPU frequency                 DkSC ⩾ log2 | det Ak |
+    fixed at fk = fmax
+                   K , ∀k.
+                                                                                                                       1    !
+                                                                                   nk           nk N (vk ) | det Mk | nk
+                                                                                 +    log2                               + 1 , ∀k.
+It can be observed that the DL&Computing Optimization                              2               lk − tr(Σvk Sk )
+Scheme [37] exhibits the highest LQR cost and can only                                                                           (37)
+stabilize the system when the maximum bandwidth lies within
+the range of [1.4, 1.8] MHz. This is because the fixed UL          In this simulation, we set the LQR cost requirement in (37)
+constrains the agile adjustment of the SC3 loops. In the           as lk = 10, ∀k. From the figure, we can observe that the
+bandwidth-limited region, the UL cycle rate is limited and it      Communication-Oriented Max-Sum Rate Scheme consistently
+constrains the closed-loop negentropy rate. In the bandwidth-      results in a high LQR cost. This is because the Max-Sum
+adequate region, the high UL cycle rate results in long            Rate Scheme disproportionately allocates the majority of
+computing time, which in turn reduces the available time           resources to the SC3 loops with the highest SE and CE.
+for DL transmissions and limits the performance of the SC3         This causes that the LQR cost of the SC3 loops with the
+loop. Additionally, the UL&DL Optimization Scheme [26]             highest SE and CE approaches its minimal value, while the
+and the UL&Computing Optimization Scheme also show                 LQR cost of the remaining SC3 loops barely satisfies the
+a noticeable performance gap compared to the proposed              basic requirement given in (37). Conversely, the LQR cost
+scheme. The UL&DL Optimization Scheme employs the                  under the Communication-Oriented Max-Min Rate Scheme
+equal allocation for the CPU frequency, limiting the inter-        decreases as the bandwidth increases. However, this scheme
+loop adjustments. The UL&Computing Optimization Scheme             still exhibits a performance gap compared to the proposed
+fixes the bandwidth and time for DL transmissions, restricting     scheme. This is because the Max-Min Rate Scheme focuses
+both intra-loop and inter-loop adjustments. These comparisons      on the balance of the communication rate and overlooks the
+highlight the superiority of the proposed scheme, which takes      differences in control and computing parameters. In contrast,
+the SC3 loop as an integrated structure and jointly optimizes      the proposed scheme achieves an effective balance across SC3
+resources within and across SC3 loops.                             loops, leading to a superior overall performance.
+   In Fig. 10, we compare the proposed scheme with two                Fig. 11 compares the LQR cost under the approximate
+communication-oriented schemes.                                    closed-form solution (35) and the optimal solution obtained by
+                                                                   CVX. We assume that the computing CPU frequency is large
+  • Communication-Oriented Max-Sum Rate Scheme: This               enough and neglect the computing time. From the figure, we
+    scheme maximizes the sum of the closed-loop negentropy         can see that the LQR costs under the approximate closed-form
+                    K     3
+                      DkSC .                                       solution and the optimal solution exhibit a small gap in the
+                    P
+    rate, i.e., max
+                    k=1                                            bandwidth-limited region, and this gap rapidly approaches zero
+  • Communication-Oriented Max-Min Rate Scheme: This
+                                                                   as the bandwidth increases. This demonstrates the accuracy of
+    scheme maximizes the minimal closed-loop negentropy
+                            3                                      the approximate closed-form solution, particularly when there
+    rate, i.e., max min DkSC .
+                     k                                             are sufficient communication and computing resources.
+These two communication-oriented schemes can be solved                In Fig. 12, we present the inter-loop bandwidth allocation
+using a similar iterative algorithm by replacing the LQR           results using the approximate closed-form solution (35) and
+cost objective with the sum-rate and min-rate objective, i.e.,     compare it with two communication-oriented schemes. The
+      K       3                    3                               maximum bandwidth is set as Bmax = 1 MHz and the
+         DkSC and max min DkSC , and convert the LQR
+     P
+max                                                                maximum CPU frequency is assumed to be sufficiently large.
+     k=1                    k
+constraint (29b) into a constraint of the closed-loop negentropy   The LQR cost requirement in (37) is set as lk = 10, ∀k. In
+3342                                                          IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+
+                                                                               Fig. 13. The LQR cost varies with the bandwidth under different CPU
+Fig. 12. The bandwidth allocation ratio under three different schemes. The     frequencies and sensing rates.
+top subfigure shows the bandwidth allocation ratio under different intrinsic
+entropy and the bottom subfigure shows the bandwidth allocation ratio under
+different closed-loop SEs.
+                                                                               sensing rates diverge. This is because the high UL&DL cycle
+                                                                               rates ensure that the sensing data can be fully transmitted and
+                                                                               processed. Enhancing the sensing capability thus becomes the
+the top subfigure, we set the four SC3 loops with different
+                                                                               effective way to improve the control performance.
+intrinsic entropy, log2 | det Ak | = [10, 10, 100, 100], and the
+equal SE, rkcomm = 0.05 bits/s/Hz, ∀k. It can be seen that the
+                                                                                                       V. C ONCLUSION
+proposed scheme allocates more bandwidth to the SC3 loops
+with higher intrinsic entropy, whereas two communication-                         In this paper, we have investigated a digital twin-empowered
+oriented schemes allocate the bandwidth equally. This is                       autonomous robotic system formed by multiple reflex-arc-like
+because the communication-oriented schemes only focus on                       SC3 loops. We have proposed a goal-oriented closed-loop
+the communication rate, and treat the four SC3 loops equally                   optimization scheme that jointly optimizes UL&DL band-
+as they have the same closed-loop SE. In the bottom subfigure,                 width, time, and CPU frequency to minimize the control LQR
+we set the four SC3 loops with different SEs, rkcomm =                         cost. We have derived closed-form solutions for the UL&DL
+[0.02, 0.04, 0.06, 0.08] bits/s/Hz, and equal intrinsic entropy,               bandwidth and time allocation within the SC3 loop and
+log2 | det Ak | = 20, ∀k. It can be seen that the Max-Sum                      proposed an iterative algorithm to optimize the bandwidth and
+Rate Scheme allocates the most resources to the 4-th SC3                       CPU frequency allocation across different SC3 loops. Under
+loop (with the highest SE), while giving minimal resources                     the condition of adequate CPU frequency, we have further
+to the other loops to satisfy the LQR-cost constraint (37). In                 derived the approximate closed-form solution for the inter-
+contrast, both the proposed scheme and the Max-Min Rate                        loop bandwidth allocation. We have shown that the superiority
+Scheme allocate more bandwidth to the SC3 loops with                           of the proposed scheme lies in achieving a two-tier task-level
+lower SEs. This shows that the proposed scheme is fairness-                    balance within and across the SC3 loops. We believe that such
+minded. Instead of over-resourcing the strong SC3 loop at the                  a structured design—taking the SC3 loop as an integrated
+expense of others, the proposed scheme maintains the task-                     structure—will significantly improve resource efficiency for
+level balance across different SC3 loops to ensure the control                 6G autonomous operations.
+performance of the whole autonomous robotic system.
+   Finally, we show the impact of the available CPU frequency,                                           A PPENDIX A
+fmax , and sensing rate, Ds (set Dks = Ds , ∀k), on the control                                      P ROOF OF L EMMA 1
+performance of the SC3 loop. The results are presented in                                                                       3
+                                                                                 In (PA-2), the optimal values of DSC , Du , and Dd are
+Fig. 13. From the figure, we can see that the LQR cost                         their maximum value allowed. As a result, the equality in
+decreases as the CPU frequency increases. This is because                      constraints (18c)–(18d) must hold at the optimal solution,
+increasing the CPU frequency reduces the computing time,
+allowing the saved time to be reallocated to increase the                                    (Du )∗ = tu B u ru , (Dd )∗ = td B d rd .       (38)
+closed-loop negentropy rate, thereby lowering the LQR cost.                    If ρ(Du )∗ 6= (Dd )∗ at the optimal solution, taking
+As for the sensing rate, the curves for different sensing rates                ρ(Du )∗ > (Dd )∗ as an example, we thus have (DSC )∗ =
+                                                                                                                                       3
+
+and the same CPU frequency are close in the bandwidth-                         min{ρ(Du )∗ , (Dd )∗ } = (Dd )∗ . In this case, (Dd )∗ can be
+limited region. In this case, the bottleneck of the SC3 loop is                improved by reallocating UL transmission time to the DL as
+communication, resulting in the sensing data cannot be fully                   long as ρ(Du )∗ > (Dd )∗ . This improves the objective by
+transmitted and processed in each SC3 cycle. In contrast,                                                                   3
+in the bandwidth-sufficient region, the curves for different                                   td ↑ → (Dd )∗ ↑→ (DSC )∗ ↑,                   (39)
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                                      3343
+
+
+                                                   3
+which contradicts the assumption that (DSC )∗ is optimal. If          For convenience, we introduce a function to express the
+ρ(Du )∗ < (Dd )∗ , we can use the similar reasoning to show         constraint (31b) in (PB-2),
+           3
+that (DSC )∗ can be improved. Therefore, neither ρ(Du )∗ >                                               1           1
+                                                                                              3       Bk r comm + fk r comp                 1
+(Dd )∗ nor ρ(Du )∗ < (Dd )∗ hold, meaning that ρ(Du )∗ =                 G(Bk , fk , DkSC ) ,                                         −       3 .            (45)
+(Dd )∗ .                                                                                                           Tk                     DkSC
+   Furthermore, based on ρ(Du )∗ = (Dd )∗ , we have                 Denote the results obtained in the s-th iteration as
+                                                                                            3
+  u u u
+ρt B r = td B d rd . The optimal time for the DL transmission       {(Bk )s , (fk )s , (DkSC )s , (lk )s }. The constraint (31b) in the s-th
+and computing can be expressed as a function of the optimal         iteration can be expressed as
+time for the UL transmission,                                                                              3            3
+
+                  u ∗    u u                   u ∗     u u
+                                                                                    G(Bk , fk , DkSC |(DkSC )s−1 ) ⩽ 0,                                      (46)
+       d ∗   ρ(t ) B r               α(t ) B r
+      (t ) =           , (tcomp )∗ =           .             (40)                                 3            3
+                                                                    where G(Bk , fk , DkSC |(DkSC )s−1 ) represents the Taylor
+                B d rd                    f                                                      3           3
+                                                                    expansion of G(Bk , fk , DkSC ) at (DkSC )s−1 . Since − x1 is
+                                                                                                                              
+In addition, the cycle-time constraint (18e) must be satisfied
+                                                                    a concave expression for x when x > 0, its Taylor expansion
+as an equality at the optimal solution,
+                                                                    is greater than or equal to the original value. Therefore, we
+                               αDu                                  have the following inequalities:
+                  (tu )∗ +         + (td )∗ = T.             (41)
+                                f                                                                                  3                      3
+                                                                           G((Bk )s−1 , (fk )s−1 , (DkSC )s−1 |(DkSC )s−1 )
+By substituting (40) into (41), we obtain the optimal expres-                                                           3
+
+sion of the UL transmission time,                                           = G((Bk )s−1 , (fk )s−1 , (DkSC )s−1 )
+                                                                                                                        3                         3
+                   αtu B u ru   ρ(tu )∗ B u ru                              ⩽ G((Bk )s−1 , (fk )s−1 , (DkSC )s−1 |(DkSC )s−2 )
+          (tu )∗ +            +                =T ⇒
+                       f           B d rd                                   ⩽ 0.                                                                             (47)
+                                1                                                                                                 3
+          (tu )∗ =
+                              ρB u r u                              This shows that {(Bk )s−1 , (fk )s−1 , (DkSC )s−1 } is a feasible
+                       1        α      1 T.                  (42)
+                     ρB u r u + ρf + B d r d
+                                                                                                                   K
+                                                                                                                      (lk )s−1 is an
+                                                                                                                   P
+                                                                    solution in the s-th iteration. As a result,
+Based on (tu )∗ , we can further obtain (td )∗ and (tcomp )∗ by     achievable objective in the s-th iteration. Since in the s-th
+                                                                                                                                      k=1
+
+substituting (42) into (40).                                                                           3
+                                                                    iteration, {(Bk )s , (fk )s , (DkSC )s } is the optimal solution, the
+                                                                                                                  K           K
+                                                                                                                     (lk )s ⩽   (lk )s−1 .
+                                                                                                                  P           P
+                          A PPENDIX B                               corresponding objective satisfies that
+                                                                                                                            k=1                       k=1
+                     P ROOF OF T HEOREM 1                           According to the monotone bounded theorem, the proposed
+   In (PA-3), the objective is monotonically decreasing with        iterative algorithm is assured to converge.
+the UL&DL bandwidth. Therefore, the bandwidth constraint
+(22b) must be satisfied as an equality at the optimal solution,                                  A PPENDIX D
+                                                                                             P ROOF OF T HEOREM 2
+                     (B u )∗ + (B d )∗ = Bmax .              (43)
+                                                                       (PB-3) is a convex optimization problem and satisfies the
+          d ∗                  u ∗                                  Slater condition, which guarantees the strong duality. As a
+We let (B ) = Bmax −(B ) and substitute it to the objective.
+By calculating the first-order derivative of the objective and      result, the optimal solution to the dual problem is the same
+setting it to zero, we derive the optimal closed-form solution      as that of the primal problem. Therefore, we solve the dual
+for the bandwidth allocation as follows:                            problem of (PB-3) to obtain the closed-form solution for the
+           ∂
+               
+                    1           α              1
+                                                                   bandwidth. The dual problem is formulated as follows:
+                          +         +                   =0                                        K                                                   1
+         ∂B u ρB u ru         ρfmax   (Bmax − B u )rd                                             X            nk N (vk ) | det Mk | nk
+                 1                  1                                      (PB-4) max min                   2         comm −log | det A |)
+                                                                                         λ    B            nk (Tk Bk rk                k
+      ⇒−                 +                     =0                                                 k=1 2
+                                                                                                                               2
+
+             ρ(B u )2 ru     (Bmax − B u )2 rd
+                      √                                                                                        K
+                                                                                                                                              !
+                                                                                                               X
+                         rd Bmax                                                                      +λ               Bk − Bmax                            (48a)
+      ⇒(B u )∗ = √             √ .                         (44)
+                       ρru + rd                                                                                k=1
+                                                                                             s.t. λ ⩾ 0,                                                    (48b)
+Then, it is easy to further obtain (B d )∗ according to (43). By
+substituting (B u )∗ and (B d )∗ into (21) and (10), we further     where λ is the Lagrange multiplier. The Karush-Kuhn-Tucker
+derive the optimal expression of the closed-form negentropy         (KKT) condition of (PB-4) is given by
+            3
+rate, (DSC )∗ , and the LQR cost, (l)∗ .                                            XK                             1
+                                                                                 ∂          nk N (vk ) | det Mk | nk
+                                                                                            2        comm −log | det A |)
+                                                                                ∂Bk        n (Tk Bk rk                k
+                                                                                     k=1 2 k
+                                                                                                              2
+                      A PPENDIX C
+                                                                                           K
+                                                                                                             !
+     P ROOF OF THE C ONVERGENCE OF A LGORITHM 1                                           X                     
+                                                                                    +λ        Bk − Bmax           =0      (49a)
+   We prove the convergence of the proposed algorithm by
+                                                                                                  k=1
+proving the optimization process leads to a non-increasing                         K
+objective. We first prove that the solution in the (s − 1)-th                      X
+                                                                                         Bk − Bmax = 0                                                      (49b)
+iteration is a feasible solution in the s-th iteration.
+                                                                                   k=1
+3344                                                                IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+                                      K                                                                  2               1
+                                                                                                                              
+                                              nk
+                                                                 2In2Tk rkcomm N (vk )| det Ak | nk | det Mk | nk
+                                      P
+                                                 comm log2
+                                            2Tk rk
+                                                                                                                                          Bmax
+                        log2 (λ) = k=1                                   K
+                                                                                                                                  −   K
+                                                                                                                                                                   (51)
+                                                                         P            nk                                              P        nk
+                                                                                 comm T
+                                                                               2rk                                                            comm T
+                                                                                                                                            2rk
+                                                                                       k                                                            k
+                                                                         k=1                                                          k=1
+
+
+
+                      K
+                                        !
+                      X                                                                    [12] C. Lei, W. Feng, P. Wei, Y. Chen, N. Ge, and S. Mao, “Edge information
+                λ           Bk − Bmax       =0                               (49c)              hub: Orchestrating satellites, UAVs, MEC, sensing and communications
+                      k=1                                                                       for 6G closed-loop controls,” IEEE J. Sel. Areas Commun., vol. 43,
+                λ ⩾ 0,                                                       (49d)              no. 1, pp. 5–20, Jan. 2025.
+                                                                                           [13] A. Rijnberk and H. W. Vries, Medical History and Physical Examination
+                                                                                                in Companion Animals. Dordrecht, The Netherlands: Springer, 1995.
+where the constraint (49b) is an equality since the available                              [14] C. E. Shannon, “A mathematical theory of communication,” Bell Syst.
+bandwidth must be fully utilized at the optimal solution. By                                    Tech. J., vol. 27, no. 3, pp. 379–423, 1948.
+calculating (49a), the optimal bandwidth is expressed as a                                 [15] N. Wiener, Cybernetics or Control and Communication in the Animal
+                                                                                                and the Machine. Cambridge, MA, USA: MIT Press, 2019.
+function of λ,                                                                             [16] W. Feng, Y. Wang, Y. Chen, N. Ge, and C.-X. Wang, “Structured
+                   nk                                                                           satellite-UAV-terrestrial networks for 6G Internet of Things,” IEEE
+ (Bk )∗ =                                                                                       Netw., vol. 38, no. 4, pp. 48–54, Jul. 2024.
+                2Tk rkcomm                                                                 [17] P. Park, S. Coleri Ergen, C. Fischione, C. Lu, and K. H. Johans-
+                                                       2                 1    !                 son, “Wireless network design for control systems: A survey,” IEEE
+                    2In2Tk rkcomm N (vk )| det Ak | nk | det Mk | nk                            Commun. Surveys Tuts., vol. 20, no. 2, pp. 978–1013, 2nd Quart.,
+       × log2                                                                     .             2018.
+                                           λ
+                                                                                           [18] S. Tatikonda and S. Mitter, “Control under communication constraints,”
+                                                                              (50)              IEEE Trans. Autom. Control, vol. 49, no. 7, pp. 1056–1068,
+                                                                                                Jul. 2004.
+We further substitute (50) into (49b) to get the expression of                             [19] V. Kostina and B. Hassibi, “Rate-cost tradeoffs in control,” IEEE Trans.
+the Lagrange multiplier (51), as shown at the top of the page.                                  Autom. Control, vol. 64, no. 11, pp. 4525–4540, Nov. 2019.
+                                                                                           [20] D. Baumann, F. Mager, M. Zimmerling, and S. Trimpe, “Control-guided
+By back-substituting the above expression into (50), we thus                                    communication: Efficient resource arbitration and allocation in multi-
+obtain the closed-form solution for the inter-loop bandwidth                                    hop wireless control systems,” IEEE Control Syst. Lett., vol. 4, no. 1,
+allocation, as given in (35) in Theorem 2.                                                      pp. 127–132, Jan. 2020.
+                                                                                           [21] K. Gatsis, A. Ribeiro, and G. J. Pappas, “Optimal power management in
+                                                                                                wireless control systems,” IEEE Trans. Autom. Control, vol. 59, no. 6,
+                                                                                                pp. 1495–1510, Jun. 2014.
+                               R EFERENCES                                                 [22] X. Wang, C. Chen, J. He, S. Zhu, and X. Guan, “AoI-aware control
+                                                                                                and communication co-design for industrial IoT systems,” IEEE Internet
+[1]  E. A. Lee, “The past, present and future of cyber-physical systems: A                      Things J., vol. 8, no. 10, pp. 8464–8473, May 2021.
+     focus on models,” Sensors, vol. 15, no. 3, pp. 4837–4869, 2015.                       [23] C. Lei, W. Feng, J. Wang, S. Jin, and N. Ge, “Control-oriented
+[2] H. Chen, “Applications of cyber-physical system: A literature review,”                      power allocation for integrated satellite-UAV networks,” IEEE Wireless
+     J. Ind. Integr. Manage., vol. 2, no. 3, Sep. 2017, Art. no. 1750012.                       Commun. Lett., vol. 12, no. 5, pp. 883–887, May 2023.
+[3] P. Jain, P. K. Aggarwal, P. Chaudhary, K. Makar, J. Mehta, and R. Garg,                [24] X. Fang, C. Lei, W. Feng, Y. Chen, N. Ge, and S. Jin, “Structured
+     “Convergence of IoT and CPS in Robotics,” in Emergence of Cyber                            connectivity for 6G reflex arc: Task-oriented virtual user and new
+     Physical System and IoT in Smart Automation and Robotics, Cham,                            uplink-downlink tradeoff,” IEEE Wireless Commun. Lett., vol. 14, no. 1,
+     Switzerland: Springer, 2021.                                                               pp. 198–202, Jan. 2025.
+[4] H. Lyu, J. Yan, J. Zhang, Z. Pang, G. Yang, and A. J. Isaksson,                        [25] B. Chang, L. Zhang, L. Li, G. Zhao, and Z. Chen, “Optimizing
+     “Cloud–fog automation: Heterogenous applications over new-generation                       resource allocation in URLLC for real-time wireless control
+     infrastructure of virtualized computing and converged networks,” IEEE                      systems,” IEEE Trans. Veh. Technol., vol. 68, no. 9, pp. 8916–8927,
+     Ind. Electron. Mag., vol. 18, no. 4, pp. 30–42, Dec. 2024.                                 Sep. 2019.
+[5] J. Jin, K. Yu, J. Kua, N. Zhang, Z. Pang, and Q.-L. Han, “Cloud-                       [26] H. Yang, K. Zhang, K. Zheng, and Y. Qian, “Leveraging linear
+     fog automation: Vision, enabling technologies, and future research                         quadratic regulator cost and energy consumption for ultrareliable and
+     directions,” IEEE Trans. Ind. Informat., vol. 20, no. 2, pp. 1039–1054,                    low-latency IoT control systems,” IEEE Internet Things J., vol. 7, no. 9,
+     Feb. 2024.                                                                                 pp. 8356–8371, Sep. 2020.
+[6] R. Mariappan, P. V. Narayana Reddy, and C. Wu, “Cyber physical system                  [27] J. Cao, X. Zhu, S. Sun, P. Popovskiz, S. Feng, and Y. Jiang, “Age
+     using intelligent wireless sensor actuator networks for disaster recovery,”                of loop oriented wireless networked control system: Communication
+     in Proc. Int. Conf. Comput. Intell. Commun. Netw. (CICN), Jabalpur,                        and control co-design in the FBL regime,” in Proc. IEEE Conf.
+     India, Dec. 2015, pp. 95–99.                                                               Comput. Commun. Workshops, New York, NY, USA, May 2022,
+[7] X. Fang, W. Feng, Y. Chen, N. Ge, and G. Zheng, “Control-oriented deep                      pp. 1–6.
+     space communications for unmanned space exploration,” IEEE Trans.                     [28] X. Lu et al., “Full-loop AoI based joint design of control and deter-
+     Wireless Commun., vol. 23, no. 10, pp. 14466–14481, Oct. 2024.                             ministic transmission for industrial CPS,” IEEE Trans. Ind. Informat.,
+[8] X. Fang, W. Feng, T. Wei, Y. Chen, N. Ge, and C.-X. Wang, “5G                               vol. 19, no. 11, pp. 10727–10738, Nov. 2023.
+     embraces satellites for 6G ubiquitous IoT: Basic models for integrated                [29] K. Huang, W. Liu, Y. Li, B. Vucetic, and A. Savkin, “Optimal
+     satellite terrestrial networks,” IEEE Internet Things J., vol. 8, no. 18,                  downlink–uplink scheduling of wireless networked control for indus-
+     pp. 14399–14417, Sep. 2021.                                                                trial IoT,” IEEE Internet Things J., vol. 7, no. 3, pp. 1756–1772,
+[9] W. Feng et al., “Radio map-based cognitive satellite-UAV networks                           Mar. 2020.
+     towards 6G on-demand coverage,” IEEE Trans. Cognit. Commun. Netw.,                    [30] K. Bhimavarapu, Z. Pang, O. Dobrijevic, and P. Wiatr, “Unobtrusive,
+     vol. 10, no. 3, pp. 1075–1089, Jun. 2024.                                                  accurate, and live measurements of network latency and reliability for
+[10] X. Fang et al., “NOMA-based hybrid satellite-UAV-terrestrial networks                      time-critical Internet of Things,” IEEE Internet Things Mag., vol. 5,
+     for 6G maritime coverage,” IEEE Trans. Wireless Commun., vol. 22,                          no. 3, pp. 38–43, Sep. 2022.
+     no. 1, pp. 138–152, Jan. 2023.                                                        [31] H. Lyu, Z. Pang, K. Bhimavarapu, and G. Yang, “Impacts of wireless on
+[11] D. Jones, C. Snider, A. Nassehi, J. Yon, and B. Hicks, “Characterising                     robot control: The network hardware-in-the-loop simulation framework
+     the digital twin: A systematic literature review,” CIRP J. Manuf. Sci.                     and real-life comparisons,” IEEE Trans. Ind. Informat., vol. 19, no. 9,
+     Technol., vol. 29, pp. 36–52, May 2020.                                                    pp. 9255–9265, Sep. 2023.
+FANG et al.: SC3 CLOSED-LOOP OPTIMIZATION FOR 6G DIGITAL TWIN-EMPOWERED ROBOTIC SYSTEMS                                                                  3345
+
+
+
+[32] H. Lyu, Z. Pang, A. Bengtsson, S. Nilsson, A. J. Isaksson, and             [53] F. Wang, J. Xu, X. Wang, and S. Cui, “Joint offloading and computing
+     G. Yang, “Latency-aware control for wireless cloud-fog automation:              optimization in wireless powered mobile-edge computing systems,”
+     Framework and case study,” IEEE Trans. Automat. Sci. Eng., vol. 22,             IEEE Trans. Wireless Commun., vol. 17, no. 3, pp. 1784–1797, Mar.
+     pp. 5400–5410, 2025.                                                            2018.
+[33] J. Liu and Q. Zhang, “Offloading schemes in mobile edge computing          [54] M. C. Grant and S. P. Boyd. (Jan. 2020). The CVX Users’ Guide.
+     for ultra-reliable low latency communications,” IEEE Access, vol. 6,            [Online]. Available: https://cvxr.com/cvx/doc/CVX.pdf
+     pp. 12825–12837, 2018.
+[34] L. Ferdouse, A. Anpalagan, and S. Erkucuk, “Joint communica-
+     tion and computing resource allocation in 5G cloud radio access
+     networks,” IEEE Trans. Veh. Technol., vol. 68, no. 9, pp. 9122–9135,
+     Sep. 2019.
+[35] X. Cao, F. Wang, J. Xu, R. Zhang, and S. Cui, “Joint computa-
+     tion and communication cooperation for energy-efficient mobile edge
+     computing,” IEEE Internet Things J., vol. 6, no. 3, pp. 4188–4200, Jun.                           Xinran Fang received the B.S. degree from the
+     2019.                                                                                             School of Electronic and Information Engineer-
+[36] W. Wen, Y. Fu, T. Q. S. Quek, F.-C. Zheng, and S. Jin, “Joint                                     ing, Beijing Jiaotong University, Beijing, China, in
+     uplink/downlink sub-channel, bit and time allocation for multi-access                             2020. She is currently pursuing the Ph.D. degree
+     edge computing,” IEEE Commun. Lett., vol. 23, no. 10, pp. 1811–1815,                              with the Department of Electronic Engineering,
+     Oct. 2019.                                                                                        Tsinghua University, Beijing. Her research interests
+[37] Z. Jian, W. Muqing, and Z. Min, “Joint computation offloading and                                 include maritime communication, integrated space-
+     resource allocation in C-RAN with MEC based on spectrum efficiency,”                              air-ground networks, communication and control
+     IEEE Access, vol. 7, pp. 79056–79068, 2019.                                                       co-design, and task-oriented communication.
+[38] S. Li, S. Lin, L. Cai, W. Li, and G. Zhu, “Joint resource alloca-
+     tion and computation offloading with time-varying fading channel in
+     vehicular edge computing,” IEEE Trans. Veh. Technol., vol. 69, no. 3,
+     pp. 3384–3398, Mar. 2020.
+[39] Z. Wang, X. Mu, Y. Liu, X. Xu, and P. Zhang, “NOMA-
+     aided joint communication, sensing, and multi-tier computing
+     systems,” IEEE J. Sel. Areas Commun., vol. 41, no. 3, pp. 574–588,
+     Mar. 2023.
+[40] W. R. Ghanem, V. Jamali, Q. Zhang, and R. Schober, “Joint uplink-
+     downlink resource allocation for OFDMA-URLLC MEC systems,” in                                     Chengleyang Lei received the B.S. degree from
+     Proc. IEEE Global Commun. Conf. (GLOBECOM), Taiwan, Dec. 2020,                                    the Department of Electronic Engineering, Tsinghua
+     pp. 1–7.                                                                                          University, Beijing, China, in 2021, where he is
+[41] J. Tian, D. Wang, H. Zhang, and D. Wu, “Service satisfaction-oriented                             currently pursuing the Ph.D. degree. His research
+     task offloading and UAV scheduling in UAV-enabled MEC networks,”                                  interests include the communication and control
+     IEEE Trans. Wireless Commun., vol. 22, no. 12, pp. 8949–8964, Dec.                                integration, coordinated satellite-AAV-terrestrial net-
+     2023.                                                                                             works, and future 6G technologies.
+[42] D. Wen et al., “Task-oriented sensing, computation, and communication
+     integration for multi-device edge AI,” IEEE Trans. Wireless Commun.,
+     vol. 23, no. 3, pp. 2486–2502, Mar. 2024.
+[43] A. M. Girgis, H. Seo, J. Park, and M. Bennis, “Semantic and
+     logical communication-control codesign for correlated dynamical
+     systems,” IEEE Internet Things J., vol. 11, no. 7, pp. 12631–12648,
+     Apr. 2024.
+[44] J. Shao, Y. Mao, and J. Zhang, “Learning task-oriented
+     communication for edge inference: An information bottleneck
+     approach,” IEEE J. Sel. Areas Commun., vol. 40, no. 1, pp. 197–211,                               Wei Feng (Senior Member, IEEE) received the B.S.
+     Jan. 2022.                                                                                        and Ph.D. degrees from the Department of Electronic
+[45] A. Mostaani, T. X. Vu, H. Habibi, S. Chatzinotas, and B. Ottersten,                               Engineering, Tsinghua University, Beijing, China,
+     “Task-oriented communication design at scale,” IEEE Trans. Commun.,                               in 2005 and 2010, respectively. He is currently a
+     vol. 73, no. 1, pp. 378–393, Jan. 2025.                                                           Professor with the Department of Electronic Engi-
+[46] C. Feng, K. Zheng, Y. Wang, K. Huang, and Q. Chen, “Goal-oriented                                 neering, Tsinghua University. His research interests
+     wireless communication resource allocation for cyber-physical systems,”                           include maritime communication networks, large-
+     IEEE Trans. Wireless Commun., vol. 23, no. 11, pp. 15768–15783, Nov.                              scale distributed antenna systems, and coordinated
+     2024.                                                                                             satellite-AAV-terrestrial networks. He serves as an
+[47] W. Wu, Y. Yang, Y. Deng, and A. Hamid Aghvami, “Goal-oriented                                     Assistant to the Editor-in-Chief for China Commu-
+     semantic communications for robotic waypoint transmission: The value                              nications.
+     and age of information approach,” IEEE Trans. Wireless Commun.,
+     vol. 23, no. 12, pp. 18903–18915, Dec. 2024.
+[48] T. Q. Dinh, J. Tang, Q. D. La, and T. Q. S. Quek, “Offloading in mobile
+     edge computing: Task allocation and computational frequency scaling,”
+     IEEE Trans. Commun., vol. 65, no. 8, pp. 3571–3584, Aug. 2017.
+[49] R. K. Mallik, M. Z. Win, J. W. Shao, M.-S. Alouini, and A. J. Goldsmith,
+     “Channel capacity of adaptive transmission with maximal ratio com-
+     bining in correlated Rayleigh fading,” IEEE Trans. Wireless Commun.,
+     vol. 3, no. 4, pp. 1124–1133, Jul. 2004.                                                          Yunfei Chen (Senior Member, IEEE) received the
+[50] M. Liu, S. Fang, H. Dong, and C. Xu, “Review of digital twin about                                B.E. and M.E. degrees in electronics engineer-
+     concepts, technologies, and industrial applications,” J. Manuf. Syst.,                            ing from Shanghai Jiao Tong University, Shanghai,
+     vol. 58, pp. 346–361, Jan. 2021.                                                                  China, in 1998 and 2001, respectively, and the Ph.D.
+[51] L. B. Prasad, B. Tyagi, and H. O. Gupta, “Optimal control of nonlinear                            degree from the University of Alberta, Edmonton,
+     inverted pendulum dynamical system with disturbance input using PID                               AB, Canada, in 2006. He is currently a Professor
+     controller & LQR,” in Proc. IEEE Int. Conf. Control Syst., Comput.                                with the Department of Engineering, University of
+     Eng., Penang, Malaysia, Nov. 2011, pp. 540–545.                                                   Durham, U.K. His research interests include wireless
+[52] Y. Ye, L. Shi, X. Chu, D. Li, and G. Lu, “Delay minimization in wireless                          communications, performance analysis, joint radar
+     powered mobile edge computing with hybrid BackCom and AT,” IEEE                                   communications designs, cognitive radios, wireless
+     Wireless Commun. Lett., vol. 10, no. 7, pp. 1532–1536, Jul. 2021.                                 relaying, and energy harvesting.
+3346                                                         IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 43, NO. 10, OCTOBER 2025
+
+
+
+                       Ming Xiao (Senior Member, IEEE) received the                                      Cheng-Xiang Wang (Fellow, IEEE) received the
+                       Ph.D. degree from the Chalmers University of                                      B.Sc. and M.Eng. degrees in communication and
+                       Technology, Sweden, in November 2007. Since                                       information systems from Shandong University,
+                       November 2007, he has been with the Department                                    China, in 1997 and 2000, respectively, and the Ph.D.
+                       of Information Science and Engineering, School of                                 degree in wireless communications from Aalborg
+                       Electrical Engineering and Computer Science, Royal                                University, Denmark, in 2004.
+                       Institute of Technology, Sweden, where he is cur-                                    He was a Research Assistant with Hamburg Uni-
+                       rently a Professor. He received the IEEE Vehicular                                versity of Technology, Hamburg, Germany, from
+                       Technology Society Best Magazine Paper Award in                                   2000 to 2001; a Visiting Researcher with Siemens
+                       2023. He was an Editor of IEEE T RANSACTIONS                                      AG Mobile Phones, Munich, Germany, in 2004; and
+                       ON C OMMUNICATIONS from 2012 to 2017 and has                                      a Research Fellow with the University of Agder,
+been an Editor of IEEE T RANSACTIONS ON W IRELESS C OMMUNICATIONS             Grimstad, Norway, from 2001 to 2005. He was with Heriot-Watt University,
+since 2018. He has been an Area Editor of IEEE O PEN J OURNAL OF THE          Edinburgh, U.K., from 2005 to 2018, where he was promoted to a Professor
+C OMMUNICATION S OCIETY since 2019.                                           in 2011. He has been with Southeast University, Nanjing, China, as a
+                                                                              Professor, since 2018. He is currently the Executive Dean of the School
+                                                                              of Information Science and Engineering. He is also a Professor with the
+                                                                              Pervasive Communication Research Center, Purple Mountain Laboratories,
+                                                                              Nanjing. He has authored four books, three book chapters, and over 620
+                                                                              papers in refereed journals and conference proceedings, including 28 highly
+                                                                              cited papers. He has also delivered 32 invited keynote speeches/talks and 21
+                                                                              tutorials in international conferences. His current research interests include
+                                                                              wireless channel measurements and modeling, 6G wireless communication
+                                                                              networks, and electromagnetic information theory.
+                                                                                 Dr. Wang is a member of the Academia Europaea (The Academy of Europe)
+                                                                              and European Academy of Sciences and Arts (EASA), a fellow of the Royal
+                                                                              Society of Edinburgh (FRSE) and IET, an IEEE Communications Society
+                                                                              Distinguished Lecturer in 2019 and 2020, and a Highly-Cited Researcher
+                                                                              recognized by Clarivate Analytics from 2017 to 2020. He received the IEEE
+                        Ning Ge (Member, IEEE) received the B.S. and          Neal Shepherd Memorial Best Propagation Paper Award in 2024 and 19
+                        Ph.D. degrees from Tsinghua University, Beijing,      best paper awards from international conferences. He has served as the
+                        China, in 1993 and 1997, respectively. From 1998      TPC chair and the general chair for more than 30 international confer-
+                        to 2000, he worked on the development of ATM          ences. He is currently an Executive Editorial Committee Member of IEEE
+                        switch fabric ASIC with ADC Telecommunications,       T RANSACTIONS ON W IRELESS C OMMUNICATIONS. He has served as an
+                        Dallas, TX, USA. Since 2000, he has been with the     Editor for over 16 international journals, including IEEE T RANSACTIONS ON
+                        Department of Electronics Engineering, Tsinghua       W IRELESS C OMMUNICATIONS from 2007 to 2009, IEEE T RANSACTIONS
+                        University, where he is currently a Professor and     ON V EHICULAR T ECHNOLOGY from 2011 to 2017, and IEEE T RANSAC -
+                        the Director of the Communication Institute. His      TIONS ON C OMMUNICATIONS from 2015 to 2017. He was a Guest Editor
+                        research interests include ASIC design, short-range   of IEEE J OURNAL ON S ELECTED A REAS IN C OMMUNICATIONS, IEEE
+                        wireless communication, and wireless communica-       T RANSACTIONS ON B IG DATA, and IEEE T RANSACTIONS ON C OGNITIVE
+tions. He is a Senior Member of CIC and CIE.                                  C OMMUNICATIONS AND N ETWORKING.
+

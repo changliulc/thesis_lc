@@ -1,0 +1,50 @@
+% !TeX root = ../xdupgthesis_template_lc.tex
+
+\ExplSyntaxOn
+\dim_new:N \l__blind_bio_label_dim
+\dim_new:N \l__blind_bio_labelsep_dim
+\dim_set:Nn \l__blind_bio_label_dim { 1.4em }
+\dim_set:Nn \l__blind_bio_labelsep_dim { 0.55em }
+\cs_new_protected:Npn \__blind_bio_item:nn #1#2
+  {
+    \par
+    \noindent
+    \hangindent=\dim_eval:n
+      { \l__xdu_bio_indent_dim + \l__blind_bio_label_dim + \l__blind_bio_labelsep_dim }
+    \hangafter=1
+    \raggedright
+    \skip_horizontal:N \l__xdu_bio_indent_dim
+    \makebox[\dim_use:N \l__blind_bio_label_dim][l]{[#1]}
+    \skip_horizontal:N \l__blind_bio_labelsep_dim
+    #2
+    \par
+  }
+\cs_new_protected:Npn \bioresitem #1#2
+  { \__blind_bio_item:nn {#1} {#2} }
+\ExplSyntaxOff
+
+\section{基本情况}
+
+\section{教育背景}
+
+\section{攻读硕士学位期间的研究成果}
+
+% 如需保留“发表学术论文”小节，可按模板补回：
+% \subsection{发表学术论文}
+% \begin{bioreslist}
+% \item XXX, XXX, XXX. 论文题目[J]. 期刊名, 年, 卷(期): 起止页码.
+% \end{bioreslist}
+
+\subsection{申请（授权）专利、软件著作权}
+\bioresitem{1}{XXX 等．一种低功耗地磁车辆检测方法及系统：中国，申请号：2026\allowbreak1023\allowbreak90620，申请日期：2026 年 02 月 28 日（共 6 位发明人，本人为第二发明人，学生排名第一）。}
+\bioresitem{2}{XXX 等．面向多次漏检的双车道外侧地磁车辆轨迹连续重构方法及系统：中国，申请号：2026\allowbreak1023\allowbreak90508，申请日期：2026 年 02 月 28 日（共 6 位发明人，本人为第三发明人，学生排名第二）。}
+\bioresitem{3}{XXX 等．单地磁异常停车检测与事件上报软件 V1.0：中国，受理号：2026\allowbreak R11S0463698，申请日期：2026 年 02 月 03 日（共 5 位作者，本人排名第二，学生排名第一）。}
+\bioresitem{4}{XXX 等．基于地磁传感器的拥堵车辆检测仿真系统 V1.0：中国，受理号：2026R11\allowbreak S0463768，申请日期：2026 年 02 月 03 日（共 6 位作者，本人排名第三，学生排名第二）。}
+\bioresitem{5}{XXX 等．基于深度学习的小车换道意图识别和轨迹预测系统 V1.0：中国，受理号：2026R11\allowbreak S0463705，申请日期：2026 年 02 月 04 日（共 7 位作者，本人排名第四，学生排名第三）。}
+
+\subsection{参与科研项目及获奖}
+\bioresitem{1}{国家自然科学基金重点支持项目，车联网环境的智能汽车多模态高精度融合定位（U21A20446），2022.01-2025.12，已结题，负责地磁组车辆检测算法的开发与研究。}
+\bioresitem{2}{荣获 2023 年度至 2024 年度西安电子科技大学优秀研究生荣誉称号。}
+\bioresitem{3}{荣获 2023 年度至 2024 年度西安电子科技大学二等奖学金。}
+\bioresitem{4}{荣获 2024 年度至 2025 年度西安电子科技大学二等奖学金。}
+\bioresitem{5}{荣获 2025 年度至 2026 年度西安电子科技大学三等奖学金。}

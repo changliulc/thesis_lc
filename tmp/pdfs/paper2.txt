@@ -1,0 +1,963 @@
+2880                                                     IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+
+       Uncertainty Quantification for Safe and Reliable
+              Autonomous Vehicles: A Review
+                of Methods and Applications
+Ke Wang , Member, IEEE, Chongqiang Shen, Student Member, IEEE, Xingcan Li, and Jianbo Lu , Fellow, IEEE
+
+
+   Abstract— In the past decade, deep learning has been widely
+applied across various fields. However, its applicability in
+open-world scenarios is often limited due to the lack of
+quantifying uncertainty in both data and models. In recent
+years, a multitude of uncertainty quantification (UQ) approaches
+for neural networks have emerged and found applications in
+safety-critical domains such as autonomous vehicles and medical
+analysis. This paper aims to review the latest advancements
+in UQ methods and investigate their application specifically in
+the field of computer vision and autonomous vehicles. Initially,
+we identify several key qualifications, namely practicability,
+robustness, accuracy, scalability, and efficiency (referred to as
+PRASE), and employ them as evaluation criteria throughout this                 Fig. 1.   Trends of the number of related papers in recent years.
+study. By considering these criteria as uniform measurements,
+we meticulously evaluate and compare the performance of                        path planning and behavior decision-making of autonomous
+different types of UQ methods, including Bayesian methods,
+ensemble methods, and single deterministic methods. Further-                   vehicles [3]. Nevertheless, the operating environment for
+more, we delve into the discussion of their application in diverse             autonomous driving is complex and ever-changing, and the
+tasks within the autonomous vehicle domain, such as semantic                   cost of making mistakes is very high, the robustness of the
+segmentation, object detection, depth estimation, and end-to-                  neural network models has become one of the most important
+end control. Through comprehensive analysis and comparison,                    concern [4], [5], [6]. In these high-uncertainty scenarios,
+we identify a range of challenges and propose future research                  uncertainty quantification is of great significance for ensuring
+directions in this field. Our findings shed light on the impor-
+tance of addressing uncertainty quantification in deep learning                the safety of autonomous driving. The role of uncertainty
+models and provide insights into enhancing the reliability and                 quantification is to enable machine learning systems to “know
+performance of autonomous vehicles in real-world scenarios.                    what they don’t know” [7], [8], that is, for the systems to
+   Index Terms— Uncertainty quantification, autonomous vehi-                   recognize and explain situations where they are more prone to
+cles, safety AI, scientific machine learning.                                  errors. Therefore, current autonomous driving algorithms need
+                                                                               to focus on the uncertain factors throughout the entire process,
+                    I. I NTRODUCTION                                           enabling autonomous vehicles to detect scenarios they cannot
+                                                                               handle and issue alerts, thereby avoiding unsafe decisions
+I  N RECENT years, the application of deep learning has
+   achieved great success in various fields [1], especially in
+autonomous vehicles [2]. Deep neural network effectively
+                                                                               made by the system.
+                                                                                  Based on the above issues, many studies have been con-
+                                                                               ducted on modeling uncertainty for deep neural networks as
+promotes the development on perception and localization,
+                                                                               shown in Fig.1. Denker and LeCun [9] proposed transforming
+  Received 29 October 2023; revised 7 September 2024 and 3 December            the output of neural network into probabilistic distribution,
+2024; accepted 18 January 2025. Date of publication 10 February 2025;          so that the results can represent the confidence of the model to
+date of current version 3 March 2025. This work was supported in part by
+the National Natural Science Foundation of China under Grant 52372408,
+                                                                               predict the results. On this basis, most methods proposed more
+in part by the Science and Technology Innovation Key Research and Devel-       accurate approximate Bayesian inference with the inherent
+opment Program of Chongqing under Grant CSTB2023TIAD-STX0035, and              probability distribution characteristics of Bayesian networks,
+in part by the National Key Research and Development Program of China          including deterministic approach [10], Hamiltonian Markov
+under Grant 2022YFB2503300. The Associate Editor for this article was
+H. M. A. Aziz. (Corresponding author: Ke Wang.)                                Chain Monte Carlo, variational inference [11]. Nevertheless,
+  Ke Wang is with the State Key Laboratory of Mechanical Transmis-             these methods are computationally expensive and slow when
+sion for Advanced Equipment and the College of Mechanical and Vehicle          integrated into a deep and complicated architecture or the
+Engineering, Chongqing University, Chongqing 400044, China (e-mail:
+kewang@cqu.edu.cn).                                                            dataset size grows to millions to even billions. In this case,
+  Chongqiang Shen and Xingcan Li are with the College of Mechanical            Gal and Ghahramani [12] proposed Monte Carlo Dropout
+and Vehicle Engineering, Chongqing University, Chongqing 400044, China         (MC Dropout) using dropout [13] as a regularization term
+(e-mail: 20176406@cqu.edu.cn).
+  Jianbo Lu is with the Department of Vehicle Engineering, Nikola Motor
+                                                                               to estimate uncertainty without changing the model structure.
+Company, Phoenix, AZ 85040 USA (e-mail: jianbo.lu@ieee.org).                   MC Dropout specifies that Dropout is used not only during
+  Digital Object Identifier 10.1109/TITS.2025.3532803                          training but also during testing, so that the network produces
+               1558-0016 © 2025 IEEE. All rights reserved, including rights for text and data mining, and training of artificial intelligence
+                     and similar technologies. Personal use is permitted, but republication/redistribution requires IEEE permission.
+                                     See https://www.ieee.org/publications/rights/index.html for more information.
+         Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                    2881
+
+
+
+                                                                       TABLE I
+                                        S UMMARIZATION OF A N UMBER OF R ELATED R EVIEWS S INCE 2018
+
+
+
+
+different outputs for the same input. Based on this, many                     Uncertainty in autonomous vehicles represents the unknown
+researchers have proposed effective improvements [14], [15],                  and variability in the open world, as well as the inherent
+[16], [17]. Furthermore, Ensemble learning is also one of the                 ambiguity within the system. Whether these uncertainties can
+most widely-used types of UQ methods, which was firstly                       be clearly quantified or even reduced is of great significance.
+introduced and discussed in order to improve the accuracy on a                This paper detailedly discussed and compared the application
+prediction. Lakshminarayanan et al. [18] introduced an ensem-                 in different tasks of autonomous vehicles in section IV.
+ble training pipeline to estimate uncertainty within DNNs.                       Currently, review papers related to uncertainty quantification
+Ensemble methods [19], [20], [21], [22] have the advantages                   can be broadly categorized into two types, the first category
+of high accuracy, good robustness, and strong extensibility,                  is a summary of uncertainty quantification methods, and
+and could be employed to large-scale and complex structures.                  the second category is to review the application of deep
+And in recent years, some studies [23], [24], [25], [26], [27],               learning uncertainty in one or more fields, as Table I shows.
+[28] tackled this problem by proposing uncertainty quantifi-                  However, the published review papers cannot completely
+cation methods based on single deterministic network. The                     cover all relevant content. Therefore, it is still necessary to
+advantages of these methods are short running time and low                    summarize the rapid development of UQ. First, most of the
+computational cost. This paper detailedly summarized and                      reviews on uncertainty quantification methods summarized the
+compared three types of uncertainty quantification methods                    effective quantification methods proposed in recent years. Ref-
+in section III.                                                               erence [31] is a comprehensive review of UQ methods used in
+   With the continuous proposal of uncertainty quantification                 ML and DL. It summarized UQ methods from the two preva-
+methods, uncertainty has been applied to many safety-critical                 lent methods and several important applications. Nevertheless,
+fields, such as medical analysis [38], [39], composite materials              it didn’t provide a helpful comparison of methods. Likewise,
+                                                                              Monte Carlo Dropout and Ensemble were introduced without
+[40], [41], robotics [42], earth observation(EO) [43], NLP.
+                                                                              enough comparison in [32]. Hüllermeier and Waegeman [33]
+Especially, uncertainty quantification greatly promote research
+                                                                              analyzed in detail the source of uncertainty in deep learning,
+on the safety and stability of autonomous vehicles, such as in
+                                                                              and quantification methods was comprehensively summarized.
+semantic segmentation [44], [45], [46], [47], object detection
+                                                                              In [57], the uncertainty estimation methods were divided into
+[48], [49], [50], [51] and depth estimation [52], [53], [54],
+                                                                              four categories for introduction and structural comparison.
+and there are also some studies that explored the use of uncer-
+                                                                              In addition, Kabir et al. [29] reviewed Neural Network-based
+tainty in end-to-end controllers for self-driving cars [55], [56].            PI (Prediction Intervals) construction methods, classifying the
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2882                                                     IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+
+Fig. 2.   The content structure of this paper.
+
+paper from the principle of the method, and the applications                      • Based on the proposed criteria, the applications of UQ
+of uncertainty in various fields were introduced. In addition,                      methods for trustworthy autonomous vehicle algorithms
+there are reviews summarizing the application of uncer-                             are discussed.
+tainty in related fields or tasks, especially in safety-critical                  • Current challenges and further research directions that
+applications [34], [35], [36]. Ovadia et al. [34] proposed a                        could greatly facilitate the development of uncertainty
+large-scale benchmark to compare the performance of various                         research in deep learning was pointed out.
+UQ methods under conditions of distributional shift and out-
+of-distribution (OOD) inputs. For autonomous vehicles, the                             II. E VALUATION C RITERIA FOR U NCERTAINTY
+applications of UQ methods in recent years have been sum-                                       Q UANTIFICATION A PPROACHES
+marized and compared in [35], however, this paper didn’t have                      In this section, we propose several evaluation criteria for
+enough introduction of the methods, resulting in the reader                     assessing UQ methods in order to evaluate the papers in a
+cannot distinguish the difference between the method and the                    uniform manner as shown in Fig.3. The notations used to
+application.                                                                    evaluate these algorithms according to the proposed criteria are
+   In summary, the previous reviews mainly focused on                           listed in Table II. It is important to note that some of the rules
+uncertainty quantification methods. Nevertheless, the rapid                     in our criteria are correlated with the classification of sources
+development of uncertainty methods has also promoted the                        of uncertainty. Therefore, it is necessary to clarify the sources
+application in various fields, especially in autonomous vehi-                   of uncertainty before delving into the detailed introduction of
+cles, there still lacks a thorough review of application of                     our PRASE criteria.
+UQ methods in autonomous vehicles. In addition, most of
+uncertainty quantification methods are introduced and summa-
+rized for classification without quantitative evaluation criteria,              A. Source of Uncertainty
+which is not effective and beneficial for readers to find a                        There are many factors arising the uncertainty of deep
+method suitable for their own research. And in recent years,                    learning, especially when deep learning is employed to the
+some innovative methods have emerged, it is still necessary to                  open world as shown in Fig.4. These sources can be divided
+continue to summarize and organize, Therefore, in this paper,                   into aleatoric(data) uncertainty and epistemic(model) uncer-
+we provide a review on uncertainty quantification methods and                   tainty [58]. Aleatoric uncertainty comes from the measurement
+the application in autonomous vehicles. The structure of this                   system itself, including the sensor noise, image resolution,
+paper is shown by Fig. 2.                                                       label noise [24], which is inherent and inevitable. Aleatoric
+   In Particular, Our Main Contributions Are as Follows:                        uncertainty can be considered a ‘known-unknown’ - the model
+   • A list of criteria as a uniform benchmark to evaluate the                  understands (knows) the data and can confidently state whether
+     performance of the UQ methods is proposed, to the best                     a given input is difficult to classify (an unknown) [59].
+     of our knowledge, this is the first criteria proposed to                   In addition to the two recognized sources of uncertainty,
+     compare the UQ methods.                                                    some papers have conducted more detailed classification and
+          Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                      2883
+
+
+
+                                                                         TABLE II
+                                                        D ETAILED Q UANTITATIVE RULES FOR PRASE
+
+
+
+
+                                                                                in the unknown world, but it can be reduced by active learning
+                                                                                [62], [63] and other measures.
+
+                                                                                B. UQ in Autonomous Vehicles
+                                                                                   In the field of AI safety, uncertainty quantification is crucial
+                                                                                for achieving AI safety and reliability. Specifically in the
+                                                                                field of autonomous driving, quantification thinking serves
+                                                                                as a guiding principle within ISO standards, plays a pivotal
+                                                                                role in both ISO 26262 [64] and ISO 21448 [65], the two
+                                                                                road safety standards. In ISO 21448 SOTIF, quantification
+                                                                                forms a two-tier safety acceptance criterion. The first tier
+Fig. 3.   The evaluation criteria for UQ in autonomous vehicles—PRASE.
+                                                                                of safety acceptance criteria (acceptance criteria for haz-
+                                                                                ardous behavior events in autonomous driving) emphasizes
+                                                                                quantitative measures, including controllability indicators and
+                                                                                SOTIF confidence indicators. The second tier of safety accep-
+                                                                                tance criteria (acceptance criteria for overall safety risks in
+                                                                                autonomous driving) considers whether the overall safety level
+                                                                                of the autonomous driving system poses unreasonable safety
+                                                                                risks [66]. To ensure that uncertainty quantification systems
+                                                                                meet these road safety standards, we believe that such systems
+                                                                                must possess sufficient Robustness to satisfy controllability
+                                                                                requirements, sufficient Accuracy to meet SOTIF confidence
+                                                                                levels, and sufficient Efficiency to avoid excessive complexity
+                                                                                that could introduce additional safety risks. Furthermore, many
+Fig. 4.   The source of uncertainty in deep learning.
+                                                                                studies on uncertainty quantification remain at the theoretical
+                                                                                stage, and uncertainty methods applied in other fields (such
+analysis [57], [58], [59], [60], especially for epistemic uncer-                as medical and NLP) have the potential to be adapted for
+tainty. Epistemic uncertainty can be divided into structured                    autonomous vehicles. Therefore, we also consider Practicabil-
+and parametric sources [60], which is caused by the lack                        ity and Scalability as valuable evaluation criteria. Ultimately,
+of comprehensive understanding of the target by the neural                      we propose these five evaluation indicators: Practicability,
+network, these uncertainties can be reduced by training more                    Robustness, Accuracy, Scalability, and Efficiency.
+data and optimizing the model. The structured uncertainty is
+mainly due to various changes in the open world and the
+data shift caused by the insufficient coverage of training data,                C. UQ Criteria-PRASE
+which is an ‘unknown-unknown’ [59], [61]. And the number                           (1) Practicability: refers to whether the proposed
+of parameters, the depth of the network, and the training                       UQ method is practical. The current types of uncertainty
+process are the main parametric sources [57]. In addition, the                  can be divided into aleatoric uncertainty and epistemic uncer-
+uncertainty caused by Out-of-Distribution is often classified as                tainty [58], and the methods for these two uncertainties are
+epistemic uncertainty, as it related to the insufficient coverage               different. We believe that the method of accurately capturing
+of training data. There are inherently many unknown classes                     one or two uncertainties is more practical, rather than vaguely
+
+          Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2884                                                   IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+mixing the two uncertainties. It is important to distinguish                  in different aspects, so each evaluation criterion has 2 levels,
+the sources of uncertainty, because in some machine learning                  as Table II shows.
+applications, it is not only necessary to know whether the                       This paper is the first to quantitatively evaluate and compare
+model is uncertain, but also why it is uncertain. In addition,                uncertainty quantification methods. The evaluation criteria can
+the UQ method is just a tool for the deep learning, which                     be used for comparison of uncertainty quantification methods
+is not suitable for changing the network structure too much,                  and its applications. It should be noted that the evaluation
+especially for some particularly complex networks. Therefore,                 criteria proposed in this paper is different from the evaluation
+we believe that the UQ methods that change the network                        metrics. The criteria are mainly used for the structural com-
+structure less is more practical. The discussion about which                  parison between different methods. Nevertheless, there is no
+uncertainty is more important is of different significance for                unified evaluation standard for the performance of UQ, due to
+different applications [67]. The quantification of data uncer-                the lack of the ground truth of uncertainty.
+tainty is more effective for large data situations and real-time                 Based on the evaluation criteria proposed above, this paper
+applications, while model uncertainty plays a pivotal role in                 evaluates and compares the uncertainty quantification methods
+small datasets and safety-critical applications, such as the                  proposed in recent years and their applications in autonomous
+perception system of autonomous vehicles.                                     vehicles. We hope that the comparison in this paper can help
+   (2) Robustness: refers to the generalization of the proposed               researchers find the advantages and disadvantages of each
+UQ method applied to challenging environment, such as out-                    method, so as to use the uncertainty quantification method
+of-distribution [68] and dataset shift [34]. In the open world,               suitable for their own research.
+there are always a large number of unknown classes. And the
+distributional uncertainty is caused by the mismatch between                    III. E VALUATION AND C OMPARISON OF U NCERTAINTY
+the training distribution and the test distribution (also known                              Q UANTIFICATION M ETHODS
+as dataset shift). Uncertainty quantification methods need to be                 In recent years, the proposed uncertainty quantification
+able to capture the increased uncertainty because of the above                methods can be divided into three categories: Bayesian meth-
+reasons, so as to provide effectively information and improve                 ods, ensemble methods, and single-network determination
+the robustness for model. And this characteristic can also help               methods. We summarize and discuss the different methods in
+some learning tasks, such as active learning.                                 turn, using the criteria presented in section II for comparison.
+   (3) Accuracy: refers to how accurate the uncertainty estima-
+tion is, which is the most important criterion for UQ methods.
+                                                                              A. Bayesian Methods
+Since there are many measurement metrics for uncertainty
+estimation [69], the metrics used in some papers reflect the                     Among the Bayesian methods, the early mainstream meth-
+accuracy of uncertainty estimation, however, the metrics used                 ods are Laplace approximation [10], Hamiltonian Markov
+in other papers are the prediction accuracy of the model itself,              Chain Monte Carlo, variational inference [11]. The first two
+the effectiveness of the proposed uncertainty quantification                  methods are not suitable for the current safety-critical tasks
+method is reflected by comparison, and the use of different                   due to their lack of scalability in both network architecture
+datasets will also have an impact on the accuracy of the esti-                and data size. And the variational inference method has been
+mation. Therefore, different situations need different analysis.              improved by many researchers to obtain good uncertainty pre-
+   (4) Scalability: refers to the ability of the proposed UQ                  diction results [70], [71], [72]. In recent studies, ABNN [73]
+method to be applied to large-scale or long-term tasks. For                   employs Bayesian normalization layers (BNL) [74] containing
+autonomous vehicles or other robots that works in large-scale                 Gaussian noise to replace the normalization layers, thereby
+outdoor environments, the method should be able to quantify                   converting deterministic DNNs into BNNs.Hron et al. intro-
+uncertainty in continuous time with finite system memory. Fur-                duce repriorisation [75], a data-dependent reparameterisation
+thermore, in addition to deep learning, some of the proposed                  which transforms a Bayesian neural network (BNN) posterior
+methods can also be applied to other AI learning tasks, such                  to a distribution whose KL divergence to the BNN prior van-
+as reinforcement learning, which is helpful for more complex                  ishes as layer widths grow. However, the effectiveness of this
+system.                                                                       method has only been proven on relatively small neural net-
+   (5) Efficiency: refers to whether the UQ method is efficient               works so far. Laurent et al. investigated the optimal approach
+and economical. Using as less as possible resources to process                for approximating the posterior [76], analyzed the connection
+as more as possible data in as shorter as possible time is a                  between posterior quality and uncertainty quantification.
+universal goal for neural network models. We compare the                         MC Dropout is currently one of the most prevalent UQ
+efficiency of the uncertainty quantification method through two               methods [12], It addresses the issue of high variance in
+aspects, namely the running time and the computational cost.                  MCVI, by reducing this variance to zero through novel
+The shorter the running time and the lower the computational                  deterministic approximations to variational inference in neu-
+cost, the more efficient the method.                                          ral networks [72]. This method proposed a Bayesian deep
+   The evaluation criteria proposed in this paper mainly include              learning inference method by using regularized Dropout suit-
+five evaluation criteria. Our purpose is to quantitatively eval-              able for complex models and large data set methods. The
+uate and effectively compare the uncertainty quantification                   advantage is that it does not change the network structure
+methods. We map five subjective criteria to the actual associ-                and is easy to implement. Dropout is implemented at both
+ated objective criteria. Each overall criterion is quantified by              training time and test time where the dropout layers are
+two objective sub-criteria, where each sub-criteria has a grade               formulated as Bernoulli distributed random variables. In recent
+to judge the performance or characteristics of various methods                years, many new methods have been proposed based on
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                     2885
+
+
+
+
+Fig. 5. In-depth research based on MC Dropout [12] can be divided into the direction of improving model diversity [15] and the method of approximate
+variational inference using other similar methods [14], [17].
+
+
+MC Dropout [15], [16]. Furthermore, Masksembles, a more                        B. Ensemble Methods
+structured way to drop model parameters than that of MC                           In addition to Bayesian methods, in recent years, the
+Dropout, was proposed [15], which is significantly less com-                   Ensemble method [81]—the most practical and empirically
+putationally expensive and can produce reliable uncertainty                    best-performing approaches is based on training a series
+estimates.                                                                     of independent randomly initialized DNNs—has also been
+   In addition to the above longitudinal studies using Dropout                 employed to uncertainty quantification. Ensembles of neu-
+regularization techniques to estimate uncertainty, there are                   ral networks are commonly used to boost performance and
+some UQ methods using other neural network regularization                      enhance model robustness, achieving state-of-the-art (SOTA)
+techniques [14], [17], as shown in Fig.5. Yelleni et al. [14]                  performance in diverse domains such as bioinformatics, NLP,
+proposed the MC DropBlock method. DropBlock is a form                          speech recognition, and computer vision. Some studies [18],
+of structured Dropout, which drops blocks of some particular                   [34], [82] showed that deep ensemble seems to be superior to
+size with some drop probability in the convolutional layer.                    some specific methods of Bayesian neural network in terms of
+This method solves the problem that general dropout can-                       uncertainty representation, and the connection and comparison
+not effectively drop in convolutional layers [77]. The basic                   of Deep Ensemble with Bayesian methods has been exten-
+principle of MC DropBlock is similar to MC Dropout, that is,                   sively studied and discussed. Durasov et al. [15] improved
+DropBlock is implemented at both training time and test time.                  the performance of MC Dropout by finding the connection
+This paper also proposed to capture the aleatoric uncertainty                  between MC Dropout and Deep Ensemble to control the
+using a Gaussian likelihood. Similarly, DropConnect is also                    correlation between ensemble elements. In addition, there are
+used in uncertainty quantification, Mobiny et al. [17] proposed                methods that combine Ensemble with Bayesian methods [83].
+a method to jointly evaluate model uncertainty using ground-                      Many researches further optimized and innovated on the
+truth labels, model predictions and uncertainty quantification                 basis of [18], as Table IV shows. Hu et al. [84] represented
+results. Compared with MC Dropout, both accuracy and uncer-                    uncertainty by a prediction interval (PI), which uses upper and
+tainty quantification performance have been improved. This                     lower bounds to quantify the degree of uncertainty. However,
+method has promising performance in image classification                       the loss function of PI is non-convex optimization, so this
+tasks [78]. Therefore, using an effective drop method is a                     paper designed a convex and intuitive loss function to solve
+research direction to improve the ability of representing model                the problem. Liu et al. [60] argued that the ensemble method
+uncertainty. For example, Choe et al. [79], [80] combined                      usually cannot explicitly characterize the structural uncertainty
+attention in the model to optimize dropout.                                    of the model, and propose the Bayesian nonparametric ensem-
+   Through the review, we found that the Bayesian method                       ble(BNE). BNE enabled the ensemble to flexibly quantify
+can accurately quantify the model uncertainty, especially a                    data uncertainty, taking into account parametric and structural
+series of methods based on MC dropout, which can be easily                     uncertainty. Zaidi et al. [22] proposed that deep ensembles
+applied to many tasks without increasing the cost too much,                    could be constructed by training a fixed architecture multiple
+as Table III shows. However, these methods can’t have better                   times with different random initialization methods, and they
+performance in the case of out-of-distribution or data shift.                  proposed two Neural Ensemble Search (NES) algorithms to
+
+         Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2886                                                     IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+                                                                        TABLE III
+                                                 S UMMARY AND C OMPARISON OF BAYESIAN M ETHODS
+
+
+
+
+Fig. 6.   The methods to reduce computational cost and maintain diversity [19], [20].
+
+automatically construct ensembles with different architectures.                 overconfidence predictions for deep ensembles. For this prob-
+NES with random search (NES-RS) is simple and easy to                           lem, Rahaman et al. [91] studyed the interaction between three
+parallelize. Inspired by regularized evolution, NES-RE is pro-                  of the simplest and most commonly used methods of deep
+posed, which evolves a set of architectures that yield high                     learning when data is scarce: data-augmentation, ensemble,
+performance and robust ensembles. However, the proposed                         and post-processing calibration methods. The paper empha-
+method fails to address the constraints of computational cost.                  sized that ensemble alone does not lead to better calibrated
+   While Ensemble methods are capable of producing                              predictions, that hybrid augmentation strategies actually matter
+well-calibration uncertainty estimates, deep learning methods                   and rely on non-trivial trade-offs, and that these methods
+are known to product over-confident estimates especially in                     interact subtly.
+the low data regime, standard ensemble methods do not                              Another fundamental limitation of ensembles is the com-
+necessarily lead to improved calibration properties. Jain et al.                putational cost of training, and more importantly, the
+[85] introduced a loss function and data augmentation strategy                  computational cost of inference can be many times larger
+to help stabilize distribution uncertainty estimates obtained                   than a single model. An efficient ensemble method was
+from ensembles, which increase model uncertainty across the                     proposed-BatchEnsemble [20], which has significantly lower
+input space while maintaining predictive performance, this                      computational cost and memory overhead than standard
+method helps mitigate uncertainty collapse that can occur in                    ensemble methods, as shown in Fig.6. BatchEnsemble
+small model ensembles, however, it significantly improved                       defined each weight matrix as the Hadamard product of the
+
+          Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                    2887
+
+
+
+                                                                      TABLE IV
+                                               S UMMARY AND C OMPARISON OF E NSEMBLE M ETHODS
+
+
+
+
+weights shared by all ensemble members. Unlike ensemble,                      a Deep Ensemble teacher. Havasi et al. [19] argued that
+BatchEnsemble can be parallelized not only across devices                     the above methods still require multiple forward passes for
+(one device trains one member), but also within devices                       prediction, resulting in high running costs, as shown in Fig.6.
+(multiple ensemble members update simultaneously for a                        For this reason, this paper proposed a multi-input multi-output
+given mini-batch). It is verified by experiments that the                     (MIMO) configuration, which can simultaneously train mul-
+test time and memory consumption have been improved by                        tiple independent subnetworks, outperforming BatchEnsemble
+multiples. Xia et al. investigated the unexplored trade-off                   without increasing computational cost.
+between uncertainty-related performance and computational                        We discussed the ensemble method from three aspects,
+cost for Deep Ensembles vs scaling single models [88],                        which are the research directions of the ensemble method
+and proposed a novel window-based early-exit policy, which                    we summarized. The first is the connection and combination
+enables cascaded Deep Ensembles to achieve a superior                         between ensemble and Bayesian, the second is to deal with
+uncertainty-computation trade-off compared to model scaling.                  the collapse of ensemble in the case of small data, and finally,
+Latent-Posterior BNN(LP-BNN) [74], is compatible with the                     there are also many studies to reduce computationally expen-
+recent BatchEnsemble method, leading to highly efficient                      sive problems through efficient ensemble methods. Through
+(in terms of computation and memory during both training                      the review, we found that ensemble has better robustness,
+and testing) ensembles. Packed-Ensembles (PE) [89] is a                       and the performance is stronger than Bayesian method, but
+strategy to design and train lightweight structured ensembles                 it cannot accurately distinguish the source of uncertainty.
+by carefully modulating the dimension of their encoding space.
+It leverages grouped convolutions to parallelize the ensemble                 C. Single Deterministic Methods
+into a single shared backbone, enabling a single forward pass                   Bayesian neural networks and Ensemble are the main
+to improve both training and inference speeds. Using a Laplace                methods for uncertainty quantification in deep learning
+distribution, logit-based ensemble distribution distillation [90]             models. Nevertheless, their utility in real-time, industrial-scale
+produces strong estimates of sequence uncertainty, greatly                    applications is limited due to memory and inference cost
+reducing the overall training costs of EDD compared to using                  constraints [97] that prevent the estimation of asymmetric,
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2888                                                   IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+                                                                       TABLE V
+                                        S UMMARY AND C OMPARISON OF S INGLE D ETERMINISTIC M ETHODS
+
+
+
+
+multimodal, heteroscedastic prediction intervals [97]. And                    classes. On this basis, a new training criterion was proposed
+several Single Deterministic Methods can effectively solve                    [98]—the reverse KL-divergence between Dirichlet distribu-
+these problems and quantify the prediction uncertainty of a                   tions, which improves the performance in both OOD and
+neural network (Table V). Tagasovska and Lopez-Paz [27]                       adversarial attacks. Prior Networks have also been applied in
+proposed Simultaneous Quantile Regression (SQR), a loss                       the Ensemble Distribution Distillation (EnD2) task proposed
+function that learns all conditional quantiles for a given target             by Malinin et al. [86], thus solving the high computational
+variable, in order to estimate aleatoric uncertainty. To esti-                cost of the Ensemble method. Amersfoort et al. [23] proposed
+mate epistemic uncertainty, this paper proposes Orthonormal                   the Deterministic Uncertainty Quantification (DUQ) method,
+Certificates (OCs), a collection of various non-constant func-                which improved the RBF network [99] and delete the Solfmax
+tions that map all training samples to zero. Kong et al.                      layer. The accuracy of DUQ is similar to the traditional soft-
+[25] proposed a neural stochastic differential equation model                 max model. In order to prevent feature collapse, Regularized
+(SDE-Net) in a different way, considering the DNN transi-                     Jacobian matrix was adopted in [100]. Finally, excellent uncer-
+tion as the state evolution of a stochastic dynamic system.                   tainty is obtained in a single forward pass while maintaining
+They developed a Brownian motion that captures epistemic                      competitive accuracy, however the method cannot accurately
+uncertainty. This method is easy to implement and avoids                      distinguish epistemic and aleatoric uncertainty. In addition,
+the need for model prior distributions. However, in order                     Liu et al. [93] proposed Spectral-normalized Neural Gaussian
+to train the DiffusionNet network, the OOD data set for                       Process (SNGP), by adding a weight normalization step in
+gradient ascent was specially constructed, which is inevitable                the training process and replacing the output layer with a
+to introduce some bias, that will affect performance of uncer-                Gaussian process to improve the distance perception ability
+tainty quantification. Gales et al. [59] proposed Prior Networks              of modern DNNs. Nevertheless, the above two methods use
+using the Dirichlet distribution for the distribution uncertainty             additional hyperparameters due to the use of a dedicated output
+that the model cannot confidently make predictions when                       layer in training, which requires a large change in training.
+the model is not familiar with the test data. The method                      While Mukhoti et al. [26] proposed neural networks with
+aimed to minimize the expected Kullback-Leibler between                       conventional off-the-shelf architectures can quantify aleatoric
+the flat Dirichlet distribution and the prediction of the out-                uncertainty by their feature space density under appropriate
+of-distribution data, after which to address the situation where              inductive biases, or use softmax entropy to convert aleatoric
+Prior Networks cannot handle complex datasets with many                       uncertainty from epistemic uncertainty. Furthermore, based on
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                      2889
+
+
+
+
+Fig. 7.   Applications of uncertainty quantification in autonomous vehicles [50], [53], [67].
+
+                                                                     TABLE VI
+                                          T HE A DVANTAGES AND D ISADVANTAGES OF THE A PPLICATIONS IN UQ
+
+
+
+
+this method, they [95] also perform uncertainty predictions                      and depth estimation [52], [53], [54] as shown in Fig.7.
+on multiple OOD benchmarks and large-scale vision tasks,                         Segmentation refers to the process of dividing an image
+achieving comparable performance to the current state-of-the-                    into multiple segments or regions, each representing different
+art Deep Ensembles method. Franchi et al. propose a scalable                     objects or categories. It is used to create detailed maps of
+and effective DUM [96] for high-resolution semantic seg-                         the surrounding environment and identify different objects and
+mentation, and have achieved competitive results compared to                     their boundaries. Object detection is the task of recognizing
+Deep Ensembles, which is the state-of-the-art for uncertainty                    and locating specific objects within an image or video. This
+prediction, in tasks such as image classification, segmentation,                 information is crucial for making real-time decisions, such
+and monocular depth estimation.                                                  as avoiding collisions, adjusting speed, and changing lanes.
+   In this section, the uncertainty quantification methods are                   Depth estimation involves estimating the distance between
+divided into three categories: Bayesian method, ensemble                         objects in the scene and the camera, which is essential for tasks
+method and single deterministic method for comparison and                        such as obstacle avoidance, path planning, and navigation.
+summary, quantitative evaluation and comparison are car-                         The advantages and disadvantages of these applications are
+ried out using the criteria proposed in this paper. The                          shown in Table VI. There are also some studies that apply
+structured comparison results can help researchers clearly                       uncertainty to the end-to-end controller [55], [56], which
+find the direct differences and characteristics of vari-                         effectively improves the robustness and security of the system.
+ous methods. The next section summarizes and compares                            In addition, for the performance of uncertainty quantifica-
+the applications of uncertainty methods in autonomous                            tion methods in the application of autonomous driving, this
+vehicles using the evaluation criteria proposed in this                          section also uses the proposed criteria for evaluation and
+paper.                                                                           comparison, which is helpful for researchers to compare the
+                                                                                 performance of different uncertainty methods in the same
+  IV. A PPLICATIONS OF U NCERTAINTY Q UANTIFICATION                              task.
+                 IN AUTONOMOUS V EHICLES                                            The perception system of autonomous vehicles [101] is one
+   In this section, we discuss he application of deep learning                   of the most important components. In recent years, with the
+uncertainty quantification in autonomous driving. Before this,                   in-depth research of deep learning and the rapid iterative devel-
+deep learning uncertainty has been widely used in other fields,                  opment of computer vision, the related research on perception
+such as Medical Analysis, Robotics, Earth Observation (EO),                      system has been further developed. Nevertheless, when faced
+NLP. In recent years, uncertainty has also been applied in                       with unknown objects or vague targets [102], the traditional
+many tasks of autonomous vehicles, including segmentation                        computer vision methods are not ideal, so that autonomous
+[44], [45], [46], [47], object detection [48], [49], [50], [51]                  vehicles cannot make appropriate decisions and planning, and
+
+          Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2890                                                  IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+                                                                     TABLE VII
+       S UMMARY AND C OMPARISON OF U NCERTAINTY Q UANTIFICATION M ETHODS FOR P ERCEPTION S YSTEM OF AUTONOMOUS V EHICLES
+
+
+
+
+even have extremely high safety risks. With the application of               A. Segmentation
+deep learning uncertainty in the perception system, the above                  Recently, some approaches have focused on leveraging
+problems can be effectively solved.                                          segmentation uncertainty to identify anomalous areas [44],
+
+       Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                     2891
+
+
+
+[46], [103], as Table VII shows. Rottmann et al. [103] propose
+MetaSeg-measures of dispersion for the predicted pixel-level
+probability distribution, and only needs to use the semantic
+softmax output and the ground-truth information to produce
+the probability distribution. However, the authors argue that
+using MC dropout should yield better uncertainty quantifi-
+cation results. MetaSeg [46] has been shown to be able
+to reliably predict out-of-domain samples. In [44], a novel
+pixel-level anomaly framework is proposed by integrating
+two approaches—MetaSeg [103] and image resynthesis [45],
+                                                                              Fig. 8. Using KD divergence to calculate the loss between label uncertainty
+achieving state-of-the-art performance on the Fishyscapes                     and the uncertainty distribution predicted by the model [120].
+benchmark [118]. Kendall et al. propose Bayesian SegNet
+based on SegNet [119], which uses Monte Carlo Dropout                         make more accurate decisions and improve the robustness.
+Sampling to model uncertainty. Experiments show that the                      Shekar et al. [51] propose a novel label-free robustness metric
+improvement is obvious in small datasets. On this basis,                      for quantifying the robustness of CNN object detectors. This
+Zhao et al. [47] simplify the Bayesian SegNet by reducing                     method achieves better results on signal light detectors, and the
+the number of MC Dropout layers, and propose a pyramid                        paper also discusses comparatively uncertainty estimation and
+pooling module to improve the performance of the network                      perturbation-based robustness scores, the latter could estimate
+and shorten the running time. For Semi-supervised semantic                    the degree of CNN’s resilience to a particular perturbation.
+segmentation, Yang et al. [104] use uncertainty estimates to                  Oksuz et al. [110] conducted an evaluation on the uncertainties
+evaluate the stability of the overall prediction, prioritizing                associated with the image-level OOD detection task, which
+reliable unlabeled labels for selective retraining, this methods              determines whether an image is accepted or not. However, they
+reduces the effect of incorrect pseudo-labels. Yang et al.                    utilized the uncertainty score of 1-pi for the detections, without
+[105] proposed an uncertainty-aware pseudo-labelling scheme                   incorporating more advanced UQ methods, despite comparing
+that incorporates Bayesian Active Learning by Disagreement                    several techniques.
+(BALD) as a spatial sampling uncertainty estimation function                     In other studies, uncertainty estimation is also integrated
+for point clouds. The main objective of this method is to                     in 3D object detection [120], [121], as Table VII shows.
+rectify the base model’s erroneous predictions for novel classes              Feng et al. [112] propose extraction methods for the two types
+based on the quantification of uncertainty for each point                     of uncertainty respectively. For epistemic uncertainty, Dropout
+cloud. However, their approach has only been validated using                  is adopted. And the probability of observation is modeled
+indoor datasets and has not been tested in more expansive                     as a multivariate Gaussian distribution with a covariance
+outdoor scenarios. Sirohi et al. introduced the novel task of                 matrix using the softmax function, and an auxiliary output
+uncertainty-aware panoptic segmentation [106], which aims                     layer is added to estimate aleatoric uncertainty. It is found
+to predict per-pixel semantic and instance segmentations,                     through experiments that epistemic uncertainty is influenced
+alongside with per-pixel uncertainty estimates. In order to                   by the detection accuracy, Conversely, the aleatoric uncertainty
+address the two problems: the Uncertainty-aware Panoptic                      is associated with the vehicle distance and occlusion. For
+Quality (uPQ) and the Panoptic Expected Calibration Error                     Monocular 3D Object Detection, Lu et al. [50] propose a
+(pECE), they further propose the novel top-down Evidential                    GUP(Geometry Uncertainty Projection) module to obtain the
+Panoptic Segmentation Network (EvPSNet). The method is                        geometry guided uncertainty of the inferred depth, which
+suitable for using LiDAR point clouds to solve the task of                    provides highly reliable confidence for each depth.
+uncertainty-aware panoptic segmentation [107].                                   The above method mainly estimates the probability distribu-
+                                                                              tion of the model object bounding boxes. In [122], the potential
+B. Object Detection                                                           noise in the ground truth labeled data is considered, that is
+   The task of object detection based on camera sensors is                    the data uncertainty, and this paper uses KL Divergence to
+becoming more and more popular in self-driving cars because                   calculate the uncertainty distribution for each label. Feng et al.
+it is even more accurate than the human eye. In particular, the               [120] combine the advantages of KL D-loss [122] and the
+object detection algorithm for autonomous driving must meet                   proposed label uncertainty [123] to improve a probabilistic
+the two necessary requirements:high precision and timeliness.                 lidar-based object detector as shown in Fig.8. Monish et al.
+In response to these two requirements, Choi et al. [49] propose               proposed EvCenterNet [111], a novel uncertainty-aware 2D
+to apply the uncertainty quantification method to the YOLOv3                  object detection framework using evidential learning to
+detector. As a one-stage detector, the detection speed of                     directly estimate both classification and regression uncertain-
+YOLOv3 is enough fast and the accuracy has been greatly                       ties. The principle of this framework is similar to that of
+improved than before, which is very suitable for autonomous                   EvPSNet, with the main difference lying in the different tasks
+driving. Since deep learning models in autonomous driving                     they are applied to. Similarly, CertainNet [108] is also a
+are often multi-output regression models, a new uncertainty                   network that can be used to quantify the uncertainty of both
+quantification method for object detection, PURE (Prediction                  segmentation and bounding box localization tasks. Petek et al.
+sURface uncErtainty) [48], is proposed. Make T different                      proposed an efficient multi-task uncertainty-aware perception
+predictions on the input image x based on the MC dropout                      module [109], which covers semantic segmentation, as well as
+method. The application of uncertainty estimation in the                      bounding box detection, to enable the localization of vehicles
+task of object detection can effectively help the system to                   in sparse maps, containing only lane borders and traffic lights.
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2892                                                   IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+C. Depth Estimation                                                           method that can present a safety score, however, the stability is
+   The depth completion task has also received some attention                 insufficient in bad weather. Similarly, MC Dropout, boostrap
+because of the inherent noisy nature of depth sensors [52],                   and mixture Gaussian three UQ methods are also compared
+[82], [113], as Table VII shows. Gustafsson et al. [82] propose               in the task of end-to-end vehicle steering angle estimation
+a comprehensive evaluation framework for scalable epistemic                   [55], where MC Dropout has better calibrated estimates, while
+uncertainty estimation methods, then compare the effects of                   boostrap and mixture Gaussian seem to overestimate improved
+MC Dropout and Ensemble on the tasks of depth completion                      their confidence. Tang et al. proposed an uncertainty-guided
+and street-scene semantic segmentation. The results show that                 network [116], referred to as UG-Net, for automatic med-
+Ensemble can provide more reliable and practical uncertainty                  ical image segmentation. Differing from previous methods,
+estimates, however computational cost and time are the biggest                UG-Net is capable of learning from and contending with
+constraints. Uncertainty estimation is also employed to unsu-                 uncertainty in an end-to-end manner by itself. Xu et al.
+pervised monocular depth estimation [52]. This paper also                     proposed a unified framework that covers the uncertainties
+compares the applications of various methods and their com-                   arising in both the input feature space of the ML models
+binations, then concludes that Bootstrapped Ensemble (Boot)                   and the COs [117]. The framework is described as a robust
+[18] combined with Self-Teaching scheme method has better                     optimization problem and is practically solved via end-to-end
+results. Qu et al. [53]follow their approach, propose Bayesian                adversarial training (E2E-AT). Furthermore, a review focusing
+Deep Basis Fitting (BDBF) approach, combining Snapshot                        on the end-to-end field of autonomous driving also mentions
+Ensemble [124] and variance prediction head. Experiments                      uncertainty quantification [128]. This review summarized a
+show that this method has better uncertainty estimation accu-                 series of critical challenges, including interpretability, gener-
+racy than the above methods and depth prediction accuracy.                    alization, world models, causal confusion, etc.
+In addition, Wang et al. [54] propose a new method for
+uncertainty estimation of stereo matching based on evidence                              V. C HALLENGES AND O PPORTUNITIES
+deep learning, presenting an evidential distribution named                       In this section, we discuss challenges and directions for
+Normal Inverse-Gamma (NIG) distribution. The parameters                       future work in uncertainty quantification of deep neural net-
+of this distribution can be used to calculate the uncertainty                 work.
+and predict each potential disparity, which is a good rep-
+resentation of the difficulty of matching. Chen et al. [114]
+                                                                              A. Lack of Ground Truth of Uncertainties
+proposed a new loss function for the stereo matching task,
+which leverages the difference between the uncertainty maps                      Uncertainty in deep learning is difficult to determine explic-
+obtained from uncertainty estimation and the corresponding                    itly, and there is no so-called Ground Truth of manual
+disparity maps to train the estimation model. However, this                   annotation. The uncertainty obtained by the current methods
+method primarily exhibits favorable performance on simulated                  is that the empirical evaluation and performance show rea-
+datasets, with less significant improvements observed on real-                sonable and interpretable values, which leads to the inability
+world data. MaGNet [125] estimates a pixel-wise Gaussian                      of different types of methods to be compared. It is not an
+distribution representing the single-view depth probability for               ideal way to compare the ability of quantifying uncertainty by
+each frame. This distribution is then used to sample per-pixel                performance. Therefore, we believe that this is an important
+depth candidates, enabling higher accuracy by evaluating                      gap in the domain of UQ that could have a profound impact
+fewer candidates.                                                             in the future.
+
+                                                                              B. Lack of Standardized Evaluation of Uncertainties
+D. Controller of End-to-End Autonomous Vehicles
+                                                                                  Some metrics to measure the quality of uncertainty quan-
+   In addition to being used in perception system of                          tification have been proposed [69], but they are not widely
+autonomous vehicles, the uncertainty of deep learning is also                 applicable only for some specific application tasks. Especially
+employed to the controller of end-to-end autonomous vehicles                  when we summarize methods of UQ, because there is no
+[126], [127], as Table VII shows. Choi et al. [115] propose a                 unified evaluation, the performance of these methods cannot
+method to predict uncertainty in real time using a Gaussian                   be compared horizontally. Therefore, we realize that it is
+mixture model and employ the method to steering angle con-                    necessary to propose a standardized quantitative evaluation.
+trol of autonomous vehicles, however, this method increases
+the computational complexity because of the complexity of
+modeling. Michelmore et al. [56] discuss how to extract                       C. Invalidation of Existing Methods Toward Open World
+the uncertainty from the end-to-end controller in real time,                     When deep learning is employed in open world, it cannot
+using dropout to approximate the Gaussian process for the                     deal with unknown problems in reality. For example, in the
+regression task. And they argue that the mutual information is                object detection task, there must be lots of unknown objects,
+suitable for the uncertainty quantification of the classification             or because of external reasons such as weather, the image
+task. Michelmore et al. [56] employ comparatively three                       is different from the datasets. The above two problems cor-
+UQ methods-Hamiltonian Monte Carlo (HMC), Mean Field                          respond to the two cases-OOD [129] and dataset shift, which
+Variational Inference (VI) and Monte Carlo Dropout (MCD),                     will bring high uncertainty. Therefore, we strongly recommend
+to end-to-end autonomous vehicle control, using pictures as                   further studies on application in challenging situations [130],
+the input of the observation space and the steering angle as                  so that the model could produce more accurate and stable
+the output. The experiments show that MC Dropout is the only                  results.
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                           2893
+
+
+
+D. Systematic Comparison of Baselines for Different Tasks                        [5] K. Wang, Z. Li, Y. Chen, W. Dong, and J. Chen, “Towards open-world
+                                                                                     recognition: Critical problems and challenges,” Eng. Appl. Artif. Intell.,
+   Uncertainty quantification is a fundamental problem in deep                       vol. 143, Mar. 2025, Art. no. 110042.
+learning. Nevertheless, due to the lack of a standard baseline,                  [6] K. Wang, G. Zhao, and J. Lü, “A deep analysis of visual SLAM
+the performance of quantification methods cannot be compared                         methods for highly automated and autonomous vehicles in complex
+                                                                                     urban environment,” IEEE Trans. Intell. Transp. Syst., vol. 25, no. 9,
+for different tasks, which leads to it is still unclear which                        pp. 10524–10541, Apr. 2024.
+uncertainty quantification method is the best. This requires                     [7] T. G. Rudner and H. Toner, “Key concepts in AI safety: Reliable
+the establishment of standard benchmarks [30], [34], [131]                           uncertainty quantification in machine learning,” 2024. [Online]. Avail-
+                                                                                     able: https://cset.georgetown.edu/publication/key-concepts-in-ai-safety-
+for each task, so that researchers in different fields can                           reliable-uncertainty-quantification-in-machine-learning
+compare horizontally and find the most suitable uncertainty                      [8] K. Wang, L. Pu, and W. Dong, “Cross-domain adaptive object detec-
+quantification method for their own research.                                        tion based on refined knowledge transfer and mined guidance in
+                                                                                     autonomous vehicles,” IEEE Trans. Intell. Vehicles, vol. 9, no. 1,
+                                                                                     pp. 1899–1908, Jan. 2024.
+E. Lack of Use of Uncertainty Quantification Results                             [9] J. S. Denker and Y. LeCun, “Transforming neural-net output levels
+                                                                                     to probability distributions,” in Proc. Adv. Neural Inf. Process. Syst.
+   Most studies use uncertainty quantification mainly to                             (NeurIPS), vol. 3, Denver, CO, USA, Oct. 1990, pp. 853–859.
+express the confidence of the model on the output results.                      [10] D. J. C. MacKay, “A practical Bayesian framework for backpropagation
+However, the uncertainty quantification results used as the                          networks,” Neural Comput., vol. 4, no. 3, pp. 448–472, May 1992.
+final output cannot significantly improve the performance of                    [11] A. Graves, “Practical variational inference for neural networks,” in
+                                                                                     Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), vol. 24, Granada,
+the model. We found that there are very few studies on using                         Spain, Dec. 2011, pp. 2348–2356.
+uncertainty as an input, which will make the model sensitive to                 [12] Y. Gal and Z. Ghahramani, “Dropout as a Bayesian approximation:
+low-confidence results, or leveraging this information to focus                      Representing model uncertainty in deep learning,” in Proc. 33rd
+                                                                                     Int. Conf. Mach. Learn., vol. 48, New York, NY, USA, Jun. 2016,
+on more important areas [132], [133]. At the same time, the                          pp. 1050–1059.
+quantification of uncertainty could also help methods such as                   [13] N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever, and
+active learning [134], incremental learning, etc.                                    R. Salakhutdinov, “Dropout: A simple way to prevent neural networks
+                                                                                     from overfitting,” J. Mach. Learn. Res., vol. 15, no. 1, pp. 1929–1958,
+                                                                                     2014.
+F. Application in Other AI Learning Tasks                                       [14] S. H. Yelleni, K. Deepshikha, P. Srijith, and C. Mohan, “Monte–
+                                                                                     Carlo drop block for modeling uncertainty in object detection,” Pattern
+   Uncertainty quantification indicates the confidence of the                        Recognit., vol. 146, Feb. 2024, Art. no. 110003.
+model, this inherent feature can help many deep learning                        [15] N. Durasov, T. Bagautdinov, P. Baque, and P. Fua, “Masksem-
+                                                                                     bles for uncertainty estimation,” in Proc. IEEE/CVF Conf. Comput.
+tasks, such as self-supervised learning (SSL), transfer learning,                    Vis. Pattern Recognit. (CVPR), Nashville, TN, USA, Jun. 2021,
+fusion-based methods, self-attention/transformers [135], etc.                        pp. 13534–13543.
+In addition, besides CNN, graph neural network GCNs have                        [16] Y. Gal, J. Hron, and A. Kendall, “Concrete dropout,” in Proc. Adv.
+also been applied in computer vision and can achieve good                            Neural Inf. Process. Syst. (NeurIPS), vol. 30, Long Beach, CA, USA,
+                                                                                     Jan. 2017, pp. 3581–3590.
+results. Uncertainty quantification is a fundamental tool that                  [17] A. Mobiny, P. Yuan, S. K. Moulik, N. Garg, C. C. Wu, and
+deserves to be widely used in many learning methods.                                 H. Van Nguyen, “DropConnect is effective in modeling uncertainty
+                                                                                     of Bayesian deep networks,” Sci. Rep., vol. 11, no. 1, pp. 54–58,
+                                                                                     Mar. 2021.
+G. New Direct Methods                                                           [18] B. Lakshminarayanan, A. Pritzel, and C. Blundell, “Simple and scalable
+                                                                                     predictive uncertainty estimation using deep ensembles,” in Proc. Adv.
+   Through the review of the UQ methods in recent years,                             Neural Inf. Process. Syst. (NeurIPS), Long Beach, CA, USA, Jan. 2016,
+we find that most of the current methods obtain the variance                         pp. 1–11.
+of output to represent uncertainty by efficiently changing the                  [19] M. Havasi et al., “Training independent subnetworks for robust pre-
+architecture to increase the diversity of the model, which                           diction,” in Proc. Int. Conf. Learn. Represent. (ICLR), Vienna, Austria,
+                                                                                     Jan. 2020, pp. 1–9.
+is similar to variational Ensemble. Such methods generally                      [20] Y. Wen, D. Tran, and J. Ba, “BatchEnsemble: An alternative approach
+require a large computational cost, take a long time to                              to efficient ensemble and lifelong learning,” in Proc. Int. Conf. Learn.
+calculate, and cannot clearly distinguish uncertainties from                         Represent. (ICLR), New Orleans, LA, USA, Apr. 2020, pp. 1–12.
+                                                                                [21] F. Wenzel, J. Snoek, D. Tran, and R. Jenatton, “Hyperparameter
+different sources. In particular, it is not applicable in the                        ensembles for robustness and uncertainty quantification,” in Proc.
+safety-critical domain such as autonomous vehicles. We realize                       Adv. Neural Inf. Process. Systems (NeurIPS), Vancouver, BC, Canada,
+that simpler and more efficient methods could be proposed,                           Jan. 2020, pp. 6514–6527.
+which would effectively promote the application of uncertainty                  [22] S. Zaidi, A. Zela, T. Elsken, C. Holmes, F. Hutter, and Y. W. Teh,
+                                                                                     “Neural ensemble search for uncertainty estimation and dataset shift,”
+quantification in various fields.                                                    in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), New Orleans, LA,
+                                                                                     USA, Jan. 2020, pp. 1–13.
+                             R EFERENCES                                        [23] J. Van Amersfoort, L. Smith, Y. W. Teh, and Y. Gal, “Uncertainty
+                                                                                     estimation using a single deep deterministic neural network,” in Proc.
+  [1] Y. LeCun, Y. Bengio, and G. Hinton, “Deep learning,” Nature, vol. 521,         Int. Conf. Mach. Learn., 2020, pp. 9690–9700.
+      no. 7553, p. 436, 2015.                                                   [24] M. Collier, B. Mustafa, E. Kokiopoulou, R. Jenatton, and J. Berent,
+  [2] S. Grigorescu, B. Trasnea, T. Cocias, and G. Macesanu, “A survey               “Correlated input-dependent label noise in large-scale image classifi-
+      of deep learning techniques for autonomous driving,” J. Field Robot.,          cation,” in Proc. IEEE Conf. Comput. Vis. Pattern Recognit., Jul. 2021,
+      vol. 37, no. 3, pp. 362–386, Apr. 2020.                                        pp. 1551–1560.
+  [3] J. Janai, F. Güney, A. Behl, and A. Geiger, “Computer vision for          [25] L. Kong, J. Sun, and C. Zhang, “SDE-net: Equipping deep neural
+      autonomous vehicles: Problems, datasets and state-of-the-art,” Found.          networks with uncertainty estimates,” in Proc. Int. Conf. Mach. Learn.
+      Trends Comput. Graph. Vis., vol. 12, nos. 1–3, pp. 301–308, 2017.              (ICML), Jan. 2020, pp. 5405–5415.
+  [4] Z. Li et al., “Continual driver behaviour learning for connected          [26] J. Mukhoti, A. Kirsch, J. van Amersfoort, P. H. Torr, and Y. Gal, “Deter-
+      vehicles and intelligent transportation systems: Framework, survey and         ministic neural networks with appropriate inductive biases capture
+      challenges,” Green Energy Intell. Transp., vol. 2, no. 4, Aug. 2023,           epistemic and aleatoric uncertainty,” in Proc. Int. Conf. Mach. Learning
+      Art. no. 100103.                                                               (ICML), Feb. 2021, pp. 1–16.
+
+
+         Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2894                                                       IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+ [27] N. Tagasovska and D. López-Paz, “Single-model uncertainties for             [49] J. Choi, D. Chun, H. Kim, and H.-J. Lee, “Gaussian YOLOv3: An
+      deep learning,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS),              accurate and fast object detector using localization uncertainty for
+      Vancouver, BC, Canada, Jan. 2018, pp. 1–12.                                      autonomous driving,” in Proc. IEEE/CVF Int. Conf. Comput. Vis.
+ [28] S. Xu, Q. Liu, Y. Hu, M. Xu, and J. Hao, “Decision-making models                 (ICCV), Oct. 2019, pp. 502–511.
+      on perceptual uncertainty with distributional reinforcement learning,”      [50] Y. Lu et al., “Geometry uncertainty projection network for monocular
+      Green Energy Intell. Transp., vol. 2, no. 2, Apr. 2023, Art. no. 100062.         3D object detection,” in Proc. IEEE/CVF Int. Conf. Comput. Vis.
+ [29] H. M. D. Kabir, A. Khosravi, M. A. Hosen, and S. Nahavandi,                      (ICCV), Oct. 2021, pp. 3111–3121.
+      “Neural network-based uncertainty quantification: A survey of method-       [51] A. K. Shekar, L. Gou, L. Ren, and A. Wendt, “Label-free robust-
+      ologies and applications,” IEEE Access, vol. 6, pp. 36218–36234,                 ness estimation of object detection CNNs for autonomous driving
+      2018.                                                                            applications,” Int. J. Comput. Vis., vol. 129, no. 4, pp. 1185–1201,
+ [30] J. Caldeira and B. Nord, “Deeply uncertain: Comparing methods of                 Apr. 2021.
+      uncertainty quantification in deep learning algorithms,” Mach. Learn.,      [52] M. Poggi, F. Aleotti, F. Tosi, and S. Mattoccia, “On the uncer-
+      Sci. Technol., vol. 2, no. 1, Dec. 2020, Art. no. 015002.                        tainty of self-supervised monocular depth estimation,” in Proc.
+ [31] M. Abdar et al., “A review of uncertainty quantification in deep                 IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), Jun. 2020,
+      learning: Techniques, applications and challenges,” Inf. Fusion, vol. 76,        pp. 3227–3237.
+      pp. 243–297, Dec. 2021.                                                     [53] C. Qu, W. Liu, and C. J. Taylor, “Bayesian deep basis fitting for depth
+ [32] H. Al Osman and S. Shirmohammadi, “Machine learning in measure-                  completion with uncertainty,” in Proc. IEEE/CVF Int. Conf. Comput.
+      ment part 2: Uncertainty quantification,” IEEE Instrum. Meas. Mag.,              Vis. (ICCV), Oct. 2021, pp. 16127–16137.
+      vol. 24, no. 3, pp. 23–27, May 2021.                                        [54] C. Wang et al., “Uncertainty estimation for stereo matching based
+ [33] E. Hullermeier and W. Waegeman, “Aleatoric and epistemic uncer-                  on evidential deep learning,” Pattern Recognit., vol. 124, Apr. 2022,
+      tainty in machine learning: An introduction to concepts and methods,”            Art. no. 108498.
+      Mach. Learn., vol. 110, no. 3, pp. 457–506, 2021.                           [55] C. Hubschneider, R. Hutmacher, and J. M. Zöllner, “Calibrating
+ [34] Y. Ovadia et al., “Can you trust your model’s uncertainty? Evaluating            uncertainty models for steering angle estimation,” in Proc. IEEE
+      predictive uncertainty under dataset shift,” in Proc. Adv. Neural Inf.           Intell. Transp. Syst. Conf. (ITSC), Auckland, New Zealand, Oct. 2019,
+      Process. Syst. (NeurIPS), Vancouver, BC, Canada, 2019, pp. 1–8.                  pp. 1511–1518.
+ [35] F. Arnéz, H. Espinoza, A. Radermacher, and F. Terrier, “A comparison        [56] R. Michelmore, M. Wicker, L. Laurenti, L. Cardelli, Y. Gal, and
+      of uncertainty estimation approaches in deep learning components for             M. Kwiatkowska, “Uncertainty quantification with statistical guaran-
+      autonomous vehicle applications,” in Proc. Workshop Artif. Intell. Saf.          tees in end-to-end autonomous driving control,” in Proc. IEEE Int.
+      (AISafety), Yokohama, Japan, Jan. 2020, pp. 1–10.                                Conf. Robot. Autom. (ICRA), May 2020, pp. 7344–7350.
+ [36] D. Feng, A. Harakeh, S. L. Waslander, and K. Dietmayer, “A review and       [57] J. Gawlikowski et al., “A survey of uncertainty in deep neural net-
+      comparative study on probabilistic object detection in autonomous driv-          works,” Artif. Intell. Rev., vol. 56, no. 1, pp. 1513–1589, Jul. 2023.
+      ing,” IEEE Trans. Intell. Transp. Syst., vol. 23, no. 8, pp. 9961–9980,     [58] Y. Gal, “Uncertainty in deep learning,” Ph.D. dissertation, Dept. Eng.,
+      Aug. 2022.                                                                       Univ. Cambridge, Cambridge, U.K., 2016.
+ [37] A. F. Psaros, X. Meng, Z. Zou, L. Guo, and G. E. Karniadakis,               [59] A. Malinin and M. Gales, “Predictive uncertainty estimation via prior
+      “Uncertainty quantification in scientific machine learning: Methods,             networks,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), vol. 31,
+      metrics, and comparisons,” J. Comput. Phys., vol. 477, Mar. 2023,                Montréal, QC, Canada, Dec. 2018, pp. 7047–7058.
+      Art. no. 111902.                                                            [60] J. Z. Liu, J. Paisley, M. Kioumourtzoglou, and B. A. Coull, “Accurate
+ [38] M. W. Dusenberry et al., “Analyzing the role of model uncertainty                uncertainty estimation and decomposition in ensemble learning,” in
+      for electronic health records,” in Proc. ACM Conf. Health, Inference,            Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), Vancouver, BC,
+      Learn., Apr. 2020, pp. 204–213.                                                  Canada, Jan. 2019, pp. 1–12.
+ [39] S. Kohl et al., “A probabilistic U-Net for segmentation of ambiguous        [61] X. Tian, J. Zhang, M. Xiang, and Y. Dai, “Modeling the distributional
+      images,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), Montréal,           uncertainty for salient object detection models,” in Proc. IEEE/CVF
+      QC, Canada, Jan. 2018, pp. 1–12.                                                 Conf. Comput. Vis. Pattern Recognit. (CVPR), Vancouver, BC, Canada,
+ [40] J. Fernández, M. Chiachío, J. Chiachío, R. Muñoz, and F. Herrera,                Jun. 2023, pp. 19660–19670.
+      “Uncertainty quantification in neural networks by approximate               [62] J. Choi, I. Elezi, H.-J. Lee, C. Farabet, and J. M. Alvarez,
+      Bayesian computation: Application to fatigue in composite materials,”            “Active learning for deep object detection via probabilistic model-
+      Eng. Appl. Artif. Intell., vol. 107, Jan. 2022, Art. no. 104511.                 ing,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV), Oct. 2021,
+ [41] E. Pitz, S. Rooney, and K. Pochiraju, “Estimation of spatial uncertainty         pp. 10244–10253.
+      in material property distributions within heterogeneous structures using    [63] A. Kirsch, J. Van Amersfoort, and Y. Gal, “BatchBALD: Efficient and
+      optimized convolutional neural networks,” Eng. Appl. Artif. Intell.,             diverse batch acquisition for deep Bayesian active learning,” in Proc.
+      vol. 117, Jan. 2023, Art. no. 105603.                                            Adv. Neural Inf. Process. Syst. (NeurIPS), Vancouver, BC, Canada,
+ [42] V. Tchuiev and V. Indelman, “Inference over distribution of posterior            Jan. 2019, pp. 7026–7037.
+      class probabilities for reliable Bayesian classification and object-level   [64] Road Vehicles—Functional Safety, ISO Standard 26262:2018, 2018.
+      perception,” IEEE Robot. Autom. Lett., vol. 3, no. 4, pp. 4329–4336,        [65] Road       Vehicles—Safety       Intended      Functionality    (SOTIF),
+      Oct. 2018.                                                                       ISO Standard 21448:2022, 2022.
+ [43] J. Gawlikowski, M. Schmitt, A. Kruspe, and X. X. Zhu, “On the               [66] O. M. Kirovskii and V. A. Gorelov, “Driver assistance systems:
+      fusion strategies of Sentinel-1 and Sentinel-2 data for local climate            Analysis, tests and the safety case. ISO 26262 and ISO PAS 21448,”
+      zone classification,” in Proc. IEEE Int. Geosci. Remote Sens. Symp.,             Proc. IOP Conf. Ser., Mater. Sci. Eng., vol. 534, no. 1, May 2019,
+      Sep. 2020, pp. 2081–2084.                                                        Art. no. 012019.
+ [44] G. Di Biase, H. Blum, R. Siegwart, and C. Cadena, “Pixel-                   [67] A. Kendall and Y. Gal, “What uncertainties do we need in Bayesian
+      wise anomaly detection in complex driving scenes,” in Proc.                      deep learning for computer vision,” in Proc. Adv. Neural Inf. Process.
+      IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), Jun. 2021,                 Syst. (NeurIPS), Long Beach, CA, USA, Mar. 2017, pp. 1–12.
+      pp. 16918–16927.                                                            [68] F. Lu, K. Zhu, W. Zhai, K. Zheng, and Y. Cao, “Uncertainty-aware
+ [45] K. Lis, K. K. Nakka, P. Fua, and M. Salzmann, “Detecting the                     optimal transport for semantically coherent out-of-distribution detec-
+      unexpected via image resynthesis,” in Proc. IEEE/CVF Int. Conf.                  tion,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR),
+      Comput. Vis. (ICCV), Seoul, South Korea, Oct. 2019, pp. 2152–2161.               Vancouver, BC, Canada, Jun. 2023, pp. 3282–3291.
+ [46] P. Oberdiek, M. Rottmann, and G. A. Fink, “Detection and retrieval          [69] Y. Ding, J. Liu, J. Xiong, and Y. Shi, “Revisiting the evaluation of
+      of out-of-distribution objects in semantic segmentation,” in Proc.               uncertainty estimation and its application to explore model complexity-
+      IEEE/CVF Conf. Comput. Vis. Pattern Recognit. Workshops (CVPRW),                 uncertainty trade-off,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern
+      Jun. 2020, pp. 1331–1340.                                                        Recognit. Workshops (CVPRW), Jul. 2020, pp. 22–31.
+ [47] Y. Zhao, W. Tian, and H. Cheng, “Pyramid Bayesian method for                [70] S. Garg and S. Chakraborty, “VB-DeepONet: A Bayesian operator
+      model uncertainty evaluation of semantic segmentation in autonomous              learning framework for uncertainty quantification,” Eng. Appl. Artif.
+      driving,” Automot. Innov., vol. 5, no. 1, pp. 70–78, Feb. 2022.                  Intell., vol. 118, Feb. 2023, Art. no. 105685.
+ [48] F. O. Catak, T. Yue, and S. Ali, “Prediction surface uncertainty quan-      [71] C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra, “Weight
+      tification in object detection models for autonomous driving,” in Proc.          uncertainty in neural network,” in Proc. Int. Conf. Mach. Learn., Lille,
+      IEEE Int. Conf. Artif. Intell. Test. (AITest), Aug. 2021, pp. 93–100.            France, 2015, pp. 1613–1622.
+
+
+         Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+WANG et al.: UQ FOR SAFE AND RELIABLE AUTONOMOUS VEHICLES: A REVIEW OF METHODS AND APPLICATIONS                                                             2895
+
+
+
+[72] A. Wu, S. Nowozin, E. Meeds, R. E. Turner, J. M. Hernández-Lobato,           [93] J. Z. Liu, L. Zi, S. Padhy, D. Tran, T. Bedrax-Weiss, and
+     and A. L. Gaunt, “Deterministic variational inference for robust                  B. Lakshminarayanan, “Simple and principled uncertainty estimation
+     Bayesian neural networks,” in Proc. 7th Int. Conf. Learn. Represent.              with deterministic deep learning via distance awareness,” in Proc. Adv.
+     (ICLR), New Orleans, LA, USA, Jan. 2019, pp. 1–24.                                Neural Inf. Process. Syst. (NeurIPS), Jan. 2020, pp. 7498–7512.
+[73] G. Franchi, O. Laurent, M. Leguéry, A. Bursuc, A. Pilzer, and                [94] J. J. Thiagarajan, R. Anirudh, V. Narayanaswamy, and P. Bremer,
+     A. Yao, “Make me a BNN: A simple strategy for estimating Bayesian                 “Single model uncertainty estimation via stochastic data centering,”
+     uncertainty from pre-trained models,” in Proc. IEEE/CVF Conf. Com-                in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), New Orleans, LA,
+     put. Vis. Pattern Recognit. (CVPR), Seattle, WA, USA, Jun. 2024,                  USA, Jan. 2022, pp. 8662–8674.
+     pp. 12194–12204.                                                             [95] J. Mukhoti, A. Kirsch, J. van Amersfoort, P. H. S. Torr, and Y. Gal,
+[74] G. Franchi, A. Bursuc, E. Aldea, S. Dubuisson, and I. Bloch, “Encod-              “Deep deterministic uncertainty: A new simple baseline,” in Proc.
+     ing the latent posterior of Bayesian neural networks for uncertainty              IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), Vancouver,
+     quantification,” IEEE Trans. Pattern Anal. Mach. Intell., vol. 46, no. 4,         BC, Canada, Jun. 2023, pp. 24384–24394.
+     pp. 2027–2040, Apr. 2024.                                                    [96] G. Franchi, X. Yu, A. Bursuc, E. Aldea, S. Dubuisson, and D. Filliat,
+[75] J. Hron, R. Novak, J. Pennington, and J. Sohl-Dickstein, “Wide                    “Latent discriminant deterministic uncertainty,” in Proc. Eur. Conf.
+     Bayesian neural networks have a simple weight posterior: Theory and               Comput. Vis., Tel Aviv, Israel, 2022, pp. 243–260.
+     accelerated sampling,” in Proc. 39th Int. Conf. Mach. Learn. (ICML),         [97] S. Pellegrini, E. Ruiz, and A. Espasa, “Prediction intervals in
+     Baltimore, MD, USA, Jan. 2022, pp. 8926–8945.                                     conditionally heteroscedastic time series with stochastic com-
+[76] O. Laurent, E. Aldea, and G. Franchi, “A symmetry-aware exploration               ponents,” Int. J. Forecasting, vol. 27, no. 2, pp. 308–319,
+     of Bayesian neural network posteriors,” in Proc. 12th Int. Conf. Learn.           Apr. 2011.
+     Represent. (ICLR), Vienna, Austria, Jan. 2023, pp. 1–17.                     [98] A. Malinin and M. Gales, “Reverse KL-divergence training of prior
+[77] G. Ghiasi, T.-Y. Lin, and Q. V. Le, “DropBlock: A regularization                  networks: Improved uncertainty and adversarial robustness,” in Proc.
+     method for convolutional networks,” in Proc. Adv. Neural Inf. Pro-                Adv. Neural Inf. Process. Syst. (NeurIPS), Vancouver, BC, Canada,
+     cess. Syst. (NeurIPS), vol. 31, Montréal, QC, Canada, Oct. 2018,                  Jan. 2019, pp. 1–11.
+     pp. 10727–10737.                                                             [99] Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner, “Gradient-based
+[78] W. Zheng, J. Xie, X. Sun, and Z. Ma, “Structured dropconnect for                  learning applied to document recognition,” Proc. IEEE, vol. 86, no. 11,
+     uncertainty inference in image classification,” in Proc. IEEE Int. Conf.          pp. 2278–2324, Jan. 1998.
+     Image Process. (ICIP), Bordeaux, France, Oct. 2022, pp. 366–370.            [100] H. Drucker and Y. Le Cun, “Improving generalization performance
+[79] J. Choe, D. Han, S. Yun, J.-W. Ha, S. J. Oh, and H. Shim, “Region-                using double backpropagation,” IEEE Trans. Neural Netw., vol. 3, no. 6,
+     based dropout with attention prior for weakly supervised object                   pp. 991–997, Nov. 1992.
+     localization,” Pattern Recognit., vol. 116, Aug. 2021, Art. no. 107949.     [101] J. Van Brummelen, M. O’Brien, D. Gruyer, and H. Najjaran,
+[80] J. Choe and H. Shim, “Attention-based dropout layer for weakly                    “Autonomous vehicle perception: The technology of today and
+     supervised object localization,” in Proc. IEEE/CVF Conf. Comput.                  tomorrow,” Transp. Res. C, Emerg. Technol., vol. 89, pp. 384–406,
+     Vis. Pattern Recognit. (CVPR), Long Beach, CA, USA, Jun. 2019,                    Apr. 2018.
+     pp. 2219–2228.                                                              [102] K. J. Joseph, S. Khan, F. S. Khan, and V. N. Balasubramanian,
+[81] T. G. Dietterich, “Ensemble methods in machine learning,” in Multiple             “Towards open world object detection,” in Proc. IEEE/CVF Conf.
+     Classifier Systems. Berlin, Germany: Springer, 2000, pp. 1–15.                    Comput. Vis. Pattern Recognit. (CVPR), Jun. 2021, pp. 5830–5840.
+[82] F. K. Gustafsson, M. Danelljan, and T. B. Schon, “Evaluating scalable       [103] M. Rottmann et al., “Prediction error meta classification in semantic
+     Bayesian deep learning methods for robust computer vision,” in Proc.              segmentation: Detection via aggregated dispersion measures of soft-
+     IEEE/CVF Conf. Comput. Vis. Pattern Recognit. Workshops (CVPRW),                  max probabilities,” in Proc. Int. Joint Conf. Neural Netw. (IJCNN),
+     Jun. 2020, pp. 318–319.                                                           Jul. 2020, pp. 1–9.
+[83] L. Smith and Y. Gal, “Understanding measures of uncertainty for             [104] L. Yang, W. Zhuo, L. Qi, Y. Shi, and Y. Gao, “ST++: Make self-
+     adversarial example detection,” in Proc. 34th Conf. Uncertainty Artif.            trainingWork better for semi-supervised semantic segmentation,” in
+     Intell. (UAI), Monterey, CA, USA, 2018, pp. 560–569.                              Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), New
+[84] R. Hu, Q. Huang, S. Chang, H. Wang, and J. He, “The MBPEP: A                      Orleans, LA, USA, Jun. 2022, pp. 4258–4267.
+     deep ensemble pruning algorithm providing high quality uncertainty          [105] Y. Yang, M. Hayat, Z. Jin, C. Ren, and Y. Lei, “Geometry and
+     prediction,” Int. J. Speech Technol., vol. 49, no. 8, pp. 2942–2955,              uncertainty-aware 3D point cloud class-incremental semantic segmen-
+     Aug. 2019.                                                                        tation,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit.
+[85] S. Jain, G. Liu, J. Mueller, and D. Gifford, “Maximizing overall                  (CVPR), Vancouver, BC, Canada, Jun. 2023, pp. 21759–21768.
+     diversity for improved uncertainty estimates in deep ensembles,” in         [106] K. Sirohi, S. Marvi, D. Büscher, and W. Burgard, “Uncertainty-aware
+     Proc. AAAI Conf. Artif. Intell., New York, NY, USA, 2020, vol. 34,                panoptic segmentation,” IEEE Robot. Autom. Lett., vol. 8, no. 5,
+     no. 4, pp. 4264–4271.                                                             pp. 2629–2636, May 2023.
+[86] A. Malinin, B. Mlodozeniec, and M. Gales, “Ensemble distribution            [107] K. Sirohi, S. Marvi, D. Büscher, and W. Burgard, “Uncertainty-aware
+     distillation,” in Proc. Int. Conf. Learn. Represent. (ICLR), New Orleans,         LiDAR panoptic segmentation,” in Proc. IEEE Int. Conf. Robot. Autom.
+     LA, USA, Jan. 2019, pp. 1–24.                                                     (ICRA), London, U.K., May 2023, pp. 8277–8283.
+[87] T. Pearce, F. Leibfried, and A. Brintrup, “Uncertainty in neural net-       [108] S. Gasperini et al., “CertainNet: Sampling-free uncertainty estima-
+     works: Approximately Bayesian ensembling,” in Proc. Int. Conf. Artif.             tion for object detection,” IEEE Robot. Autom. Lett., vol. 7, no. 2,
+     Intell. Statist. (AISTATS), Jun. 2020, pp. 234–244.                               pp. 698–705, Apr. 2022.
+[88] G. Xia and C.-S. Bouganis, “Window-based early-exit cascades for            [109] K. Petek, K. Sirohi, D. Büscher, and W. Burgard, “Robust monocular
+     uncertainty estimation: When deep ensembles are more efficient than               localization in sparse HD maps leveraging multi-task uncertainty
+     single models,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV),                 estimation,” in Proc. IEEE Int. Conf. Robot. Autom. (ICRA), Apr. 2022,
+     Paris, France, Oct. 2023, pp. 17322–17334.                                        pp. 4163–4169.
+[89] O. Laurent et al., “Packed-ensembles for efficient uncertainty esti-        [110] K. Oksuz, T. Joy, and P. K. Dokania, “Towards building self-aware
+     mation,” in Proc. 11th Int. Conf. Learn. Represent., Kigali, Rwanda,              object detectors via reliable uncertainty quantification and calibration,”
+     Jan. 2022, pp. 1–23.                                                              in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR),
+[90] F. Yassir, X. Guoxuan, and G. Mark, “Wide Bayesian neural networks                Vancouver, BC, Canada, Jun. 2023, pp. 9263–9274.
+     have a simple weight posterior: Theory and accelerated sampling,” in        [111] M. R. Nallapareddy, K. Sirohi, P. L. J. Drews, W. Burgard,
+     Proc. 39th Conf. Uncertainty Artif. Intell. (UAI), Pittsburgh, PA, USA,           C.-H. Cheng, and A. Valada, “EvCenterNet: Uncertainty estimation
+     Jan. 2023, pp. 582–591.                                                           for object detection using evidential learning,” in Proc. IEEE/RSJ
+[91] R. Rahaman and A. H. Thiéry, “Uncertainty quantification and deep                 Int. Conf. Intell. Robots Syst. (IROS), Detroit, MI, USA, Oct. 2023,
+     ensembles,” in Proc. Adv. Neural Inf. Process. Syst. (NeurIPS), vol. 34,          pp. 5699–5706.
+     Jan. 2021, pp. 1–13.                                                        [112] D. Feng, L. Rosenbaum, and K. Dietmayer, “Towards safe autonomous
+[92] A. Malinin and M. Gales, “Uncertainty estimation in autoregressive                driving: Capture uncertainty in the deep neural network for LiDAR 3D
+     structured prediction,” in Proc. 9th Int. Conf. Learn. Represent. (ICLR),         vehicle detection,” in Proc. 21st Int. Conf. Intell. Transp. Syst. (ITSC),
+     Jan. 2020, pp. 1–31.                                                              Maui, HI, USA, Nov. 2018, pp. 3266–3273.
+
+
+        Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+2896                                                        IEEE TRANSACTIONS ON INTELLIGENT TRANSPORTATION SYSTEMS, VOL. 26, NO. 3, MARCH 2025
+
+
+
+[113] A. Eldesokey, M. Felsberg, K. Holmquist, and M. Persson,                     [134] Y. Siddiqui, J. Valentin, and M. Niessner, “ViewAL: Active learn-
+      “Uncertainty-aware CNNs for depth completion: Uncertainty from                     ing with viewpoint entropy for semantic segmentation,” in Proc.
+      beginning to end,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern                    IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), Jun. 2020,
+      Recognit. (CVPR), Jun. 2020, pp. 12011–12020.                                      pp. 9430–9440.
+[114] L. Chen, W. Wang, and P. Mordohai, “Learning the distribution of             [135] Z. Liu et al., “Swin transformer: Hierarchical vision transformer using
+      errors in stereo matching for joint disparity and uncertainty estimation,”         shifted windows,” in Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV),
+      in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR),                     Oct. 2021, pp. 10012–10022.
+      Jun. 2023, pp. 17235–17244.
+[115] S. Choi, K. Lee, S. Lim, and S. Oh, “Uncertainty-aware learning
+      from demonstration using mixture density networks with sampling-free
+      variance modeling,” in Proc. IEEE Int. Conf. Robot. Autom. (ICRA),
+      May 2018, pp. 6915–6922.
+[116] P. Tang, P. Yang, D. Nie, X. Wu, J. Zhou, and Y. Wang, “Unified
+      medical image segmentation by learning from uncertainty in an end-to-                                 Ke Wang (Member, IEEE) received the B.S., M.S.,
+      end manner,” Knowl.-Based Syst., vol. 241, Apr. 2022, Art. no. 108215.                                and Ph.D. degrees in vehicle engineering from
+[117] W. Xu, J. Wang, and T. Fei, “E2E-AT: A unified framework for                                          Hunan University, Hunan, China, in 2007, 2009,
+      tackling uncertainty in task-aware end-to-end learning,” in Proc.                                     and 2013, respectively. Since 2024, he has been a
+      AAAI Conf. Artif. Intell. (AAAI), Vancouver, BC, Canada, Jan. 2023,                                   Professor with the State Key Laboratory of Mechan-
+      pp. 16220–16227.                                                                                      ical Transmission, Chongqing University. He is the
+[118] H. Blum, P.-E. Sarlin, J. Nieto, R. Siegwart, and C. Cadena,                                          author of one book, more than 30 articles, and
+      “Fishyscapes: A benchmark for safe semantic segmentation in                                           more than 15 inventions. His research interests
+      autonomous driving,” in Proc. IEEE/CVF Int. Conf. Comput. Vis.                                        include intelligent vehicle, environment perception,
+      Workshop (ICCVW), Seoul, South Korea, Oct. 2019, pp. 2403–2412.                                       and safety AI. He won the First Prize of China Auto-
+                                                                                                            motive Industry Science and Technology Progress
+[119] V. Badrinarayanan, A. Kendall, and R. Cipolla, “SegNet: A deep convo-
+                                                                                                            Award twice (in 2021 and 2022).
+      lutional encoder–decoder architecture for image segmentation,” IEEE
+      Trans. Pattern Anal. Mach. Intell., vol. 39, no. 12, pp. 2481–2495,
+      Dec. 2017.
+[120] D. Feng et al., “Labels are not perfect: Inferring spatial uncertainty
+      in object detection,” IEEE Trans. Intell. Transp. Syst., vol. 23, no. 8,
+      pp. 9981–9994, Aug. 2022.
+[121] K. Wang, T. Zhou, X. Li, and F. Ren, “Performance and challenges                                      Chongqiang Shen (Student Member, IEEE)
+      of 3D object detection methods in complex scenes for autonomous                                       received the B.S. degree (Hons.) in vehicle
+      driving,” IEEE Trans. Intell. Vehicles, vol. 8, no. 2, pp. 1699–1716,                                 engineering from Wuhan University of Technology,
+      Feb. 2023.                                                                                            China, in 2022. He is currently pursuing the M.S.
+[122] G. P. Meyer and N. Thakurdesai, “Learning an uncertainty-aware                                        degree in vehicle engineering with Chongqing
+      object detector for autonomous driving,” in Proc. IEEE/RSJ Int.                                       University, Chongqing, China. His research interests
+      Conf. Intell. Robots Syst. (IROS), Las Vegas, NV, USA, Oct. 2020,                                     include out-of-distribution (OOD) detection and
+      pp. 10521–10527.                                                                                      perceived safety of autonomous driving.
+[123] Z. Wang et al., “Inferring spatial uncertainty in object detection,” in
+      Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS), Las Vegas, NV,
+      USA, Oct. 2020, pp. 5792–5799.
+[124] G. Huang, Y. Li, G. Pleiss, Z. Liu, J. E. Hopcroft, and
+      K. Q. Weinberger, “Snapshot ensembles: Train 1, get m for free,” in
+      Proc. Int. Conf. Learn. Represent. (ICLR), Toulon, France, Jan. 2017,
+      pp. 1–18.
+[125] G. Bae, I. Budvytis, and R. Cipolla, “Multi-view depth estimation
+      by fusing single-view depth probability with multi-view geometry,” in                                 Xingcan Li received the B.S. and M.S. degrees
+      Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), New                                       in vehicle engineering from Chongqing University,
+      Orleans, LA, USA, Jun. 2022, pp. 2842–2851.                                                           Chongqing, China, in 2021 and 2024, respectively.
+[126] A. Amini et al., “Learning robust control policies for end-to-end                                     He is currently a Senior Engineer with Hikvision
+      autonomous driving from data-driven simulation,” IEEE Robot. Autom.                                   company. His research interests include camera
+      Lett., vol. 5, no. 2, pp. 1143–1150, Apr. 2020.                                                       sensor technology, picture annotation, and datasets
+[127] A. Amini, W. Schwarting, G. Rosman, B. Araki, S. Karaman, and                                         processing.
+      D. Rus, “Variational autoencoder for end-to-end control of autonomous
+      driving with novelty detection and training de-biasing,” in Proc.
+      IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS), Madrid, Spain,
+      Oct. 2018, pp. 568–575.
+[128] L. Chen, P. Wu, K. Chitta, B. Jaeger, A. Geiger, and H. Li, “End-to-end
+      autonomous driving: Challenges and frontiers,” IEEE Trans. Pattern
+      Anal. Mach. Intell., vol. 46, no. 12, pp. 10164–10183, Dec. 2024.
+[129] J. Gawlikowski, S. Saha, A. Kruspe, and X. X. Zhu, “Out-of-
+      distribution detection in satellite image classification,” in Proc. Int.
+                                                                                                           Jianbo Lu (Fellow, IEEE) received the Ph.D. degree
+      Conf. Learn. Represent. (ICLR), Jan. 2021, pp. 1–12.
+                                                                                                           in aerospace engineering from Purdue University.
+[130] K. Wang et al., “The adaptability and challenges of autonomous                                       He has more than 20 years of industry experience
+      vehicles to pedestrians in urban China,” Accident Anal. Prevention,                                  including technical leadership positions. With more
+      vol. 145, Sep. 2020, Art. no. 105692.                                                                than 90 articles and more than 150 U.S. patents
+[131] Z. Nado et al., “Uncertainty baselines: Benchmarks for uncertainty &                                 in vehicle controls, automation, safety, performance,
+      robustness in deep learning,” in Proc. Adv. Neural Inf. Process. Syst.                               robotics, and mechatronics, his contributions can be
+      (NeurIPS), Jun. 2021, pp. 1–11.                                                                      found in millions of vehicles on the road. He is a
+[132] F. Yang et al., “Uncertainty-guided transformer reasoning for camou-                                 fellow of SAE, ASME, and AAIA. He received the
+      flaged object detection,” in Proc. IEEE/CVF Int. Conf. Comput. Vis.                                  Highest Corporate Award HFTA from Ford Motor
+      (ICCV), Oct. 2021, pp. 4146–4155.                                                                    Company twice. He was an Associate Editor of
+[133] K. Wang, S. Luo, T. Chen, and J. Lu, “Salient-VPR: Salient weighted          IEEE T RANSACTIONS ON C ONTROL S YSTEMS T ECHNOLOGY and Control
+      global descriptor for visual place recognition,” IEEE Trans. Instrum.        Practice Engineering (IFAC Journal). He is on the editorial board of ASME
+      Meas., vol. 71, pp. 1–8, 2022.                                               Journal of Autonomous Vehicles and Systems.
+
+          Authorized licensed use limited to: XIDIAN UNIVERSITY. Downloaded on March 31,2026 at 13:48:32 UTC from IEEE Xplore. Restrictions apply.
+

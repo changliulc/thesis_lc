@@ -1,0 +1,37 @@
+﻿\documentclass{xdupgthesis}
+\xdusetup{style={cjk-font=win,latin-font=tac,math-font=cambria,anonymous=true,remove-page={声明页,附录,致谢},customize-los=false,customize-loa=false,biblatex-option={doi=false,url=false,gbmedium=true}},info={graduate-type=硕士,degree-type=专业,degree={电子信息硕士},degree*={Electronic Information},title={测试},title*={Test},author={},author*={},department={},major={电子信息},major*={Electronic Information},sub-major={},student-id={},supervisor={},supervisor*={},supv-title={},supv-title*={},supervisor-enterprise={},supervisor-enterprise*={},supv-ent={},supv-ent*={},supv-ent-title={},supv-ent-title*={},supervisor-enterprise-title={},supervisor-enterprise-title*={},supervisor-title={},supervisor-title*={},domain={},clc={TN91},secret-level={公开},submit-date={2026-03-01},keywords={a},keywords*={a},abstract={chapters/abstract-zh.tex},abstract*={chapters/abstract-en.tex},acknowledgements={chapters/acknowledgements.tex},bio={chapters/biography.tex},appendix={chapters/appendix1.tex},statement-scan={},statement-sign={},los={chapters/los.tex},loa={chapters/loa.tex},bib-resource={references.bib}}}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\AtBeginDocument{
+  \setlength{\intextsep}{20pt}
+  \setlength{\textfloatsep}{20pt}
+  \setlength{\floatsep}{16pt plus 1pt minus 1pt}
+  \setlength{\dbltextfloatsep}{20pt}
+  \setlength{\dblfloatsep}{16pt plus 1pt minus 1pt}
+  \setlength{\abovecaptionskip}{0pt}
+  \setlength{\belowcaptionskip}{0pt}
+  \captionsetup[figure]{skip=6pt}
+  \captionsetup[table]{skip=4pt}
+}
+\begin{document}
+\makeatletter
+\typeout{LEN baselineskip=\the\baselineskip}
+\typeout{LEN parskip=\the\parskip}
+\typeout{LEN intextsep=\the\intextsep}
+\typeout{LEN textfloatsep=\the\textfloatsep}
+\typeout{LEN floatsep=\the\floatsep}
+\typeout{LEN abovecaptionskip=\the\abovecaptionskip}
+\typeout{LEN belowcaptionskip=\the\belowcaptionskip}
+\begingroup
+\captionsetup{type=figure}
+\typeout{LEN FIG abovecaptionskip=\the\abovecaptionskip}
+\typeout{LEN FIG belowcaptionskip=\the\belowcaptionskip}
+\endgroup
+\begingroup
+\captionsetup{type=table}
+\typeout{LEN TAB abovecaptionskip=\the\abovecaptionskip}
+\typeout{LEN TAB belowcaptionskip=\the\belowcaptionskip}
+\endgroup
+\typeout{LEN topskip=\the\topskip}
+\makeatother
+\end{document}
