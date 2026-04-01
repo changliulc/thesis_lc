@@ -2144,7 +2144,7 @@
         \dim_set:Nn \l__xdu_supv_max_dim
           { \dim_max:nn { \l__xdu_supv_dim } { \l__xdu_supv_max_dim } }
       }
-    \hbox_to_wd:nn { \l__xdu_supv_max_dim } { #1 \hfil } \hspace*{1.5em}
+    \hbox_to_wd:nn { \l__xdu_supv_max_dim } { #1 \hfil } \quad
   }
 \dim_new:N \l__xdu_supv_t_dim
 \dim_new:N \l__xdu_supv_t_max_dim
@@ -2171,7 +2171,7 @@
         \dim_set:Nn \l__xdu_supv_t_max_dim
           { \dim_max:nn { \l__xdu_supv_t_dim } { \l__xdu_supv_t_max_dim } }
       }
-    \hbox_to_wd:nn { \l__xdu_supv_t_max_dim } { #1 \hfil } \hspace*{1.5em}
+    \hbox_to_wd:nn { \l__xdu_supv_t_max_dim } { #1 \hfil } \quad
   }
 \cs_new:Npn \__xdu_en_title_page:
   {
@@ -2200,7 +2200,6 @@
           { ~\l__xdu_degree_en_str\\ }
           { ~\l__xdu_major_en_str\\  }
       }
-    \skip_vertical:n { 36pt }
     \vbox:n
       {
         \rmfamily \zihao { 3 } \centering
@@ -2222,7 +2221,6 @@
             Supervisor:~ \__xdu_en_title_supv:n { \l__xdu_supv_ent_en_str }
             Title:~ \__xdu_en_title_supv_t:n { \l__xdu_supv_ent_t_en_str } \\
           }
-        \skip_vertical:n { 10pt }
         \__xdu_en_submit_date:
       }
     \cleardoublepage
